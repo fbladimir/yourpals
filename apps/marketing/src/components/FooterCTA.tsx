@@ -1,7 +1,69 @@
+"use client";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function FooterCTA() {
   const currentYear = new Date().getFullYear();
+  
+  useEffect(() => {
+    // Function to handle scroll positioning
+    const handleScrollToSection = () => {
+      const element = document.getElementById('download');
+      if (element) {
+        // Account for sticky header height + additional spacing
+        const headerHeight = 160; // Same offset as HowItWorks for consistency
+        const elementTop = element.offsetTop;
+        window.scrollTo({
+          top: elementTop - headerHeight,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    // Check if we're navigating to this section on mount
+    if (window.location.hash === '#download') {
+      setTimeout(handleScrollToSection, 100);
+    }
+
+    // Override all anchor clicks to #download
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a[href="#download"]');
+
+      if (link) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Update URL without triggering default scroll
+        window.history.pushState(null, '', '#download');
+
+        // Handle scroll manually
+        setTimeout(handleScrollToSection, 50);
+        
+        // Close mobile menu if it's open (by dispatching a custom event)
+        window.dispatchEvent(new CustomEvent('closeMobileMenu'));
+      }
+    };
+
+    // Add click listener to document
+    document.addEventListener('click', handleAnchorClick, true);
+
+    // Handle hash changes and browser navigation
+    const handleHashChange = () => {
+      if (window.location.hash === '#download') {
+        setTimeout(handleScrollToSection, 100);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+
+    return () => {
+      document.removeEventListener('click', handleAnchorClick, true);
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, []);
   
   const navigationLinks = [
     { name: "About", href: "#about" },

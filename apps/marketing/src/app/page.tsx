@@ -5,6 +5,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FooterCTA from "@/components/FooterCTA";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Page() {
   return (
@@ -16,6 +17,7 @@ export default function Page() {
       <Testimonials />
       <Pricing />
       <FooterCTA />
+      <ScrollToTop />
     </main>
   );
 }

@@ -40,9 +40,7 @@ export default function Hero() {
             
             {/* Meet MoneyPal section - Now clickable */}
             <Link 
-              href="https://moneypal.yourpals.app"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#apps"
               className="group"
             >
               <motion.div 
