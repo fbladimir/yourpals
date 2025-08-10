@@ -164,7 +164,7 @@ export default function HowItWorks() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 relative z-10">
-            {steps.map((step, index) => (
+            {steps.map((step) => (
               <div 
                 key={step.step} 
                 className="relative group"

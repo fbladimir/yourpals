@@ -42,10 +42,10 @@ export default function SignInPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             Coming Soon!
           </h1>
-          <p className="text-lg text-white/80 mb-6 leading-relaxed">
-            We're working hard to bring you the most amazing AI companions. 
-            Sign-in functionality will be available soon!
-          </p>
+                           <p className="text-lg text-white/80 mb-6 leading-relaxed">
+                   We&apos;re working hard to bring you the most amazing AI companions. 
+                   Sign-in functionality will be available soon!
+                 </p>
           
           {/* Progress Bar */}
           <div className="w-full bg-white/10 rounded-full h-2 mb-6">
@@ -77,7 +77,7 @@ export default function SignInPage() {
           </Link>
           
           <div className="text-sm text-white/60">
-            <p>Want to be notified when it's ready?</p>
+            <p>Want to be notified when it&apos;s ready?</p>
             <p className="mt-1">
               Follow us on{" "}
               <a 
