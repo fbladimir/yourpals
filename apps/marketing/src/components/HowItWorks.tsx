@@ -1,6 +1,12 @@
+"use client";
+
 // import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 
 export default function HowItWorks() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   const steps = [
     {
       step: "1",
@@ -28,7 +34,7 @@ export default function HowItWorks() {
       description: "Your Pal works in the background, handling tasks intelligently",
       icon: "⚡",
       color: "from-purple-500 to-pink-500",
-      bgColor: "from-purple-500/20 to-pink-500/20",
+      bgColor: "from-purple-500/20 to-purple-500/20",
       ringColor: "ring-purple-500/30",
       accentColor: "text-purple-400"
     },
@@ -43,6 +49,38 @@ export default function HowItWorks() {
       accentColor: "text-orange-400"
     }
   ];
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % steps.length);
+    }, 4000); // Auto-scroll every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [steps.length]);
+
+  // Scroll to specific step
+  const scrollToStep = (index: number) => {
+    setCurrentStep(index);
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const stepWidth = container.scrollWidth / steps.length;
+      container.scrollTo({
+        left: stepWidth * index,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Handle scroll events to update current step
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const stepWidth = container.scrollWidth / steps.length;
+      const currentIndex = Math.round(container.scrollLeft / stepWidth);
+      setCurrentStep(currentIndex);
+    }
+  };
 
   return (
     <section id="how" className="relative mt-20 overflow-hidden">
@@ -75,12 +113,12 @@ export default function HowItWorks() {
           </p>
         </div>
         
-        {/* Enhanced steps grid */}
+        {/* Desktop Grid Layout - Hidden on mobile */}
         <div 
-          className="mt-20 relative"
+          className="mt-20 relative hidden lg:block"
         >
           {/* Desktop connector lines */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/20 via-emerald-500/20 via-purple-500/20 to-orange-500/20 transform -translate-y-1/2 z-0">
+          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/20 via-emerald-500/20 via-purple-500/20 to-orange-500/20 transform -translate-y-1/2 z-0">
             <div 
               className="h-full bg-gradient-to-r from-blue-500 to-orange-500 rounded-full"
             />
@@ -135,10 +173,72 @@ export default function HowItWorks() {
                     className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-white/20 transition-all duration-300"
                   />
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                {/* Enhanced mobile flow indicator */}
+        {/* Mobile/Tablet Horizontal Scrollable Layout */}
+        <div className="mt-20 lg:hidden">
+          {/* Horizontal Scrollable Container */}
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {steps.map((step, index) => (
+              <div 
+                key={step.step} 
+                className="relative group flex-shrink-0 w-80 sm:w-96 snap-center"
+              >
+                {/* Enhanced step card */}
+                <div className="relative p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm ring-1 ring-white/20 hover:ring-white/40 transition-all duration-300 h-full">
+                  {/* Floating background elements */}
+                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}></div>
+                  
+                  {/* Step number with enhanced styling */}
+                  <div 
+                    className={`relative mx-auto mb-6 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gradient-to-br ${step.color} text-white font-bold text-xl sm:text-2xl shadow-lg ring-4 ring-white/20 group-hover:ring-white/40 transition-all duration-300`}
+                  >
+                    {step.step}
+                    {/* Glow effect */}
+                    <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${step.color} blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300`}></div>
+                  </div>
+                  
+                  {/* Enhanced icon with animations */}
+                  <div 
+                    className={`relative mx-auto mb-6 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${step.bgColor} ring-1 ${step.ringColor} text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    {step.icon}
+                    {/* Icon glow */}
+                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.bgColor} blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300`}></div>
+                  </div>
+                  
+                  {/* Content with enhanced typography */}
+                  <div className="text-center relative z-10">
+                    <h3 className={`text-lg sm:text-xl font-bold text-white mb-3 transition-colors duration-300 ${
+                      step.accentColor === 'text-blue-400' ? 'group-hover:text-blue-400' :
+                      step.accentColor === 'text-emerald-400' ? 'group-hover:text-emerald-400' :
+                      step.accentColor === 'text-purple-400' ? 'group-hover:text-purple-400' :
+                      'group-hover:text-orange-400'
+                    }`}>
+                      {step.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-white/70 leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  {/* Interactive hover effects */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-white/20 transition-all duration-300"
+                  />
+                </div>
+
+                {/* Mobile flow indicator */}
                 {index < steps.length - 1 && (
-                  <div className="lg:hidden absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-blue-500/30 to-transparent transform translate-x-1/2 z-0">
+                  <div className="absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-blue-500/30 to-transparent transform translate-x-1/2 z-0">
                     <div 
                       className="h-full bg-gradient-to-r from-blue-500 to-transparent rounded-full"
                     />
@@ -147,24 +247,51 @@ export default function HowItWorks() {
               </div>
             ))}
           </div>
-        </div>
-        
-        {/* Enhanced mobile flow indicator */}
-        <div 
-          className="mt-12 lg:hidden"
-        >
-          <div className="flex justify-center space-x-3">
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center items-center gap-2 mt-6">
             {steps.map((_, index) => (
-              <div
+              <button
                 key={index}
-                className={`h-3 w-3 rounded-full transition-all duration-300 ${
-                  index === 0 ? 'bg-gradient-to-r from-blue-500 to-cyan-500 scale-125' : 'bg-white/20'
+                onClick={() => scrollToStep(index)}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                  index === currentStep 
+                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 scale-125' 
+                    : 'bg-white/30 hover:bg-white/50'
                 }`}
+                aria-label={`Go to step ${index + 1}`}
               />
             ))}
           </div>
-        </div>
 
+          {/* Navigation Arrows */}
+          <div className="flex justify-between items-center mt-6 px-4">
+            <button
+              onClick={() => scrollToStep((currentStep - 1 + steps.length) % steps.length)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              aria-label="Previous step"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <span className="text-sm text-white/60">
+              Step {currentStep + 1} of {steps.length}
+            </span>
+            
+            <button
+              onClick={() => scrollToStep((currentStep + 1) % steps.length)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              aria-label="Next step"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
         {/* Call to action */}
         <div 
           className="mt-16 text-center"

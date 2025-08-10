@@ -2,3 +2,13 @@
 
 :root { color-scheme: dark; }
 html, body { background: #0b0c12; }
+
+/* Custom scrollbar hiding utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
