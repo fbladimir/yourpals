@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -17,8 +18,17 @@ export default function Header() {
     <header className="sticky top-4 sm:top-6 z-50 px-4 sm:px-6 lg:px-8">
       <div className="rounded-xl sm:rounded-2xl bg-white/5 px-3 sm:px-4 py-2 sm:py-3 ring-1 ring-white/10 backdrop-blur-sm">
         <div className="flex items-center justify-between">
-          <Link href="/" className="font-semibold tracking-tight text-sm sm:text-base hover:text-white/90 transition-colors">
-            YourPals
+          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <div className="w-10 h-10 sm:w-12 sm:h-12">
+              <Image
+                src="/yourpalsRobot.png"
+                alt="YourPals Robot"
+                width={96}
+                height={96}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="font-semibold tracking-tight text-sm sm:text-base text-white">YourPals</span>
           </Link>
           
           {/* Desktop Navigation */}

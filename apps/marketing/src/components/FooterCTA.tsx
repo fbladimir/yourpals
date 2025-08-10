@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function FooterCTA() {
   const currentYear = new Date().getFullYear();
   
@@ -98,96 +100,108 @@ export default function FooterCTA() {
       </section>
 
       {/* Footer Navigation */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 sm:gap-12 lg:grid-cols-4 lg:gap-16">
-          {/* Brand & Description */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-blueA to-blueB"></div>
-              <span className="text-xl sm:text-2xl font-bold text-white">YourPals</span>
-            </div>
-            <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md">
-              AI assistants that actually do work for your everyday life. Manage all your daily tasks and AI helpers in a single platform.
-            </p>
-            
-            {/* Social Links */}
-            <div className="mt-6 sm:mt-8">
-              <div className="flex items-center gap-4 sm:gap-6">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-white/5 text-lg sm:text-xl text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-95 touch-manipulation"
-                    aria-label={social.name}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+      <div className="w-full bg-gradient-to-b from-transparent via-white/5 to-white/10">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="grid gap-8 sm:gap-12 lg:grid-cols-4 lg:gap-16">
+            {/* Brand & Description */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-1 sm:mb-1">
+                <div className="w-24 h-24 sm:w-32 sm:h-32">
+                  <Image
+                    src="/yourPalsLogo.png"
+                    alt="YourPals Logo"
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+              <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md">
+                AI assistants that actually do work for your everyday life. Manage all your daily tasks and AI helpers in a single platform.
+              </p>
+              
+              {/* Social Links */}
+              <div className="mt-6 sm:mt-8">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-white/5 text-lg sm:text-xl text-white/60 hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-95 touch-manipulation ring-1 ring-white/10 hover:ring-white/20"
+                      aria-label={social.name}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Product Links */}
-          <div>
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">
-              Products
-            </h3>
-            <ul className="space-y-3 sm:space-y-4">
-              {productLinks.map((product) => (
-                <li key={product.name}>
-                  <a
-                    href={product.href}
-                    className="text-base sm:text-lg text-white/70 hover:text-white transition-colors duration-200"
-                  >
-                    {product.name}
-                  </a>
-                  <p className="text-sm text-white/50 mt-1">
-                    {product.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">
-              Company
-            </h3>
-            <ul className="space-y-3 sm:space-y-4">
-              {navigationLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-base sm:text-lg text-white/70 hover:text-white transition-colors duration-200"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="mt-12 sm:mt-16 md:mt-20 pt-8 sm:pt-12 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
-            {/* Copyright */}
-            <div className="text-sm sm:text-base text-white/50">
-              © {currentYear} YourPals. All rights reserved.
+            {/* Product Links */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                <span className="w-2 h-2 bg-blueA rounded-full"></span>
+                Products
+              </h3>
+              <ul className="space-y-3 sm:space-y-4">
+                {productLinks.map((product) => (
+                  <li key={product.name}>
+                    <a
+                      href={product.href}
+                      className="text-base sm:text-lg text-white/70 hover:text-white transition-colors duration-200 group"
+                    >
+                      <span className="group-hover:text-blueA transition-colors duration-200">{product.name}</span>
+                      <p className="text-sm text-white/50 mt-1 group-hover:text-white/70 transition-colors duration-200">
+                        {product.description}
+                      </p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-            
-            {/* Additional Links */}
-            <div className="flex items-center gap-6 sm:gap-8 text-sm sm:text-base">
-              <a href="#privacy" className="text-white/50 hover:text-white transition-colors">
-                Privacy
-              </a>
-              <a href="#terms" className="text-white/50 hover:text-white transition-colors">
-                Terms
-              </a>
-              <a href="#cookies" className="text-white/50 hover:text-white transition-colors">
-                Cookies
-              </a>
+
+            {/* Company Links */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                <span className="w-2 h-2 bg-cyan-500 rounded-full"></span>
+                Company
+              </h3>
+              <ul className="space-y-3 sm:space-y-4">
+                {navigationLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="text-base sm:text-lg text-white/70 hover:text-white transition-colors duration-200 group"
+                    >
+                      <span className="group-hover:text-cyan-500 transition-colors duration-200">{link.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Section with enhanced styling */}
+          <div className="mt-12 sm:mt-16 md:mt-20 pt-8 sm:pt-12 border-t border-white/10">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+              {/* Copyright */}
+              <div className="text-sm sm:text-base text-white/50 flex items-center gap-2">
+                <span className="w-1 h-1 bg-white/30 rounded-full"></span>
+                © {currentYear} YourPals. All rights reserved.
+              </div>
+              
+              {/* Additional Links */}
+              <div className="flex items-center gap-6 sm:gap-8 text-sm sm:text-base">
+                <a href="#privacy" className="text-white/50 hover:text-white transition-colors hover:text-blueA">
+                  Privacy
+                </a>
+                <a href="#terms" className="text-white/50 hover:text-white transition-colors hover:text-cyan-500">
+                  Terms
+                </a>
+                <a href="#cookies" className="text-white/50 hover:text-white transition-colors hover:text-teal-500">
+                  Cookies
+                </a>
+              </div>
             </div>
           </div>
         </div>

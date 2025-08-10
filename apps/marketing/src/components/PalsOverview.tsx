@@ -1,7 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 
 export default function PalsOverview() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   const cards = [
     {
       badge: "Finance",
@@ -44,6 +48,38 @@ export default function PalsOverview() {
     },
   ];
 
+  // Auto-scroll functionality
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % cards.length);
+    }, 5000); // Auto-scroll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [cards.length]);
+
+  // Scroll to specific slide
+  const scrollToSlide = (index: number) => {
+    setCurrentSlide(index);
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const slideWidth = container.scrollWidth / cards.length;
+      container.scrollTo({
+        left: slideWidth * index,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Handle scroll events to update current slide
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const slideWidth = container.scrollWidth / cards.length;
+      const currentIndex = Math.round(container.scrollLeft / slideWidth);
+      setCurrentSlide(currentIndex);
+    }
+  };
+
   return (
     <section id="apps" className="py-16 sm:py-20 md:py-24 lg:py-32 bg-gradient-to-b from-transparent via-white/[0.02] to-white/[0.05]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -70,8 +106,8 @@ export default function PalsOverview() {
           </p>
         </motion.div>
         
-        {/* Cards Grid - Improved Layout with Better Spacing */}
-        <div className="grid gap-8 sm:gap-10 lg:gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Desktop Grid Layout - Hidden on mobile */}
+        <div className="hidden lg:grid gap-8 sm:gap-10 lg:gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => (
             <motion.div
               key={card.title}
@@ -264,6 +300,253 @@ export default function PalsOverview() {
               </a>
             </motion.div>
           ))}
+        </div>
+
+        {/* Mobile/Tablet Horizontal Scrollable Layout */}
+        <div className="lg:hidden">
+          {/* Horizontal Scrollable Container */}
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {cards.map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: index * 0.15 }}
+                className="group flex-shrink-0 w-80 sm:w-96 snap-center"
+              >
+                <a 
+                  href={card.href}
+                  className={`block h-full rounded-2xl sm:rounded-3xl bg-gradient-to-br ${card.bgGradient} p-6 sm:p-8 border border-transparent hover:border-opacity-100 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden group-hover:bg-opacity-20 active:scale-[0.98] touch-manipulation`}
+                  style={{
+                    borderImage: `linear-gradient(135deg, ${card.borderGradient.split(' ')[0]}, ${card.borderGradient.split(' ')[1]}) 1`
+                  }}
+                >
+                  {/* Enhanced Background Pattern */}
+                  <div className="absolute inset-0 opacity-5 sm:opacity-10">
+                    <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-white/30 to-transparent blur-xl sm:blur-2xl"></div>
+                    <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-white/30 to-transparent blur-lg sm:blur-xl"></div>
+                  </div>
+                  
+                  {/* Top Section: Avatar and Badge in a Row */}
+                  <div className="flex items-start justify-between mb-6 sm:mb-8">
+                    {/* AI Robot Avatar Container */}
+                    <div className={`relative inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${card.iconBg} ring-1 ring-white/20 shadow-lg sm:shadow-xl group-hover:shadow-2xl transition-all duration-500 overflow-hidden group-hover:scale-110 flex-shrink-0`}>
+                      {card.title === "MoneyPal" && (
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          {/* MoneyPal Robot */}
+                          <motion.div
+                            className="relative"
+                            animate={{ rotate: [0, 3, -3, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            {/* Robot body */}
+                            <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${card.robotColor} rounded-full flex items-center justify-center relative shadow-lg ring-2 ring-white/30`}>
+                              {/* Calculator screen head */}
+                              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-12 h-6 sm:w-16 sm:h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                                <span className="text-white font-bold text-base sm:text-lg">$</span>
+                              </div>
+                              
+                              {/* Robot eyes */}
+                              <div className="absolute top-3 left-2.5 sm:top-4 sm:left-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full"></div>
+                              <div className="absolute top-3 right-2.5 sm:top-4 sm:right-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full"></div>
+                              
+                              {/* Robot mouth */}
+                              <div className="absolute bottom-3 left-1/2 sm:bottom-4 w-3 h-0.5 sm:w-4 sm:h-1 -translate-x-1/2 bg-black rounded-full"></div>
+                              
+                              {/* Coin slot */}
+                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-0.5 sm:w-6 sm:h-1 bg-green-400 rounded-full"></div>
+                            </div>
+                            
+                            {/* Floating coins */}
+                            <motion.div
+                              className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-md"
+                              animate={{ y: [0, -6, 0], rotate: [0, 180, 360] }}
+                              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            />
+                            <motion.div
+                              className="absolute -bottom-1.5 -left-1.5 sm:-bottom-2 sm:-left-2 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-md"
+                              animate={{ y: [0, -4, 0], rotate: [0, -180, -360] }}
+                              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                            />
+                          </motion.div>
+                        </div>
+                      )}
+                      
+                      {card.title === "SleepPal" && (
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          {/* SleepPal Robot */}
+                          <motion.div
+                            className="relative"
+                            animate={{ y: [0, -2, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            {/* Robot body */}
+                            <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${card.robotColor} rounded-full flex items-center justify-center relative shadow-lg ring-2 ring-white/30`}>
+                              {/* Sleep mask head */}
+                              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-12 h-4 sm:w-16 sm:h-6 bg-indigo-500 rounded-lg flex items-center justify-center">
+                                <div className="flex gap-1 sm:gap-1.5">
+                                  <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white rounded-full"></div>
+                                  <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white rounded-full"></div>
+                                </div>
+                              </div>
+                              
+                              {/* Closed robot eyes */}
+                              <div className="absolute top-3 left-2.5 sm:top-4 sm:left-3 w-2 h-0.5 sm:w-3 sm:h-0.5 bg-black rounded-full transform rotate-12"></div>
+                              <div className="absolute top-3 right-2.5 sm:top-4 sm:right-3 w-2 h-0.5 sm:w-3 sm:h-0.5 bg-black rounded-full transform -rotate-12"></div>
+                              
+                              {/* Sleeping robot mouth */}
+                              <div className="absolute bottom-3 left-1/2 sm:bottom-4 w-1.5 h-1.5 sm:w-2 sm:h-2 -translate-x-1/2 bg-black rounded-full"></div>
+                              
+                              {/* Sleep waves */}
+                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-0.5 sm:w-8 sm:h-1 bg-indigo-400 rounded-full"></div>
+                            </div>
+                            
+                            {/* Zzz bubbles */}
+                            <motion.div
+                              className="absolute -top-3 -right-1.5 sm:-top-4 sm:-right-2 text-indigo-200 text-base sm:text-lg font-bold"
+                              animate={{ opacity: [0, 1, 0], y: [-2, -6, -2] }}
+                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              z
+                            </motion.div>
+                            <motion.div
+                              className="absolute -top-4 -right-1 sm:-top-5 sm:-right-1.5 text-indigo-200 text-base sm:text-lg font-bold"
+                              animate={{ opacity: [0, 1, 0], y: [-2, -6, -2] }}
+                              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                            >
+                              z
+                            </motion.div>
+                          </motion.div>
+                        </div>
+                      )}
+                      
+                      {card.title === "CartPal" && (
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          {/* CartPal Robot */}
+                          <motion.div
+                            className="relative"
+                            animate={{ x: [0, 2, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            {/* Robot body */}
+                            <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${card.robotColor} rounded-full flex items-center justify-center relative shadow-lg ring-2 ring-white/30`}>
+                              {/* Shopping cart head */}
+                              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-12 h-6 sm:w-16 sm:h-8 bg-cyan-500 rounded-lg flex items-center justify-center">
+                                <div className="relative w-6 h-3 sm:w-8 sm:h-4">
+                                  <div className="absolute bottom-0 left-0 w-4 h-2 sm:w-6 sm:h-3 bg-white rounded-t-lg border border-cyan-600"></div>
+                                  <div className="absolute top-0 right-0 w-1.5 h-1.5 sm:w-2 sm:h-2 border border-cyan-600 border-l-0 border-b-0 rounded-tr-lg"></div>
+                                </div>
+                              </div>
+                              
+                              {/* Robot eyes */}
+                              <div className="absolute top-3 left-2.5 sm:top-4 sm:left-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full"></div>
+                              <div className="absolute top-3 right-2.5 sm:top-4 sm:right-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full"></div>
+                              
+                              {/* Robot mouth */}
+                              <div className="absolute bottom-3 left-1/2 sm:bottom-4 w-3 h-0.5 sm:w-4 sm:h-1 -translate-x-1/2 bg-black rounded-full"></div>
+                              
+                              {/* Shopping list */}
+                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-0.5 sm:w-8 sm:h-1 bg-cyan-400 rounded-full"></div>
+                            </div>
+                            
+                            {/* Floating grocery items */}
+                            <motion.div
+                              className="absolute -top-2.5 -left-1.5 sm:-top-3 sm:-left-2 w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-green-300 to-green-500 rounded-full shadow-md"
+                              animate={{ y: [0, -3, 0], rotate: [0, 180, 360] }}
+                              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            />
+                            <motion.div
+                              className="absolute -top-2 -right-2.5 sm:-top-2.5 sm:-right-3 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gradient-to-br from-orange-300 to-orange-500 rounded-full shadow-md"
+                              animate={{ y: [0, -2, 0], rotate: [0, -180, -360] }}
+                              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                            />
+                          </motion.div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Badge - Positioned to the right of avatar */}
+                    <div className={`inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r ${card.badgeBg} text-xs sm:text-sm font-semibold text-white/95 ring-1 ring-white/20 backdrop-blur-sm shadow-lg ml-3 sm:ml-4 flex-shrink-0`}>
+                      {card.badge}
+                    </div>
+                  </div>
+                  
+                  {/* Content Section - Below avatar and badge */}
+                  <div className="space-y-4 sm:space-y-6">
+                    {/* Title */}
+                    <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight group-hover:text-white transition-colors duration-300">
+                      {card.title}
+                    </h3>
+                    
+                    {/* Description */}
+                    <p className="text-sm sm:text-base text-white/80 leading-relaxed group-hover:text-white/90 transition-colors duration-300">
+                      {card.desc}
+                    </p>
+                    
+                    {/* Learn More Link */}
+                    <div className={`flex items-center gap-2 sm:gap-3 ${card.textAccent} font-semibold text-base sm:text-lg group-hover:gap-3 sm:group-hover:gap-4 transition-all duration-300`}>
+                      <span>Learn More</span>
+                      <motion.span 
+                        className="transform group-hover:translate-x-1 transition-transform duration-300 text-lg sm:text-xl"
+                        animate={{ x: [0, 1, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        →
+                      </motion.span>
+                    </div>
+                  </div>
+                </a>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center items-center gap-2 mt-6">
+            {cards.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToSlide(index)}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'bg-white scale-125' 
+                    : 'bg-white/30 hover:bg-white/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex justify-between items-center mt-6 px-4">
+            <button
+              onClick={() => scrollToSlide((currentSlide - 1 + cards.length) % cards.length)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              aria-label="Previous slide"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <span className="text-sm text-white/60">
+              {currentSlide + 1} of {cards.length}
+            </span>
+            
+            <button
+              onClick={() => scrollToSlide((currentSlide + 1) % cards.length)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              aria-label="Next slide"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
         
         {/* Trust & Safety Section */}

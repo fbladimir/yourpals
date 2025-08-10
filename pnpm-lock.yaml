@@ -10,9 +10,6 @@ importers:
 
   apps/marketing:
     dependencies:
-      '@yourpals/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
@@ -22,6 +19,9 @@ importers:
       next:
         specifier: 15.4.6
         version: 15.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      postcss:
+        specifier: ^8.4.0
+        version: 8.5.6
       react:
         specifier: 19.1.0
         version: 19.1.0

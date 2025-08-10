@@ -63,14 +63,14 @@ export default function Pricing() {
             </span>{" "}
             pricing
           </h2>
-          <p className="mt-6 text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-            Start free, upgrade when you're ready. No hidden fees, no surprises.
+          <p className="mt-2 text-sm leading-6 text-white/70">
+            Tailored solutions for large organizations.
           </p>
         </div>
 
         {/* Enhanced Pricing Cards */}
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 max-w-6xl mx-auto mb-20">
-          {plans.map((plan, index) => (
+          {plans.map((plan) => (
             <div 
               key={plan.name}
               className={`relative group ${

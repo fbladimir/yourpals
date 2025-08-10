@@ -1,28 +1,20 @@
-export default function Spotlight(){
+export default function Spotlight() {
   return (
-    <section className="mt-16 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
-      <div className="grid items-center gap-6 md:grid-cols-2">
-        <div>
-          <h3 className="text-xl font-bold">MoneyPal — your AI money mentor</h3>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>• 30-day cash-flow forecast</li>
-            <li>• "Safe-to-save" suggestions timed to your paycheck</li>
-            <li>• Subscription finder + cancel emails</li>
-            <li>• Friday digest: wins, risks, next actions</li>
-          </ul>
-          <div className="mt-5 flex gap-3">
-            <a className="rounded-xl bg-blueA px-4 py-2 hover:bg-blueB" href="https://moneypal.yourpals.app">Open MoneyPal</a>
-            <a className="rounded-xl bg-white/5 px-4 py-2 ring-1 ring-white/10 hover:bg-white/10" href="#safety">Data & Safety</a>
-          </div>
-        </div>
-        <div className="rounded-2xl bg-black/30 p-5 ring-1 ring-white/10">
-          <div className="text-sm text-white/70">30-Day Forecast</div>
-          <div className="mt-3 h-28 rounded-lg bg-black/40" />
-          <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
-            <div className="rounded-lg bg-black/40 p-3">Lowest day<br/><b>Aug 28</b></div>
-            <div className="rounded-lg bg-black/40 p-3">Bills due<br/><b>3</b></div>
-            <div className="rounded-lg bg-black/40 p-3">Safe-to-save<br/><b>$85 Fri</b></div>
-          </div>
+    <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-white/[0.05]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            Ready to get started?
+          </h2>
+          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-8">
+            Join thousands of users who are already using YourPals to improve their daily lives.
+          </p>
+          <a
+            href="#download"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-blueA hover:bg-blueB text-white font-semibold rounded-xl transition-colors duration-300 active:scale-95 touch-manipulation"
+          >
+            Get Started
+          </a>
         </div>
       </div>
     </section>

@@ -3,6 +3,11 @@ import "./globals.css";
 export const metadata = {
   title: "YourPals — Smart little helpers",
   description: "AI assistants that actually do work for your everyday life.",
+  icons: {
+    icon: '/yourpalsRobot.png',
+    shortcut: '/yourpalsRobot.png',
+    apple: '/yourpalsRobot.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
