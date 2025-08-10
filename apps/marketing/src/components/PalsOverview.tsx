@@ -81,7 +81,7 @@ export default function PalsOverview() {
   };
 
   return (
-    <section id="apps" className="py-16 sm:py-20 md:py-24 lg:py-32 bg-gradient-to-b from-transparent via-white/[0.02] to-white/[0.05]">
+    <section id="apps" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-white/[0.05]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 

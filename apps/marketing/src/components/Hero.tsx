@@ -112,12 +112,12 @@ export default function Hero() {
             >
               Get Started Free
             </Link>
-            <Link 
+            <a 
               href="#how" 
               className="inline-flex items-center justify-center rounded-xl bg-white/5 px-5 py-3 sm:px-6 sm:py-4 font-semibold text-white ring-1 ring-white/10 hover:bg-white/10 transition-colors active:scale-95 touch-manipulation"
             >
               See How It Works
-            </Link>
+            </a>
           </div>
           
           {/* Bottom text */}

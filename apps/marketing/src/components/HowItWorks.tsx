@@ -59,6 +59,45 @@ export default function HowItWorks() {
     return () => clearInterval(interval);
   }, [steps.length]);
 
+  // Handle scroll positioning for anchor links
+  useEffect(() => {
+    // Function to handle scroll positioning
+    const handleScrollToSection = () => {
+      const element = document.getElementById('how');
+      if (element) {
+        // Account for sticky header height + additional spacing
+        const headerHeight = 140; // Increased to account for sticky positioning and margins
+        const elementTop = element.offsetTop;
+        window.scrollTo({
+          top: elementTop - headerHeight,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    // Check if we're navigating to this section on mount
+    if (window.location.hash === '#how') {
+      setTimeout(handleScrollToSection, 100);
+    }
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      if (window.location.hash === '#how') {
+        setTimeout(handleScrollToSection, 100);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Also listen for popstate (back/forward navigation)
+    window.addEventListener('popstate', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, []);
+
   // Scroll to specific step
   const scrollToStep = (index: number) => {
     setCurrentStep(index);
@@ -83,7 +122,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section id="how" className="relative mt-20 overflow-hidden">
+    <section id="how" className="relative mt-12 sm:mt-16 overflow-hidden pt-16 sm:pt-20">
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-3xl"></div>
