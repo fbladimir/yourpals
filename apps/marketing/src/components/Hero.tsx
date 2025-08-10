@@ -32,7 +32,7 @@ export default function Hero() {
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-xs sm:text-sm font-semibold text-green-300">New</span>
+              <span className="text-xs sm:text-sm font-semibold text-green-300">Coming Soon</span>
             </motion.div>
             
             {/* Separator */}
