@@ -1,6 +1,6 @@
 "use client";
 
-// import { motion } from "framer-motion";
+// immport { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 
 export default function HowItWorks() {
