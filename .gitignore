@@ -45,3 +45,18 @@ next-env.d.ts
 # pnpm
 .pnpm-store
 .env*.local
+
+# Prisma - ignore future generations but allow committed client
+packages/core/generated/prisma-client/
+!packages/core/generated/prisma-client/index.d.ts
+!packages/core/generated/prisma-client/index.js
+!packages/core/generated/prisma-client/package.json
+!packages/core/generated/prisma-client/runtime/
+!packages/core/generated/prisma-client/edge.d.ts
+!packages/core/generated/prisma-client/edge.js
+!packages/core/generated/prisma-client/wasm.d.ts
+!packages/core/generated/prisma-client/wasm.js
+!packages/core/generated/prisma-client/index-browser.js
+!packages/core/generated/prisma-client/default.d.ts
+!packages/core/generated/prisma-client/default.js
+!packages/core/generated/prisma-client/schema.prisma
