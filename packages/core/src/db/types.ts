@@ -8,7 +8,7 @@ export type {
   Goal,
   InsightCache,
   Prisma,
-} from '@prisma/client'
+} from '../../generated/prisma-client'
 
 export {
   SubscriptionPlan,
@@ -17,4 +17,4 @@ export {
   ConnectionStatus,
   GoalType,
   InsightKind,
-} from '@prisma/client'
+} from '../../generated/prisma-client'
