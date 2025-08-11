@@ -7,3 +7,16 @@ healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
+
+[phases.setup]
+nixPkgs = ["nodejs_22", "pnpm-9_x", "openssl"]
+
+[phases.install]
+cmds = ["pnpm install"]
+
+[phases.build]
+cmds = [
+  "cd packages/core && pnpm db:generate",
+  "cd ../.. && pnpm --filter @yourpals/core build",
+  "pnpm --filter @yourpals/marketing build"
+]
