@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  clerkUserId String   @unique
+  email       String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  subscriptions Subscription[]
+  connections   Connection[]
+  transactions  Transaction[]
+  budgetRules   BudgetRule[]
+  goals         Goal[]
+  insightCaches InsightCache[]
+
+  @@map("users")
+}
+
+model Subscription {
+  id               String             @id @default(cuid())
+  userId           String
+  plan             SubscriptionPlan
+  status           SubscriptionStatus
+  currentPeriodEnd DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model Connection {
+  id        String           @id @default(cuid())
+  userId    String
+  type      ConnectionType
+  status    ConnectionStatus
+  metadata  Json?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("connections")
+}
+
+model Transaction {
+  id               String   @id @default(cuid())
+  userId           String
+  date             DateTime
+  amount           Decimal  @db.Decimal(10, 2)
+  merchant         String
+  category         String
+  source           String
+  isRecurring      Boolean  @default(false)
+  recurringGroupId String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+model BudgetRule {
+  id         String   @id @default(cuid())
+  userId     String
+  category   String
+  monthlyCap Decimal  @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("budget_rules")
+}
+
+model Goal {
+  id             String   @id @default(cuid())
+  userId         String
+  type           GoalType
+  targetAmount   Decimal  @db.Decimal(10, 2)
+  targetDate     DateTime
+  progressAmount Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}
+
+model InsightCache {
+  id        String      @id @default(cuid())
+  userId    String
+  kind      InsightKind
+  payload   Json
+  expiresAt DateTime
+  createdAt DateTime    @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("insight_caches")
+}
+
+enum SubscriptionPlan {
+  FREE
+  MONEYPAL_PRO
+  ALL_ACCESS
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  UNPAID
+}
+
+enum ConnectionType {
+  PLAID
+  MANUAL
+}
+
+enum ConnectionStatus {
+  CONNECTED
+  DISCONNECTED
+  ERROR
+  PENDING
+}
+
+enum GoalType {
+  DEBT
+  SAVINGS
+}
+
+enum InsightKind {
+  WEEKLY
+  DAILY
+}

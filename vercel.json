@@ -1,0 +1,7 @@
+{
+  "buildCommand": "pnpm --filter @yourpals/core db:generate && pnpm --filter @yourpals/core build && pnpm --filter @yourpals/marketing build",
+  "outputDirectory": "apps/marketing/.next",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "rootDirectory": "apps/marketing"
+}
