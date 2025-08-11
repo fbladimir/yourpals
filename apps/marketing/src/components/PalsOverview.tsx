@@ -1,6 +1,7 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { config } from "../lib/config";
 
 export default function PalsOverview() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -11,7 +12,7 @@ export default function PalsOverview() {
       badge: "Finance",
       title: "MoneyPal",
       desc: "Forecast cash, find savings, weekly wins.",
-      href: "https://moneypal.yourpals.app",
+      href: config.moneypalUrl,
       bgGradient: "from-emerald-500/10 via-emerald-600/5 to-emerald-700/10",
       borderGradient: "from-emerald-400/30 to-emerald-600/30",
       iconBg: "from-emerald-400/20 to-emerald-600/20",

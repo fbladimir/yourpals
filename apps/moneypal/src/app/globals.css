@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Custom CSS variables for MoneyPal theme */
+:root {
+  --moneypal-primary: #3b82f6;
+  --moneypal-secondary: #8b5cf6;
+  --moneypal-success: #10b981;
+  --moneypal-warning: #f59e0b;
+  --moneypal-danger: #ef4444;
+}
+
+/* Base body styles that work with Tailwind */
+body {
+  font-family: inherit;
+  line-height: inherit;
+}

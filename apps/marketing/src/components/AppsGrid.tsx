@@ -1,6 +1,8 @@
+import { config } from "../lib/config";
+
 export default function AppsGrid(){
   const cards = [
-    {badge:"Finance", title:"MoneyPal", desc:"Forecast cash, find savings, weekly wins.", href:"#"},
+    {badge:"Finance", title:"MoneyPal", desc:"Forecast cash, find savings, weekly wins.", href: config.moneypalUrl},
     {badge:"Wellness", title:"SleepPal", desc:"Stops your audio when you fall asleep.", href:"#"},
     {badge:"Home", title:"CartPal", desc:"Build grocery lists from what you actually eat.", href:"#"},
   ];

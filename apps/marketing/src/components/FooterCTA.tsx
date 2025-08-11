@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useEffect } from "react";
+import { config } from "../lib/config";
 
 export default function FooterCTA() {
   const currentYear = new Date().getFullYear();
@@ -81,7 +82,7 @@ export default function FooterCTA() {
   ];
 
   const productLinks = [
-    { name: "MoneyPal", href: "https://moneypal.yourpals.app", description: "Smart financial assistant" },
+    { name: "MoneyPal", href: config.moneypalUrl, description: "Smart financial assistant" },
     { name: "SleepPal", href: "#", description: "Sleep tracking & optimization" },
     { name: "CartPal", href: "#", description: "Intelligent grocery management" }
   ];

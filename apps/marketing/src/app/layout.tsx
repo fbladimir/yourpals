@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "YourPals — Smart little helpers",
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="text-white bg-hero-grad min-h-screen">
-        <div className="mx-auto max-w-7xl px-6">{children}</div>
+        <Providers>
+          <div className="mx-auto max-w-7xl px-6">{children}</div>
+        </Providers>
       </body>
     </html>
   );

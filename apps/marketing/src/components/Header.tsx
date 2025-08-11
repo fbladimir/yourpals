@@ -3,9 +3,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const { isSignedIn, user } = useUser();
   
   useEffect(() => {
     // Listen for custom event to close mobile menu
@@ -16,6 +18,7 @@ export default function Header() {
       window.removeEventListener('closeMobileMenu', handleCloseMenu);
     };
   }, []);
+  
   const nav = [
     { href: "#apps", label: "Apps" },
     { href: "#how", label: "How it works" },
@@ -53,18 +56,44 @@ export default function Header() {
                 {n.label}
               </a>
             ))}
-            <Link 
-              href="/signin" 
-              className="rounded-lg sm:rounded-xl bg-white/10 px-3 py-1.5 sm:px-3 sm:py-1 ring-1 ring-white/10 hover:bg-white/20 transition-colors duration-200 text-sm"
-            >
-              Sign in
-            </Link>
-            <a 
-              href="#download" 
-              className="rounded-lg sm:rounded-xl bg-blueA px-3 py-1.5 sm:px-3 sm:py-1 hover:bg-blueB transition-colors duration-200 text-sm font-medium"
-            >
-              Get started
-            </a>
+            
+            {/* Auth Section */}
+            <div className="flex items-center gap-3">
+              {isSignedIn ? (
+                <>
+                  <Link 
+                    href="/account" 
+                    className="text-white/80 hover:text-white transition-colors duration-200 px-2 py-1 rounded-lg hover:bg-white/5"
+                  >
+                    Account
+                  </Link>
+                  <UserButton 
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-8 h-8",
+                        userButtonPopoverCard: "bg-white/10 backdrop-blur-sm border border-white/20",
+                        userButtonPopoverActionButton: "text-white/80 hover:text-white hover:bg-white/10",
+                        userButtonPopoverActionButtonText: "text-white/80",
+                        userButtonPopoverFooter: "border-t border-white/20",
+                      }
+                    }}
+                  />
+                </>
+              ) : (
+                <SignInButton mode="modal">
+                  <button className="rounded-lg sm:rounded-xl bg-white/10 px-3 py-1.5 sm:px-3 sm:py-1 ring-1 ring-white/10 hover:bg-white/20 transition-colors duration-200 text-sm">
+                    Sign in
+                  </button>
+                </SignInButton>
+              )}
+              
+              <a 
+                href="#download" 
+                className="rounded-lg sm:rounded-xl bg-blueA px-3 py-1.5 sm:px-3 sm:py-1 hover:bg-blueB transition-colors duration-200 text-sm font-medium"
+              >
+                Get started
+              </a>
+            </div>
           </nav>
           
           {/* Mobile Menu Button */}
@@ -97,13 +126,34 @@ export default function Header() {
               </a>
             ))}
             <div className="border-t border-white/10 pt-2 mt-2">
-              <Link 
-                href="/signin" 
-                className="block rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
-                onClick={() => setOpen(false)}
-              >
-                Sign in
-              </Link>
+              {isSignedIn ? (
+                <>
+                  <Link 
+                    href="/account" 
+                    className="block rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
+                    onClick={() => setOpen(false)}
+                  >
+                    Account
+                  </Link>
+                  <SignOutButton>
+                    <button 
+                      className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
+                      onClick={() => setOpen(false)}
+                    >
+                      Sign out
+                    </button>
+                  </SignOutButton>
+                </>
+              ) : (
+                <SignInButton mode="modal">
+                  <button 
+                    className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
+                    onClick={() => setOpen(false)}
+                  >
+                    Sign in
+                  </button>
+                </SignInButton>
+              )}
               <a 
                 href="#download" 
                 className="block rounded-lg px-3 py-2 bg-blueA text-white hover:bg-blueB transition-colors duration-200 active:bg-blueB mt-1"

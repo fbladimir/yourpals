@@ -2,12 +2,27 @@
   "name": "yourpals",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*", "packages/*", "services/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
   "scripts": {
     "dev:marketing": "pnpm --filter @yourpals/marketing dev",
     "dev:moneypal": "pnpm --filter @yourpals/moneypal dev",
-    "build": "pnpm -r build",
-    "lint": "pnpm -r lint"
+    "dev:all": "pnpm --parallel --filter @yourpals/marketing --filter @yourpals/moneypal dev",
+    "build": "pnpm --filter @yourpals/core build && pnpm --filter @yourpals/ui build && pnpm -r build",
+    "build:packages": "pnpm --filter @yourpals/core build && pnpm --filter @yourpals/ui build",
+    "lint": "pnpm -r lint",
+    "db:push": "pnpm --filter @yourpals/core db:push",
+    "db:seed": "pnpm --filter @yourpals/core db:seed",
+    "db:studio": "pnpm --filter @yourpals/core db:studio",
+    "db:generate": "pnpm --filter @yourpals/core db:generate"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21"
+  }
 }
