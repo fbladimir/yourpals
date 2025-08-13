@@ -109,6 +109,17 @@ export default function HomePage() {
     }
   }, [showEmailVerification, user, isEmailVerified, checkEmailVerificationEnhanced])
 
+  // NEW: Check if user just returned from email verification
+  useEffect(() => {
+    if (user && isEmailVerified && !onboardingCompleted && currentStep === 0) {
+      console.log('✅ Main Page: Verified user detected, starting onboarding automatically')
+      // User just verified email and returned, start onboarding
+      setShowEmailVerification(false)
+      setVerificationEmail('')
+      // Onboarding will start automatically since currentStep is 0
+    }
+  }, [user, isEmailVerified, onboardingCompleted, currentStep])
+
   const onboardingSteps = [
     {
       bot: 'general',

@@ -44,8 +44,18 @@ export default function AuthForm({ onAuthSuccess, onSwitchMode, mode }: AuthForm
 
       if (result.error) {
         console.error('❌ AuthForm: Authentication error:', result.error)
-        setError(result.error.message)
-        return
+        
+        // Handle specific error cases for better UX
+        if (result.error.message.includes('already exists') || result.error.message.includes('already registered')) {
+          setError(result.error.message)
+          // Don't return here, let the user see the message and choose to switch to sign in
+        } else if (result.error.message.includes('not verified')) {
+          setError(result.error.message)
+          // Don't return here, let the user see the message
+        } else {
+          setError(result.error.message)
+          return
+        }
       }
 
       if (result.data?.user) {
@@ -168,6 +178,17 @@ export default function AuthForm({ onAuthSuccess, onSwitchMode, mode }: AuthForm
             className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-sm"
           >
             {error}
+            {/* Show helpful action for existing account errors */}
+            {(error.includes('already exists') || error.includes('already registered')) && (
+              <div className="mt-3 pt-3 border-t border-red-500/30">
+                <button
+                  onClick={onSwitchMode}
+                  className="text-robot-blue hover:text-robot-purple transition-colors duration-200 text-sm font-medium"
+                >
+                  Click here to sign in instead →
+                </button>
+              </div>
+            )}
           </motion.div>
         )}
 

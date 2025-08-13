@@ -9,7 +9,7 @@ import { CheckCircle, XCircle, RefreshCw, ArrowRight } from 'lucide-react'
 export default function VerifyEmailPage() {
   const [verificationStatus, setVerificationStatus] = useState<'verifying' | 'success' | 'error'>('verifying')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(8) // Increased from 5 to 8 seconds
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -33,6 +33,7 @@ export default function VerifyEmailPage() {
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
+            console.log('✅ VerifyEmailPage: Redirecting to main app...')
             router.push('/')
             return 0
           }
@@ -64,6 +65,11 @@ export default function VerifyEmailPage() {
       if (data.session && data.user) {
         console.log('✅ VerifyEmailPage: Email verified successfully!')
         console.log('✅ VerifyEmailPage: User session created:', data.user.email)
+        console.log('✅ VerifyEmailPage: Session data:', data.session)
+        
+        // Ensure the session is properly set
+        await supabase.auth.setSession(data.session)
+        
         setVerificationStatus('success')
       } else {
         console.error('❌ VerifyEmailPage: No session returned after verification')

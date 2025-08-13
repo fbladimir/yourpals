@@ -207,7 +207,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         emailRedirectTo: redirectTo,
       },
     })
+    
     console.log('📝 AuthContext: signUp result:', { data, error })
+    
+    // Handle specific error cases for better UX
+    if (error) {
+      // Check if user already exists
+      if (error.message.includes('User already registered')) {
+        return { 
+          data: null, 
+          error: { 
+            message: 'An account with this email already exists. Would you like to sign in instead?' 
+          } 
+        }
+      }
+      // Check if email is already confirmed
+      if (error.message.includes('Email not confirmed')) {
+        return { 
+          data: null, 
+          error: { 
+            message: 'This email is already registered but not verified. Please check your email for verification or request a new verification email.' 
+          } 
+        }
+      }
+    }
+    
     return { data, error }
   }
 
