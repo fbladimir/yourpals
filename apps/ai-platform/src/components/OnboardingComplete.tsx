@@ -13,15 +13,9 @@ interface OnboardingCompleteProps {
   onComplete: () => void
 }
 
-export default function OnboardingComplete({ 
-  userGoals, 
-  isBusiness, 
-  selectedGoal, 
-  selectedPlan, 
-  onComplete 
-}: OnboardingCompleteProps) {
+export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal, selectedPlan, onComplete }: OnboardingCompleteProps) {
   const { user } = useAuth()
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(15) // Increased from 8 to 15 seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,11 +43,11 @@ export default function OnboardingComplete({
 
   const getBotName = (goal: string) => {
     switch (goal) {
-      case 'finance': return 'FinanceBot'
-      case 'fitness': return 'FitnessBot'
-      case 'productivity': return 'ProductivityBot'
-      case 'business': return 'BusinessBot'
-      default: return 'GeneralBot'
+      case 'finance': return 'Money Pal'
+      case 'fitness': return 'Fitness Pal'
+      case 'productivity': return 'Productivity Pal'
+      case 'business': return 'Business Pal'
+      default: return 'General Pal'
     }
   }
 
@@ -71,6 +65,45 @@ export default function OnboardingComplete({
         transition={{ duration: 0.6, type: "spring" }}
         className="mb-8"
       >
+        {/* AI Mode Indicator */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-6"
+        >
+          <div className="relative inline-block">
+            <img 
+              src="/yourpalsRobot.png" 
+              alt="AI Mode Active" 
+              className="h-24 mx-auto"
+            />
+            {/* AI Mode Pulse Ring */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.4, 1],
+                opacity: [0.6, 0, 0.6]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              className="absolute inset-0 border-2 border-robot-green rounded-full"
+            />
+          </div>
+        </motion.div>
+        
+        <motion.div
+          animate={{ 
+            textShadow: [
+              "0 0 0 rgba(34, 197, 94, 0)",
+              "0 0 20px rgba(34, 197, 94, 0.6)",
+              "0 0 0 rgba(34, 197, 94, 0)"
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="text-robot-green font-mono text-sm tracking-widest mb-4"
+        >
+          AI INTEGRATION COMPLETE
+        </motion.div>
+        
         <div className="w-24 h-24 bg-gradient-to-br from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="w-12 h-12 text-white" />
         </div>
@@ -156,7 +189,7 @@ export default function OnboardingComplete({
           <div className="bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-lg p-4 border border-robot-purple/30">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-2xl">🤖</span>
-              <span className="font-semibold text-white">GeneralBot</span>
+              <span className="font-semibold text-white">General Pal</span>
             </div>
             <p className="text-sm text-gray-300">Your AI coordinator</p>
           </div>
@@ -220,7 +253,7 @@ export default function OnboardingComplete({
           onClick={onComplete}
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-robot-orange to-robot-red text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
         >
-          Go Now
+          Go to Dashboard Now
           <ArrowRight className="w-4 h-4" />
         </motion.button>
       </motion.div>

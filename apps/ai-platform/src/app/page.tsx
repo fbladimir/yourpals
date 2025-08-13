@@ -2,36 +2,39 @@
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import GeneralBot from '@/components/robots/GeneralBot'
 import FinanceBot from '@/components/robots/FinanceBot'
 import FitnessBot from '@/components/robots/FitnessBot'
 import BusinessBot from '@/components/robots/BusinessBot'
 import AuthForm from '@/components/AuthForm'
-import EmailVerification from '@/components/EmailVerification'
 import OnboardingComplete from '@/components/OnboardingComplete'
 import Dashboard from '@/components/Dashboard'
+import FunLoadingScreen from '@/components/FunLoadingScreen'
+import AIGoalInput from '@/components/AIGoalInput'
+import PlanSelection from '@/components/PlanSelection'
 import { useAuth } from '@/contexts/AuthContext'
 import { Bot, Sparkles, ArrowRight, Heart, Zap, Target, CheckCircle, Star, Settings, User, LogOut } from 'lucide-react'
 
 export default function HomePage() {
   const { user, loading, signOut, isEmailVerified, checkEmailVerification, checkEmailVerificationEnhanced, retryInitialization } = useAuth()
+  const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState(0)
   const [userGoals, setUserGoals] = useState<string[]>([])
   const [isBusiness, setIsBusiness] = useState<boolean | null>(null)
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null)
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
-  const [showEmailVerification, setShowEmailVerification] = useState(false)
-  const [verificationEmail, setVerificationEmail] = useState('')
   const [onboardingCompleted, setOnboardingCompleted] = useState(false)
   const [loadingTimeout, setLoadingTimeout] = useState(false)
   const [error, setError] = useState<Error | null>(null)
+  const [showFunLoading, setShowFunLoading] = useState(true)
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
 
   // Add timeout to prevent loading from getting stuck
   useEffect(() => {
     if (loading) {
       const timer = setTimeout(() => {
-        console.log('⚠️ Loading timeout reached, forcing render')
         setLoadingTimeout(true)
       }, 5000) // 5 second timeout
       
@@ -40,6 +43,11 @@ export default function HomePage() {
       setLoadingTimeout(false)
     }
   }, [loading])
+
+  // Handle fun loading screen completion
+  const handleFunLoadingComplete = () => {
+    setShowFunLoading(false)
+  }
 
   // Add error boundary for chunk loading issues
   useEffect(() => {
@@ -68,9 +76,7 @@ export default function HomePage() {
 
   // Reset onboarding when user changes
   useEffect(() => {
-    console.log('User changed:', user)
     if (user) {
-      console.log('Starting onboarding for user:', user.email)
       setCurrentStep(0)
       setUserGoals([])
       setIsBusiness(null)
@@ -83,22 +89,19 @@ export default function HomePage() {
   // Check email verification status when user changes
   useEffect(() => {
     if (user && !isEmailVerified) {
-      console.log('🔍 Main Page: User exists but email not verified, checking status...')
       checkEmailVerification()
     }
   }, [user, isEmailVerified, checkEmailVerification])
 
   // Auto-check email verification when on verification page
   useEffect(() => {
-    if (showEmailVerification && user && !isEmailVerified) {
-      console.log('🔍 Main Page: Setting up auto-check for email verification...')
+    if (user && !isEmailVerified) {
       
       const interval = setInterval(async () => {
         try {
           const verified = await checkEmailVerificationEnhanced()
           if (verified) {
-            console.log('✅ Main Page: Auto-check detected email verification!')
-            handleEmailVerified()
+            // handleEmailVerified() // This function is removed
           }
         } catch (error) {
           console.error('❌ Main Page: Auto-check error:', error)
@@ -107,18 +110,417 @@ export default function HomePage() {
 
       return () => clearInterval(interval)
     }
-  }, [showEmailVerification, user, isEmailVerified, checkEmailVerificationEnhanced])
+  }, [user, isEmailVerified, checkEmailVerificationEnhanced])
 
   // NEW: Check if user just returned from email verification
   useEffect(() => {
     if (user && isEmailVerified && !onboardingCompleted && currentStep === 0) {
-      console.log('✅ Main Page: Verified user detected, starting onboarding automatically')
       // User just verified email and returned, start onboarding
-      setShowEmailVerification(false)
-      setVerificationEmail('')
+      // setShowEmailVerification(false) // This state is removed
+      // setVerificationEmail('') // This state is removed
       // Onboarding will start automatically since currentStep is 0
     }
   }, [user, isEmailVerified, onboardingCompleted, currentStep])
+
+  // IMPROVED: Better detection of email verification completion
+  useEffect(() => {
+    if (user && isEmailVerified && !onboardingCompleted) {
+      
+      // If we're currently showing email verification, hide it
+      // if (showEmailVerification) { // This state is removed
+      //   setShowEmailVerification(false)
+      //   setVerificationEmail('')
+      // }
+      
+      // Ensure we're at the start of onboarding
+      if (currentStep === 0) {
+        // The onboarding will render automatically since currentStep is 0
+      }
+    }
+  }, [user, isEmailVerified, onboardingCompleted, currentStep])
+
+  // NEW: Check URL parameters for verification completion
+  useEffect(() => {
+    const verified = searchParams.get('verified')
+    const email = searchParams.get('email')
+    
+    if (verified === 'true' && email && user && isEmailVerified) {
+      
+      // Hide email verification if it's showing
+      // if (showEmailVerification) { // This state is removed
+      //   setShowEmailVerification(false)
+      //   setVerificationEmail('')
+      // }
+      
+      // Ensure onboarding starts
+      if (currentStep === 0) {
+      }
+    }
+  }, [searchParams, user, isEmailVerified, currentStep])
+
+  // Check localStorage for onboarding completion
+  useEffect(() => {
+    if (user) {
+      const storedOnboarding = localStorage.getItem(`onboarding_${user.id}`)
+      if (storedOnboarding) {
+        try {
+          const parsed = JSON.parse(storedOnboarding)
+          console.log('📱 Main Page: Found stored onboarding data:', parsed)
+          
+          if (parsed.completed) {
+            console.log('✅ Main Page: Onboarding completed, setting up dashboard data')
+            setOnboardingCompleted(true)
+            setUserGoals(parsed.goals || [])
+            setIsBusiness(parsed.isBusiness)
+            setSelectedGoal(parsed.selectedGoal)
+            setSelectedPlan(parsed.selectedPlan)
+            setHasCompletedOnboarding(true) // This will trigger dashboard render
+          }
+        } catch (error) {
+          console.error('❌ Main Page: Error parsing stored onboarding data:', error)
+          // Clear corrupted data
+          localStorage.removeItem(`onboarding_${user.id}`)
+        }
+      } else {
+        console.log('📱 Main Page: No stored onboarding data found, user needs onboarding')
+        setOnboardingCompleted(false)
+        setHasCompletedOnboarding(false)
+      }
+    }
+  }, [user])
+
+  // Debug logging for step changes
+  useEffect(() => {
+    // Step change monitoring (kept for development but silent)
+  }, [currentStep, selectedGoal, isBusiness, selectedPlan, userGoals])
+
+  // Monitor step changes specifically
+  useEffect(() => {
+    // Step state monitoring (kept for development but silent)
+  }, [currentStep])
+
+  // NOW ALL HOOKS ARE CALLED, WE CAN DO CONDITIONAL RENDERING
+
+  // Define all functions before conditional rendering
+  const handleAuthSuccess = (userData: any) => {
+    // Since we're skipping email verification for now, go directly to onboarding
+    // Check if user has a name (indicating successful signup)
+    if (userData && userData.name) {
+      // Start the onboarding flow immediately
+      setCurrentStep(0)
+      setUserGoals([])
+      setIsBusiness(null)
+      setSelectedGoal(null)
+      setSelectedPlan(null)
+    }
+  }
+
+  const handleSwitchAuthMode = () => {
+    setAuthMode(authMode === 'signin' ? 'signup' : 'signin')
+  }
+
+  const handleSignOut = async () => {
+    try {
+      // Clear onboarding data from localStorage
+      if (user) {
+        localStorage.removeItem(`onboarding_${user.id}`)
+      }
+      
+      await signOut()
+      setCurrentStep(0)
+      setUserGoals([])
+      setIsBusiness(null)
+      setSelectedGoal(null)
+      setSelectedPlan(null)
+      setOnboardingCompleted(false)
+      setShowFunLoading(true) // Show fun loading screen again on next visit
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
+
+  const handleNextStep = () => {
+    if (currentStep < onboardingSteps.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const handleGoalSelection = (goal: string) => {
+    setSelectedGoal(goal)
+    setUserGoals([...userGoals, goal])
+    // Move to step 2 (AI personality interaction)
+    setCurrentStep(2)
+  }
+
+  const handlePersonalityInteraction = () => {
+    // Move to step 3 (use case selection)
+    setCurrentStep(3)
+  }
+
+  const handleUseCaseSelection = (isBusinessUser: boolean) => {
+    setIsBusiness(isBusinessUser)
+    // Move to step 4 (plan selection)
+    setCurrentStep(4)
+  }
+
+  const handlePlanSelection = (plan: string) => {
+    setSelectedPlan(plan)
+    // Move to onboarding completion step
+    setCurrentStep(5)
+  }
+
+  const handleSkipSubscription = () => {
+    // Set to free plan and complete onboarding
+    setSelectedPlan('FREE')
+    setCurrentStep(5)
+  }
+
+  const handleOnboardingComplete = () => {
+    console.log('🎉 Main Page: Onboarding completed!')
+    
+    // Save onboarding completion to localStorage
+    if (user) {
+      const onboardingData = {
+        completed: true,
+        goals: userGoals,
+        isBusiness,
+        selectedGoal,
+        selectedPlan,
+        completedAt: new Date().toISOString()
+      }
+      localStorage.setItem(`onboarding_${user.id}`, JSON.stringify(onboardingData))
+    }
+    
+    setOnboardingCompleted(true)
+  }
+
+  const handleBackToSignIn = () => {
+    console.log('🔄 Main Page: Going back to sign in')
+    // setShowEmailVerification(false) // This state is removed
+    // setVerificationEmail('') // This state is removed
+    setAuthMode('signin')
+  }
+
+  const handleGoBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  // Show fun loading screen on first visit
+  if (showFunLoading && !user) {
+    return <FunLoadingScreen onComplete={handleFunLoadingComplete} />
+  }
+
+  // Show loading state while auth is initializing
+  if (loading && !loadingTimeout) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="text-8xl mb-8"
+          >
+            🤖
+          </motion.div>
+          <h1 className="text-3xl font-bold text-white mb-4">Loading YourPals...</h1>
+          <p className="text-gray-400">Setting up your AI experience...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-6">🚨</div>
+          <h1 className="text-2xl font-bold text-white mb-4">Something went wrong</h1>
+          <p className="text-gray-300 mb-6">{error.message}</p>
+          <div className="space-y-3">
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full px-6 py-3 bg-robot-blue text-white rounded-lg hover:bg-robot-blue/80 transition-colors font-semibold"
+            >
+              🔄 Refresh Page
+            </button>
+            <button
+              onClick={() => retryInitialization()}
+              className="w-full px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              🔄 Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show sign-in/sign-up if not authenticated
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
+        <div className="w-full max-w-7xl mx-auto">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            
+          </motion.div>
+
+          {/* Auth Form Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="max-w-4xl mx-auto"
+          >
+            {/* AI Access Portal Header */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="text-center mb-12"
+            >
+              {/* AI Access Portal Visual */}
+              <div className="relative mb-8">
+                {/* Central Robot Logo */}
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    rotate: [0, 2, -2, 0]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative z-10"
+                >
+                  <img 
+                    src="/yourpalsRobot.png" 
+                    alt="AI Access Portal" 
+                    className="h-24 mx-auto"
+                  />
+                </motion.div>
+                
+                {/* Orbiting Elements */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0"
+                >
+                  {/* Orbiting Dots */}
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-robot-blue rounded-full"></div>
+                  <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-robot-green rounded-full"></div>
+                  <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-robot-purple rounded-full"></div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-robot-orange rounded-full"></div>
+                </motion.div>
+                
+                {/* Pulse Rings */}
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.5, 1],
+                    opacity: [0.6, 0, 0.6]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 border-2 border-robot-blue rounded-full"
+                />
+                <motion.div
+                  animate={{ 
+                    scale: [1, 2, 1],
+                    opacity: [0.3, 0, 0.3]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }}
+                  className="absolute inset-0 border border-robot-purple rounded-full"
+                />
+              </div>
+              
+              {/* AI Access Status */}
+              <motion.div
+                animate={{ 
+                  textShadow: [
+                    "0 0 0 rgba(59, 130, 246, 0)",
+                    "0 0 20px rgba(59, 130, 246, 0.8)",
+                    "0 0 0 rgba(59, 130, 246, 0)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="text-robot-blue font-mono text-lg tracking-widest mb-4"
+              >
+                AI ACCESS PORTAL: READY
+              </motion.div>
+              
+              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+                Access Your AI Network
+              </h2>
+              
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Your personal AI team is ready to assist. Authenticate to enter the future.
+              </p>
+              
+              {/* AI System Status */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  className="bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-xl p-4 border border-robot-green/30"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
+                    <span className="text-robot-green font-mono text-sm">AI-POWERED</span>
+                  </div>
+                  <div className="text-gray-300 text-sm">Neural networks active</div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                  className="bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 rounded-xl p-4 border border-robot-blue/30"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-3 h-3 bg-robot-blue rounded-full animate-pulse"></div>
+                    <span className="text-robot-blue font-mono text-sm">PERSONALIZED</span>
+                  </div>
+                  <div className="text-gray-300 text-sm">Adaptive algorithms</div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.1 }}
+                  className="bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-xl p-4 border border-robot-purple/30"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-3 h-3 bg-robot-purple rounded-full animate-pulse"></div>
+                    <span className="text-robot-purple font-mono text-sm">SECURE</span>
+                  </div>
+                  <div className="text-gray-300 text-sm">Quantum encryption</div>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Auth Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-gray-700/50 backdrop-blur-sm"
+            >
+              <AuthForm 
+                mode={authMode} 
+                onSwitchMode={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+                onAuthSuccess={handleAuthSuccess}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    )
+  }
 
   const onboardingSteps = [
     {
@@ -140,110 +542,6 @@ export default function HomePage() {
       showSparkles: true
     }
   ]
-
-  const handleAuthSuccess = (userData: any) => {
-    console.log('🎉 Main Page: handleAuthSuccess called with:', userData)
-    console.log('🎯 Main Page: Current step before reset:', currentStep)
-    
-    // Check if email verification is needed
-    if (userData && !userData.email_confirmed_at) {
-      console.log('📧 Main Page: Email verification needed, showing verification page')
-      setVerificationEmail(userData.email)
-      setShowEmailVerification(true)
-      return
-    }
-    
-    // For both sign-up and sign-in, start the onboarding flow
-    // The AuthContext will handle the user state, we just need to start onboarding
-    setCurrentStep(0)
-    setUserGoals([])
-    setIsBusiness(null)
-    setSelectedGoal(null)
-    setSelectedPlan(null)
-    
-    console.log('🎯 Main Page: Step reset to 0, onboarding should start')
-    console.log('🎯 Main Page: User state should update via AuthContext')
-  }
-
-  const handleSwitchAuthMode = () => {
-    setAuthMode(authMode === 'signin' ? 'signup' : 'signin')
-  }
-
-  const handleSignOut = async () => {
-    try {
-      await signOut()
-      setCurrentStep(0)
-      setUserGoals([])
-      setIsBusiness(null)
-      setSelectedGoal(null)
-      setSelectedPlan(null)
-      setOnboardingCompleted(false)
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
-
-  const handleNextStep = () => {
-    if (currentStep < onboardingSteps.length - 1) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
-  const handleGoalSelection = (goal: string) => {
-    setSelectedGoal(goal)
-    setUserGoals([...userGoals, goal])
-    // Move to step 2 (use case selection)
-    setCurrentStep(2)
-  }
-
-  const handleUseCaseSelection = (isBusinessUser: boolean) => {
-    setIsBusiness(isBusinessUser)
-    // Move to step 3 (specialized bot)
-    setCurrentStep(3)
-  }
-
-  const handlePlanSelection = (plan: string) => {
-    setSelectedPlan(plan)
-    // Move to onboarding completion step
-    setCurrentStep(4)
-  }
-
-  const handleOnboardingComplete = () => {
-    console.log('✅ Main Page: Onboarding completed, showing dashboard')
-    setOnboardingCompleted(true)
-  }
-
-  const handleEmailVerified = async () => {
-    console.log('✅ Main Page: Email verified, starting onboarding')
-    
-    // Double-check verification status using enhanced method
-    try {
-      const verified = await checkEmailVerificationEnhanced()
-      if (verified) {
-        console.log('✅ Main Page: Email verification confirmed, starting onboarding')
-        setShowEmailVerification(false)
-        setVerificationEmail('')
-        setCurrentStep(0)
-        setUserGoals([])
-        setIsBusiness(null)
-        setSelectedGoal(null)
-        setSelectedPlan(null)
-      } else {
-        console.log('❌ Main Page: Email verification check failed, staying on verification page')
-        // Stay on verification page if check fails
-      }
-    } catch (error) {
-      console.error('❌ Main Page: Error checking email verification:', error)
-      // Stay on verification page if there's an error
-    }
-  }
-
-  const handleBackToSignIn = () => {
-    console.log('🔄 Main Page: Going back to sign in')
-    setShowEmailVerification(false)
-    setVerificationEmail('')
-    setAuthMode('signin')
-  }
 
   // Helper function to safely get current step info
   const getCurrentStepInfo = () => {
@@ -340,7 +638,7 @@ export default function HomePage() {
             whileHover={{ scale: 1.02, y: -5 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleUseCaseSelection(true)}
-            className="p-8 bg-gradient-to-br from-robot-blue to-robot-cyan rounded-xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
+            className="p-8 bg-gradient-to-br from-robot-green to-robot-blue rounded-xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
           >
             <div className="text-4xl mb-3">🏢</div>
             <div className="font-semibold text-xl mb-2">Business Use</div>
@@ -500,154 +798,9 @@ export default function HomePage() {
     )
   }
 
-  // Show error state if chunk loading failed
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
-        <div className="text-center max-w-md">
-          <div className="text-6xl mb-4">🚨</div>
-          <h1 className="text-2xl font-bold text-white mb-4">Loading Error</h1>
-          <p className="text-gray-300 mb-6">
-            There was an issue loading the application. This usually happens when the development server has trouble loading JavaScript chunks.
-          </p>
-          
-          <div className="space-y-3">
-            <button 
-              onClick={() => window.location.reload()} 
-              className="w-full px-6 py-3 bg-robot-blue text-white rounded-lg hover:bg-robot-blue/80 transition-colors font-semibold"
-            >
-              🔄 Refresh Page
-            </button>
-            
-            <button 
-              onClick={async () => {
-                setError(null)
-                try {
-                  await retryInitialization()
-                } catch (err) {
-                  console.error('Retry failed:', err)
-                }
-              }} 
-              className="w-full px-6 py-3 bg-robot-green text-white rounded-lg hover:bg-robot-green/80 transition-colors"
-            >
-              🔄 Retry Initialization
-            </button>
-            
-            <button 
-              onClick={() => setError(null)} 
-              className="w-full px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-          
-          {process.env.NODE_ENV === 'development' && (
-            <details className="mt-6 text-left">
-              <summary className="text-robot-orange cursor-pointer text-sm">Error Details</summary>
-              <pre className="mt-2 p-3 bg-gray-800 rounded text-xs text-gray-300 overflow-auto">
-                {error.message}
-              </pre>
-            </details>
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  // Show loading state while auth is initializing
-  if (loading && !loadingTimeout) {
-    console.log('🔄 Main Page: Showing loading state, loading:', loading, 'timeout:', loadingTimeout)
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="text-6xl"
-        >
-          🤖
-        </motion.div>
-        <div className="mt-4 text-center">
-          <p className="text-gray-400 text-sm">Initializing YourPals...</p>
-          <p className="text-gray-500 text-xs mt-2">This may take a few seconds</p>
-        </div>
-      </div>
-    )
-  }
-
-  // If loading timeout reached, show a fallback
-  if (loadingTimeout) {
-    console.log('⚠️ Main Page: Loading timeout reached, forcing render')
-    console.log('⚠️ Main Page: User state:', user)
-    console.log('⚠️ Main Page: Loading state:', loading)
-  }
-
-  // Show authentication form if not authenticated
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
-        <div className="max-w-6xl mx-auto w-full">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-4xl"
-              >
-                🤖
-              </motion.div>
-              <h1 className="text-4xl sm:text-6xl font-bold robot-gradient-text">
-                YourPals
-              </h1>
-              <motion.div
-                animate={{ rotate: [0, -10, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="text-4xl"
-              >
-                🤖
-              </motion.div>
-            </div>
-            
-            <p className="text-xl sm:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-              Your personal AI team with cute robot personalities, ready to help you achieve your goals!
-            </p>
-            
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-robot-orange/20 border border-robot-orange/30 rounded-full text-robot-orange text-sm"
-            >
-              <Sparkles className="w-4 h-4" />
-              AI-Powered • Secure • Fun
-            </motion.div>
-          </motion.div>
-
-          {/* Authentication Form */}
-          {showEmailVerification ? (
-            <EmailVerification
-              email={verificationEmail}
-              onVerified={handleEmailVerified}
-              onBackToSignIn={handleBackToSignIn}
-            />
-          ) : (
-            <AuthForm
-              mode={authMode}
-              onAuthSuccess={handleAuthSuccess}
-              onSwitchMode={handleSwitchAuthMode}
-            />
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  // Show dashboard if onboarding is completed
-  if (onboardingCompleted) {
+  // If user has completed onboarding, show dashboard
+  if (hasCompletedOnboarding || onboardingCompleted) {
+    console.log('🎯 Main Page: Showing dashboard for completed user')
     return (
       <Dashboard
         userGoals={userGoals}
@@ -660,7 +813,7 @@ export default function HomePage() {
   }
 
   // Show onboarding completion step
-  if (currentStep === 4) {
+  if (currentStep === 5) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
         <div className="max-w-6xl mx-auto w-full">
@@ -687,33 +840,64 @@ export default function HomePage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-between mb-6">
+          {/* AI Mode Header */}
+          <div className="flex items-center justify-between mb-8">
+            {/* AI Mode Indicator */}
             <div className="flex items-center gap-3">
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-4xl"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
               >
-                🤖
+                <img 
+                  src="/yourpalsRobot.png" 
+                  alt="AI Mode Active" 
+                  className="w-12 h-12"
+                />
+                {/* AI Mode Pulse Ring */}
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.5, 1],
+                    opacity: [0.8, 0, 0.8]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 border-2 border-robot-blue rounded-full"
+                />
               </motion.div>
-              <h1 className="text-4xl sm:text-6xl font-bold robot-gradient-text">
-                YourPals
-              </h1>
-              <motion.div
-                animate={{ rotate: [0, -10, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="text-4xl"
-              >
-                🤖
-              </motion.div>
+              
+              <div className="text-left">
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-robot-blue text-sm font-mono tracking-wider"
+                >
+                  AI MODE ACTIVE
+                </motion.div>
+                <div className="text-white font-semibold text-lg">
+                  {user.user_metadata?.full_name || 'User'}
+                </div>
+              </div>
             </div>
             
             {/* User Menu */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-white">
-                <span className="text-2xl">🤖</span>
-                <span className="font-medium">{user.user_metadata?.full_name || user.email}</span>
-              </div>
+              <motion.div
+                animate={{ 
+                  boxShadow: [
+                    "0 0 0 rgba(59, 130, 246, 0.4)",
+                    "0 0 20px rgba(59, 130, 246, 0.8)",
+                    "0 0 0 rgba(59, 130, 246, 0.4)"
+                  ]
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="px-4 py-2 bg-gradient-to-r from-robot-blue/20 to-robot-purple/20 border border-robot-blue/30 rounded-lg text-robot-blue font-mono text-sm"
+              >
+                AI ASSISTANT READY
+              </motion.div>
+              
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -721,68 +905,268 @@ export default function HomePage() {
                 className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
               >
                 <LogOut className="w-4 h-4" />
-                Sign Out
+                Exit AI Mode
               </motion.button>
             </div>
           </div>
-          
-          <p className="text-xl sm:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Your personal AI team with cute robot personalities, ready to help you achieve your goals!
-          </p>
-          
+
+          {/* Immersive AI Welcome */}
           <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-robot-orange/20 border border-robot-orange/30 rounded-full text-robot-orange text-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-8"
           >
-            <Sparkles className="w-4 h-4" />
-            AI-Powered • Secure • Fun
+            <motion.div
+              animate={{ 
+                textShadow: [
+                  "0 0 0 rgba(59, 130, 246, 0)",
+                  "0 0 20px rgba(59, 130, 246, 0.8)",
+                  "0 0 0 rgba(59, 130, 246, 0)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="text-robot-blue font-mono text-sm tracking-widest mb-2"
+            >
+              WELCOME TO THE FUTURE
+            </motion.div>
+            
+            <motion.h1
+              animate={{ 
+                textShadow: [
+                  "0 0 0 rgba(255, 255, 255, 0)",
+                  "0 0 30px rgba(255, 255, 255, 0.3)",
+                  "0 0 0 rgba(255, 255, 255, 0)"
+                ]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="text-4xl sm:text-6xl font-bold text-white mb-4"
+            >
+              AI MODE ENGAGED
+            </motion.h1>
+            
+            <motion.p
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="text-gray-300 text-lg max-w-2xl mx-auto"
+            >
+              Your personal AI team is ready to assist. Let's begin your digital transformation.
+            </motion.p>
           </motion.div>
         </motion.div>
 
-        {/* Onboarding Flow */}
-        <div className="max-w-4xl mx-auto">
-          {renderCurrentStep()}
-          {renderGoalSelection()}
-          {renderUseCaseSelection()}
-          {renderSpecializedBot()}
-          {renderSubscriptionPlans()}
-        </div>
+        {/* Onboarding Steps */}
+        {currentStep === 0 && (
+          <GeneralBot
+            message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm General Pal! 🤖 Welcome to YourPals! I'm here to help you discover the perfect AI assistants for your needs. Let's start with a few questions to personalize your experience!`}
+            onAction={() => setCurrentStep(1)}
+            actionText="Let's Get Started!"
+            showSparkles={true}
+          />
+        )}
 
-        {/* Progress Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-8"
-        >
-          <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
-            <span>Step {currentStep + 1} of 5</span>
-            <div className="flex gap-1">
-              {[0, 1, 2, 3, 4].map((index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    index <= currentStep ? 'bg-robot-blue' : 'bg-gray-600'
-                  }`}
+        {currentStep === 1 && (
+          <AIGoalInput
+            onGoalSelected={handleGoalSelection}
+            onBack={handleGoBack}
+          />
+        )}
+
+        {currentStep === 2 && (
+          <div className="text-center">
+            {selectedGoal === 'finance' && (
+              <FinanceBot
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Money Pal! 💰 I'm so excited to help you with your financial goals! I can help you track expenses, create budgets, plan investments, and so much more. Let me get to know you better so I can provide the most personalized financial assistance!`}
+                onAction={handlePersonalityInteraction}
+                actionText="Tell Me More About You!"
+              />
+            )}
+            {selectedGoal === 'fitness' && (
+              <FitnessBot
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Fitness Pal! 💪 I'm thrilled to be your health and fitness companion! Whether you want to build strength, improve endurance, eat better, or just feel more energized, I'm here to guide you every step of the way. Let's get to know each other better!`}
+                onAction={handlePersonalityInteraction}
+                actionText="Let's Get Personal!"
+              />
+            )}
+            {selectedGoal === 'productivity' && (
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-center mb-8"
+                >
+                  <div className="text-6xl mb-4">⚡</div>
+                  <h2 className="text-3xl font-bold text-white mb-4">
+                    Hi {user?.user_metadata?.full_name || 'there'}! I'm Productivity Pal!
+                  </h2>
+                  <p className="text-xl text-gray-300 mb-6">
+                    I'm here to supercharge your efficiency and help you achieve more in less time! Whether you need help with time management, task organization, or workflow optimization, I've got your back. Let me get to know you better so I can provide the most personalized productivity strategies!
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handlePersonalityInteraction}
+                    className="px-8 py-4 bg-gradient-to-r from-robot-purple to-robot-pink text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 text-lg"
+                  >
+                    ⚡ Let's Boost Your Productivity!
+                  </motion.button>
+                </motion.div>
+              </div>
+            )}
+            {selectedGoal === 'business' && (
+              <BusinessBot
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Business Pal! 🏢 I'm excited to help you grow your business and optimize your operations! Whether you need help with strategy, marketing, operations, or growth planning, I'm here to provide expert guidance. Let me get to know your business better so I can offer the most relevant advice!`}
+                onAction={handlePersonalityInteraction}
+                actionText="Tell Me About Your Business!"
+              />
+            )}
+            {selectedGoal && !['finance', 'fitness', 'productivity', 'business'].includes(selectedGoal) && (
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-center mb-8"
+                >
+                  <div className="text-6xl mb-4">🤖</div>
+                  <h2 className="text-3xl font-bold text-white mb-4">
+                    Hi {user?.user_metadata?.full_name || 'there'}! I'm Your AI Pal!
+                  </h2>
+                  <p className="text-xl text-gray-300 mb-6">
+                    I'm so excited to help you with your goal: <span className="text-robot-blue font-semibold">"{selectedGoal}"</span>! I can't wait to learn more about you and provide personalized assistance. Let me get to know you better so I can be the most helpful AI companion possible!
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handlePersonalityInteraction}
+                    className="px-8 py-4 bg-gradient-to-r from-robot-blue to-robot-purple text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 text-lg"
+                  >
+                    🤖 Let's Get Personal!
+                  </motion.button>
+                </motion.div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {currentStep === 3 && (
+          <div className="text-center">
+            {/* AI Mode Indicator */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mb-6"
+            >
+              <div className="relative inline-block">
+                <img 
+                  src="/yourpalsRobot.png" 
+                  alt="AI Mode Active" 
+                  className="h-16 mx-auto"
                 />
-              ))}
+                {/* AI Mode Pulse Ring */}
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    opacity: [0.6, 0, 0.6]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 border-2 border-robot-blue rounded-full"
+                />
+              </div>
+            </motion.div>
+            
+            <motion.div
+              animate={{ 
+                textShadow: [
+                  "0 0 0 rgba(59, 130, 246, 0)",
+                  "0 0 15px rgba(59, 130, 246, 0.6)",
+                  "0 0 0 rgba(59, 130, 246, 0)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="text-robot-blue font-mono text-sm tracking-widest mb-3"
+            >
+              AI USE CASE ANALYSIS
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mb-8"
+            >
+              <h2 className="text-3xl font-bold text-white mb-4">
+                How will you use YourPals?
+              </h2>
+              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                This helps us personalize your AI experience and recommend the right features for you.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleUseCaseSelection(false)}
+                className="p-8 bg-gradient-to-br from-robot-blue to-robot-purple rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
+              >
+                <div className="text-6xl mb-4">👤</div>
+                <div className="font-semibold text-2xl mb-3">Personal Use</div>
+                <div className="text-lg opacity-90">For personal goals, learning, and daily tasks</div>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.02, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleUseCaseSelection(true)}
+                className="p-8 bg-gradient-to-br from-robot-green to-robot-blue rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
+              >
+                <div className="text-6xl mb-4">🏢</div>
+                <div className="font-semibold text-2xl mb-3">Business Use</div>
+                <div className="text-lg opacity-90">For business growth, operations, and team collaboration</div>
+              </motion.button>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-center mt-8"
+            >
+              <button
+                onClick={handleGoBack}
+                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 mx-auto"
+              >
+                ← Go Back
+              </button>
+            </motion.div>
+          </div>
+        )}
+
+        {currentStep === 4 && (
+          <PlanSelection
+            onPlanSelected={handlePlanSelection}
+            onBack={handleGoBack}
+            onSkip={handleSkipSubscription}
+          />
+        )}
+
+        {/* Show onboarding completion step */}
+        {currentStep === 5 && (
+          <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
+            <div className="max-w-6xl mx-auto w-full">
+              <OnboardingComplete
+                userGoals={userGoals}
+                isBusiness={isBusiness || false}
+                selectedGoal={selectedGoal || 'general'}
+                selectedPlan={selectedPlan || 'FREE'}
+                onComplete={handleOnboardingComplete}
+              />
             </div>
           </div>
-          
-          {/* Debug Info - Remove in production */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-4 p-3 bg-gray-800/30 rounded-lg border border-gray-700/50 text-xs text-gray-400">
-              <div>Debug: Current Step: {currentStep}</div>
-              <div>Selected Goal: {selectedGoal || 'None'}</div>
-              <div>Is Business: {isBusiness === null ? 'Not set' : isBusiness ? 'Yes' : 'No'}</div>
-              <div>Selected Plan: {selectedPlan || 'None'}</div>
-              <div>User ID: {user.id}</div>
-              <div>Email Verified: {isEmailVerified ? 'Yes' : 'No'}</div>
-              <div>Onboarding Completed: {onboardingCompleted ? 'Yes' : 'No'}</div>
-            </div>
-          )}
-        </motion.div>
+        )}
       </div>
     </div>
   )

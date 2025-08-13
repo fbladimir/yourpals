@@ -12,7 +12,10 @@ import {
   TrendingUp, 
   Calendar,
   Bell,
-  Search
+  Search,
+  Star,
+  Crown,
+  Check
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import FinanceBot from '@/components/robots/FinanceBot'
@@ -98,53 +101,97 @@ export default function Dashboard({
     }
   }
 
+  const getPersonalizedWelcome = () => {
+    if (isBusiness) {
+      return `Welcome back, ${user?.user_metadata?.full_name || 'Business User'}! Your AI team is ready to help grow your business.`
+    }
+    return `Welcome back, ${user?.user_metadata?.full_name || 'Friend'}! Your AI pals are excited to help you achieve your goals.`
+  }
+
+  const getRelevantAIPals = () => {
+    const allPals = [
+      { id: 'general', name: 'General Pal', icon: '🤖', description: 'Your AI coordinator', color: 'from-robot-purple to-robot-pink' },
+      { id: 'finance', name: 'Money Pal', icon: '💰', description: 'AI Finance Assistant', color: 'from-robot-green to-robot-blue' },
+      { id: 'fitness', name: 'Fitness Pal', icon: '💪', description: 'AI Health & Fitness Coach', color: 'from-robot-orange to-robot-red' },
+      { id: 'productivity', name: 'Productivity Pal', icon: '⚡', description: 'AI Productivity Expert', color: 'from-robot-purple to-robot-pink' },
+      { id: 'business', name: 'Business Pal', icon: '🏢', description: 'AI Business Strategist', color: 'from-robot-blue to-robot-cyan' }
+    ]
+
+    // Show the selected goal first, then other relevant ones
+    const relevantPals = allPals.filter(pal => pal.id === selectedGoal || pal.id === 'general')
+    const otherPals = allPals.filter(pal => pal.id !== selectedGoal && pal.id !== 'general')
+    
+    return [...relevantPals, ...otherPals]
+  }
+
+  const getPlanFeatures = () => {
+    switch (selectedPlan) {
+      case 'FREE':
+        return ['Access to General Pal', 'Basic AI assistance', 'Limited queries per month']
+      case 'STARTER':
+        return ['Access to 2 AI Pals', 'Unlimited queries', 'Priority support', 'Custom AI training']
+      case 'PRO':
+        return ['Access to all AI Pals', 'Advanced AI customization', 'API access', 'Dedicated support']
+      default:
+        return ['Access to General Pal', 'Basic AI assistance']
+    }
+  }
+
   const renderOverview = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-xl p-6 border border-robot-blue/20"
+        className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-2xl p-8 border border-robot-blue/20"
       >
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-robot-blue to-robot-purple rounded-full flex items-center justify-center">
-            <User className="w-8 h-8 text-white" />
+        {/* AI Mode Indicator */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-6"
+        >
+          <div className="relative inline-block">
+            <img 
+              src="/yourpalsRobot.png" 
+              alt="AI Mode Active" 
+              className="h-16 mx-auto"
+            />
+            {/* AI Mode Pulse Ring */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.6, 0, 0.6]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              className="absolute inset-0 border-2 border-robot-blue rounded-full"
+            />
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-white">
-              Welcome back, {user?.user_metadata?.full_name || 'friend'}! 👋
-            </h2>
-            <p className="text-gray-300">
-              Your AI team is ready to help you achieve your {selectedGoal} goals
-            </p>
-          </div>
-        </div>
+        </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-robot-green/20 rounded-lg p-4 border border-robot-green/30">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="w-5 h-5 text-robot-green" />
-              <span className="font-semibold text-white">Primary Goal</span>
-            </div>
-            <p className="text-robot-green font-medium">{selectedGoal.charAt(0).toUpperCase() + selectedGoal.slice(1)}</p>
-          </div>
-          
-          <div className="bg-robot-purple/20 rounded-lg p-4 border border-robot-purple/30">
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-5 h-5 text-robot-purple" />
-              <span className="font-semibold text-white">Plan</span>
-            </div>
-            <p className="text-robot-purple font-medium">{selectedPlan}</p>
-          </div>
-          
-          <div className="bg-robot-orange/20 rounded-lg p-4 border border-robot-orange/30">
-            <div className="flex items-center gap-2 mb-2">
-              <Calendar className="w-5 h-5 text-robot-orange" />
-              <span className="font-semibold text-white">Member Since</span>
-            </div>
-            <p className="text-robot-orange font-medium">Today</p>
-          </div>
+        <motion.div
+          animate={{ 
+            textShadow: [
+              "0 0 0 rgba(59, 130, 246, 0)",
+              "0 0 15px rgba(59, 130, 246, 0.6)",
+              "0 0 0 rgba(59, 130, 246, 0)"
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="text-robot-blue font-mono text-sm tracking-widest mb-3 text-center"
+        >
+          AI MODE: OPERATIONAL
+        </motion.div>
+        
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-white">
+            {getPersonalizedWelcome()}
+          </h2>
+          <p className="text-gray-300">
+            You're all set up with your personalized AI team. Here's what's available to you:
+          </p>
         </div>
       </motion.div>
 
@@ -238,6 +285,43 @@ export default function Dashboard({
           </motion.button>
         </div>
       </motion.div>
+
+      {/* Current Plan */}
+      <div className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-xl p-6 border border-robot-blue/20">
+        <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+          <Crown className="w-5 h-5 text-robot-blue" />
+          Your Current Plan: {selectedPlan}
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 className="font-medium text-white mb-2">Plan Features:</h4>
+            <ul className="space-y-2">
+              {getPlanFeatures().map((feature, index) => (
+                <li key={index} className="flex items-center gap-2 text-sm text-gray-300">
+                  <Check className="w-4 h-4 text-robot-green" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-medium text-white mb-2">Your Goals:</h4>
+            <div className="space-y-2">
+              <div className="text-sm text-gray-300">
+                <span className="font-medium">Primary:</span> {selectedGoal}
+              </div>
+              <div className="text-sm text-gray-300">
+                <span className="font-medium">Use Case:</span> {isBusiness ? 'Business' : 'Personal'}
+              </div>
+              <div className="text-sm text-gray-300">
+                <span className="font-medium">Focus Areas:</span> {userGoals.join(', ')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 
@@ -386,72 +470,102 @@ export default function Dashboard({
     </div>
   )
 
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: Target },
+    { id: 'apps', label: 'AI Apps', icon: Sparkles },
+    { id: 'settings', label: 'Settings', icon: Settings }
+  ]
+
+  const handleSignOut = () => {
+    onSignOut();
+  };
+
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Header */}
-      <motion.header
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-gray-800/50 border-b border-gray-700 sticky top-0 z-10 backdrop-blur-sm"
+        className="sticky top-0 z-50 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-blue/20 rounded-b-2xl"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-3xl"
-              >
-                🤖
-              </motion.div>
-              <h1 className="text-2xl font-bold robot-gradient-text">YourPals</h1>
-            </div>
+        {/* AI Mode Status */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="relative">
+            <img 
+              src="/yourpalsRobot.png" 
+              alt="AI Mode Active" 
+              className="h-8 w-8"
+            />
+            {/* AI Mode Pulse Ring */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.6, 0, 0.6]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              className="absolute inset-0 border border-robot-blue rounded-full"
+            />
+          </div>
+          <div className="text-robot-blue font-mono text-sm tracking-widest">
+            AI MODE: OPERATIONAL
+          </div>
+        </div>
 
+        {/* User Info and Navigation */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <h1 className="text-2xl font-bold text-white">
+              {user?.user_metadata?.full_name || 'User'}
+            </h1>
+            
             {/* Navigation Tabs */}
-            <nav className="hidden md:flex items-center gap-1">
-              {[
-                { id: 'overview', label: 'Overview', icon: Target },
-                { id: 'apps', label: 'AI Apps', icon: Sparkles },
-                { id: 'settings', label: 'Settings', icon: Settings }
-              ].map((tab) => (
-                <motion.button
+            <div className="flex gap-2">
+              {tabs.map((tab) => (
+                <button
                   key={tab.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 ${
                     activeTab === tab.id
-                      ? 'bg-robot-blue text-white'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                      ? 'bg-gradient-to-r from-robot-purple to-robot-pink text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                   }`}
                 >
                   <tab.icon className="w-4 h-4" />
                   {tab.label}
-                </motion.button>
+                </button>
               ))}
-            </nav>
-
-            {/* User Menu */}
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 text-white">
-                <span className="text-lg">🤖</span>
-                <span className="font-medium">{user?.user_metadata?.full_name || user?.email}</span>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onSignOut}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </motion.button>
             </div>
           </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
+            <motion.div
+              animate={{ 
+                textShadow: [
+                  "0 0 0 rgba(59, 130, 246, 0)",
+                  "0 0 15px rgba(59, 130, 246, 0.6)",
+                  "0 0 0 rgba(59, 130, 246, 0)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="px-4 py-2 bg-robot-blue text-white rounded-lg font-medium text-sm"
+            >
+              AI ASSISTANT READY
+            </motion.div>
+            
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleSignOut}
+              className="px-4 py-2 bg-gray-800 text-white rounded-lg font-medium text-sm hover:bg-gray-700 transition-colors duration-200 flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Exit AI Mode
+            </motion.button>
+          </div>
         </div>
-      </motion.header>
+      </motion.div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

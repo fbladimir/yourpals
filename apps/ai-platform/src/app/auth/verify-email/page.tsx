@@ -34,7 +34,8 @@ export default function VerifyEmailPage() {
         setCountdown((prev) => {
           if (prev <= 1) {
             console.log('✅ VerifyEmailPage: Redirecting to main app...')
-            router.push('/')
+            // Redirect with verification parameters
+            router.push('/?verified=true&email=' + encodeURIComponent(searchParams.get('email') || ''))
             return 0
           }
           return prev - 1
@@ -43,7 +44,7 @@ export default function VerifyEmailPage() {
 
       return () => clearInterval(timer)
     }
-  }, [verificationStatus, router])
+  }, [verificationStatus, router, searchParams])
 
   const verifyEmail = async (token: string) => {
     try {
@@ -70,6 +71,9 @@ export default function VerifyEmailPage() {
         // Ensure the session is properly set
         await supabase.auth.setSession(data.session)
         
+        // Force a session refresh to ensure the context updates
+        await supabase.auth.refreshSession()
+        
         setVerificationStatus('success')
       } else {
         console.error('❌ VerifyEmailPage: No session returned after verification')
@@ -85,7 +89,8 @@ export default function VerifyEmailPage() {
   }
 
   const handleGoToApp = () => {
-    router.push('/')
+    // Redirect with verification parameters
+    router.push('/?verified=true&email=' + encodeURIComponent(searchParams.get('email') || ''))
   }
 
   const handleRetry = () => {

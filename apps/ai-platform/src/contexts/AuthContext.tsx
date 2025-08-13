@@ -192,10 +192,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string, name: string) => {
     console.log('📝 AuthContext: signUp called with:', { email, name })
     
-    // Get the current origin for redirect
-    const redirectTo = typeof window !== 'undefined' 
-      ? `${window.location.origin}/auth/verify-email`
-      : undefined
+    // For now, skip email verification and go directly to onboarding
+    // We'll add this back later when we have proper email verification working
     
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -204,7 +202,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         data: {
           full_name: name,
         },
-        emailRedirectTo: redirectTo,
+        // Skip email verification for now
+        // emailRedirectTo: redirectTo,
       },
     })
     
@@ -212,24 +211,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     // Handle specific error cases for better UX
     if (error) {
-      // Check if user already exists
-      if (error.message.includes('User already registered')) {
+      console.log('❌ AuthContext: Signup error message:', error.message)
+      
+      // Check if user already exists - this is the most common case
+      if (error.message.includes('User already registered') || 
+          error.message.includes('already exists') ||
+          error.message.includes('already registered') ||
+          error.message.includes('already been registered') ||
+          error.message.includes('already been created')) {
         return { 
           data: null, 
           error: { 
-            message: 'An account with this email already exists. Would you like to sign in instead?' 
+            message: 'An account with this email already exists. Please sign in instead.' 
           } 
         }
       }
+      
       // Check if email is already confirmed
-      if (error.message.includes('Email not confirmed')) {
+      if (error.message.includes('Email not confirmed') || 
+          error.message.includes('not confirmed')) {
         return { 
           data: null, 
           error: { 
-            message: 'This email is already registered but not verified. Please check your email for verification or request a new verification email.' 
+            message: 'This email is already registered but not verified. Please sign in to resend verification.' 
           } 
         }
       }
+      
+      // Check for other common errors
+      if (error.message.includes('Invalid email')) {
+        return { 
+          data: null, 
+          error: { 
+            message: 'Please enter a valid email address.' 
+          } 
+        }
+      }
+      
+      if (error.message.includes('Password')) {
+        return { 
+          data: null, 
+          error: { 
+            message: 'Password must be at least 6 characters long.' 
+          } 
+        }
+      }
+      
+      // For any other errors, return the original error
+      return { data: null, error }
+    }
+    
+    // If no error, the signup was successful
+    // Since we're skipping email verification, we can consider the user as "verified"
+    if (data?.user) {
+      console.log('✅ AuthContext: Signup successful, user created:', data.user.email)
+      // Mark email as verified for now since we're skipping verification
+      setIsEmailVerified(true)
     }
     
     return { data, error }

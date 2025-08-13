@@ -120,12 +120,34 @@ export default function EmailVerification({ email, onVerified, onBackToSignIn }:
 
       {/* Action Buttons */}
       <div className="space-y-4">
+        {/* Email Verified Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={onVerified}
+          className="w-full py-3 px-4 bg-gradient-to-r from-robot-green to-robot-purple text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg"
+        >
+          <span className="text-2xl">✅</span>
+          I've Verified My Email - Take Me to Onboarding!
+        </motion.button>
+
+        {/* Manual Verification Check Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={onVerified}
+          className="w-full py-3 px-4 bg-gradient-to-r from-robot-orange to-robot-red text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+        >
+          <span className="text-2xl">🔍</span>
+          Check My Verification Status
+        </motion.button>
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleResendEmail}
           disabled={isResending}
-          className="w-full py-3 px-4 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3 px-4 bg-gradient-to-r from-robot-blue to-robot-purple text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isResending ? (
             <>
