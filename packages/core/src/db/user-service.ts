@@ -2,43 +2,56 @@ import { prisma } from './client'
 import type { User } from './types'
 
 export interface EnsureUserParams {
-  clerkUserId: string
+  supabaseUserId: string
   email: string
+  phone?: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
 }
 
 /**
- * Ensures a User row exists in the database for the given Clerk user.
+ * Ensures a User row exists in the database for the given Supabase user.
  * Creates a new user if one doesn't exist, otherwise returns the existing user.
- * This function should be called on authenticated requests to sync Clerk users with our database.
+ * This function should be called on authenticated requests to sync Supabase users with our database.
  */
-export async function ensureUser({ clerkUserId, email }: EnsureUserParams): Promise<User> {
+export async function ensureUser({ supabaseUserId, email, phone, emailVerified = false, phoneVerified = false }: EnsureUserParams): Promise<User> {
   // First try to find existing user by email (since marketing app might have created them)
   let user = await prisma.user.findUnique({
     where: { email },
   })
 
   if (user) {
-    // User exists by email, check if we need to update clerkUserId
-    if (user.clerkUserId !== clerkUserId) {
+    // User exists by email, check if we need to update supabaseUserId
+    if (user.supabaseUserId !== supabaseUserId) {
       user = await prisma.user.update({
         where: { id: user.id },
-        data: { clerkUserId },
+        data: { 
+          supabaseUserId,
+          phone: phone || user.phone,
+          emailVerified: emailVerified || user.emailVerified,
+          phoneVerified: phoneVerified || user.phoneVerified,
+        },
       })
     }
     return user
   }
 
-  // If no user by email, try by clerkUserId
+  // If no user by email, try by supabaseUserId
   user = await prisma.user.findUnique({
-    where: { clerkUserId },
+    where: { supabaseUserId },
   })
 
   if (user) {
-    // User exists by clerkUserId, check if we need to update email
+    // User exists by supabaseUserId, check if we need to update email
     if (user.email !== email) {
       user = await prisma.user.update({
         where: { id: user.id },
-        data: { email },
+        data: { 
+          email,
+          phone: phone || user.phone,
+          emailVerified: emailVerified || user.emailVerified,
+          phoneVerified: phoneVerified || user.phoneVerified,
+        },
       })
     }
     return user
@@ -47,8 +60,12 @@ export async function ensureUser({ clerkUserId, email }: EnsureUserParams): Prom
   // No user exists, create new one
   user = await prisma.user.create({
     data: {
-      clerkUserId,
+      supabaseUserId,
       email,
+      phone,
+      emailVerified,
+      phoneVerified,
+      twoFactorEnabled: false,
     },
   })
 
@@ -56,11 +73,11 @@ export async function ensureUser({ clerkUserId, email }: EnsureUserParams): Prom
 }
 
 /**
- * Get user by Clerk user ID
+ * Get user by Supabase user ID
  */
-export async function getUserByClerkId(clerkUserId: string): Promise<User | null> {
+export async function getUserBySupabaseId(supabaseUserId: string): Promise<User | null> {
   return prisma.user.findUnique({
-    where: { clerkUserId },
+    where: { supabaseUserId },
   })
 }
 

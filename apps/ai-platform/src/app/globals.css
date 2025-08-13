@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-gray-900 text-white;
+  }
+}
+
+@layer components {
+  .robot-gradient {
+    @apply bg-gradient-to-br from-robot-blue to-robot-purple;
+  }
+  
+  .robot-gradient-text {
+    @apply bg-gradient-to-br from-robot-blue to-robot-purple bg-clip-text text-transparent;
+  }
+  
+  .robot-card {
+    @apply bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  /* Robot color utilities */
+  .text-robot-cyan { color: #06B6D4; }
+  .text-robot-red { color: #EF4444; }
+  .text-robot-pink { color: #EC4899; }
+  .bg-robot-cyan { background-color: #06B6D4; }
+  .bg-robot-red { background-color: #EF4444; }
+  .bg-robot-pink { background-color: #EC4899; }
+  .from-robot-cyan { --tw-gradient-from: #06B6D4; }
+  .to-robot-cyan { --tw-gradient-to: #06B6D4; }
+  .from-robot-red { --tw-gradient-from: #EF4444; }
+  .to-robot-red { --tw-gradient-to: #EF4444; }
+  .from-robot-pink { --tw-gradient-from: #EC4899; }
+  .to-robot-pink { --tw-gradient-to: #EC4899; }
+}

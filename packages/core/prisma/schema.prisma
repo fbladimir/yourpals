@@ -3,6 +3,7 @@
 
 generator client {
   provider      = "prisma-client-js"
+  output        = "../prisma-client"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -12,11 +13,15 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  clerkUserId String   @unique
-  email       String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  supabaseUserId String   @unique
+  email          String   @unique
+  phone          String?
+  emailVerified  Boolean  @default(false)
+  phoneVerified  Boolean  @default(false)
+  twoFactorEnabled Boolean @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relations
   subscriptions    Subscription[]

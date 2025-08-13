@@ -30,8 +30,9 @@ CLERK_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
 CLERK_SECRET_KEY=sk_test_your_secret_key_here
 CLERK_SIGN_IN_URL=/sign-in
 CLERK_SIGN_UP_URL=/sign-up
-CLERK_AFTER_SIGN_IN_URL=/
-CLERK_AFTER_SIGN_UP_URL=/
+CLERK_AFTER_SIGN_IN_URL=/dashboard
+CLERK_AFTER_SIGN_UP_URL=/dashboard
+CLERK_SATELLITE_URL=https://moneypal.yourpals.app
 ```
 
 ## Features Implemented
@@ -44,11 +45,32 @@ CLERK_AFTER_SIGN_UP_URL=/
 
 ### MoneyPal App
 - ✅ Clerk provider integration
-- ✅ Middleware protection for all routes
+- ✅ Middleware protection for dashboard and API routes
 - ✅ Public `/welcome` page
-- ✅ Protected dashboard at `/`
+- ✅ Protected dashboard at `/dashboard`
 - ✅ `/sign-in` and `/sign-up` pages
 - ✅ Uses `@yourpals/core` package for utilities
+
+## Cross-Domain Authentication Setup
+
+For authentication to work between `yourpals.app` and `moneypal.yourpals.app`:
+
+### 1. Configure Clerk Satellite Domains
+1. Go to [Clerk Dashboard](https://clerk.com) → Your Yourpals App
+2. Navigate to **Settings** → **Domains**
+3. Add `moneypal.yourpals.app` as a **Satellite Domain** (not a separate app)
+4. Ensure both domains use the **same Clerk application**
+
+### 2. Environment Variables
+Both apps must have identical Clerk API keys:
+- `CLERK_PUBLISHABLE_KEY` (same value in both apps)
+- `CLERK_SECRET_KEY` (same value in both apps)
+
+### 3. Satellite Configuration
+Add to moneypal app:
+```bash
+CLERK_SATELLITE_URL=https://moneypal.yourpals.app
+```
 
 ## Development Commands
 

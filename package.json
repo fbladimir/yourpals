@@ -8,9 +8,9 @@
     "services/*"
   ],
   "scripts": {
-    "dev:marketing": "pnpm --filter @yourpals/marketing dev",
+    "dev:landing": "pnpm --filter @yourpals/landing dev",
     "dev:moneypal": "pnpm --filter @yourpals/moneypal dev",
-    "dev:all": "pnpm --parallel --filter @yourpals/marketing --filter @yourpals/moneypal dev",
+    "dev:all": "pnpm --parallel --filter @yourpals/landing --filter @yourpals/moneypal dev",
     "build": "pnpm --filter @yourpals/core build && pnpm --filter @yourpals/ui build && pnpm -r build",
     "build:packages": "pnpm --filter @yourpals/core build && pnpm --filter @yourpals/ui build",
     "lint": "pnpm -r lint",

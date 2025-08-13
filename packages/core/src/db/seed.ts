@@ -18,8 +18,12 @@ async function main() {
   // Create test user
   const testUser = await prisma.user.create({
     data: {
-      clerkUserId: 'test_clerk_user_123',
+      supabaseUserId: 'test_supabase_user_123',
       email: 'test@yourpals.com',
+      phone: '+15551234567',
+      emailVerified: true,
+      phoneVerified: false,
+      twoFactorEnabled: false,
     },
   })
 

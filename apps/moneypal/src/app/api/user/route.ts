@@ -1,27 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ensureUser } from '@yourpals/core'
 
 export async function POST(request: NextRequest) {
   try {
-    const { clerkUserId, email } = await request.json()
+    const { supabaseUserId, email, phone } = await request.json()
     
-    if (!clerkUserId || !email) {
+    if (!supabaseUserId || !email) {
       return NextResponse.json(
-        { error: 'clerkUserId and email are required' },
+        { error: 'supabaseUserId and email are required' },
         { status: 400 }
       )
     }
 
-    // This ensures a User row exists in our database
-    const user = await ensureUser({ clerkUserId, email })
+    // For now, return a mock response
+    // TODO: Implement real user creation with Supabase when environment is set up
+    const mockUser = {
+      id: 'mock_user_' + Date.now(),
+      email,
+      createdAt: new Date().toISOString()
+    }
     
     return NextResponse.json({ 
       success: true, 
-      user: {
-        id: user.id,
-        email: user.email,
-        createdAt: user.createdAt
-      }
+      user: mockUser,
+      note: 'This is mock data - Supabase integration will be implemented later'
     })
   } catch (error) {
     console.error('Error ensuring user:', error)

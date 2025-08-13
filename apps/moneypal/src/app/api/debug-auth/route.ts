@@ -1,25 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { auth, currentUser } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
     console.log('🔍 DEBUG: Starting auth debug...')
     
-    const { userId } = await auth()
-    console.log('🔍 DEBUG: Clerk userId:', userId)
+    // For now, return mock data
+    // TODO: Implement real Supabase auth debug when environment is set up
+    const mockUserId = 'mock_user_123'
+    const mockUser = {
+      id: mockUserId,
+      email: 'demo@yourpals.com'
+    }
     
-    const user = await currentUser()
-    console.log('🔍 DEBUG: Clerk user exists:', !!user)
-    console.log('🔍 DEBUG: Clerk user email:', user?.emailAddresses?.[0]?.emailAddress)
-    console.log('🔍 DEBUG: Clerk user full object:', JSON.stringify(user, null, 2))
+    console.log('🔍 DEBUG: Mock userId:', mockUserId)
+    console.log('🔍 DEBUG: Mock user exists:', !!mockUser)
+    console.log('🔍 DEBUG: Mock user email:', mockUser.email)
     
     return NextResponse.json({
       success: true,
       debug: {
-        userId,
-        userExists: !!user,
-        email: user?.emailAddresses?.[0]?.emailAddress,
-        userObject: user
+        userId: mockUserId,
+        userExists: true,
+        email: mockUser.email,
+        userObject: mockUser,
+        note: 'This is mock data - Supabase auth will be implemented later'
       }
     })
   } catch (error) {

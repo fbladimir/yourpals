@@ -10,7 +10,8 @@
     "build:core": "pnpm --filter @yourpals/core build"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.30.0",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.0",
     "@yourpals/core": "workspace:*",
     "@yourpals/ui": "workspace:*",
     "framer-motion": "^11.18.2",

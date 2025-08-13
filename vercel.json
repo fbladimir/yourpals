@@ -1,7 +1,7 @@
 {
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "apps/marketing/.next",
+  "buildCommand": "pnpm --filter @yourpals/landing run build",
+  "outputDirectory": "apps/landing/.next",
   "installCommand": "pnpm install",
   "framework": "nextjs",
-  "rootDirectory": "apps/marketing"
+  "rootDirectory": "apps/landing"
 }
