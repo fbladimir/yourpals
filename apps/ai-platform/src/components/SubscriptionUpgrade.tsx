@@ -114,7 +114,7 @@ export const SubscriptionUpgrade: React.FC<SubscriptionUpgradeProps> = ({ classN
                 <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
                 <div className="text-3xl font-bold text-white mb-1">
                   ${plan.price}
-                  {plan.interval && (
+                  {'interval' in plan && plan.interval && (
                     <span className="text-lg text-white/60">/{plan.interval}</span>
                   )}
                 </div>
@@ -163,7 +163,7 @@ export const SubscriptionUpgrade: React.FC<SubscriptionUpgradeProps> = ({ classN
               </button>
 
               {/* Limitations for Free Plan */}
-              {planId === 'FREE' && plan.limitations && (
+              {planId === 'FREE' && 'limitations' in plan && plan.limitations && (
                 <div className="mt-4 pt-4 border-t border-white/10">
                   <p className="text-xs text-white/50 text-center">
                     {plan.limitations.join(' • ')}

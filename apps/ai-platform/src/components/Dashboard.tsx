@@ -18,6 +18,7 @@ import {
   Check
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useRouter } from 'next/navigation'
 import FinanceBot from '@/components/robots/FinanceBot'
 import FitnessBot from '@/components/robots/FitnessBot'
 import BusinessBot from '@/components/robots/BusinessBot'
@@ -39,6 +40,7 @@ export default function Dashboard({
   onSignOut 
 }: DashboardProps) {
   const { user } = useAuth()
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -134,6 +136,28 @@ export default function Dashboard({
         return ['Access to all AI Pals', 'Advanced AI customization', 'API access', 'Dedicated support']
       default:
         return ['Access to General Pal', 'Basic AI assistance']
+    }
+  }
+
+  const handleLaunchApp = (appId: string) => {
+    switch (appId) {
+      case 'moneypal':
+        router.push('/moneypal')
+        break
+      case 'fitnesspal':
+        // TODO: Implement when FitnessPal is ready
+        console.log('FitnessPal coming soon!')
+        break
+      case 'productivitypal':
+        // TODO: Implement when ProductivityPal is ready
+        console.log('ProductivityPal coming soon!')
+        break
+      case 'businesspal':
+        // TODO: Implement when BusinessPal is ready
+        console.log('BusinessPal coming soon!')
+        break
+      default:
+        console.log('Unknown app:', appId)
     }
   }
 
@@ -234,6 +258,7 @@ export default function Dashboard({
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => handleLaunchApp(app.id)}
                   className="w-full py-3 px-4 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
                 >
                   Launch {app.name}
@@ -384,6 +409,7 @@ export default function Dashboard({
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => handleLaunchApp(app.id)}
                     className="px-6 py-3 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
                   >
                     Launch

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, CreditCard, Calendar, Crown, Zap, Star, Settings, Download } from 'lucide-react';
 import Link from 'next/link';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import SubscriptionUpgrade from '@/components/SubscriptionUpgrade'
+import { SubscriptionUpgrade } from '@/components/SubscriptionUpgrade'
 
 export default function SubscriptionsPage() {
   return (

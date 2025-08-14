@@ -1,187 +1,335 @@
-# YourPals AI Platform Architecture
+# MoneyPal Architecture & Development Roadmap
 
-## 🎯 **Single Domain, Multiple Routes Architecture**
+## 🎯 **Vision Statement**
+MoneyPal is not a traditional financial app — it's your AI financial co-pilot that proactively manages your money, speaks to you naturally, and makes intelligent decisions to optimize your financial health.
 
-**Base URL:** `ai.yourpals.app` (or `localhost:4000` for development)
-
-### **Route Structure:**
-```
-ai.yourpals.app/
-├── /auth          → Authentication (sign in/sign up)
-├── /auth/verify-email → Email verification callback
-├── /onboarding    → Survey & setup (one-time)
-├── /dashboard     → Main hub (all AI apps)
-├── /subscriptions → Subscription management & billing
-├── /moneypal      → MoneyPal app
-├── /fitnesspal    → Future fitness app
-└── /profile       → User settings
-```
-
-### **User Flow:**
-1. **Landing Page** (yourpals.app) → Sign In button
-2. **Authentication** (ai.yourpals.app/auth) → Sign up/Sign in
-3. **Email Verification** (ai.yourpals.app/auth/verify-email) → Automatic verification
-4. **Onboarding** (ai.yourpals.app/onboarding) → One-time setup
-5. **Dashboard** (ai.yourpals.app/dashboard) → Main hub
-6. **App Routes** (ai.yourpals.app/moneypal, etc.) → Individual AI apps
-
-### **Personalized Dashboard Concept:**
-- **Primary Apps**: Based on onboarding answers (e.g., Finance focus → MoneyPal prominent)
-- **Secondary Apps**: Other available apps with "Coming Soon" status
-- **View All Apps**: UX option to see complete app catalog
-- **Dynamic Layout**: Dashboard adapts to user's primary goals
-- **App Recommendations**: AI suggests apps based on user behavior
-
-### **Implementation Phases:**
-
-#### **Phase 1: Foundation ✅ COMPLETE**
-- [x] Set up ai.yourpals.app domain and hosting
-- [x] Create unified authentication system
-- [x] Build onboarding flow with GeneralBot
-- [x] Implement dynamic personality switching
-
-#### **Phase 2: Core Experience ✅ COMPLETE**
-- [x] Complete onboarding with all robot personalities
-- [x] Build unified dashboard with tabs (Overview, AI Apps, Settings)
-- [x] Fix email verification flow with dedicated verification page
-- [x] Implement proper session management and error handling
-- [x] Add retry mechanisms and loading timeouts
-- [x] Create error boundaries for chunk loading issues
-- [x] Mobile-first responsive design across all components
-- [x] Dashboard header redesign with clean, mobile-optimized layout
-- [x] AI System Status cards converted to horizontal pills
-- [x] Loading screen optimization with 2x2 grid layout
-- [x] Text cleanup and streamlined messaging
-- [x] Mobile button positioning and touch-friendly interactions
-- [x] Cross-platform compatibility for website and mobile
-- [x] Landing page integration with AI platform
-- [x] Careers page creation with modern AI-themed design
-
-#### **Phase 2.5: Subscription Infrastructure ✅ COMPLETE**
-- [x] **Stripe Integration**: Complete billing system with API routes
-- [x] **Subscription Plans**: Free (7-day trial) + Pro + All Access tiers
-- [x] **Trial System**: 7-day full access for new users
-- [x] **User Tiers**: Different dashboard experiences for free vs. pro users
-- [x] **Feature Gating**: Restrict advanced features to subscribers
-- [x] **Billing Management**: Subscription upgrades, downgrades, cancellations
-- [x] **Payment Processing**: Secure payment handling and webhooks
-- [x] **Usage Tracking**: Monitor user activity and feature usage
-- [x] **Subscription Database**: Store subscription status and billing info
-- [x] **React Components**: SubscriptionContext, SubscriptionGuard, SubscriptionUpgrade
-- [x] **Subscription Page**: Complete subscription management interface
-- [x] **Webhook Handlers**: Process Stripe events for real-time updates
-
-#### **Phase 3: App Integration (Ready to Start)**
-- [ ] Migrate MoneyPal to the new platform
-- [ ] Implement app launch functionality
-- [ ] Create app-specific dashboards
-- [ ] Add subscription-gated features
-
-#### **Phase 4: Expansion (Future)**
-- [ ] Add new apps (FitnessPal, etc.)
-- [ ] Cross-app AI bot collaboration
-- [ ] Advanced business features
-- [ ] Mobile app development
-
-### **Current Status - Phase 2.5 Complete:**
-
-#### **✅ Authentication System:**
-- **Supabase Integration**: Full authentication with email verification
-- **Email Verification Flow**: Dedicated `/auth/verify-email` page
-- **Session Management**: Proper token handling and session creation
-- **Error Handling**: Comprehensive error boundaries and retry mechanisms
-
-#### **✅ Onboarding Flow:**
-- **6-Step Process**: Welcome → Goal Selection → Use Case → Specialized Bot → Plan Selection → Completion
-- **Robot Personalities**: GeneralBot, FinanceBot, FitnessBot, BusinessBot
-- **Personalization**: Adapts to user goals and business/personal use cases
-- **Smooth Transitions**: Beautiful animations and progress indicators
-
-#### **✅ Dashboard System:**
-- **Tabbed Interface**: Overview, AI Apps, Settings
-- **Personalized Content**: Adapts to user's selected goals
-- **AI Apps Grid**: Shows available applications with status
-- **User Profile**: Settings and preferences management
-
-#### **✅ Subscription Infrastructure:**
-- **Stripe Integration**: Complete billing system with secure payment processing
-- **Trial System**: 7-day free trial with full feature access
-- **Feature Gating**: Subscription-based access control throughout the app
-- **Billing Management**: Professional subscription management interface
-- **Webhook System**: Real-time subscription status updates
-- **Plan Tiers**: FREE (trial), PRO ($19.99/month), ALL_ACCESS ($49.99/month)
-
-#### **✅ Technical Improvements:**
-- **Error Boundaries**: Handle chunk loading and verification errors
-- **Loading Timeouts**: Prevent infinite loading states
-- **Retry Mechanisms**: Auto-retry failed operations
-- **Better UX**: Clear status indicators and error messages
-- **Mobile-First Design**: Responsive layouts for all screen sizes
-- **Touch-Friendly UI**: Optimized for mobile interactions
-- **Performance**: Optimized loading and smooth animations
-
-### **Subscription Architecture Design:**
-
-#### **Free Tier (7-Day Trial):**
-- **Duration**: 7 days from signup
-- **Access**: Full Pro features during trial
-- **Limitations**: None during trial period
-- **Conversion**: Must subscribe to continue after trial
-
-#### **Pro Tier (Subscription):**
-- **Pricing**: $19.99/month or $199.99/year
-- **Access**: All features and AI pals
-- **Benefits**: Priority support, advanced features
-- **Dashboard**: Enhanced pro dashboard experience
-
-#### **All Access Tier (Subscription):**
-- **Pricing**: $49.99/month or $499.99/year
-- **Access**: Everything in Pro + enterprise features
-- **Benefits**: Dedicated support, custom integrations
-- **Dashboard**: Enterprise-grade dashboard experience
-
-#### **Feature Gating Strategy:**
-- **Trial Users**: Full access to all features
-- **Free Users**: Limited access after trial expires
-- **Pro Users**: Full access to all features and future AI pals
-- **All Access Users**: Everything + enterprise features
-- **Upgrade Path**: Seamless upgrade from trial to subscription
-
-#### **Technical Implementation:**
-- **Stripe Integration**: Complete billing system with webhooks
-- **Database Schema**: User subscriptions, billing history, usage tracking
-- **Webhook Handling**: Subscription status updates in real-time
-- **Feature Flags**: Dynamic feature access based on subscription
-- **Dashboard Logic**: Different experiences for different user tiers
-- **React Context**: Subscription state management throughout the app
-
-### **Key Points:**
-- ✅ **Single domain** with multiple routes
-- ✅ **Shared authentication** across all routes
-- ✅ **Seamless navigation** between routes
-- ✅ **Centralized user management**
-- ✅ **Personalized dashboard** based on onboarding
-- ✅ **Dynamic app recommendations**
-- ✅ **Robust error handling** and user experience
-- ✅ **Mobile-first responsive design**
-- ✅ **Complete subscription infrastructure** with Stripe
-- ❌ **NOT multiple subdomains** (no moneypal.yourpals.app)
-
-### **Development URLs:**
-- Landing: `localhost:3000`
-- AI Platform: `localhost:4000`
-- All routes: `localhost:4000/auth`, `localhost:4000/dashboard`, `localhost:4000/subscriptions`, etc.
-
-### **Next Steps - Phase 3 (App Integration):**
-1. **MoneyPal Integration**: Migrate existing MoneyPal functionality to the platform
-2. **App Launch System**: Implement app launching from dashboard
-3. **Subscription-Gated Features**: Connect subscription status to app functionality
-4. **App-Specific Dashboards**: Create specialized dashboards for each app
-5. **Feature Implementation**: Build subscription-based feature variations
+## 🧠 **Core AI Philosophy**
+- **Proactive, not reactive**: AI anticipates problems weeks before they happen
+- **Conversational, not transactional**: Speaks like a trusted friend, not a bank statement
+- **Intelligent automation**: Makes smart decisions within your comfort zone
+- **Life-adaptive**: Adjusts to life changes and learns your patterns
 
 ---
-**Remember:** Everything is under `ai.yourpals.app` with different routes, not separate subdomains!
 
-**Current Status:** Phase 2.5 COMPLETE - Subscription infrastructure is fully implemented and ready! 🚀
+## 🏗️ **System Architecture**
 
-**Ready for Phase 3:** App Integration with subscription-based feature gating! 💳✨
+### **1. AI Core Engine**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AI Financial Co-Pilot                    │
+├─────────────────────────────────────────────────────────────┤
+│  • Pattern Recognition Engine                              │
+│  • Predictive Analytics Engine                             │
+│  • Natural Language Processing                             │
+│  • Decision Making Engine                                  │
+│  • Automation Orchestrator                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **2. Data Integration Layer**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Financial Data Sources                     │
+├─────────────────────────────────────────────────────────────┤
+│  • Plaid API (Bank accounts, credit cards)                │
+│  • Teller API (Alternative banking data)                   │
+│  • SaltEdge API (European banking)                        │
+│  • Manual input fallback                                   │
+│  • Subscription tracking services                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **3. Core Modules**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      MoneyPal Modules                      │
+├─────────────────────────────────────────────────────────────┤
+│  📊 Account Management & Real-time Sync                   │
+│  🎯 Goal Setting & Progress Tracking                      │
+│  💰 Budget Management & Spending Analysis                 │
+│  🚨 Smart Alerts & Notifications                          │
+│  🤖 AI Chat Interface & Natural Language                  │
+│  ⚡ Automation Engine & Smart Actions                      │
+│  📈 Credit Score Monitoring & Optimization                │
+│  🔮 Predictive Analytics & Forecasting                    │
+│  🎮 "What If" Scenarios & Simulations                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 **Development Phases**
+
+### **Phase 1: Foundation & Core Infrastructure**
+**Timeline: 2-3 weeks**
+- [ ] Set up MoneyPal route and basic layout
+- [ ] Implement authentication and subscription gating
+- [ ] Create basic dashboard structure
+- [ ] Set up financial data models and database schema
+- [ ] Implement basic account linking (Plaid integration)
+- [ ] Create basic AI chat interface foundation
+
+### **Phase 2: AI Core & Data Processing**
+**Timeline: 3-4 weeks**
+- [ ] Implement AI pattern recognition engine
+- [ ] Build spending analysis and categorization
+- [ ] Create predictive analytics for balance forecasting
+- [ ] Implement natural language processing for chat
+- [ ] Build recommendation engine for financial actions
+- [ ] Create automation rules engine
+
+### **Phase 3: Smart Features & Automation**
+**Timeline: 4-5 weeks**
+- [ ] Implement smart payment scheduling
+- [ ] Build automatic savings optimization
+- [ ] Create subscription management and trimming
+- [ ] Implement goal-driven automation
+- [ ] Build credit score monitoring and optimization
+- [ ] Create "what if" scenario engine
+
+### **Phase 4: Advanced AI & User Experience**
+**Timeline: 3-4 weeks**
+- [ ] Enhance conversational AI capabilities
+- [ ] Implement life-change adaptation
+- [ ] Build advanced predictive models
+- [ ] Create personalized financial insights
+- [ ] Implement advanced automation levels
+- [ ] Build comprehensive reporting and analytics
+
+---
+
+## 🎨 **User Experience Flow**
+
+### **Onboarding Journey (3 minutes)**
+```
+1. Welcome & Introduction
+   ↓
+2. Link Financial Accounts (Plaid)
+   ↓
+3. Set Financial Goals
+   ↓
+4. Input Known Expenses
+   ↓
+5. AI Quick Analysis & Plan
+   ↓
+6. Choose Automation Level
+   ↓
+7. Meet Your MoneyPal Avatar
+```
+
+### **Daily Interaction Flow**
+```
+Morning Check-in → AI Summary & Actions
+     ↓
+Real-time Monitoring → Pattern Recognition
+     ↓
+Proactive Alerts → Natural Language Notifications
+     ↓
+AI Chat Interface → Conversational Commands
+     ↓
+Smart Automation → Intelligent Actions
+     ↓
+Evening Review → Progress & Tomorrow's Plan
+```
+
+---
+
+## 🤖 **AI Capabilities by Feature**
+
+### **1. Pattern Recognition**
+- **Spending Patterns**: Identifies recurring expenses, seasonal trends
+- **Income Patterns**: Predicts pay schedules, irregular income
+- **Risk Patterns**: Spots potential overdrafts, credit issues
+- **Opportunity Patterns**: Finds optimal times for transfers, payments
+
+### **2. Predictive Analytics**
+- **Balance Forecasting**: 30-90 day balance predictions
+- **Bill Impact Analysis**: How upcoming bills affect cash flow
+- **Savings Optimization**: Best times to move money to HYSA
+- **Debt Payoff Projections**: Optimal payment strategies
+
+### **3. Natural Language Processing**
+- **Conversational Commands**: "Move $300 to savings on Friday"
+- **Contextual Understanding**: "I'm traveling for 2 weeks, adjust my budget"
+- **Proactive Communication**: "Heads up! You'll dip under $500 on Aug 25"
+- **Smart Responses**: Human-like explanations of financial concepts
+
+### **4. Decision Making Engine**
+- **Risk Assessment**: Evaluates financial decisions
+- **Optimization Algorithms**: Finds best payment schedules
+- **Goal Alignment**: Ensures actions support long-term objectives
+- **User Preference Learning**: Adapts to comfort levels
+
+---
+
+## 🗄️ **Database Schema Overview**
+
+### **Core Tables**
+```sql
+-- Users & Authentication
+users (id, email, name, subscription_plan, automation_level)
+
+-- Financial Accounts
+accounts (id, user_id, type, name, balance, last_sync, plaid_id)
+
+-- Transactions
+transactions (id, account_id, amount, category, description, date, ai_categorized)
+
+-- Goals
+goals (id, user_id, type, target_amount, current_amount, target_date, status)
+
+-- AI Insights
+ai_insights (id, user_id, type, message, action_required, created_at)
+
+-- Automation Rules
+automation_rules (id, user_id, trigger_type, action_type, parameters, is_active)
+
+-- Chat History
+chat_messages (id, user_id, message, response, context, created_at)
+```
+
+---
+
+## 🔌 **API Integrations**
+
+### **Primary Integrations**
+1. **Plaid API**
+   - Account linking and authentication
+   - Real-time transaction sync
+   - Balance updates
+   - Account metadata
+
+2. **OpenAI API / Anthropic Claude**
+   - Natural language processing
+   - Financial advice generation
+   - Pattern recognition
+   - Conversational responses
+
+3. **Stripe API**
+   - Subscription management
+   - Payment processing
+   - Webhook handling
+
+### **Secondary Integrations**
+- **Credit Score APIs**: Experian, TransUnion, Equifax
+- **Subscription Tracking**: Truebill, Rocket Money APIs
+- **Bill Payment**: Plaid Transfer API
+- **Investment APIs**: Plaid Investments, Alpaca
+
+---
+
+## 🎯 **Key Success Metrics**
+
+### **User Engagement**
+- Daily active usage
+- Chat interactions per session
+- Automation rule adoption
+- Goal completion rates
+
+### **Financial Impact**
+- Average savings per user
+- Debt reduction rates
+- Credit score improvements
+- Emergency fund growth
+
+### **AI Performance**
+- Recommendation accuracy
+- Prediction precision
+- User satisfaction with AI suggestions
+- Automation success rate
+
+---
+
+## 🚧 **Technical Considerations**
+
+### **Security & Privacy**
+- **Bank-level encryption** for financial data
+- **SOC 2 compliance** for data handling
+- **PII protection** and GDPR compliance
+- **Secure API key management**
+
+### **Performance & Scalability**
+- **Real-time data processing** for instant insights
+- **Caching strategies** for frequently accessed data
+- **Background job processing** for heavy computations
+- **Horizontal scaling** for user growth
+
+### **AI Model Management**
+- **Model versioning** and A/B testing
+- **Continuous learning** from user interactions
+- **Fallback mechanisms** for AI failures
+- **Performance monitoring** and optimization
+
+---
+
+## 🔄 **Iteration & Improvement Cycle**
+
+### **Weekly**
+- User feedback collection
+- AI response quality review
+- Performance metrics analysis
+- Bug fixes and minor improvements
+
+### **Monthly**
+- Feature performance review
+- AI model retraining
+- User experience optimization
+- New feature planning
+
+### **Quarterly**
+- Major feature releases
+- AI capability expansion
+- User research and interviews
+- Strategic roadmap updates
+
+---
+
+## 📋 **Next Steps for Development**
+
+### **Immediate Actions (This Week)**
+1. **Set up MoneyPal development environment**
+2. **Create detailed component architecture**
+3. **Design database schema and migrations**
+4. **Plan Plaid API integration approach**
+5. **Set up AI service infrastructure**
+
+### **Week 1-2: Foundation**
+1. **Implement basic MoneyPal layout and navigation**
+2. **Create account linking interface**
+3. **Set up basic AI chat foundation**
+4. **Implement subscription gating**
+
+### **Week 3-4: Core Features**
+1. **Build transaction processing and categorization**
+2. **Implement basic AI pattern recognition**
+3. **Create goal setting and tracking**
+4. **Build basic automation engine**
+
+---
+
+## 💡 **Innovation Opportunities**
+
+### **Advanced AI Features**
+- **Voice interaction** for hands-free money management
+- **Image recognition** for receipt processing
+- **Behavioral analysis** for spending psychology insights
+- **Social learning** from anonymized user patterns
+
+### **Integration Expansions**
+- **Smart home integration** for automated bill payments
+- **Calendar integration** for event-based financial planning
+- **Health app integration** for wellness-related financial incentives
+- **E-commerce integration** for automatic savings on purchases
+
+---
+
+## 🎉 **Success Vision**
+
+When MoneyPal is complete, users will experience:
+- **True financial peace of mind** knowing AI is watching their money
+- **Effortless wealth building** through intelligent automation
+- **Natural conversations** about money instead of complex interfaces
+- **Proactive problem prevention** instead of reactive fixes
+- **Personalized financial coaching** that adapts to their life
+
+**MoneyPal won't just manage money — it will be the financial friend everyone wishes they had.**

@@ -13,10 +13,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    // Set redirect URL for email verification
-    redirectTo: typeof window !== 'undefined' 
-      ? `${window.location.origin}/auth/verify-email`
-      : undefined,
   },
 })
 
@@ -27,10 +23,6 @@ export function createClientComponentClient() {
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      // Set redirect URL for email verification
-      redirectTo: typeof window !== 'undefined' 
-        ? `${window.location.origin}/auth/verify-email`
-        : undefined,
     },
   })
 }
