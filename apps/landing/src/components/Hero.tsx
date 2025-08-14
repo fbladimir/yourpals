@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { config } from "../lib/config";
 
 export default function Hero() {
   return (
@@ -105,7 +106,7 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
             <Link 
-              href="#apps" 
+              href={config.aiPlatformUrl} 
               className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 sm:px-6 sm:py-4 font-semibold text-white hover:bg-blue-700 transition-colors shadow-lg active:scale-95 touch-manipulation"
             >
               Get Started Free

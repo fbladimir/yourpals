@@ -6,6 +6,7 @@ import Image from "next/image";
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import AccountModal from './AccountModal';
+import { config } from '../lib/config';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -264,15 +265,15 @@ export default function Header() {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link href="/signin">
+                  <a href={config.aiPlatformUrl}>
                     <button className="rounded-lg sm:rounded-xl bg-white/10 px-3 py-1.5 sm:px-3 sm:py-1 ring-1 ring-white/10 hover:bg-white/20 transition-colors duration-200 text-sm">
                       Sign in
                     </button>
-                  </Link>
+                  </a>
                 )}
                 
                 <a 
-                  href="#download" 
+                  href={config.aiPlatformUrl}
                   className="rounded-lg sm:rounded-xl bg-blueA px-3 py-1.5 sm:px-3 sm:py-1 hover:bg-blueB transition-colors duration-200 text-sm font-medium"
                 >
                   Get started
@@ -332,17 +333,17 @@ export default function Header() {
                     </button>
                   </>
                 ) : (
-                  <Link href="/signin">
+                  <a href={config.aiPlatformUrl}>
                     <button 
                       className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
                       onClick={() => setOpen(false)}
                     >
                       Sign in
                     </button>
-                  </Link>
+                  </a>
                 )}
                 <a 
-                  href="#download" 
+                  href={config.aiPlatformUrl}
                   className="block rounded-lg px-3 py-2 bg-blueA text-white hover:bg-blueB transition-colors duration-200 active:bg-blueB mt-1"
                   onClick={() => setOpen(false)}
                 >

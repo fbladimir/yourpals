@@ -3,6 +3,14 @@
 :root { color-scheme: dark; }
 html, body { background: #0b0c12; }
 
+/* Ensure full width and height */
+html, body, #__next {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Custom scrollbar hiding utilities */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -12,3 +20,35 @@ html, body { background: #0b0c12; }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+
+/* Robot color utilities for AI-themed components */
+.text-robot-blue { color: #3B82F6; }
+.text-robot-green { color: #10B981; }
+.text-robot-purple { color: #8B5CF6; }
+.text-robot-orange { color: #F59E0B; }
+.text-robot-red { color: #EF4444; }
+.text-robot-pink { color: #EC4899; }
+.text-robot-cyan { color: #06B6D4; }
+
+.bg-robot-blue { background-color: #3B82F6; }
+.bg-robot-green { background-color: #10B981; }
+.bg-robot-purple { background-color: #8B5CF6; }
+.bg-robot-orange { background-color: #F59E0B; }
+.bg-robot-red { background-color: #EF4444; }
+.bg-robot-pink { background-color: #EC4899; }
+.bg-robot-cyan { background-color: #06B6D4; }
+
+.from-robot-blue { --tw-gradient-from: #3B82F6; }
+.to-robot-blue { --tw-gradient-to: #3B82F6; }
+.from-robot-green { --tw-gradient-from: #10B981; }
+.to-robot-green { --tw-gradient-to: #10B981; }
+.from-robot-purple { --tw-gradient-from: #8B5CF6; }
+.to-robot-purple { --tw-gradient-to: #8B5CF6; }
+.from-robot-orange { --tw-gradient-from: #F59E0B; }
+.to-robot-orange { --tw-gradient-to: #F59E0B; }
+.from-robot-red { --tw-gradient-from: #EF4444; }
+.to-robot-red { --tw-gradient-to: #EF4444; }
+.from-robot-pink { --tw-gradient-from: #EC4899; }
+.to-robot-pink { --tw-gradient-to: #EC4899; }
+.from-robot-cyan { --tw-gradient-from: #06B6D4; }
+.to-robot-cyan { --tw-gradient-to: #06B6D4; }

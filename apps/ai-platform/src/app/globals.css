@@ -35,6 +35,88 @@
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
   
+  /* Mobile-first responsive utilities */
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .mobile-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+  
+  .mobile-heading {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+  
+  .mobile-spacing {
+    @apply space-y-4 sm:space-y-6 lg:space-y-8;
+  }
+  
+  .mobile-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  .mobile-margin {
+    @apply m-4 sm:m-6 lg:m-8;
+  }
+  
+  /* Touch-friendly button sizes */
+  .touch-button {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Mobile scroll optimization */
+  .mobile-scroll {
+    @apply -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile goal selection improvements */
+  .mobile-goal-grid {
+    @apply grid-cols-2 gap-3 sm:gap-4;
+  }
+  
+  .mobile-goal-card {
+    @apply min-h-[120px] sm:min-h-[140px] touch-manipulation;
+  }
+  
+  /* Mobile input improvements */
+  .mobile-input {
+    @apply min-h-[48px] text-base;
+  }
+  
+  /* Mobile button improvements */
+  .mobile-button {
+    @apply min-h-[44px] touch-manipulation active:scale-95;
+  }
+  
+  /* Mobile use case selection improvements */
+  .mobile-use-case-grid {
+    @apply grid-cols-2 gap-3 sm:gap-6;
+  }
+  
+  .mobile-use-case-card {
+    @apply min-h-[140px] sm:min-h-[160px] touch-manipulation active:scale-95;
+  }
+  
+  /* Mobile header improvements */
+  .mobile-header {
+    @apply flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6;
+  }
+  
+  .mobile-header-menu {
+    @apply w-full sm:w-auto justify-end;
+  }
+  
+  /* Mobile scrollbar hiding */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+  
   /* Robot color utilities */
   .text-robot-cyan { color: #06B6D4; }
   .text-robot-red { color: #EF4444; }

@@ -1,7 +1,7 @@
 "use client";
-
-// immport { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { config } from "../lib/config";
 
 export default function HowItWorks() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -335,7 +335,8 @@ export default function HowItWorks() {
         <div 
           className="mt-16 text-center"
         >
-          <div 
+          <a 
+            href={config.aiPlatformUrl}
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           >
             <span>Get Started Now</span>
@@ -344,7 +345,7 @@ export default function HowItWorks() {
             >
               →
             </span>
-          </div>
+          </a>
           <p className="mt-4 text-white/60 text-sm">
             Join thousands of users already using YourPals
           </p>

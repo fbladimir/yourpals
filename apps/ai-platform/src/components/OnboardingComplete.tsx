@@ -63,20 +63,20 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.6, type: "spring" }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
         {/* AI Mode Indicator */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-6"
+          className="mb-4 sm:mb-6"
         >
           <div className="relative inline-block">
             <img 
               src="/yourpalsRobot.png" 
               alt="AI Mode Active" 
-              className="h-24 mx-auto"
+              className="h-16 sm:h-20 lg:h-24 mx-auto"
             />
             {/* AI Mode Pulse Ring */}
             <motion.div
@@ -99,13 +99,13 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
             ]
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="text-robot-green font-mono text-sm tracking-widest mb-4"
+          className="text-robot-green font-mono text-xs sm:text-sm tracking-widest mb-4"
         >
           AI INTEGRATION COMPLETE
         </motion.div>
         
-        <div className="w-24 h-24 bg-gradient-to-br from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-12 h-12 text-white" />
+        <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+          <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-white" />
         </div>
       </motion.div>
 
@@ -114,7 +114,7 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-4xl font-bold text-white mb-4"
+        className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4"
       >
         🎉 Onboarding Complete!
       </motion.h2>
@@ -123,7 +123,7 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
+        className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto"
       >
         Welcome to YourPals, {user?.user_metadata?.full_name || 'friend'}! Your AI journey is about to begin!
       </motion.p>
@@ -133,16 +133,16 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-xl p-6 mb-8 border border-robot-blue/20 max-w-2xl mx-auto"
+        className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 border border-robot-blue/20 max-w-2xl mx-auto"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {/* User Info */}
           <div className="text-left">
-            <div className="flex items-center gap-3 mb-3">
-              <User className="w-5 h-5 text-robot-blue" />
-              <span className="font-semibold text-white">Your Profile</span>
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 text-robot-blue" />
+              <span className="font-semibold text-white text-sm sm:text-base">Your Profile</span>
             </div>
-            <div className="space-y-2 text-sm text-gray-300">
+            <div className="space-y-2 text-xs sm:text-sm text-gray-300">
               <div>Name: {user?.user_metadata?.full_name || 'Not set'}</div>
               <div>Email: {user?.email}</div>
               <div>Plan: {selectedPlan}</div>
@@ -151,11 +151,11 @@ export default function OnboardingComplete({ userGoals, isBusiness, selectedGoal
 
           {/* Goals & Preferences */}
           <div className="text-left">
-            <div className="flex items-center gap-3 mb-3">
-              <Target className="w-5 h-5 text-robot-green" />
-              <span className="font-semibold text-white">Your Goals</span>
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <Target className="w-4 h-4 sm:w-5 sm:h-5 text-robot-green" />
+              <span className="font-semibold text-white text-sm sm:text-base">Your Goals</span>
             </div>
-            <div className="space-y-2 text-sm text-gray-300">
+            <div className="space-y-2 text-xs sm:text-sm text-gray-300">
               <div>Primary: {selectedGoal}</div>
               <div>Use Case: {isBusiness ? 'Business' : 'Personal'}</div>
               <div>Focus Areas: {userGoals.join(', ')}</div>

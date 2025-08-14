@@ -1,3 +1,5 @@
+import { config } from "../lib/config";
+
 export default function Spotlight() {
   return (
     <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-white/[0.05]">
@@ -10,7 +12,7 @@ export default function Spotlight() {
             Join thousands of users who are already using YourPals to improve their daily lives.
           </p>
           <a
-            href="#download"
+            href={config.aiPlatformUrl}
             className="inline-flex items-center gap-3 px-8 py-4 bg-blueA hover:bg-blueB text-white font-semibold rounded-xl transition-colors duration-300 active:scale-95 touch-manipulation"
           >
             Get Started

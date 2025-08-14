@@ -269,6 +269,13 @@ export default function HomePage() {
     setCurrentStep(5)
   }
 
+  const handlePaymentInitiated = (plan: string) => {
+    setSelectedPlan(plan)
+    // Payment is being processed - user will be redirected to Stripe
+    // We'll handle the success/failure in the payment success page
+    console.log('Payment initiated for plan:', plan)
+  }
+
   const handleSkipSubscription = () => {
     // Set to free plan and complete onboarding
     setSelectedPlan('FREE')
@@ -361,16 +368,16 @@ export default function HomePage() {
   // Show sign-in/sign-up if not authenticated
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="mobile-header mb-6 sm:mb-8"
           >
-            
+
           </motion.div>
 
           {/* Auth Form Section */}
@@ -388,7 +395,7 @@ export default function HomePage() {
               className="text-center mb-12"
             >
               {/* AI Access Portal Visual */}
-              <div className="relative mb-8">
+              <div className="relative mb-6 sm:mb-8">
                 {/* Central Robot Logo */}
                 <motion.div
                   animate={{ 
@@ -401,7 +408,7 @@ export default function HomePage() {
                   <img 
                     src="/yourpalsRobot.png" 
                     alt="AI Access Portal" 
-                    className="h-24 mx-auto"
+                    className="h-16 sm:h-20 lg:h-24 mx-auto"
                   />
                 </motion.div>
                 
@@ -452,53 +459,44 @@ export default function HomePage() {
                 AI ACCESS PORTAL: READY
               </motion.div>
               
-              <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                 Access Your AI Network
               </h2>
               
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
                 Your personal AI team is ready to assist. Authenticate to enter the future.
               </p>
               
-              {/* AI System Status */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
+              {/* AI System Status - Compact Horizontal Layout */}
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-3xl mx-auto mb-4 sm:mb-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.9 }}
-                  className="bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-xl p-4 border border-robot-green/30"
+                  className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-robot-green/20 to-robot-blue/20 rounded-full border border-robot-green/30"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
-                    <span className="text-robot-green font-mono text-sm">AI-POWERED</span>
-                  </div>
-                  <div className="text-gray-300 text-sm">Neural networks active</div>
+                  <div className="w-2 h-2 bg-robot-green rounded-full animate-pulse"></div>
+                  <span className="text-robot-green font-mono text-xs font-medium">AI-POWERED</span>
                 </motion.div>
                 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.0 }}
-                  className="bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 rounded-xl p-4 border border-robot-blue/30"
+                  className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-robot-blue/20 to-robot-purple/20 rounded-full border border-robot-blue/30"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-3 h-3 bg-robot-blue rounded-full animate-pulse"></div>
-                    <span className="text-robot-blue font-mono text-sm">PERSONALIZED</span>
-                  </div>
-                  <div className="text-gray-300 text-sm">Adaptive algorithms</div>
+                  <div className="w-2 h-2 bg-robot-blue rounded-full animate-pulse"></div>
+                  <span className="text-robot-blue font-mono text-xs font-medium">PERSONALIZED</span>
                 </motion.div>
                 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 1.1 }}
-                  className="bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-xl p-4 border border-robot-purple/30"
+                  className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-robot-purple/20 to-robot-pink/20 rounded-full border border-robot-purple/30"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-3 h-3 bg-robot-purple rounded-full animate-pulse"></div>
-                    <span className="text-robot-purple font-mono text-sm">SECURE</span>
-                  </div>
-                  <div className="text-gray-300 text-sm">Quantum encryption</div>
+                  <div className="w-2 h-2 bg-robot-purple rounded-full animate-pulse"></div>
+                  <span className="text-robot-purple font-mono text-xs font-medium">SECURE</span>
                 </motion.div>
               </div>
             </motion.div>
@@ -508,7 +506,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-gray-700/50 backdrop-blur-sm"
+              className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-700/50 backdrop-blur-sm"
             >
               <AuthForm 
                 mode={authMode} 
@@ -831,17 +829,17 @@ export default function HomePage() {
 
   // Show onboarding flow if authenticated
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-8">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto w-full">
         {/* Header with User Info and Sign Out */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="mb-6 sm:mb-8"
         >
           {/* AI Mode Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* AI Mode Indicator */}
             <div className="flex items-center gap-3">
               <motion.div
@@ -855,7 +853,7 @@ export default function HomePage() {
                 <img 
                   src="/yourpalsRobot.png" 
                   alt="AI Mode Active" 
-                  className="w-12 h-12"
+                  className="w-10 h-10 sm:w-12 sm:h-12"
                 />
                 {/* AI Mode Pulse Ring */}
                 <motion.div
@@ -872,18 +870,18 @@ export default function HomePage() {
                 <motion.div
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="text-robot-blue text-sm font-mono tracking-wider"
+                  className="text-robot-blue text-xs sm:text-sm font-mono tracking-wider"
                 >
                   AI MODE ACTIVE
                 </motion.div>
-                <div className="text-white font-semibold text-lg">
+                <div className="text-white font-semibold text-base sm:text-lg">
                   {user.user_metadata?.full_name || 'User'}
                 </div>
               </div>
             </div>
             
             {/* User Menu */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <motion.div
                 animate={{ 
                   boxShadow: [
@@ -893,7 +891,7 @@ export default function HomePage() {
                   ]
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="px-4 py-2 bg-gradient-to-r from-robot-blue/20 to-robot-purple/20 border border-robot-blue/30 rounded-lg text-robot-blue font-mono text-sm"
+                className="px-3 py-2 bg-gradient-to-r from-robot-blue/20 to-robot-purple/20 border border-robot-blue/30 rounded-lg text-robot-blue font-mono text-xs text-center"
               >
                 AI ASSISTANT READY
               </motion.div>
@@ -902,20 +900,21 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200"
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-gray-800/80 to-gray-700/80 border border-gray-600/50 rounded-lg text-gray-200 hover:text-white hover:bg-gray-700/80 hover:border-gray-500/70 transition-all duration-200 text-sm backdrop-blur-sm shadow-lg min-h-[44px] flex items-center justify-center"
               >
                 <LogOut className="w-4 h-4" />
-                Exit AI Mode
+                <span className="hidden sm:inline ml-2">Exit AI Mode</span>
+                <span className="sm:hidden ml-2">Exit</span>
               </motion.button>
             </div>
           </div>
 
-          {/* Immersive AI Welcome */}
+          {/* Immersive AI Welcome - Centered */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-8"
+            className="text-center mb-6 sm:mb-8"
           >
             <motion.div
               animate={{ 
@@ -926,7 +925,7 @@ export default function HomePage() {
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="text-robot-blue font-mono text-sm tracking-widest mb-2"
+              className="text-robot-blue font-mono text-xs sm:text-sm tracking-widest mb-2"
             >
               WELCOME TO THE FUTURE
             </motion.div>
@@ -940,7 +939,7 @@ export default function HomePage() {
                 ]
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="text-4xl sm:text-6xl font-bold text-white mb-4"
+              className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-3 sm:mb-4"
             >
               AI MODE ENGAGED
             </motion.h1>
@@ -948,9 +947,9 @@ export default function HomePage() {
             <motion.p
               animate={{ opacity: [0.8, 1, 0.8] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-gray-300 text-lg max-w-2xl mx-auto"
+              className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto"
             >
-              Your personal AI team is ready to assist. Let's begin your digital transformation.
+              Let's begin your digital transformation.
             </motion.p>
           </motion.div>
         </motion.div>
@@ -976,14 +975,14 @@ export default function HomePage() {
           <div className="text-center">
             {selectedGoal === 'finance' && (
               <FinanceBot
-                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Money Pal! 💰 I'm so excited to help you with your financial goals! I can help you track expenses, create budgets, plan investments, and so much more. Let me get to know you better so I can provide the most personalized financial assistance!`}
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Money Pal! 💰 I'm excited to help you with your financial goals! I can help you track expenses, create budgets, plan investments, and more. Let me get to know you better for personalized assistance!`}
                 onAction={handlePersonalityInteraction}
                 actionText="Tell Me More About You!"
               />
             )}
             {selectedGoal === 'fitness' && (
               <FitnessBot
-                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Fitness Pal! 💪 I'm thrilled to be your health and fitness companion! Whether you want to build strength, improve endurance, eat better, or just feel more energized, I'm here to guide you every step of the way. Let's get to know each other better!`}
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Fitness Pal! 💪 I'm thrilled to be your health and fitness companion! Whether you want to build strength, improve endurance, eat better, or feel more energized, I'm here to guide you. Let's get to know each other better!`}
                 onAction={handlePersonalityInteraction}
                 actionText="Let's Get Personal!"
               />
@@ -1001,7 +1000,7 @@ export default function HomePage() {
                     Hi {user?.user_metadata?.full_name || 'there'}! I'm Productivity Pal!
                   </h2>
                   <p className="text-xl text-gray-300 mb-6">
-                    I'm here to supercharge your efficiency and help you achieve more in less time! Whether you need help with time management, task organization, or workflow optimization, I've got your back. Let me get to know you better so I can provide the most personalized productivity strategies!
+                    I'm here to supercharge your efficiency and help you achieve more in less time! Whether you need help with time management, task organization, or workflow optimization, I've got your back. Let me get to know you better for personalized strategies!
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -1016,7 +1015,7 @@ export default function HomePage() {
             )}
             {selectedGoal === 'business' && (
               <BusinessBot
-                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Business Pal! 🏢 I'm excited to help you grow your business and optimize your operations! Whether you need help with strategy, marketing, operations, or growth planning, I'm here to provide expert guidance. Let me get to know your business better so I can offer the most relevant advice!`}
+                message={`Hi ${user?.user_metadata?.full_name || 'there'}! I'm Business Pal! 🏢 I'm excited to help you grow your business and optimize operations! Whether you need help with strategy, marketing, operations, or growth planning, I'm here to provide expert guidance. Let me get to know your business better!`}
                 onAction={handlePersonalityInteraction}
                 actionText="Tell Me About Your Business!"
               />
@@ -1034,7 +1033,7 @@ export default function HomePage() {
                     Hi {user?.user_metadata?.full_name || 'there'}! I'm Your AI Pal!
                   </h2>
                   <p className="text-xl text-gray-300 mb-6">
-                    I'm so excited to help you with your goal: <span className="text-robot-blue font-semibold">"{selectedGoal}"</span>! I can't wait to learn more about you and provide personalized assistance. Let me get to know you better so I can be the most helpful AI companion possible!
+                    I'm so excited to help you with your goal: <span className="text-robot-blue font-semibold">"{selectedGoal}"</span>! I can't wait to learn more about you and provide personalized assistance. Let me get to know you better!
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -1051,7 +1050,7 @@ export default function HomePage() {
         )}
 
         {currentStep === 3 && (
-          <div className="text-center">
+          <div className="text-center px-4 sm:px-0">
             {/* AI Mode Indicator */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -1063,7 +1062,7 @@ export default function HomePage() {
                 <img 
                   src="/yourpalsRobot.png" 
                   alt="AI Mode Active" 
-                  className="h-16 mx-auto"
+                  className="h-12 sm:h-16 mx-auto"
                 />
                 {/* AI Mode Pulse Ring */}
                 <motion.div
@@ -1095,37 +1094,37 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-8"
+              className="mb-6 sm:mb-8"
             >
-              <h2 className="text-3xl font-bold text-white mb-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
                 How will you use YourPals?
               </h2>
-              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto px-4 sm:px-0">
                 This helps us personalize your AI experience and recommend the right features for you.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="grid mobile-use-case-grid max-w-4xl mx-auto">
               <motion.button
                 whileHover={{ scale: 1.02, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleUseCaseSelection(false)}
-                className="p-8 bg-gradient-to-br from-robot-blue to-robot-purple rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
+                className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-robot-blue to-robot-purple rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20 mobile-use-case-card flex flex-col items-center justify-center"
               >
-                <div className="text-6xl mb-4">👤</div>
-                <div className="font-semibold text-2xl mb-3">Personal Use</div>
-                <div className="text-lg opacity-90">For personal goals, learning, and daily tasks</div>
+                <div className="text-3xl sm:text-5xl lg:text-6xl mb-2 sm:mb-4">👤</div>
+                <div className="font-semibold text-lg sm:text-2xl mb-2 sm:mb-3">Personal Use</div>
+                <div className="text-sm sm:text-lg opacity-90">For personal goals, learning, and daily tasks</div>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.02, y: -5 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleUseCaseSelection(true)}
-                className="p-8 bg-gradient-to-br from-robot-green to-robot-blue rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20"
+                className="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-robot-green to-robot-blue rounded-2xl text-white text-center hover:shadow-lg transition-all duration-200 border-2 border-transparent hover:border-white/20 mobile-use-case-card flex flex-col items-center justify-center"
               >
-                <div className="text-6xl mb-4">🏢</div>
-                <div className="font-semibold text-2xl mb-3">Business Use</div>
-                <div className="text-lg opacity-90">For business growth, operations, and team collaboration</div>
+                <div className="text-3xl sm:text-5xl lg:text-6xl mb-2 sm:mb-4">🏢</div>
+                <div className="font-semibold text-lg sm:text-2xl mb-2 sm:mb-3">Business Use</div>
+                <div className="text-sm sm:text-lg opacity-90">For business growth, operations, and team collaboration</div>
               </motion.button>
             </div>
 
@@ -1133,11 +1132,11 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-center mt-8"
+              className="text-center mt-6 sm:mt-8"
             >
               <button
                 onClick={handleGoBack}
-                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 mx-auto"
+                className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 mx-auto px-4 py-2 rounded-lg hover:bg-gray-800/50 min-h-[44px] touch-manipulation"
               >
                 ← Go Back
               </button>
@@ -1150,6 +1149,7 @@ export default function HomePage() {
             onPlanSelected={handlePlanSelection}
             onBack={handleGoBack}
             onSkip={handleSkipSubscription}
+            onPaymentInitiated={handlePaymentInitiated}
           />
         )}
 

@@ -70,7 +70,7 @@ export default function FooterCTA() {
     { name: "About", href: "#about" },
     { name: "Privacy Policy", href: "#privacy" },
     { name: "Terms", href: "#terms" },
-    { name: "Careers", href: "#careers" },
+    { name: "Careers", href: "/careers" },
     { name: "Blog", href: "#blog" }
   ];
 
@@ -120,7 +120,7 @@ export default function FooterCTA() {
               {/* Primary CTA Button - Enhanced */}
               <a 
                 className="group relative inline-flex items-center justify-center px-8 sm:px-10 py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold text-lg sm:text-xl transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105 active:scale-95 overflow-hidden"
-                href="#pricing"
+                href={config.aiPlatformUrl}
               >
                 {/* Button background animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

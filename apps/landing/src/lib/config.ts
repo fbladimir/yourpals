@@ -11,9 +11,12 @@ export const config = {
     : 'https://moneypal.yourpals.app',
   
   // MoneyPal URL (separate app)
-  moneypalUrl: process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
-    : 'https://moneypal.yourpals.app',
+  moneypalUrl: process.env.NODE_ENV === 'production' 
+    ? 'https://moneypal.yourpals.app' 
+    : 'http://localhost:4001',
+  aiPlatformUrl: process.env.NODE_ENV === 'production' 
+    ? 'https://ai.yourpals.app' 
+    : 'http://localhost:4000',
   
   // Environment
   isDevelopment: process.env.NODE_ENV === 'development',

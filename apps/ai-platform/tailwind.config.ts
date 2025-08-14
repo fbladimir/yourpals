@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+        '3xl': '1600px',
+        '4xl': '2000px',
+      },
       colors: {
         // Robot personality colors
         'robot-blue': '#3B82F6',
@@ -23,6 +28,9 @@ const config: Config = {
         'robot-float': 'robot-float 3s ease-in-out infinite',
         'robot-bounce': 'robot-bounce 2s ease-in-out infinite',
         'personality-switch': 'personality-switch 0.5s ease-in-out',
+        'mobile-pulse': 'mobile-pulse 2s ease-in-out infinite',
+        'mobile-slide-up': 'mobile-slide-up 0.6s ease-out',
+        'mobile-fade-in': 'mobile-fade-in 0.8s ease-out',
       },
       keyframes: {
         'robot-float': {
@@ -36,6 +44,18 @@ const config: Config = {
         'personality-switch': {
           '0%': { transform: 'scale(0.8)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        'mobile-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+        },
+        'mobile-slide-up': {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'mobile-fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
       },
     },

@@ -64,20 +64,20 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
           {/* AI Mode Indicator */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="mb-8"
+            className="mb-6 sm:mb-8"
           >
             <div className="relative inline-block">
               <img 
                 src="/yourpalsRobot.png" 
                 alt="AI Mode Initializing" 
-                className="h-32 mx-auto"
+                className="h-20 sm:h-24 lg:h-32 mx-auto"
               />
               {/* AI Mode Pulse Ring */}
               <motion.div
@@ -86,7 +86,7 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
                   opacity: [0.8, 0, 0.8]
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                className="absolute inset-0 border-4 border-robot-blue rounded-full"
+                className="absolute inset-0 border-2 sm:border-4 border-robot-blue rounded-full"
               />
               {/* Secondary Pulse Ring */}
               <motion.div
@@ -95,7 +95,7 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
                   opacity: [0.4, 0, 0.4]
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
-                className="absolute inset-0 border-2 border-robot-purple rounded-full"
+                className="absolute inset-0 border border-2 border-robot-purple rounded-full"
               />
             </div>
           </motion.div>
@@ -110,7 +110,7 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
               ]
             }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="text-robot-blue font-mono text-lg tracking-widest mb-4"
+            className="text-robot-blue font-mono text-sm sm:text-lg tracking-widest mb-3 sm:mb-4"
           >
             AI MODE: INITIALIZING
           </motion.div>
@@ -124,7 +124,7 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
               ]
             }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="text-5xl sm:text-7xl font-bold text-white mb-6"
+            className="text-3xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 sm:mb-6"
           >
             ENTERING AI MODE
           </motion.h1>
@@ -132,31 +132,32 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
           <motion.p
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-xl text-gray-300 max-w-2xl mx-auto"
+            className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto"
           >
             Welcome to the future. Your AI team is preparing for deployment.
           </motion.p>
         </motion.div>
 
-        {/* AI Personalities Grid */}
+        {/* AI Personalities Grid - Compact Mobile Layout */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="mb-12"
+          className="mb-6 sm:mb-8"
         >
-          <h3 className="text-2xl font-semibold text-white mb-6">
+          <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">
             Your AI Team is Coming Online
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          {/* Mobile-Optimized Grid */}
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 max-w-2xl mx-auto">
             {aiPersonalities.map((personality, index) => (
               <motion.div
                 key={personality.name}
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: personality.delay }}
-                className={`p-4 bg-gradient-to-br ${personality.color} rounded-xl text-white text-center relative overflow-hidden`}
+                className={`p-2 sm:p-3 bg-gradient-to-br ${personality.color} rounded-lg text-white text-center relative overflow-hidden`}
               >
                 {/* Animated Background */}
                 <motion.div
@@ -175,24 +176,24 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
                       scale: [1, 1.1, 1]
                     }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: personality.delay }}
-                    className="text-3xl mb-2"
+                    className="text-xl sm:text-2xl mb-1"
                   >
                     {personality.icon}
                   </motion.div>
                   
-                  <div className="font-semibold text-lg mb-1">{personality.name}</div>
-                  <div className="text-sm opacity-90">{personality.description}</div>
+                  <div className="font-semibold text-sm mb-1">{personality.name}</div>
+                  <div className="text-xs opacity-90 leading-tight">{personality.description}</div>
                   
-                  {/* Status Indicator */}
+                  {/* Compact Status Indicator */}
                   <motion.div
                     animate={{ 
                       opacity: [0, 1, 0],
                       scale: [0.8, 1, 0.8]
                     }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: personality.delay + 1 }}
-                    className="mt-2 text-xs font-mono"
+                    className="mt-1 text-xs font-mono opacity-75"
                   >
-                    INITIALIZING...
+                    INIT...
                   </motion.div>
                 </div>
               </motion.div>
@@ -200,14 +201,14 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
           </div>
         </motion.div>
 
-        {/* Progress Section */}
+        {/* Progress Section - Compact Mobile Layout */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="mb-8"
+          className="mb-6"
         >
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-xl mx-auto">
             {/* Current Message */}
             <motion.div
               key={currentMessageIndex}
@@ -215,13 +216,13 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.5 }}
-              className="text-robot-blue font-mono text-lg mb-4"
+              className="text-robot-blue font-mono text-sm sm:text-base mb-3 text-center"
             >
               {messages[currentMessageIndex]}
             </motion.div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-gray-800 rounded-full h-3 mb-4 overflow-hidden">
+            <div className="w-full bg-gray-800 rounded-full h-2 sm:h-3 mb-3 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
@@ -243,13 +244,13 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
               </motion.div>
             </div>
 
-            <div className="text-gray-400 font-mono text-sm">
+            <div className="text-gray-400 font-mono text-xs sm:text-sm text-center">
               {progress}% Complete
             </div>
           </div>
         </motion.div>
 
-        {/* Final Message */}
+        {/* Final Message - Compact Mobile Layout */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -265,12 +266,12 @@ export default function FunLoadingScreen({ onComplete }: FunLoadingScreenProps) 
               ]
             }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="text-robot-green font-mono text-lg mb-2"
+            className="text-robot-green font-mono text-sm sm:text-base mb-2"
           >
             AI INTEGRATION IN PROGRESS
           </motion.div>
           
-          <p className="text-gray-300 text-lg">
+          <p className="text-gray-300 text-sm sm:text-base">
             🎉 **Almost there!** Your AI pals are almost ready to welcome you!
           </p>
         </motion.div>

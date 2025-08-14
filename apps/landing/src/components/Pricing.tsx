@@ -1,3 +1,5 @@
+import { config } from "../lib/config";
+
 export default function Pricing() {
   const plans = [
     {
@@ -14,7 +16,7 @@ export default function Pricing() {
       ],
       popular: false,
       cta: "Get Started Free",
-      href: "#download",
+      href: config.aiPlatformUrl,
       color: "from-slate-500 to-slate-600",
       accentColor: "text-slate-400"
     },
@@ -34,7 +36,7 @@ export default function Pricing() {
       ],
       popular: true,
       cta: "Start Pro Trial",
-      href: "#download",
+      href: config.aiPlatformUrl,
       color: "from-blue-500 to-cyan-500",
       accentColor: "text-blue-400"
     }
