@@ -1,7 +1,7 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 import { 
   ArrowLeft, 
   Plus, 
@@ -18,7 +18,13 @@ import {
   Clock,
   BarChart3,
   Wallet,
-  Zap
+  Zap,
+  X,
+  HelpCircle,
+  ArrowRight,
+  Play,
+  SkipForward,
+  Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -26,6 +32,113 @@ export default function MoneyPalPage() {
   const [activeTab, setActiveTab] = useState('overview')
   const [chatMessage, setChatMessage] = useState('')
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
+  const [showTutorial, setShowTutorial] = useState(false)
+  const [tutorialStep, setTutorialStep] = useState(0)
+  const [hasSeenTutorial, setHasSeenTutorial] = useState(false)
+  const [highlightedElement, setHighlightedElement] = useState<string | null>(null)
+  const [tutorialMode, setTutorialMode] = useState(false)
+  const [typingText, setTypingText] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const [tutorialPosition, setTutorialPosition] = useState({ x: 16, y: 16 }) // Default position
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+
+  // Refs for scrolling to elements
+  const overviewCardsRef = useRef<HTMLDivElement>(null)
+  const aiInsightsRef = useRef<HTMLDivElement>(null)
+  const quickActionsRef = useRef<HTMLDivElement>(null)
+  const navTabsRef = useRef<HTMLDivElement>(null)
+  const accountsSectionRef = useRef<HTMLDivElement>(null)
+  const aiChatRef = useRef<HTMLDivElement>(null)
+
+  // Check if this is the user's first time
+  useEffect(() => {
+    const tutorialSeen = localStorage.getItem('moneypal-tutorial-completed')
+    if (!tutorialSeen) {
+      setShowTutorial(true)
+      setTutorialMode(true)
+    }
+    
+    // Load saved tutorial position
+    const savedPosition = localStorage.getItem('moneypal-tutorial-position')
+    if (savedPosition) {
+      try {
+        setTutorialPosition(JSON.parse(savedPosition))
+      } catch (e) {
+        console.log('Could not load saved tutorial position')
+      }
+    }
+  }, [])
+
+  // Typing effect for AI messages
+  useEffect(() => {
+    if (showTutorial && tutorialSteps[tutorialStep]) {
+      const currentStep = tutorialSteps[tutorialStep]
+      setIsTyping(true)
+      setTypingText('')
+      
+      let index = 0
+      const timer = setInterval(() => {
+        if (index < currentStep.message.length) {
+          setTypingText(currentStep.message.slice(0, index + 1))
+          index++
+        } else {
+          setIsTyping(false)
+          clearInterval(timer)
+        }
+      }, 30) // Adjust speed here (lower = faster typing)
+
+      return () => clearInterval(timer)
+    }
+  }, [showTutorial, tutorialStep])
+
+  // Dragging functionality - make entire tutorial box draggable
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Allow dragging from anywhere in the tutorial box
+    setIsDragging(true)
+    const rect = e.currentTarget.getBoundingClientRect()
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    })
+  }
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      const newX = e.clientX - dragOffset.x
+      const newY = e.clientY - dragOffset.y
+      
+      // Keep tutorial within viewport bounds
+      const maxX = window.innerWidth - 400 // Tutorial width
+      const maxY = window.innerHeight - 300 // Tutorial height
+      
+      setTutorialPosition({
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
+      })
+    }
+  }
+
+  const handleMouseUp = () => {
+    if (isDragging) {
+      setIsDragging(false)
+      // Save position to localStorage
+      localStorage.setItem('moneypal-tutorial-position', JSON.stringify(tutorialPosition))
+    }
+  }
+
+  // Add/remove global mouse event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [isDragging, dragOffset])
 
   // Mock data for development - will be replaced with real data
   const mockData = {
@@ -66,6 +179,90 @@ export default function MoneyPalPage() {
     ]
   }
 
+  const tutorialSteps = [
+    {
+      id: 'welcome',
+      title: "Welcome to MoneyPal! 🎉",
+      message: "Hi! I'm MoneyPal, your AI financial co-pilot. I'm going to give you a hands-on tour of your new financial dashboard. Let's start by exploring your financial overview!",
+      action: "Click 'Next' to see your financial dashboard",
+      targetTab: 'overview',
+      highlightElement: 'overview-cards',
+      scrollTo: 'overview-cards'
+    },
+    {
+      id: 'overview-cards',
+      title: "Your Financial Command Center",
+      message: "These four cards show your financial health at a glance. You can see your total balance, monthly savings, credit score, and cash flow. The AI analyzes your data in real-time!",
+      action: "Take a look at your balance: $39,847.63 - that's impressive!",
+      targetTab: 'overview',
+      highlightElement: 'overview-cards',
+      scrollTo: 'overview-cards'
+    },
+    {
+      id: 'ai-insights',
+      title: "AI Insights & Smart Recommendations",
+      message: "This is where I shine! I constantly analyze your finances and provide personalized advice. See the green recommendation? That's high priority - you can safely move $1000 to savings this week!",
+      action: "Click the 'Move to Savings' button to see how easy it is",
+      targetTab: 'overview',
+      highlightElement: 'ai-insights',
+      scrollTo: 'ai-insights'
+    },
+    {
+      id: 'quick-actions',
+      title: "Quick Actions for Common Tasks",
+      message: "Need to link accounts, transfer money, or set goals? These quick action buttons let you perform common tasks instantly. The 'Link Accounts' button will securely connect your bank accounts.",
+      action: "Try clicking the 'Link Accounts' button - I'll show you how it works",
+      targetTab: 'overview',
+      highlightElement: 'quick-actions',
+      scrollTo: 'quick-actions'
+    },
+    {
+      id: 'navigation',
+      title: "Navigate Between Features",
+      message: "Use these tabs to switch between different views. You're currently on 'Overview', but you can also check your accounts, chat with me, set goals, and adjust settings.",
+      action: "Click on the 'Accounts' tab to see your linked accounts",
+      targetTab: 'accounts',
+      highlightElement: 'nav-tabs',
+      scrollTo: 'nav-tabs'
+    },
+    {
+      id: 'accounts',
+      title: "Manage Your Financial Accounts",
+      message: "Here you can see all your linked accounts, balances, and sync status. Each account type has its own color coding - checking accounts are blue, credit cards are red, and savings are green.",
+      action: "Notice how your Chase Checking shows $1,247.63 and syncs every 2 minutes",
+      targetTab: 'accounts',
+      highlightElement: 'accounts-section',
+      scrollTo: 'accounts-section'
+    },
+    {
+      id: 'ai-chat',
+      title: "Chat with Your AI Financial Co-Pilot",
+      message: "This is where the magic happens! You can ask me anything about your finances in natural language. Try asking 'What's my safe grocery budget?' or 'Move $300 to savings on Friday' - just like talking to a friend!",
+      action: "Click on the 'AI Chat' tab to start a conversation with me",
+      targetTab: 'ai',
+      highlightElement: 'ai-chat',
+      scrollTo: 'ai-chat'
+    },
+    {
+      id: 'chat-interface',
+      title: "Natural Language Financial Assistant",
+      message: "See how I respond to your questions? I can analyze your spending patterns, suggest budget adjustments, and even help you make financial decisions. I'm here 24/7 to help!",
+      action: "Try typing a question in the chat box below",
+      targetTab: 'ai',
+      highlightElement: 'ai-chat',
+      scrollTo: 'ai-chat'
+    },
+    {
+      id: 'completion',
+      title: "You're All Set! 🚀",
+      message: "Congratulations! You now know how to use MoneyPal like a pro. I'll learn your patterns and provide increasingly personalized advice. Feel free to explore and ask questions - I'm here to help you build wealth!",
+      action: "Click 'Get Started' to begin your financial journey",
+      targetTab: 'overview',
+      highlightElement: null,
+      scrollTo: null
+    }
+  ]
+
   const handleLinkAccounts = () => {
     setIsLinkingAccounts(true)
     // TODO: Implement Plaid integration
@@ -81,15 +278,219 @@ export default function MoneyPalPage() {
     setChatMessage('')
   }
 
+  const handleTutorialNext = () => {
+    if (tutorialStep < tutorialSteps.length - 1) {
+      const nextStep = tutorialSteps[tutorialStep + 1]
+      
+      // Switch tabs if needed
+      if (nextStep.targetTab && nextStep.targetTab !== activeTab) {
+        setActiveTab(nextStep.targetTab)
+      }
+      
+      // Scroll to element if specified
+      if (nextStep.scrollTo) {
+        setTimeout(() => {
+          const element = document.getElementById(nextStep.scrollTo)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }, 100)
+      }
+      
+      // Update highlighted element
+      setHighlightedElement(nextStep.highlightElement)
+      
+      // Intelligently reposition tutorial box based on the next step
+      const newPosition = getIntelligentPosition(nextStep.highlightElement)
+      setTutorialPosition(newPosition)
+      
+      setTutorialStep(tutorialStep + 1)
+    } else {
+      completeTutorial()
+    }
+  }
+
+  // Calculate intelligent position based on the element being highlighted
+  const getIntelligentPosition = (highlightElement: string | null) => {
+    if (!highlightElement) return { x: 16, y: 16 } // Default position
+    
+    switch (highlightElement) {
+      case 'overview-cards':
+        return { x: window.innerWidth - 450, y: 80 } // Right side, above the cards
+      case 'ai-insights':
+        return { x: window.innerWidth - 450, y: 400 } // Right side, above the insights
+      case 'quick-actions':
+        return { x: window.innerWidth - 450, y: 600 } // Right side, above the actions
+      case 'nav-tabs':
+        return { x: window.innerWidth - 450, y: 120 } // Right side, below the tabs
+      case 'accounts-section':
+        return { x: window.innerWidth - 450, y: 80 } // Right side, above the accounts
+      case 'ai-chat':
+        return { x: window.innerWidth - 450, y: 80 } // Right side, above the chat
+      default:
+        return { x: 16, y: 16 }
+    }
+  }
+
+  const handleTutorialSkip = () => {
+    completeTutorial()
+  }
+
+  const completeTutorial = () => {
+    setShowTutorial(false)
+    setTutorialMode(false)
+    setTutorialStep(0)
+    setHighlightedElement(null)
+    setHasSeenTutorial(true)
+    localStorage.setItem('moneypal-tutorial-completed', 'true')
+  }
+
+  const restartTutorial = () => {
+    setShowTutorial(true)
+    setTutorialMode(true)
+    setTutorialStep(0)
+    setHighlightedElement(null)
+    setActiveTab('overview')
+  }
+
+  const renderInteractiveTutorial = () => {
+    if (!showTutorial) return null
+
+    const currentStep = tutorialSteps[tutorialStep]
+    const isLastStep = tutorialStep === tutorialSteps.length - 1
+
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 pointer-events-none"
+        >
+          {/* AI Assistant Floating Card - Draggable and Positioned by User */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ 
+              scale: 1, 
+              opacity: 1
+            }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'absolute',
+              left: tutorialPosition.x,
+              top: tutorialPosition.y,
+              cursor: isDragging ? 'grabbing' : 'grab',
+              transition: isDragging ? 'none' : 'left 0.5s ease-out, top 0.5s ease-out'
+            }}
+            className="bg-gradient-to-br from-robot-green to-robot-blue rounded-2xl p-6 max-w-sm shadow-2xl border border-white/20 pointer-events-auto select-none"
+            onMouseDown={handleMouseDown}
+          >
+            {/* Drag Handle - Visual indicator that tutorial is draggable */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+                  🤖
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg">MoneyPal AI</h3>
+                  <p className="text-white/80 text-sm">Your Financial Guide</p>
+                </div>
+              </div>
+              <div className="text-white/60 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                  <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                  <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                </div>
+                <span className="block mt-1">Drag anywhere</span>
+              </div>
+            </div>
+
+            {/* Tutorial Content with Typing Effect */}
+            <div className="mb-4">
+              <h4 className="text-white font-semibold mb-2">{currentStep.title}</h4>
+              <div className="text-white/90 text-sm leading-relaxed mb-3 min-h-[4rem]">
+                {typingText}
+                {isTyping && (
+                  <motion.span
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="inline-block w-2 h-4 bg-white ml-1"
+                  />
+                )}
+              </div>
+              <div className="bg-white/20 rounded-lg p-3">
+                <p className="text-white text-sm font-medium">{currentStep.action}</p>
+              </div>
+            </div>
+
+            {/* Progress & Actions */}
+            <div className="space-y-3">
+              <div className="flex justify-between text-xs text-white/70">
+                <span>Step {tutorialStep + 1} of {tutorialSteps.length}</span>
+                <span>{Math.round(((tutorialStep + 1) / tutorialSteps.length) * 100)}%</span>
+              </div>
+              <div className="w-full bg-white/30 rounded-full h-2">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((tutorialStep + 1) / tutorialSteps.length) * 100}%` }}
+                  className="bg-white h-2 rounded-full transition-all duration-300"
+                />
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={handleTutorialSkip}
+                  className="flex-1 px-3 py-2 text-white/70 hover:text-white transition-colors text-sm"
+                >
+                  Skip Tour
+                </button>
+                <button
+                  onClick={handleTutorialNext}
+                  className="flex-1 px-4 py-2 bg-white text-robot-green rounded-lg font-semibold hover:bg-white/90 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  {isLastStep ? 'Get Started' : 'Next'}
+                  {isLastStep ? <Play className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Subtle Element Highlighting - No overlay blocking */}
+          {currentStep.highlightElement && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 pointer-events-none"
+            >
+              {/* Add a subtle glow effect around the highlighted element */}
+              <div className="absolute inset-0">
+                {/* This will be handled by the CSS classes on the actual elements */}
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
   const renderOverview = () => (
     <div className="space-y-6">
       {/* Financial Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div 
+        id="overview-cards" 
+        ref={overviewCardsRef}
+        className={`grid grid-cols-1 md:grid-cols-4 gap-4 transition-all duration-300 ${
+          highlightedElement === 'overview-cards' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20' : ''
+        }`}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 ring-1 ring-robot-green/30"
+          className={`bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 ring-1 ring-robot-green/30 ${
+            highlightedElement === 'overview-cards' && tutorialMode ? 'animate-pulse' : ''
+          }`}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold">Total Balance</h3>
@@ -103,7 +504,9 @@ export default function MoneyPalPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-2xl p-6 ring-1 ring-robot-purple/30"
+          className={`bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-2xl p-6 ring-1 ring-robot-purple/30 ${
+            highlightedElement === 'overview-cards' && tutorialMode ? 'animate-pulse' : ''
+          }`}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold">Monthly Savings</h3>
@@ -117,7 +520,9 @@ export default function MoneyPalPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-gradient-to-br from-robot-orange/20 to-robot-red/20 rounded-2xl p-6 ring-1 ring-robot-orange/30"
+          className={`bg-gradient-to-br from-robot-orange/20 to-robot-red/20 rounded-2xl p-6 ring-1 ring-robot-orange/30 ${
+            highlightedElement === 'overview-cards' && tutorialMode ? 'animate-pulse' : ''
+          }`}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold">Credit Score</h3>
@@ -131,7 +536,9 @@ export default function MoneyPalPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-gradient-to-br from-robot-blue/20 to-robot-cyan/20 rounded-2xl p-6 ring-1 ring-robot-blue/30"
+          className={`bg-gradient-to-br from-robot-blue/20 to-robot-cyan/20 rounded-2xl p-6 ring-1 ring-robot-blue/30 ${
+            highlightedElement === 'overview-cards' && tutorialMode ? 'animate-pulse' : ''
+          }`}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold">Cash Flow</h3>
@@ -144,10 +551,14 @@ export default function MoneyPalPage() {
 
       {/* AI Insights */}
       <motion.div
+        id="ai-insights"
+        ref={aiInsightsRef}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5 }}
-        className="bg-gradient-to-br from-robot-blue/20 to-robot-cyan/20 rounded-2xl p-6 ring-1 ring-robot-blue/30"
+        className={`bg-gradient-to-br from-robot-blue/20 to-robot-cyan/20 rounded-2xl p-6 ring-1 ring-robot-blue/30 transition-all duration-300 ${
+          highlightedElement === 'ai-insights' && tutorialMode ? 'ring-4 ring-robot-blue/50 scale-105 shadow-2xl shadow-robot-blue/20 animate-pulse' : ''
+        }`}
       >
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 bg-gradient-to-br from-robot-blue to-robot-cyan rounded-lg flex items-center justify-center">
@@ -190,10 +601,14 @@ export default function MoneyPalPage() {
 
       {/* Quick Actions */}
       <motion.div
+        id="quick-actions"
+        ref={quickActionsRef}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.7 }}
-        className="bg-gradient-to-br from-robot-purple/10 to-robot-pink/10 rounded-2xl p-6 ring-1 ring-robot-purple/20"
+        className={`bg-gradient-to-br from-robot-purple/10 to-robot-pink/10 rounded-2xl p-6 ring-1 ring-robot-purple/20 transition-all duration-300 ${
+          highlightedElement === 'quick-actions' && tutorialMode ? 'ring-4 ring-robot-purple/50 scale-105 shadow-2xl shadow-robot-purple/20 animate-pulse' : ''
+        }`}
       >
         <h3 className="text-xl font-semibold text-white mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -223,7 +638,13 @@ export default function MoneyPalPage() {
   )
 
   const renderAccounts = () => (
-    <div className="space-y-6">
+    <div 
+      id="accounts-section" 
+      ref={accountsSectionRef}
+      className={`space-y-6 transition-all duration-300 ${
+        highlightedElement === 'accounts-section' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
+      }`}
+    >
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-white">Your Accounts</h3>
         <button
@@ -242,7 +663,9 @@ export default function MoneyPalPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-gray-800/30 rounded-xl p-6 border border-gray-700"
+            className={`bg-gray-800/30 rounded-xl p-6 border border-gray-700 transition-all duration-300 ${
+              highlightedElement === 'accounts-section' && tutorialMode ? 'ring-2 ring-robot-green/30 scale-102' : ''
+            }`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -275,7 +698,13 @@ export default function MoneyPalPage() {
   )
 
   const renderAI = () => (
-    <div className="space-y-6">
+    <div 
+      id="ai-chat" 
+      ref={aiChatRef}
+      className={`space-y-6 transition-all duration-300 ${
+        highlightedElement === 'ai-chat' && tutorialMode ? 'ring-4 ring-robot-blue/50 scale-105 shadow-2xl shadow-robot-blue/20 animate-pulse' : ''
+      }`}
+    >
       <h3 className="text-xl font-semibold text-white">Chat with MoneyPal AI</h3>
       
       {/* Chat Interface */}
@@ -329,7 +758,7 @@ export default function MoneyPalPage() {
             value={chatMessage}
             onChange={(e) => setChatMessage(e.target.value)}
             placeholder="Ask MoneyPal anything about your finances..."
-            className="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-robot-blue"
+            className="flex-1 px-3 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-robot-blue"
           />
           <button
             type="submit"
@@ -352,12 +781,15 @@ export default function MoneyPalPage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      {/* Interactive AI Tutorial Overlay */}
+      {renderInteractiveTutorial()}
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="sticky top-0 z-50 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
+        className="sticky top-0 z-40 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -375,10 +807,25 @@ export default function MoneyPalPage() {
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <div className="text-robot-green font-mono text-xs tracking-wider">AI FINANCIAL CO-PILOT</div>
           </div>
+
+          {/* Tutorial Button */}
+          <button
+            onClick={restartTutorial}
+            className="flex items-center gap-2 px-3 py-2 bg-robot-blue/20 text-robot-blue rounded-lg hover:bg-robot-blue/30 transition-colors"
+          >
+            <HelpCircle className="w-4 h-4" />
+            <span className="hidden sm:inline">Tutorial</span>
+          </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex gap-2 mt-6">
+        <div 
+          id="nav-tabs" 
+          ref={navTabsRef}
+          className={`flex gap-2 mt-6 transition-all duration-300 ${
+            highlightedElement === 'nav-tabs' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
+          }`}
+        >
           {tabs.map((tab) => {
             const Icon = tab.icon
             return (
