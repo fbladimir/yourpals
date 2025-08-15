@@ -27,6 +27,9 @@ import {
   Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
+import AccountLinking from '@/components/moneypal/AccountLinking'
+
 
 export default function MoneyPalPage() {
   const [activeTab, setActiveTab] = useState('overview')
@@ -265,8 +268,6 @@ export default function MoneyPalPage() {
 
   const handleLinkAccounts = () => {
     setIsLinkingAccounts(true)
-    // TODO: Implement Plaid integration
-    setTimeout(() => setIsLinkingAccounts(false), 2000)
   }
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -388,8 +389,14 @@ export default function MoneyPalPage() {
             {/* Drag Handle - Visual indicator that tutorial is draggable */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
-                  🤖
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <Image
+                    src="/moneypal/robotavatar.PNG"
+                    alt="MoneyPal AI"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-lg">MoneyPal AI</h3>
@@ -476,6 +483,31 @@ export default function MoneyPalPage() {
 
   const renderOverview = () => (
     <div className="space-y-6">
+      {/* Account Linking Modal */}
+      <AnimatePresence>
+        {isLinkingAccounts && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          >
+          <div className="relative max-w-2xl w-full mx-4">
+            <button
+              onClick={() => setIsLinkingAccounts(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <AccountLinking 
+              userId="user-123" // TODO: Get real user ID from auth context
+              onAccountsLinked={() => setIsLinkingAccounts(false)}
+            />
+          </div>
+        </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Financial Summary Cards */}
       <div 
         id="overview-cards" 
@@ -651,7 +683,15 @@ export default function MoneyPalPage() {
           onClick={handleLinkAccounts}
           className="flex items-center gap-2 px-4 py-2 bg-robot-green text-white rounded-lg hover:bg-robot-green/80 transition-colors"
         >
-          <Plus className="w-4 h-4" />
+          <div className="w-4 h-4 bg-white/20 rounded flex items-center justify-center">
+            <Image
+              src="/moneypal/robotavatar.PNG"
+              alt="Link Account"
+              width={12}
+              height={12}
+              className="rounded"
+            />
+          </div>
           Link Account
         </button>
       </div>
@@ -669,13 +709,30 @@ export default function MoneyPalPage() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                   account.type === 'checking' ? 'bg-robot-blue/20' :
                   account.type === 'credit' ? 'bg-robot-red/20' :
                   'bg-robot-green/20'
                 }`}>
-                  {account.type === 'checking' ? '🏦' :
-                   account.type === 'credit' ? '💳' : '💰'}
+                  {account.type === 'checking' ? (
+                    <Image
+                      src="/moneypal/robotavatar.PNG"
+                      alt="Checking Account"
+                      width={24}
+                      height={24}
+                      className="rounded"
+                    />
+                  ) : account.type === 'credit' ? (
+                    <div className="w-6 h-6 bg-robot-red rounded-full"></div>
+                  ) : (
+                    <Image
+                      src="/moneypal/robotavatar.PNG"
+                      alt="Savings Account"
+                      width={24}
+                      height={24}
+                      className="rounded"
+                    />
+                  )}
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-white">{account.name}</h4>
@@ -712,7 +769,13 @@ export default function MoneyPalPage() {
         <div className="mb-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-gradient-to-br from-robot-green to-robot-blue rounded-lg flex items-center justify-center">
-              🤖
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="MoneyPal AI"
+                width={24}
+                height={24}
+                className="rounded"
+              />
             </div>
             <div>
               <h4 className="text-white font-semibold">MoneyPal AI</h4>
@@ -724,7 +787,13 @@ export default function MoneyPalPage() {
           <div className="space-y-3 mb-6">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 bg-robot-green/20 rounded-full flex items-center justify-center">
-                🤖
+                <Image
+                  src="/moneypal/robotavatar.PNG"
+                  alt="AI Response"
+                  width={16}
+                  height={16}
+                  className="rounded-full"
+                />
               </div>
               <div className="bg-robot-green/20 rounded-lg p-3 max-w-xs">
                 <p className="text-white text-sm">Hi! I'm MoneyPal, your AI financial co-pilot. I can help you with budgeting, saving, debt management, and more. What would you like to know?</p>
@@ -742,7 +811,13 @@ export default function MoneyPalPage() {
             
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 bg-robot-green/20 rounded-full flex items-center justify-center">
-                🤖
+                <Image
+                  src="/moneypal/robotavatar.PNG"
+                  alt="AI Response"
+                  width={16}
+                  height={16}
+                  className="rounded-full"
+                />
               </div>
               <div className="bg-robot-green/20 rounded-lg p-3 max-w-xs">
                 <p className="text-white text-sm">Based on your current spending patterns and upcoming bills, your safe grocery budget this week is $120. You're currently at $67, so you have $53 remaining. Want me to adjust your budget?</p>
@@ -803,7 +878,15 @@ export default function MoneyPalPage() {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="text-2xl">💰</div>
+            <div className="w-10 h-10 bg-robot-blue/20 rounded-full flex items-center justify-center">
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="MoneyPal Robot"
+                width={24}
+                height={24}
+                className="rounded-full"
+              />
+            </div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <div className="text-robot-green font-mono text-xs tracking-wider">AI FINANCIAL CO-PILOT</div>
           </div>
@@ -853,14 +936,30 @@ export default function MoneyPalPage() {
         {activeTab === 'ai' && renderAI()}
         {activeTab === 'goals' && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🎯</div>
+            <div className="w-24 h-24 bg-robot-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="Goals"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+            </div>
             <h3 className="text-xl font-semibold text-white mb-2">Goals Coming Soon</h3>
             <p className="text-gray-400">Goal setting and tracking will be available in the next phase</p>
           </div>
         )}
         {activeTab === 'settings' && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">⚙️</div>
+            <div className="w-24 h-24 bg-robot-purple/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="Settings"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+            </div>
             <h3 className="text-xl font-semibold text-white mb-2">Settings Coming Soon</h3>
             <p className="text-gray-400">Account settings and preferences will be available in the next phase</p>
           </div>
