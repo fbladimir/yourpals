@@ -29,9 +29,25 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import AccountLinking from '@/components/moneypal/AccountLinking'
+import { useAuth } from '@/contexts/AuthContext'
+import { useFinancialData } from '@/hooks/useFinancialData'
 
 
 export default function MoneyPalPage() {
+  const { user } = useAuth()
+  const { 
+    accounts, 
+    transactions, 
+    summary, 
+    insights, 
+    goals, 
+    loading, 
+    error, 
+    refreshData,
+    getSpendingByCategory,
+    getTopMerchants
+  } = useFinancialData(user?.id || '')
+  
   const [activeTab, setActiveTab] = useState('overview')
   const [chatMessage, setChatMessage] = useState('')
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
@@ -143,43 +159,31 @@ export default function MoneyPalPage() {
     }
   }, [isDragging, dragOffset])
 
-  // Mock data for development - will be replaced with real data
-  const mockData = {
-    totalBalance: 39847.63,
-    monthlyIncome: 5200,
-    monthlyExpenses: 3200,
-    monthlySavings: 1200,
-    creditScore: 745,
-    accounts: [
-      { id: 1, name: 'Chase Checking', balance: 1247.63, type: 'checking', lastSync: '2 min ago' },
-      { id: 2, name: 'Citi Credit Card', balance: -450.00, type: 'credit', lastSync: '5 min ago' },
-      { id: 3, name: 'Ally Savings', balance: 2050.00, type: 'savings', lastSync: '1 min ago' }
-    ],
+  // Real data from database - transformed for display
+  const realData = {
+    totalBalance: summary?.totalBalance || 0,
+    monthlyIncome: summary?.monthlyIncome || 0,
+    monthlyExpenses: summary?.monthlyExpenses || 0,
+    monthlySavings: summary?.monthlySavings || 0,
+    creditScore: 745, // TODO: Integrate with credit score API
+    accounts: accounts.map(account => ({
+      id: account.id,
+      name: account.name,
+      balance: Number(account.balance || account.currentBalance || 0),
+      type: account.type,
+      lastSync: account.lastSyncAt ? `${Math.floor((Date.now() - new Date(account.lastSyncAt).getTime()) / 60000)} min ago` : 'Just now'
+    })),
     upcomingBills: [
       { name: 'Netflix', amount: 15.99, dueDate: '2024-01-15', status: 'pending' },
       { name: 'Electric Bill', amount: 89.50, dueDate: '2024-01-18', status: 'pending' },
       { name: 'Rent', amount: 1200, dueDate: '2024-01-25', status: 'pending' }
     ],
-    aiInsights: [
-      { 
-        type: 'recommendation', 
-        message: 'You can safely move $1000 to your high-yield savings this week without affecting upcoming bills.',
-        action: 'Move to Savings',
-        priority: 'high'
-      },
-      { 
-        type: 'alert', 
-        message: 'Pay $200 to your Citi card now to save $30 in interest this month.',
-        action: 'Pay Now',
-        priority: 'medium'
-      },
-      { 
-        type: 'insight', 
-        message: 'Your grocery spending is 15% below budget this week. Great job!',
-        action: null,
-        priority: 'low'
-      }
-    ]
+    aiInsights: insights.map(insight => ({
+      type: insight.type === 'SPENDING_ALERT' ? 'alert' : 'recommendation',
+      message: insight.message,
+      action: insight.actionRequired ? 'Take Action' : null,
+      priority: insight.priority?.toLowerCase() || 'medium'
+    }))
   }
 
   const tutorialSteps = [
@@ -268,6 +272,23 @@ export default function MoneyPalPage() {
 
   const handleLinkAccounts = () => {
     setIsLinkingAccounts(true)
+  }
+
+  const handleAccountsLinked = () => {
+    console.log('Accounts linked! Refreshing data...')
+    setIsLinkingAccounts(false)
+    // Refresh data after linking accounts
+    refreshData()
+    console.log('Data refresh triggered')
+  }
+
+  const handleUnlinkAccount = (accountId: string) => {
+    if (confirm('Are you sure you want to unlink this account? This will remove all associated data.')) {
+      console.log('Unlinking account:', accountId)
+      // TODO: In next session, implement actual account unlinking with Plaid
+      // For now, just refresh data to show mock data again
+      refreshData()
+    }
   }
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -500,8 +521,8 @@ export default function MoneyPalPage() {
               <X className="w-6 h-6" />
             </button>
             <AccountLinking 
-              userId="user-123" // TODO: Get real user ID from auth context
-              onAccountsLinked={() => setIsLinkingAccounts(false)}
+              userId={user?.id || ''}
+              onAccountsLinked={handleAccountsLinked}
             />
           </div>
         </motion.div>
@@ -528,7 +549,7 @@ export default function MoneyPalPage() {
             <h3 className="text-white font-semibold">Total Balance</h3>
             <Wallet className="w-5 h-5 text-robot-green" />
           </div>
-          <div className="text-3xl font-bold text-white">${mockData.totalBalance.toLocaleString()}</div>
+                          <div className="text-3xl font-bold text-white">${(realData.totalBalance || 0).toLocaleString()}</div>
           <div className="text-robot-green text-sm mt-2">+$247.63 this month</div>
         </motion.div>
 
@@ -544,7 +565,7 @@ export default function MoneyPalPage() {
             <h3 className="text-white font-semibold">Monthly Savings</h3>
             <PiggyBank className="w-5 h-5 text-robot-purple" />
           </div>
-          <div className="text-3xl font-bold text-white">${mockData.monthlySavings.toLocaleString()}</div>
+          <div className="text-3xl font-bold text-white">${realData.monthlySavings.toLocaleString()}</div>
           <div className="text-robot-purple text-sm mt-2">23% of income</div>
         </motion.div>
 
@@ -560,7 +581,7 @@ export default function MoneyPalPage() {
             <h3 className="text-white font-semibold">Credit Score</h3>
             <TrendingUp className="w-5 h-5 text-robot-orange" />
           </div>
-          <div className="text-3xl font-bold text-white">{mockData.creditScore}</div>
+          <div className="text-3xl font-bold text-white">{realData.creditScore}</div>
           <div className="text-robot-orange text-sm mt-2">+12 this month</div>
         </motion.div>
 
@@ -576,7 +597,7 @@ export default function MoneyPalPage() {
             <h3 className="text-white font-semibold">Cash Flow</h3>
             <BarChart3 className="w-5 h-5 text-robot-blue" />
           </div>
-          <div className="text-3xl font-bold text-white">+${(mockData.monthlyIncome - mockData.monthlyExpenses).toLocaleString()}</div>
+          <div className="text-3xl font-bold text-white">+${(realData.monthlyIncome - realData.monthlyExpenses).toLocaleString()}</div>
           <div className="text-robot-blue text-sm mt-2">Monthly net</div>
         </motion.div>
       </div>
@@ -599,7 +620,7 @@ export default function MoneyPalPage() {
           <h3 className="text-white font-semibold text-lg">AI Insights & Recommendations</h3>
         </div>
         <div className="space-y-4">
-          {mockData.aiInsights.map((insight, index) => (
+          {realData.aiInsights.map((insight: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
@@ -642,7 +663,39 @@ export default function MoneyPalPage() {
           highlightedElement === 'quick-actions' && tutorialMode ? 'ring-4 ring-robot-purple/50 scale-105 shadow-2xl shadow-robot-purple/20 animate-pulse' : ''
         }`}
       >
-        <h3 className="text-xl font-semibold text-white mb-4">Quick Actions</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold text-white">Quick Actions</h3>
+          
+          {/* Data Status */}
+          <div className="flex items-center gap-3">
+            {loading && (
+              <div className="flex items-center gap-2 text-robot-blue/70">
+                <div className="w-4 h-4 border-2 border-robot-blue/30 border-t-robot-blue rounded-full animate-spin"></div>
+                <span className="text-sm">Syncing...</span>
+              </div>
+            )}
+            {error && (
+              <div className="flex items-center gap-2 text-robot-red/70">
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm">Sync failed</span>
+              </div>
+            )}
+            {!loading && !error && accounts.length > 0 && (
+              <div className="flex items-center gap-2 text-robot-green/70">
+                <CheckCircle className="w-4 h-4" />
+                <span className="text-sm">{accounts.length} accounts linked</span>
+              </div>
+            )}
+            <button
+              onClick={refreshData}
+              disabled={loading}
+              className="p-2 bg-robot-blue/20 hover:bg-robot-blue/30 rounded-lg border border-robot-blue/30 transition-all duration-300 disabled:opacity-50"
+              title="Refresh data"
+            >
+              <ArrowRight className="w-4 h-4 text-robot-blue" />
+            </button>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={handleLinkAccounts}
@@ -669,7 +722,9 @@ export default function MoneyPalPage() {
     </div>
   )
 
-  const renderAccounts = () => (
+  const renderAccounts = () => {
+    console.log('Rendering accounts with data:', realData.accounts)
+    return (
     <div 
       id="accounts-section" 
       ref={accountsSectionRef}
@@ -697,7 +752,7 @@ export default function MoneyPalPage() {
       </div>
 
       <div className="space-y-4">
-        {mockData.accounts.map((account, index) => (
+        {realData.accounts.map((account: any, index: number) => (
           <motion.div
             key={account.id}
             initial={{ opacity: 0, x: -20 }}
@@ -736,23 +791,30 @@ export default function MoneyPalPage() {
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-white">{account.name}</h4>
-                  <p className="text-gray-400 text-sm">Last sync: {account.lastSync}</p>
+                  <p className="text-gray-400 text-sm">Last sync: {account.lastSync || 'Just now'}</p>
                 </div>
               </div>
               <div className="text-right">
                 <div className={`text-2xl font-bold ${
-                  account.balance >= 0 ? 'text-robot-green' : 'text-robot-red'
+                  (account.balance || 0) >= 0 ? 'text-robot-green' : 'text-robot-red'
                 }`}>
-                  {account.balance >= 0 ? '+' : ''}${Math.abs(account.balance).toFixed(2)}
+                  {(account.balance || 0) >= 0 ? '+' : ''}${Math.abs(account.balance || 0).toFixed(2)}
                 </div>
                 <div className="text-gray-400 text-sm capitalize">{account.type}</div>
+                <button
+                  onClick={() => handleUnlinkAccount(account.id)}
+                  className="mt-2 px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
+                >
+                  Unlink
+                </button>
               </div>
             </div>
           </motion.div>
         ))}
       </div>
     </div>
-  )
+    )
+  }
 
   const renderAI = () => (
     <div 

@@ -8,6 +8,7 @@ import {
   SpendingAnalysis 
 } from './financial-types'
 import { plaidClient, getAccounts, getTransactions } from './plaid'
+import { databaseService } from './database-service'
 
 // Financial Data Service
 export class FinancialService {
@@ -23,35 +24,37 @@ export class FinancialService {
   }
 
   // Account Management
-  async syncAccounts(userId: string, accessToken: string): Promise<FinancialAccount[]> {
+  async syncAccounts(userId: string, accessToken: string, plaidItemId: string): Promise<any[]> {
     try {
       const plaidAccounts = await getAccounts(accessToken)
       
-      // Transform Plaid accounts to our format
-      const accounts = plaidAccounts.map(account => ({
-        id: this.generateId(),
-        userId,
-        plaidAccountId: account.account_id,
-        plaidItemId: '', // Will be set when we have item_id
-        name: account.name,
-        officialName: account.official_name || undefined,
-        type: this.mapPlaidAccountType(account.type),
-        subtype: account.subtype || undefined,
-        mask: account.mask,
-        balance: {
-          available: account.balances.available || 0,
-          current: account.balances.current || 0,
-          limit: account.balances.limit,
-          currency: account.balances.iso_currency_code
-        },
-        isActive: true,
-        lastSync: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date()
-      })) as FinancialAccount[]
+      // Transform and save each Plaid account to database
+      const savedAccounts = []
+      for (const account of plaidAccounts) {
+        try {
+          const savedAccount = await databaseService.createPlaidAccount({
+            userId,
+            plaidAccountId: account.account_id,
+            plaidItemId,
+            name: account.name,
+            officialName: account.official_name || undefined,
+            type: account.type,
+            subtype: account.subtype || undefined,
+            mask: account.mask,
+            institutionName: 'Unknown Institution', // Will be updated when we have item info
+            currentBalance: account.balances.current || 0,
+            availableBalance: account.balances.available || 0,
+            limit: account.balances.limit || undefined
+          })
+          
+          savedAccounts.push(savedAccount)
+        } catch (error) {
+          console.error(`Error saving account ${account.account_id}:`, error)
+          // Continue with other accounts
+        }
+      }
 
-      // TODO: Save to database
-      return accounts
+      return savedAccounts
     } catch (error) {
       console.error('Error syncing accounts:', error)
       throw new Error('Failed to sync accounts')
@@ -63,45 +66,45 @@ export class FinancialService {
     accessToken: string, 
     startDate: string, 
     endDate: string
-  ): Promise<Transaction[]> {
+  ): Promise<any[]> {
     try {
       const plaidTransactions = await getTransactions(accessToken, startDate, endDate)
       
-      // Transform Plaid transactions to our format
-      const transactions = plaidTransactions.map(tx => ({
-        id: this.generateId(),
-        userId,
-        accountId: '', // Will be set when we have account mapping
-        plaidTransactionId: tx.transaction_id,
-        amount: Math.abs(tx.amount), // Plaid uses negative for debits
-        currency: tx.iso_currency_code,
-        name: tx.name,
-        merchantName: tx.merchant_name || undefined,
-        category: tx.category || [],
-        categoryId: tx.category_id,
-        date: new Date(tx.date),
-        pending: tx.pending,
-        location: tx.location ? {
-          address: tx.location.address,
-          city: tx.location.city,
-          region: tx.location.region,
-          postalCode: tx.location.postal_code,
-          country: tx.location.country,
-          coordinates: tx.location.lat && tx.location.lon ? {
-            lat: tx.location.lat,
-            lon: tx.location.lon
-          } : undefined
-        } : undefined,
-        paymentChannel: this.mapPlaidPaymentChannel(tx.payment_channel),
-        transactionType: tx.transaction_type,
-        aiCategorized: false,
-        tags: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
-      })) as Transaction[]
+      // Transform and save each Plaid transaction to database
+      const savedTransactions = []
+      for (const tx of plaidTransactions) {
+        try {
+          // Find the corresponding Plaid account
+          const account = await databaseService.getPlaidAccountByPlaidId(tx.account_id)
+          if (!account) {
+            console.warn(`No account found for transaction ${tx.transaction_id}`)
+            continue
+          }
 
-      // TODO: Save to database
-      return transactions
+          const savedTransaction = await databaseService.createTransaction({
+            userId,
+            plaidAccountId: account.id,
+            plaidTransactionId: tx.transaction_id,
+            date: new Date(tx.date),
+            amount: tx.amount, // Keep Plaid's amount (negative for debits)
+            merchant: tx.name,
+            category: tx.category?.[0] || 'Uncategorized',
+            subcategory: tx.category?.[1] || undefined,
+            source: 'plaid',
+            isPending: tx.pending,
+            location: tx.location || undefined,
+            paymentChannel: tx.payment_channel,
+            transactionType: tx.transaction_type
+          })
+          
+          savedTransactions.push(savedTransaction)
+        } catch (error) {
+          console.error(`Error saving transaction ${tx.transaction_id}:`, error)
+          // Continue with other transactions
+        }
+      }
+
+      return savedTransactions
     } catch (error) {
       console.error('Error syncing transactions:', error)
       throw new Error('Failed to sync transactions')
@@ -111,20 +114,23 @@ export class FinancialService {
   // Financial Analysis
   async generateFinancialSummary(userId: string): Promise<FinancialSummary> {
     try {
-      // TODO: Get data from database
-      const mockSummary: FinancialSummary = {
+      // Get real data from database
+      const summary = await databaseService.getFinancialSummary(userId)
+      
+      // Transform to our FinancialSummary format
+      const financialSummary: FinancialSummary = {
         userId,
-        totalBalance: 0,
-        totalDebt: 0,
-        netWorth: 0,
-        monthlyIncome: 0,
-        monthlyExpenses: 0,
-        monthlySavings: 0,
-        emergencyFund: 0,
-        lastUpdated: new Date()
+        totalBalance: summary.totalBalance,
+        totalDebt: summary.totalDebt,
+        netWorth: summary.netWorth,
+        monthlyIncome: 0, // TODO: Calculate from income transactions
+        monthlyExpenses: summary.monthlyExpenses,
+        monthlySavings: 0, // TODO: Calculate from savings transactions
+        emergencyFund: 0, // TODO: Get from emergency fund goal
+        lastUpdated: summary.lastUpdated
       }
 
-      return mockSummary
+      return financialSummary
     } catch (error) {
       console.error('Error generating financial summary:', error)
       throw new Error('Failed to generate financial summary')
@@ -138,21 +144,74 @@ export class FinancialService {
     endDate: Date
   ): Promise<SpendingAnalysis> {
     try {
-      // TODO: Get transactions from database and analyze
-      const mockAnalysis: SpendingAnalysis = {
+      // Get real transactions from database
+      const transactions = await databaseService.getTransactionsByUserId(userId, {
+        startDate,
+        endDate
+      })
+
+      // Calculate spending analysis
+      const expenses = transactions.filter(tx => Number(tx.amount) < 0)
+      const totalSpent = expenses.reduce((sum, tx) => sum + Math.abs(Number(tx.amount)), 0)
+      
+      // Category breakdown
+      const categoryMap = new Map<string, { amount: number; count: number }>()
+      expenses.forEach(tx => {
+        const category = tx.category || 'Uncategorized'
+        const amount = Math.abs(Number(tx.amount))
+        const existing = categoryMap.get(category)
+        if (existing) {
+          existing.amount += amount
+          existing.count += 1
+        } else {
+          categoryMap.set(category, { amount, count: 1 })
+        }
+      })
+      
+      const categoryBreakdown = Array.from(categoryMap.entries()).map(([category, data]) => ({
+        category,
+        amount: data.amount,
+        percentage: (data.amount / totalSpent) * 100,
+        transactionCount: data.count
+      })).sort((a, b) => b.amount - a.amount)
+
+      // Top merchants
+      const merchantMap = new Map<string, { amount: number; count: number }>()
+      expenses.forEach(tx => {
+        const merchant = tx.merchant || 'Unknown'
+        const amount = Math.abs(Number(tx.amount))
+        const existing = merchantMap.get(merchant)
+        if (existing) {
+          existing.amount += amount
+          existing.count += 1
+        } else {
+          merchantMap.set(merchant, { amount, count: 1 })
+        }
+      })
+      
+      const topMerchants = Array.from(merchantMap.entries())
+        .map(([merchant, data]) => ({ 
+          merchant, 
+          amount: data.amount,
+          transactionCount: data.count
+        }))
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 10)
+
+      const analysis: SpendingAnalysis = {
         userId,
         period,
         startDate,
         endDate,
-        totalSpent: 0,
-        categoryBreakdown: [],
-        topMerchants: [],
-        spendingTrends: [],
-        insights: [],
+        totalSpent,
+        categoryBreakdown,
+        topMerchants,
+        spendingTrends: [], // TODO: Implement trend analysis
+        insights: [], // TODO: Generate AI insights
         createdAt: new Date()
       }
 
-      return mockAnalysis
+      return analysis
     } catch (error) {
       console.error('Error analyzing spending:', error)
       throw new Error('Failed to analyze spending')
@@ -160,16 +219,16 @@ export class FinancialService {
   }
 
   // Goal Management
-  async createGoal(goalData: Omit<FinancialGoal, 'id' | 'createdAt' | 'updatedAt'>): Promise<FinancialGoal> {
+  async createGoal(goalData: Omit<FinancialGoal, 'id' | 'createdAt' | 'updatedAt'>): Promise<any> {
     try {
-      const goal: FinancialGoal = {
-        ...goalData,
-        id: this.generateId(),
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
+      const goal = await databaseService.createGoal({
+        userId: goalData.userId,
+        type: goalData.type,
+        targetAmount: goalData.targetAmount,
+        targetDate: goalData.targetDate,
+        progressAmount: goalData.currentAmount || 0
+      })
 
-      // TODO: Save to database
       return goal
     } catch (error) {
       console.error('Error creating goal:', error)
@@ -188,17 +247,10 @@ export class FinancialService {
   }
 
   // Budget Management
-  async createBudget(budgetData: Omit<Budget, 'id' | 'createdAt' | 'updatedAt'>): Promise<Budget> {
+  async createBudget(budgetData: Omit<Budget, 'id' | 'createdAt' | 'updatedAt'>): Promise<any> {
     try {
-      const budget: Budget = {
-        ...budgetData,
-        id: this.generateId(),
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-
-      // TODO: Save to database
-      return budget
+      // TODO: Implement budget creation in database service
+      throw new Error('Budget creation not implemented yet')
     } catch (error) {
       console.error('Error creating budget:', error)
       throw new Error('Failed to create budget')
@@ -206,26 +258,19 @@ export class FinancialService {
   }
 
   // AI Insights
-  async generateAIInsights(userId: string): Promise<AIInsight[]> {
+  async generateAIInsights(userId: string): Promise<any[]> {
     try {
       // TODO: Implement AI analysis logic
-      const mockInsights: AIInsight[] = [
-        {
-          id: this.generateId(),
-          userId,
-          type: 'spending_pattern',
-          title: 'Unusual Spending Detected',
-          message: 'Your spending on dining out is 25% higher than last month.',
-          severity: 'warning',
-          actionRequired: false,
-          confidence: 0.85,
-          isRead: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ]
+      const mockInsight = await databaseService.createAIInsight({
+        userId,
+        type: 'SPENDING_ALERT',
+        title: 'Unusual Spending Detected',
+        message: 'Your spending on dining out is 25% higher than last month.',
+        actionRequired: false,
+        priority: 'MEDIUM'
+      })
 
-      return mockInsights
+      return [mockInsight]
     } catch (error) {
       console.error('Error generating AI insights:', error)
       throw new Error('Failed to generate AI insights')

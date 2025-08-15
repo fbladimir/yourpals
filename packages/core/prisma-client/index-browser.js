@@ -157,14 +157,24 @@ exports.Prisma.ConnectionScalarFieldEnum = {
 exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  plaidAccountId: 'plaidAccountId',
+  plaidTransactionId: 'plaidTransactionId',
   date: 'date',
   amount: 'amount',
   merchant: 'merchant',
   category: 'category',
+  subcategory: 'subcategory',
   source: 'source',
   isRecurring: 'isRecurring',
   recurringGroupId: 'recurringGroupId',
   notes: 'notes',
+  aiCategorized: 'aiCategorized',
+  aiCategory: 'aiCategory',
+  aiConfidence: 'aiConfidence',
+  isPending: 'isPending',
+  location: 'location',
+  paymentChannel: 'paymentChannel',
+  transactionType: 'transactionType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -196,6 +206,85 @@ exports.Prisma.InsightCacheScalarFieldEnum = {
   payload: 'payload',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.PlaidAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  plaidAccountId: 'plaidAccountId',
+  plaidItemId: 'plaidItemId',
+  name: 'name',
+  officialName: 'officialName',
+  type: 'type',
+  subtype: 'subtype',
+  mask: 'mask',
+  institutionName: 'institutionName',
+  institutionLogo: 'institutionLogo',
+  currentBalance: 'currentBalance',
+  availableBalance: 'availableBalance',
+  limit: 'limit',
+  lastSyncAt: 'lastSyncAt',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AIInsightScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  actionRequired: 'actionRequired',
+  actionType: 'actionType',
+  actionData: 'actionData',
+  priority: 'priority',
+  isRead: 'isRead',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AutomationRuleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  description: 'description',
+  triggerType: 'triggerType',
+  triggerData: 'triggerData',
+  actionType: 'actionType',
+  actionData: 'actionData',
+  isActive: 'isActive',
+  lastExecutedAt: 'lastExecutedAt',
+  executionCount: 'executionCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  message: 'message',
+  response: 'response',
+  context: 'context',
+  messageType: 'messageType',
+  isAI: 'isAI',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserPreferencesScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  riskTolerance: 'riskTolerance',
+  automationLevel: 'automationLevel',
+  notificationPreferences: 'notificationPreferences',
+  aiPersonality: 'aiPersonality',
+  aiResponseStyle: 'aiResponseStyle',
+  theme: 'theme',
+  tutorialCompleted: 'tutorialCompleted',
+  tutorialPosition: 'tutorialPosition',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -254,12 +343,71 @@ exports.ConnectionStatus = exports.$Enums.ConnectionStatus = {
 
 exports.GoalType = exports.$Enums.GoalType = {
   DEBT: 'DEBT',
-  SAVINGS: 'SAVINGS'
+  SAVINGS: 'SAVINGS',
+  EMERGENCY_FUND: 'EMERGENCY_FUND',
+  VACATION: 'VACATION',
+  HOME_DOWN_PAYMENT: 'HOME_DOWN_PAYMENT',
+  INVESTMENT: 'INVESTMENT',
+  OTHER: 'OTHER'
 };
 
 exports.InsightKind = exports.$Enums.InsightKind = {
   WEEKLY: 'WEEKLY',
-  DAILY: 'DAILY'
+  DAILY: 'DAILY',
+  MONTHLY: 'MONTHLY'
+};
+
+exports.AIInsightType = exports.$Enums.AIInsightType = {
+  SPENDING_ALERT: 'SPENDING_ALERT',
+  SAVINGS_OPPORTUNITY: 'SAVINGS_OPPORTUNITY',
+  BUDGET_WARNING: 'BUDGET_WARNING',
+  GOAL_PROGRESS: 'GOAL_PROGRESS',
+  UNUSUAL_ACTIVITY: 'UNUSUAL_ACTIVITY',
+  FINANCIAL_TIP: 'FINANCIAL_TIP',
+  AUTOMATION_SUGGESTION: 'AUTOMATION_SUGGESTION'
+};
+
+exports.AIInsightPriority = exports.$Enums.AIInsightPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+};
+
+exports.AutomationTriggerType = exports.$Enums.AutomationTriggerType = {
+  BALANCE_THRESHOLD: 'BALANCE_THRESHOLD',
+  TRANSACTION_CATEGORY: 'TRANSACTION_CATEGORY',
+  GOAL_PROGRESS: 'GOAL_PROGRESS',
+  SCHEDULED: 'SCHEDULED',
+  INCOME_RECEIVED: 'INCOME_RECEIVED',
+  BILL_DUE: 'BILL_DUE'
+};
+
+exports.AutomationActionType = exports.$Enums.AutomationActionType = {
+  TRANSFER_MONEY: 'TRANSFER_MONEY',
+  SET_GOAL: 'SET_GOAL',
+  CREATE_BUDGET: 'CREATE_BUDGET',
+  SEND_NOTIFICATION: 'SEND_NOTIFICATION',
+  CATEGORIZE_TRANSACTION: 'CATEGORIZE_TRANSACTION',
+  CREATE_INSIGHT: 'CREATE_INSIGHT'
+};
+
+exports.ChatMessageType = exports.$Enums.ChatMessageType = {
+  USER: 'USER',
+  AI: 'AI',
+  SYSTEM: 'SYSTEM'
+};
+
+exports.RiskTolerance = exports.$Enums.RiskTolerance = {
+  CONSERVATIVE: 'CONSERVATIVE',
+  MODERATE: 'MODERATE',
+  AGGRESSIVE: 'AGGRESSIVE'
+};
+
+exports.AutomationLevel = exports.$Enums.AutomationLevel = {
+  MINIMAL: 'MINIMAL',
+  MEDIUM: 'MEDIUM',
+  MAXIMAL: 'MAXIMAL'
 };
 
 exports.Prisma.ModelName = {
@@ -269,7 +417,12 @@ exports.Prisma.ModelName = {
   Transaction: 'Transaction',
   BudgetRule: 'BudgetRule',
   Goal: 'Goal',
-  InsightCache: 'InsightCache'
+  InsightCache: 'InsightCache',
+  PlaidAccount: 'PlaidAccount',
+  AIInsight: 'AIInsight',
+  AutomationRule: 'AutomationRule',
+  ChatMessage: 'ChatMessage',
+  UserPreferences: 'UserPreferences'
 };
 
 /**

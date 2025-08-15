@@ -24,12 +24,18 @@ model User {
   updatedAt        DateTime @updatedAt
 
   // Relations
-  subscriptions Subscription[]
-  connections   Connection[]
-  transactions  Transaction[]
-  budgetRules   BudgetRule[]
-  goals         Goal[]
-  insightCaches InsightCache[]
+  subscriptions   Subscription[]
+  connections     Connection[]
+  transactions    Transaction[]
+  budgetRules     BudgetRule[]
+  goals           Goal[]
+  insightCaches   InsightCache[]
+  // MoneyPal specific relations
+  plaidAccounts   PlaidAccount[]
+  aiInsights      AIInsight[]
+  automationRules AutomationRule[]
+  chatMessages    ChatMessage[]
+  userPreferences UserPreferences[]
 
   @@map("users")
 }
@@ -64,22 +70,35 @@ model Connection {
   @@map("connections")
 }
 
+// Enhanced Transaction model for MoneyPal
 model Transaction {
-  id               String   @id @default(cuid())
-  userId           String
-  date             DateTime
-  amount           Decimal  @db.Decimal(10, 2)
-  merchant         String
-  category         String
-  source           String
-  isRecurring      Boolean  @default(false)
-  recurringGroupId String?
-  notes            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  userId             String
+  plaidAccountId     String?
+  plaidTransactionId String?  @unique
+  date               DateTime
+  amount             Decimal  @db.Decimal(10, 2)
+  merchant           String
+  category           String
+  subcategory        String?
+  source             String
+  isRecurring        Boolean  @default(false)
+  recurringGroupId   String?
+  notes              String?
+  // MoneyPal specific fields
+  aiCategorized      Boolean  @default(false)
+  aiCategory         String?
+  aiConfidence       Float?
+  isPending          Boolean  @default(false)
+  location           Json?
+  paymentChannel     String?
+  transactionType    String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plaidAccount PlaidAccount? @relation(fields: [plaidAccountId], references: [id])
 
   @@map("transactions")
 }
@@ -128,6 +147,125 @@ model InsightCache {
   @@map("insight_caches")
 }
 
+// MoneyPal specific models
+
+// Plaid Account model for linked financial accounts
+model PlaidAccount {
+  id               String   @id @default(cuid())
+  userId           String
+  plaidAccountId   String   @unique
+  plaidItemId      String
+  name             String
+  officialName     String?
+  type             String
+  subtype          String?
+  mask             String?
+  institutionName  String
+  institutionLogo  String?
+  // Balance information
+  currentBalance   Decimal  @db.Decimal(10, 2)
+  availableBalance Decimal  @db.Decimal(10, 2)
+  limit            Decimal? @db.Decimal(10, 2)
+  // Sync information
+  lastSyncAt       DateTime @default(now())
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@map("plaid_accounts")
+}
+
+// AI Insights model for MoneyPal's AI-generated insights
+model AIInsight {
+  id             String            @id @default(cuid())
+  userId         String
+  type           AIInsightType
+  title          String
+  message        String
+  actionRequired Boolean           @default(false)
+  actionType     String?
+  actionData     Json?
+  priority       AIInsightPriority @default(MEDIUM)
+  isRead         Boolean           @default(false)
+  expiresAt      DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ai_insights")
+}
+
+// Automation Rules model for MoneyPal's smart automation
+model AutomationRule {
+  id             String                @id @default(cuid())
+  userId         String
+  name           String
+  description    String?
+  triggerType    AutomationTriggerType
+  triggerData    Json
+  actionType     AutomationActionType
+  actionData     Json
+  isActive       Boolean               @default(true)
+  lastExecutedAt DateTime?
+  executionCount Int                   @default(0)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("automation_rules")
+}
+
+// Chat Messages model for MoneyPal's AI chat interface
+model ChatMessage {
+  id          String          @id @default(cuid())
+  userId      String
+  message     String
+  response    String
+  context     Json?
+  messageType ChatMessageType @default(USER)
+  isAI        Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+// User Preferences model for MoneyPal's personalization
+model UserPreferences {
+  id                      String          @id @default(cuid())
+  userId                  String          @unique
+  // Financial preferences
+  riskTolerance           RiskTolerance   @default(MODERATE)
+  automationLevel         AutomationLevel @default(MEDIUM)
+  notificationPreferences Json?
+  // AI preferences
+  aiPersonality           String? // "friendly", "professional", "casual"
+  aiResponseStyle         String? // "detailed", "concise", "visual"
+  // UI preferences
+  theme                   String? // "light", "dark", "auto"
+  tutorialCompleted       Boolean         @default(false)
+  tutorialPosition        Json? // {x, y} coordinates
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+// Enhanced enums for MoneyPal
+
 enum SubscriptionPlan {
   FREE
   MONEYPAL_PRO
@@ -156,9 +294,70 @@ enum ConnectionStatus {
 enum GoalType {
   DEBT
   SAVINGS
+  EMERGENCY_FUND
+  VACATION
+  HOME_DOWN_PAYMENT
+  INVESTMENT
+  OTHER
 }
 
 enum InsightKind {
   WEEKLY
   DAILY
+  MONTHLY
+}
+
+// New enums for MoneyPal
+
+enum AIInsightType {
+  SPENDING_ALERT
+  SAVINGS_OPPORTUNITY
+  BUDGET_WARNING
+  GOAL_PROGRESS
+  UNUSUAL_ACTIVITY
+  FINANCIAL_TIP
+  AUTOMATION_SUGGESTION
+}
+
+enum AIInsightPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum AutomationTriggerType {
+  BALANCE_THRESHOLD
+  TRANSACTION_CATEGORY
+  GOAL_PROGRESS
+  SCHEDULED
+  INCOME_RECEIVED
+  BILL_DUE
+}
+
+enum AutomationActionType {
+  TRANSFER_MONEY
+  SET_GOAL
+  CREATE_BUDGET
+  SEND_NOTIFICATION
+  CATEGORIZE_TRANSACTION
+  CREATE_INSIGHT
+}
+
+enum ChatMessageType {
+  USER
+  AI
+  SYSTEM
+}
+
+enum RiskTolerance {
+  CONSERVATIVE
+  MODERATE
+  AGGRESSIVE
+}
+
+enum AutomationLevel {
+  MINIMAL
+  MEDIUM
+  MAXIMAL
 }

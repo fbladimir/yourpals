@@ -48,6 +48,31 @@ export type Goal = $Result.DefaultSelection<Prisma.$GoalPayload>
  * 
  */
 export type InsightCache = $Result.DefaultSelection<Prisma.$InsightCachePayload>
+/**
+ * Model PlaidAccount
+ * 
+ */
+export type PlaidAccount = $Result.DefaultSelection<Prisma.$PlaidAccountPayload>
+/**
+ * Model AIInsight
+ * 
+ */
+export type AIInsight = $Result.DefaultSelection<Prisma.$AIInsightPayload>
+/**
+ * Model AutomationRule
+ * 
+ */
+export type AutomationRule = $Result.DefaultSelection<Prisma.$AutomationRulePayload>
+/**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = $Result.DefaultSelection<Prisma.$ChatMessagePayload>
+/**
+ * Model UserPreferences
+ * 
+ */
+export type UserPreferences = $Result.DefaultSelection<Prisma.$UserPreferencesPayload>
 
 /**
  * Enums
@@ -92,7 +117,12 @@ export type ConnectionStatus = (typeof ConnectionStatus)[keyof typeof Connection
 
 export const GoalType: {
   DEBT: 'DEBT',
-  SAVINGS: 'SAVINGS'
+  SAVINGS: 'SAVINGS',
+  EMERGENCY_FUND: 'EMERGENCY_FUND',
+  VACATION: 'VACATION',
+  HOME_DOWN_PAYMENT: 'HOME_DOWN_PAYMENT',
+  INVESTMENT: 'INVESTMENT',
+  OTHER: 'OTHER'
 };
 
 export type GoalType = (typeof GoalType)[keyof typeof GoalType]
@@ -100,10 +130,85 @@ export type GoalType = (typeof GoalType)[keyof typeof GoalType]
 
 export const InsightKind: {
   WEEKLY: 'WEEKLY',
-  DAILY: 'DAILY'
+  DAILY: 'DAILY',
+  MONTHLY: 'MONTHLY'
 };
 
 export type InsightKind = (typeof InsightKind)[keyof typeof InsightKind]
+
+
+export const AIInsightType: {
+  SPENDING_ALERT: 'SPENDING_ALERT',
+  SAVINGS_OPPORTUNITY: 'SAVINGS_OPPORTUNITY',
+  BUDGET_WARNING: 'BUDGET_WARNING',
+  GOAL_PROGRESS: 'GOAL_PROGRESS',
+  UNUSUAL_ACTIVITY: 'UNUSUAL_ACTIVITY',
+  FINANCIAL_TIP: 'FINANCIAL_TIP',
+  AUTOMATION_SUGGESTION: 'AUTOMATION_SUGGESTION'
+};
+
+export type AIInsightType = (typeof AIInsightType)[keyof typeof AIInsightType]
+
+
+export const AIInsightPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+};
+
+export type AIInsightPriority = (typeof AIInsightPriority)[keyof typeof AIInsightPriority]
+
+
+export const AutomationTriggerType: {
+  BALANCE_THRESHOLD: 'BALANCE_THRESHOLD',
+  TRANSACTION_CATEGORY: 'TRANSACTION_CATEGORY',
+  GOAL_PROGRESS: 'GOAL_PROGRESS',
+  SCHEDULED: 'SCHEDULED',
+  INCOME_RECEIVED: 'INCOME_RECEIVED',
+  BILL_DUE: 'BILL_DUE'
+};
+
+export type AutomationTriggerType = (typeof AutomationTriggerType)[keyof typeof AutomationTriggerType]
+
+
+export const AutomationActionType: {
+  TRANSFER_MONEY: 'TRANSFER_MONEY',
+  SET_GOAL: 'SET_GOAL',
+  CREATE_BUDGET: 'CREATE_BUDGET',
+  SEND_NOTIFICATION: 'SEND_NOTIFICATION',
+  CATEGORIZE_TRANSACTION: 'CATEGORIZE_TRANSACTION',
+  CREATE_INSIGHT: 'CREATE_INSIGHT'
+};
+
+export type AutomationActionType = (typeof AutomationActionType)[keyof typeof AutomationActionType]
+
+
+export const ChatMessageType: {
+  USER: 'USER',
+  AI: 'AI',
+  SYSTEM: 'SYSTEM'
+};
+
+export type ChatMessageType = (typeof ChatMessageType)[keyof typeof ChatMessageType]
+
+
+export const RiskTolerance: {
+  CONSERVATIVE: 'CONSERVATIVE',
+  MODERATE: 'MODERATE',
+  AGGRESSIVE: 'AGGRESSIVE'
+};
+
+export type RiskTolerance = (typeof RiskTolerance)[keyof typeof RiskTolerance]
+
+
+export const AutomationLevel: {
+  MINIMAL: 'MINIMAL',
+  MEDIUM: 'MEDIUM',
+  MAXIMAL: 'MAXIMAL'
+};
+
+export type AutomationLevel = (typeof AutomationLevel)[keyof typeof AutomationLevel]
 
 }
 
@@ -130,6 +235,34 @@ export const GoalType: typeof $Enums.GoalType
 export type InsightKind = $Enums.InsightKind
 
 export const InsightKind: typeof $Enums.InsightKind
+
+export type AIInsightType = $Enums.AIInsightType
+
+export const AIInsightType: typeof $Enums.AIInsightType
+
+export type AIInsightPriority = $Enums.AIInsightPriority
+
+export const AIInsightPriority: typeof $Enums.AIInsightPriority
+
+export type AutomationTriggerType = $Enums.AutomationTriggerType
+
+export const AutomationTriggerType: typeof $Enums.AutomationTriggerType
+
+export type AutomationActionType = $Enums.AutomationActionType
+
+export const AutomationActionType: typeof $Enums.AutomationActionType
+
+export type ChatMessageType = $Enums.ChatMessageType
+
+export const ChatMessageType: typeof $Enums.ChatMessageType
+
+export type RiskTolerance = $Enums.RiskTolerance
+
+export const RiskTolerance: typeof $Enums.RiskTolerance
+
+export type AutomationLevel = $Enums.AutomationLevel
+
+export const AutomationLevel: typeof $Enums.AutomationLevel
 
 /**
  * ##  Prisma Client ʲˢ
@@ -323,6 +456,56 @@ export class PrismaClient<
     * ```
     */
   get insightCache(): Prisma.InsightCacheDelegate<ExtArgs>;
+
+  /**
+   * `prisma.plaidAccount`: Exposes CRUD operations for the **PlaidAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlaidAccounts
+    * const plaidAccounts = await prisma.plaidAccount.findMany()
+    * ```
+    */
+  get plaidAccount(): Prisma.PlaidAccountDelegate<ExtArgs>;
+
+  /**
+   * `prisma.aIInsight`: Exposes CRUD operations for the **AIInsight** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AIInsights
+    * const aIInsights = await prisma.aIInsight.findMany()
+    * ```
+    */
+  get aIInsight(): Prisma.AIInsightDelegate<ExtArgs>;
+
+  /**
+   * `prisma.automationRule`: Exposes CRUD operations for the **AutomationRule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AutomationRules
+    * const automationRules = await prisma.automationRule.findMany()
+    * ```
+    */
+  get automationRule(): Prisma.AutomationRuleDelegate<ExtArgs>;
+
+  /**
+   * `prisma.chatMessage`: Exposes CRUD operations for the **ChatMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatMessages
+    * const chatMessages = await prisma.chatMessage.findMany()
+    * ```
+    */
+  get chatMessage(): Prisma.ChatMessageDelegate<ExtArgs>;
+
+  /**
+   * `prisma.userPreferences`: Exposes CRUD operations for the **UserPreferences** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserPreferences
+    * const userPreferences = await prisma.userPreferences.findMany()
+    * ```
+    */
+  get userPreferences(): Prisma.UserPreferencesDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -770,7 +953,12 @@ export namespace Prisma {
     Transaction: 'Transaction',
     BudgetRule: 'BudgetRule',
     Goal: 'Goal',
-    InsightCache: 'InsightCache'
+    InsightCache: 'InsightCache',
+    PlaidAccount: 'PlaidAccount',
+    AIInsight: 'AIInsight',
+    AutomationRule: 'AutomationRule',
+    ChatMessage: 'ChatMessage',
+    UserPreferences: 'UserPreferences'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -786,7 +974,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "subscription" | "connection" | "transaction" | "budgetRule" | "goal" | "insightCache"
+      modelProps: "user" | "subscription" | "connection" | "transaction" | "budgetRule" | "goal" | "insightCache" | "plaidAccount" | "aIInsight" | "automationRule" | "chatMessage" | "userPreferences"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1280,6 +1468,356 @@ export namespace Prisma {
           }
         }
       }
+      PlaidAccount: {
+        payload: Prisma.$PlaidAccountPayload<ExtArgs>
+        fields: Prisma.PlaidAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlaidAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlaidAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.PlaidAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlaidAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          findMany: {
+            args: Prisma.PlaidAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>[]
+          }
+          create: {
+            args: Prisma.PlaidAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          createMany: {
+            args: Prisma.PlaidAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlaidAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.PlaidAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          update: {
+            args: Prisma.PlaidAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlaidAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlaidAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlaidAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlaidAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.PlaidAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlaidAccount>
+          }
+          groupBy: {
+            args: Prisma.PlaidAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlaidAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlaidAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<PlaidAccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      AIInsight: {
+        payload: Prisma.$AIInsightPayload<ExtArgs>
+        fields: Prisma.AIInsightFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AIInsightFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AIInsightFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          findFirst: {
+            args: Prisma.AIInsightFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AIInsightFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          findMany: {
+            args: Prisma.AIInsightFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>[]
+          }
+          create: {
+            args: Prisma.AIInsightCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          createMany: {
+            args: Prisma.AIInsightCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AIInsightCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>[]
+          }
+          delete: {
+            args: Prisma.AIInsightDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          update: {
+            args: Prisma.AIInsightUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          deleteMany: {
+            args: Prisma.AIInsightDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AIInsightUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AIInsightUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AIInsightPayload>
+          }
+          aggregate: {
+            args: Prisma.AIInsightAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAIInsight>
+          }
+          groupBy: {
+            args: Prisma.AIInsightGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AIInsightGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AIInsightCountArgs<ExtArgs>
+            result: $Utils.Optional<AIInsightCountAggregateOutputType> | number
+          }
+        }
+      }
+      AutomationRule: {
+        payload: Prisma.$AutomationRulePayload<ExtArgs>
+        fields: Prisma.AutomationRuleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AutomationRuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AutomationRuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          findFirst: {
+            args: Prisma.AutomationRuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AutomationRuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          findMany: {
+            args: Prisma.AutomationRuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>[]
+          }
+          create: {
+            args: Prisma.AutomationRuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          createMany: {
+            args: Prisma.AutomationRuleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AutomationRuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>[]
+          }
+          delete: {
+            args: Prisma.AutomationRuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          update: {
+            args: Prisma.AutomationRuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          deleteMany: {
+            args: Prisma.AutomationRuleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AutomationRuleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AutomationRuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutomationRulePayload>
+          }
+          aggregate: {
+            args: Prisma.AutomationRuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAutomationRule>
+          }
+          groupBy: {
+            args: Prisma.AutomationRuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AutomationRuleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AutomationRuleCountArgs<ExtArgs>
+            result: $Utils.Optional<AutomationRuleCountAggregateOutputType> | number
+          }
+        }
+      }
+      ChatMessage: {
+        payload: Prisma.$ChatMessagePayload<ExtArgs>
+        fields: Prisma.ChatMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.ChatMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findMany: {
+            args: Prisma.ChatMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          create: {
+            args: Prisma.ChatMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          createMany: {
+            args: Prisma.ChatMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.ChatMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          update: {
+            args: Prisma.ChatMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ChatMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.ChatMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatMessage>
+          }
+          groupBy: {
+            args: Prisma.ChatMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserPreferences: {
+        payload: Prisma.$UserPreferencesPayload<ExtArgs>
+        fields: Prisma.UserPreferencesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserPreferencesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserPreferencesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          findFirst: {
+            args: Prisma.UserPreferencesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserPreferencesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          findMany: {
+            args: Prisma.UserPreferencesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>[]
+          }
+          create: {
+            args: Prisma.UserPreferencesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          createMany: {
+            args: Prisma.UserPreferencesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserPreferencesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>[]
+          }
+          delete: {
+            args: Prisma.UserPreferencesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          update: {
+            args: Prisma.UserPreferencesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserPreferencesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserPreferencesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.UserPreferencesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPreferencesPayload>
+          }
+          aggregate: {
+            args: Prisma.UserPreferencesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserPreferences>
+          }
+          groupBy: {
+            args: Prisma.UserPreferencesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserPreferencesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserPreferencesCountArgs<ExtArgs>
+            result: $Utils.Optional<UserPreferencesCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1447,6 +1985,11 @@ export namespace Prisma {
     budgetRules: number
     goals: number
     insightCaches: number
+    plaidAccounts: number
+    aiInsights: number
+    automationRules: number
+    chatMessages: number
+    userPreferences: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1456,6 +1999,11 @@ export namespace Prisma {
     budgetRules?: boolean | UserCountOutputTypeCountBudgetRulesArgs
     goals?: boolean | UserCountOutputTypeCountGoalsArgs
     insightCaches?: boolean | UserCountOutputTypeCountInsightCachesArgs
+    plaidAccounts?: boolean | UserCountOutputTypeCountPlaidAccountsArgs
+    aiInsights?: boolean | UserCountOutputTypeCountAiInsightsArgs
+    automationRules?: boolean | UserCountOutputTypeCountAutomationRulesArgs
+    chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
+    userPreferences?: boolean | UserCountOutputTypeCountUserPreferencesArgs
   }
 
   // Custom InputTypes
@@ -1509,6 +2057,72 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountInsightCachesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InsightCacheWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPlaidAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlaidAccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAiInsightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AIInsightWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAutomationRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutomationRuleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserPreferencesWhereInput
+  }
+
+
+  /**
+   * Count Type PlaidAccountCountOutputType
+   */
+
+  export type PlaidAccountCountOutputType = {
+    transactions: number
+  }
+
+  export type PlaidAccountCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transactions?: boolean | PlaidAccountCountOutputTypeCountTransactionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlaidAccountCountOutputType without action
+   */
+  export type PlaidAccountCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccountCountOutputType
+     */
+    select?: PlaidAccountCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlaidAccountCountOutputType without action
+   */
+  export type PlaidAccountCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
   }
 
 
@@ -1718,6 +2332,11 @@ export namespace Prisma {
     budgetRules?: boolean | User$budgetRulesArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
     insightCaches?: boolean | User$insightCachesArgs<ExtArgs>
+    plaidAccounts?: boolean | User$plaidAccountsArgs<ExtArgs>
+    aiInsights?: boolean | User$aiInsightsArgs<ExtArgs>
+    automationRules?: boolean | User$automationRulesArgs<ExtArgs>
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
+    userPreferences?: boolean | User$userPreferencesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1752,6 +2371,11 @@ export namespace Prisma {
     budgetRules?: boolean | User$budgetRulesArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
     insightCaches?: boolean | User$insightCachesArgs<ExtArgs>
+    plaidAccounts?: boolean | User$plaidAccountsArgs<ExtArgs>
+    aiInsights?: boolean | User$aiInsightsArgs<ExtArgs>
+    automationRules?: boolean | User$automationRulesArgs<ExtArgs>
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
+    userPreferences?: boolean | User$userPreferencesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1765,6 +2389,11 @@ export namespace Prisma {
       budgetRules: Prisma.$BudgetRulePayload<ExtArgs>[]
       goals: Prisma.$GoalPayload<ExtArgs>[]
       insightCaches: Prisma.$InsightCachePayload<ExtArgs>[]
+      plaidAccounts: Prisma.$PlaidAccountPayload<ExtArgs>[]
+      aiInsights: Prisma.$AIInsightPayload<ExtArgs>[]
+      automationRules: Prisma.$AutomationRulePayload<ExtArgs>[]
+      chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
+      userPreferences: Prisma.$UserPreferencesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2146,6 +2775,11 @@ export namespace Prisma {
     budgetRules<T extends User$budgetRulesArgs<ExtArgs> = {}>(args?: Subset<T, User$budgetRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BudgetRulePayload<ExtArgs>, T, "findMany"> | Null>
     goals<T extends User$goalsArgs<ExtArgs> = {}>(args?: Subset<T, User$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany"> | Null>
     insightCaches<T extends User$insightCachesArgs<ExtArgs> = {}>(args?: Subset<T, User$insightCachesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InsightCachePayload<ExtArgs>, T, "findMany"> | Null>
+    plaidAccounts<T extends User$plaidAccountsArgs<ExtArgs> = {}>(args?: Subset<T, User$plaidAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findMany"> | Null>
+    aiInsights<T extends User$aiInsightsArgs<ExtArgs> = {}>(args?: Subset<T, User$aiInsightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findMany"> | Null>
+    automationRules<T extends User$automationRulesArgs<ExtArgs> = {}>(args?: Subset<T, User$automationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findMany"> | Null>
+    chatMessages<T extends User$chatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany"> | Null>
+    userPreferences<T extends User$userPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$userPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2615,6 +3249,106 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InsightCacheScalarFieldEnum | InsightCacheScalarFieldEnum[]
+  }
+
+  /**
+   * User.plaidAccounts
+   */
+  export type User$plaidAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    where?: PlaidAccountWhereInput
+    orderBy?: PlaidAccountOrderByWithRelationInput | PlaidAccountOrderByWithRelationInput[]
+    cursor?: PlaidAccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlaidAccountScalarFieldEnum | PlaidAccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.aiInsights
+   */
+  export type User$aiInsightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    where?: AIInsightWhereInput
+    orderBy?: AIInsightOrderByWithRelationInput | AIInsightOrderByWithRelationInput[]
+    cursor?: AIInsightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AIInsightScalarFieldEnum | AIInsightScalarFieldEnum[]
+  }
+
+  /**
+   * User.automationRules
+   */
+  export type User$automationRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    where?: AutomationRuleWhereInput
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    cursor?: AutomationRuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * User.chatMessages
+   */
+  export type User$chatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    cursor?: ChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * User.userPreferences
+   */
+  export type User$userPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    where?: UserPreferencesWhereInput
+    orderBy?: UserPreferencesOrderByWithRelationInput | UserPreferencesOrderByWithRelationInput[]
+    cursor?: UserPreferencesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserPreferencesScalarFieldEnum | UserPreferencesScalarFieldEnum[]
   }
 
   /**
@@ -4556,23 +5290,34 @@ export namespace Prisma {
 
   export type TransactionAvgAggregateOutputType = {
     amount: Decimal | null
+    aiConfidence: number | null
   }
 
   export type TransactionSumAggregateOutputType = {
     amount: Decimal | null
+    aiConfidence: number | null
   }
 
   export type TransactionMinAggregateOutputType = {
     id: string | null
     userId: string | null
+    plaidAccountId: string | null
+    plaidTransactionId: string | null
     date: Date | null
     amount: Decimal | null
     merchant: string | null
     category: string | null
+    subcategory: string | null
     source: string | null
     isRecurring: boolean | null
     recurringGroupId: string | null
     notes: string | null
+    aiCategorized: boolean | null
+    aiCategory: string | null
+    aiConfidence: number | null
+    isPending: boolean | null
+    paymentChannel: string | null
+    transactionType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4580,14 +5325,23 @@ export namespace Prisma {
   export type TransactionMaxAggregateOutputType = {
     id: string | null
     userId: string | null
+    plaidAccountId: string | null
+    plaidTransactionId: string | null
     date: Date | null
     amount: Decimal | null
     merchant: string | null
     category: string | null
+    subcategory: string | null
     source: string | null
     isRecurring: boolean | null
     recurringGroupId: string | null
     notes: string | null
+    aiCategorized: boolean | null
+    aiCategory: string | null
+    aiConfidence: number | null
+    isPending: boolean | null
+    paymentChannel: string | null
+    transactionType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4595,14 +5349,24 @@ export namespace Prisma {
   export type TransactionCountAggregateOutputType = {
     id: number
     userId: number
+    plaidAccountId: number
+    plaidTransactionId: number
     date: number
     amount: number
     merchant: number
     category: number
+    subcategory: number
     source: number
     isRecurring: number
     recurringGroupId: number
     notes: number
+    aiCategorized: number
+    aiCategory: number
+    aiConfidence: number
+    isPending: number
+    location: number
+    paymentChannel: number
+    transactionType: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4611,23 +5375,34 @@ export namespace Prisma {
 
   export type TransactionAvgAggregateInputType = {
     amount?: true
+    aiConfidence?: true
   }
 
   export type TransactionSumAggregateInputType = {
     amount?: true
+    aiConfidence?: true
   }
 
   export type TransactionMinAggregateInputType = {
     id?: true
     userId?: true
+    plaidAccountId?: true
+    plaidTransactionId?: true
     date?: true
     amount?: true
     merchant?: true
     category?: true
+    subcategory?: true
     source?: true
     isRecurring?: true
     recurringGroupId?: true
     notes?: true
+    aiCategorized?: true
+    aiCategory?: true
+    aiConfidence?: true
+    isPending?: true
+    paymentChannel?: true
+    transactionType?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4635,14 +5410,23 @@ export namespace Prisma {
   export type TransactionMaxAggregateInputType = {
     id?: true
     userId?: true
+    plaidAccountId?: true
+    plaidTransactionId?: true
     date?: true
     amount?: true
     merchant?: true
     category?: true
+    subcategory?: true
     source?: true
     isRecurring?: true
     recurringGroupId?: true
     notes?: true
+    aiCategorized?: true
+    aiCategory?: true
+    aiConfidence?: true
+    isPending?: true
+    paymentChannel?: true
+    transactionType?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4650,14 +5434,24 @@ export namespace Prisma {
   export type TransactionCountAggregateInputType = {
     id?: true
     userId?: true
+    plaidAccountId?: true
+    plaidTransactionId?: true
     date?: true
     amount?: true
     merchant?: true
     category?: true
+    subcategory?: true
     source?: true
     isRecurring?: true
     recurringGroupId?: true
     notes?: true
+    aiCategorized?: true
+    aiCategory?: true
+    aiConfidence?: true
+    isPending?: true
+    location?: true
+    paymentChannel?: true
+    transactionType?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4752,14 +5546,24 @@ export namespace Prisma {
   export type TransactionGroupByOutputType = {
     id: string
     userId: string
+    plaidAccountId: string | null
+    plaidTransactionId: string | null
     date: Date
     amount: Decimal
     merchant: string
     category: string
+    subcategory: string | null
     source: string
     isRecurring: boolean
     recurringGroupId: string | null
     notes: string | null
+    aiCategorized: boolean
+    aiCategory: string | null
+    aiConfidence: number | null
+    isPending: boolean
+    location: JsonValue | null
+    paymentChannel: string | null
+    transactionType: string | null
     createdAt: Date
     updatedAt: Date
     _count: TransactionCountAggregateOutputType | null
@@ -4786,73 +5590,118 @@ export namespace Prisma {
   export type TransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    plaidAccountId?: boolean
+    plaidTransactionId?: boolean
     date?: boolean
     amount?: boolean
     merchant?: boolean
     category?: boolean
+    subcategory?: boolean
     source?: boolean
     isRecurring?: boolean
     recurringGroupId?: boolean
     notes?: boolean
+    aiCategorized?: boolean
+    aiCategory?: boolean
+    aiConfidence?: boolean
+    isPending?: boolean
+    location?: boolean
+    paymentChannel?: boolean
+    transactionType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    plaidAccount?: boolean | Transaction$plaidAccountArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    plaidAccountId?: boolean
+    plaidTransactionId?: boolean
     date?: boolean
     amount?: boolean
     merchant?: boolean
     category?: boolean
+    subcategory?: boolean
     source?: boolean
     isRecurring?: boolean
     recurringGroupId?: boolean
     notes?: boolean
+    aiCategorized?: boolean
+    aiCategory?: boolean
+    aiConfidence?: boolean
+    isPending?: boolean
+    location?: boolean
+    paymentChannel?: boolean
+    transactionType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    plaidAccount?: boolean | Transaction$plaidAccountArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectScalar = {
     id?: boolean
     userId?: boolean
+    plaidAccountId?: boolean
+    plaidTransactionId?: boolean
     date?: boolean
     amount?: boolean
     merchant?: boolean
     category?: boolean
+    subcategory?: boolean
     source?: boolean
     isRecurring?: boolean
     recurringGroupId?: boolean
     notes?: boolean
+    aiCategorized?: boolean
+    aiCategory?: boolean
+    aiConfidence?: boolean
+    isPending?: boolean
+    location?: boolean
+    paymentChannel?: boolean
+    transactionType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    plaidAccount?: boolean | Transaction$plaidAccountArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    plaidAccount?: boolean | Transaction$plaidAccountArgs<ExtArgs>
   }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      plaidAccount: Prisma.$PlaidAccountPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
+      plaidAccountId: string | null
+      plaidTransactionId: string | null
       date: Date
       amount: Prisma.Decimal
       merchant: string
       category: string
+      subcategory: string | null
       source: string
       isRecurring: boolean
       recurringGroupId: string | null
       notes: string | null
+      aiCategorized: boolean
+      aiCategory: string | null
+      aiConfidence: number | null
+      isPending: boolean
+      location: Prisma.JsonValue | null
+      paymentChannel: string | null
+      transactionType: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["transaction"]>
@@ -5220,6 +6069,7 @@ export namespace Prisma {
   export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    plaidAccount<T extends Transaction$plaidAccountArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$plaidAccountArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5251,14 +6101,24 @@ export namespace Prisma {
   interface TransactionFieldRefs {
     readonly id: FieldRef<"Transaction", 'String'>
     readonly userId: FieldRef<"Transaction", 'String'>
+    readonly plaidAccountId: FieldRef<"Transaction", 'String'>
+    readonly plaidTransactionId: FieldRef<"Transaction", 'String'>
     readonly date: FieldRef<"Transaction", 'DateTime'>
     readonly amount: FieldRef<"Transaction", 'Decimal'>
     readonly merchant: FieldRef<"Transaction", 'String'>
     readonly category: FieldRef<"Transaction", 'String'>
+    readonly subcategory: FieldRef<"Transaction", 'String'>
     readonly source: FieldRef<"Transaction", 'String'>
     readonly isRecurring: FieldRef<"Transaction", 'Boolean'>
     readonly recurringGroupId: FieldRef<"Transaction", 'String'>
     readonly notes: FieldRef<"Transaction", 'String'>
+    readonly aiCategorized: FieldRef<"Transaction", 'Boolean'>
+    readonly aiCategory: FieldRef<"Transaction", 'String'>
+    readonly aiConfidence: FieldRef<"Transaction", 'Float'>
+    readonly isPending: FieldRef<"Transaction", 'Boolean'>
+    readonly location: FieldRef<"Transaction", 'Json'>
+    readonly paymentChannel: FieldRef<"Transaction", 'String'>
+    readonly transactionType: FieldRef<"Transaction", 'String'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
     readonly updatedAt: FieldRef<"Transaction", 'DateTime'>
   }
@@ -5576,6 +6436,21 @@ export namespace Prisma {
      * Filter which Transactions to delete
      */
     where?: TransactionWhereInput
+  }
+
+  /**
+   * Transaction.plaidAccount
+   */
+  export type Transaction$plaidAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    where?: PlaidAccountWhereInput
   }
 
   /**
@@ -8521,6 +9396,5217 @@ export namespace Prisma {
 
 
   /**
+   * Model PlaidAccount
+   */
+
+  export type AggregatePlaidAccount = {
+    _count: PlaidAccountCountAggregateOutputType | null
+    _avg: PlaidAccountAvgAggregateOutputType | null
+    _sum: PlaidAccountSumAggregateOutputType | null
+    _min: PlaidAccountMinAggregateOutputType | null
+    _max: PlaidAccountMaxAggregateOutputType | null
+  }
+
+  export type PlaidAccountAvgAggregateOutputType = {
+    currentBalance: Decimal | null
+    availableBalance: Decimal | null
+    limit: Decimal | null
+  }
+
+  export type PlaidAccountSumAggregateOutputType = {
+    currentBalance: Decimal | null
+    availableBalance: Decimal | null
+    limit: Decimal | null
+  }
+
+  export type PlaidAccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    plaidAccountId: string | null
+    plaidItemId: string | null
+    name: string | null
+    officialName: string | null
+    type: string | null
+    subtype: string | null
+    mask: string | null
+    institutionName: string | null
+    institutionLogo: string | null
+    currentBalance: Decimal | null
+    availableBalance: Decimal | null
+    limit: Decimal | null
+    lastSyncAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlaidAccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    plaidAccountId: string | null
+    plaidItemId: string | null
+    name: string | null
+    officialName: string | null
+    type: string | null
+    subtype: string | null
+    mask: string | null
+    institutionName: string | null
+    institutionLogo: string | null
+    currentBalance: Decimal | null
+    availableBalance: Decimal | null
+    limit: Decimal | null
+    lastSyncAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlaidAccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    plaidAccountId: number
+    plaidItemId: number
+    name: number
+    officialName: number
+    type: number
+    subtype: number
+    mask: number
+    institutionName: number
+    institutionLogo: number
+    currentBalance: number
+    availableBalance: number
+    limit: number
+    lastSyncAt: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlaidAccountAvgAggregateInputType = {
+    currentBalance?: true
+    availableBalance?: true
+    limit?: true
+  }
+
+  export type PlaidAccountSumAggregateInputType = {
+    currentBalance?: true
+    availableBalance?: true
+    limit?: true
+  }
+
+  export type PlaidAccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    plaidAccountId?: true
+    plaidItemId?: true
+    name?: true
+    officialName?: true
+    type?: true
+    subtype?: true
+    mask?: true
+    institutionName?: true
+    institutionLogo?: true
+    currentBalance?: true
+    availableBalance?: true
+    limit?: true
+    lastSyncAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlaidAccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    plaidAccountId?: true
+    plaidItemId?: true
+    name?: true
+    officialName?: true
+    type?: true
+    subtype?: true
+    mask?: true
+    institutionName?: true
+    institutionLogo?: true
+    currentBalance?: true
+    availableBalance?: true
+    limit?: true
+    lastSyncAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlaidAccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    plaidAccountId?: true
+    plaidItemId?: true
+    name?: true
+    officialName?: true
+    type?: true
+    subtype?: true
+    mask?: true
+    institutionName?: true
+    institutionLogo?: true
+    currentBalance?: true
+    availableBalance?: true
+    limit?: true
+    lastSyncAt?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlaidAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlaidAccount to aggregate.
+     */
+    where?: PlaidAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaidAccounts to fetch.
+     */
+    orderBy?: PlaidAccountOrderByWithRelationInput | PlaidAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlaidAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaidAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaidAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlaidAccounts
+    **/
+    _count?: true | PlaidAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlaidAccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlaidAccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlaidAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlaidAccountMaxAggregateInputType
+  }
+
+  export type GetPlaidAccountAggregateType<T extends PlaidAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlaidAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlaidAccount[P]>
+      : GetScalarType<T[P], AggregatePlaidAccount[P]>
+  }
+
+
+
+
+  export type PlaidAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlaidAccountWhereInput
+    orderBy?: PlaidAccountOrderByWithAggregationInput | PlaidAccountOrderByWithAggregationInput[]
+    by: PlaidAccountScalarFieldEnum[] | PlaidAccountScalarFieldEnum
+    having?: PlaidAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlaidAccountCountAggregateInputType | true
+    _avg?: PlaidAccountAvgAggregateInputType
+    _sum?: PlaidAccountSumAggregateInputType
+    _min?: PlaidAccountMinAggregateInputType
+    _max?: PlaidAccountMaxAggregateInputType
+  }
+
+  export type PlaidAccountGroupByOutputType = {
+    id: string
+    userId: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName: string | null
+    type: string
+    subtype: string | null
+    mask: string | null
+    institutionName: string
+    institutionLogo: string | null
+    currentBalance: Decimal
+    availableBalance: Decimal
+    limit: Decimal | null
+    lastSyncAt: Date
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: PlaidAccountCountAggregateOutputType | null
+    _avg: PlaidAccountAvgAggregateOutputType | null
+    _sum: PlaidAccountSumAggregateOutputType | null
+    _min: PlaidAccountMinAggregateOutputType | null
+    _max: PlaidAccountMaxAggregateOutputType | null
+  }
+
+  type GetPlaidAccountGroupByPayload<T extends PlaidAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlaidAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlaidAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlaidAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], PlaidAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlaidAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    plaidAccountId?: boolean
+    plaidItemId?: boolean
+    name?: boolean
+    officialName?: boolean
+    type?: boolean
+    subtype?: boolean
+    mask?: boolean
+    institutionName?: boolean
+    institutionLogo?: boolean
+    currentBalance?: boolean
+    availableBalance?: boolean
+    limit?: boolean
+    lastSyncAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transactions?: boolean | PlaidAccount$transactionsArgs<ExtArgs>
+    _count?: boolean | PlaidAccountCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plaidAccount"]>
+
+  export type PlaidAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    plaidAccountId?: boolean
+    plaidItemId?: boolean
+    name?: boolean
+    officialName?: boolean
+    type?: boolean
+    subtype?: boolean
+    mask?: boolean
+    institutionName?: boolean
+    institutionLogo?: boolean
+    currentBalance?: boolean
+    availableBalance?: boolean
+    limit?: boolean
+    lastSyncAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["plaidAccount"]>
+
+  export type PlaidAccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    plaidAccountId?: boolean
+    plaidItemId?: boolean
+    name?: boolean
+    officialName?: boolean
+    type?: boolean
+    subtype?: boolean
+    mask?: boolean
+    institutionName?: boolean
+    institutionLogo?: boolean
+    currentBalance?: boolean
+    availableBalance?: boolean
+    limit?: boolean
+    lastSyncAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlaidAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transactions?: boolean | PlaidAccount$transactionsArgs<ExtArgs>
+    _count?: boolean | PlaidAccountCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlaidAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PlaidAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlaidAccount"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      plaidAccountId: string
+      plaidItemId: string
+      name: string
+      officialName: string | null
+      type: string
+      subtype: string | null
+      mask: string | null
+      institutionName: string
+      institutionLogo: string | null
+      currentBalance: Prisma.Decimal
+      availableBalance: Prisma.Decimal
+      limit: Prisma.Decimal | null
+      lastSyncAt: Date
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["plaidAccount"]>
+    composites: {}
+  }
+
+  type PlaidAccountGetPayload<S extends boolean | null | undefined | PlaidAccountDefaultArgs> = $Result.GetResult<Prisma.$PlaidAccountPayload, S>
+
+  type PlaidAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PlaidAccountFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PlaidAccountCountAggregateInputType | true
+    }
+
+  export interface PlaidAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlaidAccount'], meta: { name: 'PlaidAccount' } }
+    /**
+     * Find zero or one PlaidAccount that matches the filter.
+     * @param {PlaidAccountFindUniqueArgs} args - Arguments to find a PlaidAccount
+     * @example
+     * // Get one PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlaidAccountFindUniqueArgs>(args: SelectSubset<T, PlaidAccountFindUniqueArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PlaidAccount that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PlaidAccountFindUniqueOrThrowArgs} args - Arguments to find a PlaidAccount
+     * @example
+     * // Get one PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlaidAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, PlaidAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PlaidAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountFindFirstArgs} args - Arguments to find a PlaidAccount
+     * @example
+     * // Get one PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlaidAccountFindFirstArgs>(args?: SelectSubset<T, PlaidAccountFindFirstArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PlaidAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountFindFirstOrThrowArgs} args - Arguments to find a PlaidAccount
+     * @example
+     * // Get one PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlaidAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, PlaidAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PlaidAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlaidAccounts
+     * const plaidAccounts = await prisma.plaidAccount.findMany()
+     * 
+     * // Get first 10 PlaidAccounts
+     * const plaidAccounts = await prisma.plaidAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const plaidAccountWithIdOnly = await prisma.plaidAccount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlaidAccountFindManyArgs>(args?: SelectSubset<T, PlaidAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PlaidAccount.
+     * @param {PlaidAccountCreateArgs} args - Arguments to create a PlaidAccount.
+     * @example
+     * // Create one PlaidAccount
+     * const PlaidAccount = await prisma.plaidAccount.create({
+     *   data: {
+     *     // ... data to create a PlaidAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlaidAccountCreateArgs>(args: SelectSubset<T, PlaidAccountCreateArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PlaidAccounts.
+     * @param {PlaidAccountCreateManyArgs} args - Arguments to create many PlaidAccounts.
+     * @example
+     * // Create many PlaidAccounts
+     * const plaidAccount = await prisma.plaidAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlaidAccountCreateManyArgs>(args?: SelectSubset<T, PlaidAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlaidAccounts and returns the data saved in the database.
+     * @param {PlaidAccountCreateManyAndReturnArgs} args - Arguments to create many PlaidAccounts.
+     * @example
+     * // Create many PlaidAccounts
+     * const plaidAccount = await prisma.plaidAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlaidAccounts and only return the `id`
+     * const plaidAccountWithIdOnly = await prisma.plaidAccount.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlaidAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, PlaidAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PlaidAccount.
+     * @param {PlaidAccountDeleteArgs} args - Arguments to delete one PlaidAccount.
+     * @example
+     * // Delete one PlaidAccount
+     * const PlaidAccount = await prisma.plaidAccount.delete({
+     *   where: {
+     *     // ... filter to delete one PlaidAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlaidAccountDeleteArgs>(args: SelectSubset<T, PlaidAccountDeleteArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PlaidAccount.
+     * @param {PlaidAccountUpdateArgs} args - Arguments to update one PlaidAccount.
+     * @example
+     * // Update one PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlaidAccountUpdateArgs>(args: SelectSubset<T, PlaidAccountUpdateArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PlaidAccounts.
+     * @param {PlaidAccountDeleteManyArgs} args - Arguments to filter PlaidAccounts to delete.
+     * @example
+     * // Delete a few PlaidAccounts
+     * const { count } = await prisma.plaidAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlaidAccountDeleteManyArgs>(args?: SelectSubset<T, PlaidAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlaidAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlaidAccounts
+     * const plaidAccount = await prisma.plaidAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlaidAccountUpdateManyArgs>(args: SelectSubset<T, PlaidAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlaidAccount.
+     * @param {PlaidAccountUpsertArgs} args - Arguments to update or create a PlaidAccount.
+     * @example
+     * // Update or create a PlaidAccount
+     * const plaidAccount = await prisma.plaidAccount.upsert({
+     *   create: {
+     *     // ... data to create a PlaidAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlaidAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlaidAccountUpsertArgs>(args: SelectSubset<T, PlaidAccountUpsertArgs<ExtArgs>>): Prisma__PlaidAccountClient<$Result.GetResult<Prisma.$PlaidAccountPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PlaidAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountCountArgs} args - Arguments to filter PlaidAccounts to count.
+     * @example
+     * // Count the number of PlaidAccounts
+     * const count = await prisma.plaidAccount.count({
+     *   where: {
+     *     // ... the filter for the PlaidAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlaidAccountCountArgs>(
+      args?: Subset<T, PlaidAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlaidAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlaidAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlaidAccountAggregateArgs>(args: Subset<T, PlaidAccountAggregateArgs>): Prisma.PrismaPromise<GetPlaidAccountAggregateType<T>>
+
+    /**
+     * Group by PlaidAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlaidAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlaidAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlaidAccountGroupByArgs['orderBy'] }
+        : { orderBy?: PlaidAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlaidAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlaidAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlaidAccount model
+   */
+  readonly fields: PlaidAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlaidAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlaidAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    transactions<T extends PlaidAccount$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, PlaidAccount$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlaidAccount model
+   */ 
+  interface PlaidAccountFieldRefs {
+    readonly id: FieldRef<"PlaidAccount", 'String'>
+    readonly userId: FieldRef<"PlaidAccount", 'String'>
+    readonly plaidAccountId: FieldRef<"PlaidAccount", 'String'>
+    readonly plaidItemId: FieldRef<"PlaidAccount", 'String'>
+    readonly name: FieldRef<"PlaidAccount", 'String'>
+    readonly officialName: FieldRef<"PlaidAccount", 'String'>
+    readonly type: FieldRef<"PlaidAccount", 'String'>
+    readonly subtype: FieldRef<"PlaidAccount", 'String'>
+    readonly mask: FieldRef<"PlaidAccount", 'String'>
+    readonly institutionName: FieldRef<"PlaidAccount", 'String'>
+    readonly institutionLogo: FieldRef<"PlaidAccount", 'String'>
+    readonly currentBalance: FieldRef<"PlaidAccount", 'Decimal'>
+    readonly availableBalance: FieldRef<"PlaidAccount", 'Decimal'>
+    readonly limit: FieldRef<"PlaidAccount", 'Decimal'>
+    readonly lastSyncAt: FieldRef<"PlaidAccount", 'DateTime'>
+    readonly isActive: FieldRef<"PlaidAccount", 'Boolean'>
+    readonly createdAt: FieldRef<"PlaidAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlaidAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlaidAccount findUnique
+   */
+  export type PlaidAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaidAccount to fetch.
+     */
+    where: PlaidAccountWhereUniqueInput
+  }
+
+  /**
+   * PlaidAccount findUniqueOrThrow
+   */
+  export type PlaidAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaidAccount to fetch.
+     */
+    where: PlaidAccountWhereUniqueInput
+  }
+
+  /**
+   * PlaidAccount findFirst
+   */
+  export type PlaidAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaidAccount to fetch.
+     */
+    where?: PlaidAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaidAccounts to fetch.
+     */
+    orderBy?: PlaidAccountOrderByWithRelationInput | PlaidAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlaidAccounts.
+     */
+    cursor?: PlaidAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaidAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaidAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlaidAccounts.
+     */
+    distinct?: PlaidAccountScalarFieldEnum | PlaidAccountScalarFieldEnum[]
+  }
+
+  /**
+   * PlaidAccount findFirstOrThrow
+   */
+  export type PlaidAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaidAccount to fetch.
+     */
+    where?: PlaidAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaidAccounts to fetch.
+     */
+    orderBy?: PlaidAccountOrderByWithRelationInput | PlaidAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlaidAccounts.
+     */
+    cursor?: PlaidAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaidAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaidAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlaidAccounts.
+     */
+    distinct?: PlaidAccountScalarFieldEnum | PlaidAccountScalarFieldEnum[]
+  }
+
+  /**
+   * PlaidAccount findMany
+   */
+  export type PlaidAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which PlaidAccounts to fetch.
+     */
+    where?: PlaidAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlaidAccounts to fetch.
+     */
+    orderBy?: PlaidAccountOrderByWithRelationInput | PlaidAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlaidAccounts.
+     */
+    cursor?: PlaidAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlaidAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlaidAccounts.
+     */
+    skip?: number
+    distinct?: PlaidAccountScalarFieldEnum | PlaidAccountScalarFieldEnum[]
+  }
+
+  /**
+   * PlaidAccount create
+   */
+  export type PlaidAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlaidAccount.
+     */
+    data: XOR<PlaidAccountCreateInput, PlaidAccountUncheckedCreateInput>
+  }
+
+  /**
+   * PlaidAccount createMany
+   */
+  export type PlaidAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlaidAccounts.
+     */
+    data: PlaidAccountCreateManyInput | PlaidAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlaidAccount createManyAndReturn
+   */
+  export type PlaidAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PlaidAccounts.
+     */
+    data: PlaidAccountCreateManyInput | PlaidAccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlaidAccount update
+   */
+  export type PlaidAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlaidAccount.
+     */
+    data: XOR<PlaidAccountUpdateInput, PlaidAccountUncheckedUpdateInput>
+    /**
+     * Choose, which PlaidAccount to update.
+     */
+    where: PlaidAccountWhereUniqueInput
+  }
+
+  /**
+   * PlaidAccount updateMany
+   */
+  export type PlaidAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlaidAccounts.
+     */
+    data: XOR<PlaidAccountUpdateManyMutationInput, PlaidAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which PlaidAccounts to update
+     */
+    where?: PlaidAccountWhereInput
+  }
+
+  /**
+   * PlaidAccount upsert
+   */
+  export type PlaidAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlaidAccount to update in case it exists.
+     */
+    where: PlaidAccountWhereUniqueInput
+    /**
+     * In case the PlaidAccount found by the `where` argument doesn't exist, create a new PlaidAccount with this data.
+     */
+    create: XOR<PlaidAccountCreateInput, PlaidAccountUncheckedCreateInput>
+    /**
+     * In case the PlaidAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlaidAccountUpdateInput, PlaidAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * PlaidAccount delete
+   */
+  export type PlaidAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+    /**
+     * Filter which PlaidAccount to delete.
+     */
+    where: PlaidAccountWhereUniqueInput
+  }
+
+  /**
+   * PlaidAccount deleteMany
+   */
+  export type PlaidAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlaidAccounts to delete
+     */
+    where?: PlaidAccountWhereInput
+  }
+
+  /**
+   * PlaidAccount.transactions
+   */
+  export type PlaidAccount$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * PlaidAccount without action
+   */
+  export type PlaidAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlaidAccount
+     */
+    select?: PlaidAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlaidAccountInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AIInsight
+   */
+
+  export type AggregateAIInsight = {
+    _count: AIInsightCountAggregateOutputType | null
+    _min: AIInsightMinAggregateOutputType | null
+    _max: AIInsightMaxAggregateOutputType | null
+  }
+
+  export type AIInsightMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: $Enums.AIInsightType | null
+    title: string | null
+    message: string | null
+    actionRequired: boolean | null
+    actionType: string | null
+    priority: $Enums.AIInsightPriority | null
+    isRead: boolean | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AIInsightMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: $Enums.AIInsightType | null
+    title: string | null
+    message: string | null
+    actionRequired: boolean | null
+    actionType: string | null
+    priority: $Enums.AIInsightPriority | null
+    isRead: boolean | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AIInsightCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    title: number
+    message: number
+    actionRequired: number
+    actionType: number
+    actionData: number
+    priority: number
+    isRead: number
+    expiresAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AIInsightMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    message?: true
+    actionRequired?: true
+    actionType?: true
+    priority?: true
+    isRead?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AIInsightMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    message?: true
+    actionRequired?: true
+    actionType?: true
+    priority?: true
+    isRead?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AIInsightCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    title?: true
+    message?: true
+    actionRequired?: true
+    actionType?: true
+    actionData?: true
+    priority?: true
+    isRead?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AIInsightAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AIInsight to aggregate.
+     */
+    where?: AIInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIInsights to fetch.
+     */
+    orderBy?: AIInsightOrderByWithRelationInput | AIInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AIInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AIInsights
+    **/
+    _count?: true | AIInsightCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AIInsightMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AIInsightMaxAggregateInputType
+  }
+
+  export type GetAIInsightAggregateType<T extends AIInsightAggregateArgs> = {
+        [P in keyof T & keyof AggregateAIInsight]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAIInsight[P]>
+      : GetScalarType<T[P], AggregateAIInsight[P]>
+  }
+
+
+
+
+  export type AIInsightGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AIInsightWhereInput
+    orderBy?: AIInsightOrderByWithAggregationInput | AIInsightOrderByWithAggregationInput[]
+    by: AIInsightScalarFieldEnum[] | AIInsightScalarFieldEnum
+    having?: AIInsightScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AIInsightCountAggregateInputType | true
+    _min?: AIInsightMinAggregateInputType
+    _max?: AIInsightMaxAggregateInputType
+  }
+
+  export type AIInsightGroupByOutputType = {
+    id: string
+    userId: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired: boolean
+    actionType: string | null
+    actionData: JsonValue | null
+    priority: $Enums.AIInsightPriority
+    isRead: boolean
+    expiresAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AIInsightCountAggregateOutputType | null
+    _min: AIInsightMinAggregateOutputType | null
+    _max: AIInsightMaxAggregateOutputType | null
+  }
+
+  type GetAIInsightGroupByPayload<T extends AIInsightGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AIInsightGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AIInsightGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AIInsightGroupByOutputType[P]>
+            : GetScalarType<T[P], AIInsightGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AIInsightSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    actionRequired?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    priority?: boolean
+    isRead?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aIInsight"]>
+
+  export type AIInsightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    actionRequired?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    priority?: boolean
+    isRead?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aIInsight"]>
+
+  export type AIInsightSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    actionRequired?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    priority?: boolean
+    isRead?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AIInsightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AIInsightIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AIInsightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AIInsight"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      type: $Enums.AIInsightType
+      title: string
+      message: string
+      actionRequired: boolean
+      actionType: string | null
+      actionData: Prisma.JsonValue | null
+      priority: $Enums.AIInsightPriority
+      isRead: boolean
+      expiresAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aIInsight"]>
+    composites: {}
+  }
+
+  type AIInsightGetPayload<S extends boolean | null | undefined | AIInsightDefaultArgs> = $Result.GetResult<Prisma.$AIInsightPayload, S>
+
+  type AIInsightCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AIInsightFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AIInsightCountAggregateInputType | true
+    }
+
+  export interface AIInsightDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AIInsight'], meta: { name: 'AIInsight' } }
+    /**
+     * Find zero or one AIInsight that matches the filter.
+     * @param {AIInsightFindUniqueArgs} args - Arguments to find a AIInsight
+     * @example
+     * // Get one AIInsight
+     * const aIInsight = await prisma.aIInsight.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AIInsightFindUniqueArgs>(args: SelectSubset<T, AIInsightFindUniqueArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AIInsight that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AIInsightFindUniqueOrThrowArgs} args - Arguments to find a AIInsight
+     * @example
+     * // Get one AIInsight
+     * const aIInsight = await prisma.aIInsight.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AIInsightFindUniqueOrThrowArgs>(args: SelectSubset<T, AIInsightFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AIInsight that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightFindFirstArgs} args - Arguments to find a AIInsight
+     * @example
+     * // Get one AIInsight
+     * const aIInsight = await prisma.aIInsight.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AIInsightFindFirstArgs>(args?: SelectSubset<T, AIInsightFindFirstArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AIInsight that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightFindFirstOrThrowArgs} args - Arguments to find a AIInsight
+     * @example
+     * // Get one AIInsight
+     * const aIInsight = await prisma.aIInsight.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AIInsightFindFirstOrThrowArgs>(args?: SelectSubset<T, AIInsightFindFirstOrThrowArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AIInsights that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AIInsights
+     * const aIInsights = await prisma.aIInsight.findMany()
+     * 
+     * // Get first 10 AIInsights
+     * const aIInsights = await prisma.aIInsight.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aIInsightWithIdOnly = await prisma.aIInsight.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AIInsightFindManyArgs>(args?: SelectSubset<T, AIInsightFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AIInsight.
+     * @param {AIInsightCreateArgs} args - Arguments to create a AIInsight.
+     * @example
+     * // Create one AIInsight
+     * const AIInsight = await prisma.aIInsight.create({
+     *   data: {
+     *     // ... data to create a AIInsight
+     *   }
+     * })
+     * 
+     */
+    create<T extends AIInsightCreateArgs>(args: SelectSubset<T, AIInsightCreateArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AIInsights.
+     * @param {AIInsightCreateManyArgs} args - Arguments to create many AIInsights.
+     * @example
+     * // Create many AIInsights
+     * const aIInsight = await prisma.aIInsight.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AIInsightCreateManyArgs>(args?: SelectSubset<T, AIInsightCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AIInsights and returns the data saved in the database.
+     * @param {AIInsightCreateManyAndReturnArgs} args - Arguments to create many AIInsights.
+     * @example
+     * // Create many AIInsights
+     * const aIInsight = await prisma.aIInsight.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AIInsights and only return the `id`
+     * const aIInsightWithIdOnly = await prisma.aIInsight.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AIInsightCreateManyAndReturnArgs>(args?: SelectSubset<T, AIInsightCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a AIInsight.
+     * @param {AIInsightDeleteArgs} args - Arguments to delete one AIInsight.
+     * @example
+     * // Delete one AIInsight
+     * const AIInsight = await prisma.aIInsight.delete({
+     *   where: {
+     *     // ... filter to delete one AIInsight
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AIInsightDeleteArgs>(args: SelectSubset<T, AIInsightDeleteArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AIInsight.
+     * @param {AIInsightUpdateArgs} args - Arguments to update one AIInsight.
+     * @example
+     * // Update one AIInsight
+     * const aIInsight = await prisma.aIInsight.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AIInsightUpdateArgs>(args: SelectSubset<T, AIInsightUpdateArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AIInsights.
+     * @param {AIInsightDeleteManyArgs} args - Arguments to filter AIInsights to delete.
+     * @example
+     * // Delete a few AIInsights
+     * const { count } = await prisma.aIInsight.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AIInsightDeleteManyArgs>(args?: SelectSubset<T, AIInsightDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AIInsights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AIInsights
+     * const aIInsight = await prisma.aIInsight.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AIInsightUpdateManyArgs>(args: SelectSubset<T, AIInsightUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AIInsight.
+     * @param {AIInsightUpsertArgs} args - Arguments to update or create a AIInsight.
+     * @example
+     * // Update or create a AIInsight
+     * const aIInsight = await prisma.aIInsight.upsert({
+     *   create: {
+     *     // ... data to create a AIInsight
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AIInsight we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AIInsightUpsertArgs>(args: SelectSubset<T, AIInsightUpsertArgs<ExtArgs>>): Prisma__AIInsightClient<$Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AIInsights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightCountArgs} args - Arguments to filter AIInsights to count.
+     * @example
+     * // Count the number of AIInsights
+     * const count = await prisma.aIInsight.count({
+     *   where: {
+     *     // ... the filter for the AIInsights we want to count
+     *   }
+     * })
+    **/
+    count<T extends AIInsightCountArgs>(
+      args?: Subset<T, AIInsightCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AIInsightCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AIInsight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AIInsightAggregateArgs>(args: Subset<T, AIInsightAggregateArgs>): Prisma.PrismaPromise<GetAIInsightAggregateType<T>>
+
+    /**
+     * Group by AIInsight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AIInsightGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AIInsightGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AIInsightGroupByArgs['orderBy'] }
+        : { orderBy?: AIInsightGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AIInsightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAIInsightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AIInsight model
+   */
+  readonly fields: AIInsightFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AIInsight.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AIInsightClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AIInsight model
+   */ 
+  interface AIInsightFieldRefs {
+    readonly id: FieldRef<"AIInsight", 'String'>
+    readonly userId: FieldRef<"AIInsight", 'String'>
+    readonly type: FieldRef<"AIInsight", 'AIInsightType'>
+    readonly title: FieldRef<"AIInsight", 'String'>
+    readonly message: FieldRef<"AIInsight", 'String'>
+    readonly actionRequired: FieldRef<"AIInsight", 'Boolean'>
+    readonly actionType: FieldRef<"AIInsight", 'String'>
+    readonly actionData: FieldRef<"AIInsight", 'Json'>
+    readonly priority: FieldRef<"AIInsight", 'AIInsightPriority'>
+    readonly isRead: FieldRef<"AIInsight", 'Boolean'>
+    readonly expiresAt: FieldRef<"AIInsight", 'DateTime'>
+    readonly createdAt: FieldRef<"AIInsight", 'DateTime'>
+    readonly updatedAt: FieldRef<"AIInsight", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AIInsight findUnique
+   */
+  export type AIInsightFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AIInsight to fetch.
+     */
+    where: AIInsightWhereUniqueInput
+  }
+
+  /**
+   * AIInsight findUniqueOrThrow
+   */
+  export type AIInsightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AIInsight to fetch.
+     */
+    where: AIInsightWhereUniqueInput
+  }
+
+  /**
+   * AIInsight findFirst
+   */
+  export type AIInsightFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AIInsight to fetch.
+     */
+    where?: AIInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIInsights to fetch.
+     */
+    orderBy?: AIInsightOrderByWithRelationInput | AIInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AIInsights.
+     */
+    cursor?: AIInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AIInsights.
+     */
+    distinct?: AIInsightScalarFieldEnum | AIInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AIInsight findFirstOrThrow
+   */
+  export type AIInsightFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AIInsight to fetch.
+     */
+    where?: AIInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIInsights to fetch.
+     */
+    orderBy?: AIInsightOrderByWithRelationInput | AIInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AIInsights.
+     */
+    cursor?: AIInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AIInsights.
+     */
+    distinct?: AIInsightScalarFieldEnum | AIInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AIInsight findMany
+   */
+  export type AIInsightFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AIInsights to fetch.
+     */
+    where?: AIInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AIInsights to fetch.
+     */
+    orderBy?: AIInsightOrderByWithRelationInput | AIInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AIInsights.
+     */
+    cursor?: AIInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AIInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AIInsights.
+     */
+    skip?: number
+    distinct?: AIInsightScalarFieldEnum | AIInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AIInsight create
+   */
+  export type AIInsightCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AIInsight.
+     */
+    data: XOR<AIInsightCreateInput, AIInsightUncheckedCreateInput>
+  }
+
+  /**
+   * AIInsight createMany
+   */
+  export type AIInsightCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AIInsights.
+     */
+    data: AIInsightCreateManyInput | AIInsightCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AIInsight createManyAndReturn
+   */
+  export type AIInsightCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many AIInsights.
+     */
+    data: AIInsightCreateManyInput | AIInsightCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AIInsight update
+   */
+  export type AIInsightUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AIInsight.
+     */
+    data: XOR<AIInsightUpdateInput, AIInsightUncheckedUpdateInput>
+    /**
+     * Choose, which AIInsight to update.
+     */
+    where: AIInsightWhereUniqueInput
+  }
+
+  /**
+   * AIInsight updateMany
+   */
+  export type AIInsightUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AIInsights.
+     */
+    data: XOR<AIInsightUpdateManyMutationInput, AIInsightUncheckedUpdateManyInput>
+    /**
+     * Filter which AIInsights to update
+     */
+    where?: AIInsightWhereInput
+  }
+
+  /**
+   * AIInsight upsert
+   */
+  export type AIInsightUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AIInsight to update in case it exists.
+     */
+    where: AIInsightWhereUniqueInput
+    /**
+     * In case the AIInsight found by the `where` argument doesn't exist, create a new AIInsight with this data.
+     */
+    create: XOR<AIInsightCreateInput, AIInsightUncheckedCreateInput>
+    /**
+     * In case the AIInsight was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AIInsightUpdateInput, AIInsightUncheckedUpdateInput>
+  }
+
+  /**
+   * AIInsight delete
+   */
+  export type AIInsightDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+    /**
+     * Filter which AIInsight to delete.
+     */
+    where: AIInsightWhereUniqueInput
+  }
+
+  /**
+   * AIInsight deleteMany
+   */
+  export type AIInsightDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AIInsights to delete
+     */
+    where?: AIInsightWhereInput
+  }
+
+  /**
+   * AIInsight without action
+   */
+  export type AIInsightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AIInsight
+     */
+    select?: AIInsightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AIInsightInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AutomationRule
+   */
+
+  export type AggregateAutomationRule = {
+    _count: AutomationRuleCountAggregateOutputType | null
+    _avg: AutomationRuleAvgAggregateOutputType | null
+    _sum: AutomationRuleSumAggregateOutputType | null
+    _min: AutomationRuleMinAggregateOutputType | null
+    _max: AutomationRuleMaxAggregateOutputType | null
+  }
+
+  export type AutomationRuleAvgAggregateOutputType = {
+    executionCount: number | null
+  }
+
+  export type AutomationRuleSumAggregateOutputType = {
+    executionCount: number | null
+  }
+
+  export type AutomationRuleMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    triggerType: $Enums.AutomationTriggerType | null
+    actionType: $Enums.AutomationActionType | null
+    isActive: boolean | null
+    lastExecutedAt: Date | null
+    executionCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutomationRuleMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    triggerType: $Enums.AutomationTriggerType | null
+    actionType: $Enums.AutomationActionType | null
+    isActive: boolean | null
+    lastExecutedAt: Date | null
+    executionCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutomationRuleCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    description: number
+    triggerType: number
+    triggerData: number
+    actionType: number
+    actionData: number
+    isActive: number
+    lastExecutedAt: number
+    executionCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AutomationRuleAvgAggregateInputType = {
+    executionCount?: true
+  }
+
+  export type AutomationRuleSumAggregateInputType = {
+    executionCount?: true
+  }
+
+  export type AutomationRuleMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    triggerType?: true
+    actionType?: true
+    isActive?: true
+    lastExecutedAt?: true
+    executionCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutomationRuleMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    triggerType?: true
+    actionType?: true
+    isActive?: true
+    lastExecutedAt?: true
+    executionCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutomationRuleCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    triggerType?: true
+    triggerData?: true
+    actionType?: true
+    actionData?: true
+    isActive?: true
+    lastExecutedAt?: true
+    executionCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AutomationRuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutomationRule to aggregate.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AutomationRules
+    **/
+    _count?: true | AutomationRuleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AutomationRuleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AutomationRuleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AutomationRuleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AutomationRuleMaxAggregateInputType
+  }
+
+  export type GetAutomationRuleAggregateType<T extends AutomationRuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateAutomationRule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAutomationRule[P]>
+      : GetScalarType<T[P], AggregateAutomationRule[P]>
+  }
+
+
+
+
+  export type AutomationRuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutomationRuleWhereInput
+    orderBy?: AutomationRuleOrderByWithAggregationInput | AutomationRuleOrderByWithAggregationInput[]
+    by: AutomationRuleScalarFieldEnum[] | AutomationRuleScalarFieldEnum
+    having?: AutomationRuleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AutomationRuleCountAggregateInputType | true
+    _avg?: AutomationRuleAvgAggregateInputType
+    _sum?: AutomationRuleSumAggregateInputType
+    _min?: AutomationRuleMinAggregateInputType
+    _max?: AutomationRuleMaxAggregateInputType
+  }
+
+  export type AutomationRuleGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    description: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonValue
+    isActive: boolean
+    lastExecutedAt: Date | null
+    executionCount: number
+    createdAt: Date
+    updatedAt: Date
+    _count: AutomationRuleCountAggregateOutputType | null
+    _avg: AutomationRuleAvgAggregateOutputType | null
+    _sum: AutomationRuleSumAggregateOutputType | null
+    _min: AutomationRuleMinAggregateOutputType | null
+    _max: AutomationRuleMaxAggregateOutputType | null
+  }
+
+  type GetAutomationRuleGroupByPayload<T extends AutomationRuleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AutomationRuleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AutomationRuleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AutomationRuleGroupByOutputType[P]>
+            : GetScalarType<T[P], AutomationRuleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AutomationRuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    triggerType?: boolean
+    triggerData?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    isActive?: boolean
+    lastExecutedAt?: boolean
+    executionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["automationRule"]>
+
+  export type AutomationRuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    triggerType?: boolean
+    triggerData?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    isActive?: boolean
+    lastExecutedAt?: boolean
+    executionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["automationRule"]>
+
+  export type AutomationRuleSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    triggerType?: boolean
+    triggerData?: boolean
+    actionType?: boolean
+    actionData?: boolean
+    isActive?: boolean
+    lastExecutedAt?: boolean
+    executionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AutomationRuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AutomationRuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AutomationRulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AutomationRule"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      description: string | null
+      triggerType: $Enums.AutomationTriggerType
+      triggerData: Prisma.JsonValue
+      actionType: $Enums.AutomationActionType
+      actionData: Prisma.JsonValue
+      isActive: boolean
+      lastExecutedAt: Date | null
+      executionCount: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["automationRule"]>
+    composites: {}
+  }
+
+  type AutomationRuleGetPayload<S extends boolean | null | undefined | AutomationRuleDefaultArgs> = $Result.GetResult<Prisma.$AutomationRulePayload, S>
+
+  type AutomationRuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AutomationRuleFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AutomationRuleCountAggregateInputType | true
+    }
+
+  export interface AutomationRuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AutomationRule'], meta: { name: 'AutomationRule' } }
+    /**
+     * Find zero or one AutomationRule that matches the filter.
+     * @param {AutomationRuleFindUniqueArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AutomationRuleFindUniqueArgs>(args: SelectSubset<T, AutomationRuleFindUniqueArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AutomationRule that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AutomationRuleFindUniqueOrThrowArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AutomationRuleFindUniqueOrThrowArgs>(args: SelectSubset<T, AutomationRuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AutomationRule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindFirstArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AutomationRuleFindFirstArgs>(args?: SelectSubset<T, AutomationRuleFindFirstArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AutomationRule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindFirstOrThrowArgs} args - Arguments to find a AutomationRule
+     * @example
+     * // Get one AutomationRule
+     * const automationRule = await prisma.automationRule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AutomationRuleFindFirstOrThrowArgs>(args?: SelectSubset<T, AutomationRuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AutomationRules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AutomationRules
+     * const automationRules = await prisma.automationRule.findMany()
+     * 
+     * // Get first 10 AutomationRules
+     * const automationRules = await prisma.automationRule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const automationRuleWithIdOnly = await prisma.automationRule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AutomationRuleFindManyArgs>(args?: SelectSubset<T, AutomationRuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AutomationRule.
+     * @param {AutomationRuleCreateArgs} args - Arguments to create a AutomationRule.
+     * @example
+     * // Create one AutomationRule
+     * const AutomationRule = await prisma.automationRule.create({
+     *   data: {
+     *     // ... data to create a AutomationRule
+     *   }
+     * })
+     * 
+     */
+    create<T extends AutomationRuleCreateArgs>(args: SelectSubset<T, AutomationRuleCreateArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AutomationRules.
+     * @param {AutomationRuleCreateManyArgs} args - Arguments to create many AutomationRules.
+     * @example
+     * // Create many AutomationRules
+     * const automationRule = await prisma.automationRule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AutomationRuleCreateManyArgs>(args?: SelectSubset<T, AutomationRuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AutomationRules and returns the data saved in the database.
+     * @param {AutomationRuleCreateManyAndReturnArgs} args - Arguments to create many AutomationRules.
+     * @example
+     * // Create many AutomationRules
+     * const automationRule = await prisma.automationRule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AutomationRules and only return the `id`
+     * const automationRuleWithIdOnly = await prisma.automationRule.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AutomationRuleCreateManyAndReturnArgs>(args?: SelectSubset<T, AutomationRuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a AutomationRule.
+     * @param {AutomationRuleDeleteArgs} args - Arguments to delete one AutomationRule.
+     * @example
+     * // Delete one AutomationRule
+     * const AutomationRule = await prisma.automationRule.delete({
+     *   where: {
+     *     // ... filter to delete one AutomationRule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AutomationRuleDeleteArgs>(args: SelectSubset<T, AutomationRuleDeleteArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AutomationRule.
+     * @param {AutomationRuleUpdateArgs} args - Arguments to update one AutomationRule.
+     * @example
+     * // Update one AutomationRule
+     * const automationRule = await prisma.automationRule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AutomationRuleUpdateArgs>(args: SelectSubset<T, AutomationRuleUpdateArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AutomationRules.
+     * @param {AutomationRuleDeleteManyArgs} args - Arguments to filter AutomationRules to delete.
+     * @example
+     * // Delete a few AutomationRules
+     * const { count } = await prisma.automationRule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AutomationRuleDeleteManyArgs>(args?: SelectSubset<T, AutomationRuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutomationRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AutomationRules
+     * const automationRule = await prisma.automationRule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AutomationRuleUpdateManyArgs>(args: SelectSubset<T, AutomationRuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AutomationRule.
+     * @param {AutomationRuleUpsertArgs} args - Arguments to update or create a AutomationRule.
+     * @example
+     * // Update or create a AutomationRule
+     * const automationRule = await prisma.automationRule.upsert({
+     *   create: {
+     *     // ... data to create a AutomationRule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AutomationRule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AutomationRuleUpsertArgs>(args: SelectSubset<T, AutomationRuleUpsertArgs<ExtArgs>>): Prisma__AutomationRuleClient<$Result.GetResult<Prisma.$AutomationRulePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AutomationRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleCountArgs} args - Arguments to filter AutomationRules to count.
+     * @example
+     * // Count the number of AutomationRules
+     * const count = await prisma.automationRule.count({
+     *   where: {
+     *     // ... the filter for the AutomationRules we want to count
+     *   }
+     * })
+    **/
+    count<T extends AutomationRuleCountArgs>(
+      args?: Subset<T, AutomationRuleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AutomationRuleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AutomationRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AutomationRuleAggregateArgs>(args: Subset<T, AutomationRuleAggregateArgs>): Prisma.PrismaPromise<GetAutomationRuleAggregateType<T>>
+
+    /**
+     * Group by AutomationRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutomationRuleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AutomationRuleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AutomationRuleGroupByArgs['orderBy'] }
+        : { orderBy?: AutomationRuleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AutomationRuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutomationRuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AutomationRule model
+   */
+  readonly fields: AutomationRuleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AutomationRule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AutomationRuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AutomationRule model
+   */ 
+  interface AutomationRuleFieldRefs {
+    readonly id: FieldRef<"AutomationRule", 'String'>
+    readonly userId: FieldRef<"AutomationRule", 'String'>
+    readonly name: FieldRef<"AutomationRule", 'String'>
+    readonly description: FieldRef<"AutomationRule", 'String'>
+    readonly triggerType: FieldRef<"AutomationRule", 'AutomationTriggerType'>
+    readonly triggerData: FieldRef<"AutomationRule", 'Json'>
+    readonly actionType: FieldRef<"AutomationRule", 'AutomationActionType'>
+    readonly actionData: FieldRef<"AutomationRule", 'Json'>
+    readonly isActive: FieldRef<"AutomationRule", 'Boolean'>
+    readonly lastExecutedAt: FieldRef<"AutomationRule", 'DateTime'>
+    readonly executionCount: FieldRef<"AutomationRule", 'Int'>
+    readonly createdAt: FieldRef<"AutomationRule", 'DateTime'>
+    readonly updatedAt: FieldRef<"AutomationRule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AutomationRule findUnique
+   */
+  export type AutomationRuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule findUniqueOrThrow
+   */
+  export type AutomationRuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule findFirst
+   */
+  export type AutomationRuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AutomationRules.
+     */
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule findFirstOrThrow
+   */
+  export type AutomationRuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRule to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AutomationRules.
+     */
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule findMany
+   */
+  export type AutomationRuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which AutomationRules to fetch.
+     */
+    where?: AutomationRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AutomationRules to fetch.
+     */
+    orderBy?: AutomationRuleOrderByWithRelationInput | AutomationRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AutomationRules.
+     */
+    cursor?: AutomationRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AutomationRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AutomationRules.
+     */
+    skip?: number
+    distinct?: AutomationRuleScalarFieldEnum | AutomationRuleScalarFieldEnum[]
+  }
+
+  /**
+   * AutomationRule create
+   */
+  export type AutomationRuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AutomationRule.
+     */
+    data: XOR<AutomationRuleCreateInput, AutomationRuleUncheckedCreateInput>
+  }
+
+  /**
+   * AutomationRule createMany
+   */
+  export type AutomationRuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AutomationRules.
+     */
+    data: AutomationRuleCreateManyInput | AutomationRuleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutomationRule createManyAndReturn
+   */
+  export type AutomationRuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many AutomationRules.
+     */
+    data: AutomationRuleCreateManyInput | AutomationRuleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AutomationRule update
+   */
+  export type AutomationRuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AutomationRule.
+     */
+    data: XOR<AutomationRuleUpdateInput, AutomationRuleUncheckedUpdateInput>
+    /**
+     * Choose, which AutomationRule to update.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule updateMany
+   */
+  export type AutomationRuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AutomationRules.
+     */
+    data: XOR<AutomationRuleUpdateManyMutationInput, AutomationRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which AutomationRules to update
+     */
+    where?: AutomationRuleWhereInput
+  }
+
+  /**
+   * AutomationRule upsert
+   */
+  export type AutomationRuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AutomationRule to update in case it exists.
+     */
+    where: AutomationRuleWhereUniqueInput
+    /**
+     * In case the AutomationRule found by the `where` argument doesn't exist, create a new AutomationRule with this data.
+     */
+    create: XOR<AutomationRuleCreateInput, AutomationRuleUncheckedCreateInput>
+    /**
+     * In case the AutomationRule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AutomationRuleUpdateInput, AutomationRuleUncheckedUpdateInput>
+  }
+
+  /**
+   * AutomationRule delete
+   */
+  export type AutomationRuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+    /**
+     * Filter which AutomationRule to delete.
+     */
+    where: AutomationRuleWhereUniqueInput
+  }
+
+  /**
+   * AutomationRule deleteMany
+   */
+  export type AutomationRuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutomationRules to delete
+     */
+    where?: AutomationRuleWhereInput
+  }
+
+  /**
+   * AutomationRule without action
+   */
+  export type AutomationRuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutomationRule
+     */
+    select?: AutomationRuleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutomationRuleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ChatMessage
+   */
+
+  export type AggregateChatMessage = {
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  export type ChatMessageMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    message: string | null
+    response: string | null
+    messageType: $Enums.ChatMessageType | null
+    isAI: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ChatMessageMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    message: string | null
+    response: string | null
+    messageType: $Enums.ChatMessageType | null
+    isAI: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ChatMessageCountAggregateOutputType = {
+    id: number
+    userId: number
+    message: number
+    response: number
+    context: number
+    messageType: number
+    isAI: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ChatMessageMinAggregateInputType = {
+    id?: true
+    userId?: true
+    message?: true
+    response?: true
+    messageType?: true
+    isAI?: true
+    createdAt?: true
+  }
+
+  export type ChatMessageMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    message?: true
+    response?: true
+    messageType?: true
+    isAI?: true
+    createdAt?: true
+  }
+
+  export type ChatMessageCountAggregateInputType = {
+    id?: true
+    userId?: true
+    message?: true
+    response?: true
+    context?: true
+    messageType?: true
+    isAI?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ChatMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessage to aggregate.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatMessages
+    **/
+    _count?: true | ChatMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type GetChatMessageAggregateType<T extends ChatMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatMessage[P]>
+      : GetScalarType<T[P], AggregateChatMessage[P]>
+  }
+
+
+
+
+  export type ChatMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithAggregationInput | ChatMessageOrderByWithAggregationInput[]
+    by: ChatMessageScalarFieldEnum[] | ChatMessageScalarFieldEnum
+    having?: ChatMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatMessageCountAggregateInputType | true
+    _min?: ChatMessageMinAggregateInputType
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type ChatMessageGroupByOutputType = {
+    id: string
+    userId: string
+    message: string
+    response: string
+    context: JsonValue | null
+    messageType: $Enums.ChatMessageType
+    isAI: boolean
+    createdAt: Date
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  type GetChatMessageGroupByPayload<T extends ChatMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    message?: boolean
+    response?: boolean
+    context?: boolean
+    messageType?: boolean
+    isAI?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    message?: boolean
+    response?: boolean
+    context?: boolean
+    messageType?: boolean
+    isAI?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    message?: boolean
+    response?: boolean
+    context?: boolean
+    messageType?: boolean
+    isAI?: boolean
+    createdAt?: boolean
+  }
+
+  export type ChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatMessage"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      message: string
+      response: string
+      context: Prisma.JsonValue | null
+      messageType: $Enums.ChatMessageType
+      isAI: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["chatMessage"]>
+    composites: {}
+  }
+
+  type ChatMessageGetPayload<S extends boolean | null | undefined | ChatMessageDefaultArgs> = $Result.GetResult<Prisma.$ChatMessagePayload, S>
+
+  type ChatMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ChatMessageFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ChatMessageCountAggregateInputType | true
+    }
+
+  export interface ChatMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatMessage'], meta: { name: 'ChatMessage' } }
+    /**
+     * Find zero or one ChatMessage that matches the filter.
+     * @param {ChatMessageFindUniqueArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatMessageFindUniqueArgs>(args: SelectSubset<T, ChatMessageFindUniqueArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ChatMessage that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ChatMessageFindUniqueOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ChatMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatMessageFindFirstArgs>(args?: SelectSubset<T, ChatMessageFindFirstArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ChatMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ChatMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany()
+     * 
+     * // Get first 10 ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChatMessageFindManyArgs>(args?: SelectSubset<T, ChatMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ChatMessage.
+     * @param {ChatMessageCreateArgs} args - Arguments to create a ChatMessage.
+     * @example
+     * // Create one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.create({
+     *   data: {
+     *     // ... data to create a ChatMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatMessageCreateArgs>(args: SelectSubset<T, ChatMessageCreateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ChatMessages.
+     * @param {ChatMessageCreateManyArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatMessageCreateManyArgs>(args?: SelectSubset<T, ChatMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatMessages and returns the data saved in the database.
+     * @param {ChatMessageCreateManyAndReturnArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatMessages and only return the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ChatMessage.
+     * @param {ChatMessageDeleteArgs} args - Arguments to delete one ChatMessage.
+     * @example
+     * // Delete one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.delete({
+     *   where: {
+     *     // ... filter to delete one ChatMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatMessageDeleteArgs>(args: SelectSubset<T, ChatMessageDeleteArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ChatMessage.
+     * @param {ChatMessageUpdateArgs} args - Arguments to update one ChatMessage.
+     * @example
+     * // Update one ChatMessage
+     * const chatMessage = await prisma.chatMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatMessageUpdateArgs>(args: SelectSubset<T, ChatMessageUpdateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ChatMessages.
+     * @param {ChatMessageDeleteManyArgs} args - Arguments to filter ChatMessages to delete.
+     * @example
+     * // Delete a few ChatMessages
+     * const { count } = await prisma.chatMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatMessageDeleteManyArgs>(args?: SelectSubset<T, ChatMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatMessages
+     * const chatMessage = await prisma.chatMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatMessageUpdateManyArgs>(args: SelectSubset<T, ChatMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ChatMessage.
+     * @param {ChatMessageUpsertArgs} args - Arguments to update or create a ChatMessage.
+     * @example
+     * // Update or create a ChatMessage
+     * const chatMessage = await prisma.chatMessage.upsert({
+     *   create: {
+     *     // ... data to create a ChatMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatMessageUpsertArgs>(args: SelectSubset<T, ChatMessageUpsertArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageCountArgs} args - Arguments to filter ChatMessages to count.
+     * @example
+     * // Count the number of ChatMessages
+     * const count = await prisma.chatMessage.count({
+     *   where: {
+     *     // ... the filter for the ChatMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatMessageCountArgs>(
+      args?: Subset<T, ChatMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatMessageAggregateArgs>(args: Subset<T, ChatMessageAggregateArgs>): Prisma.PrismaPromise<GetChatMessageAggregateType<T>>
+
+    /**
+     * Group by ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatMessageGroupByArgs['orderBy'] }
+        : { orderBy?: ChatMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatMessage model
+   */
+  readonly fields: ChatMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatMessage model
+   */ 
+  interface ChatMessageFieldRefs {
+    readonly id: FieldRef<"ChatMessage", 'String'>
+    readonly userId: FieldRef<"ChatMessage", 'String'>
+    readonly message: FieldRef<"ChatMessage", 'String'>
+    readonly response: FieldRef<"ChatMessage", 'String'>
+    readonly context: FieldRef<"ChatMessage", 'Json'>
+    readonly messageType: FieldRef<"ChatMessage", 'ChatMessageType'>
+    readonly isAI: FieldRef<"ChatMessage", 'Boolean'>
+    readonly createdAt: FieldRef<"ChatMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatMessage findUnique
+   */
+  export type ChatMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findUniqueOrThrow
+   */
+  export type ChatMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findFirst
+   */
+  export type ChatMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findFirstOrThrow
+   */
+  export type ChatMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findMany
+   */
+  export type ChatMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessages to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage create
+   */
+  export type ChatMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatMessage.
+     */
+    data: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+  }
+
+  /**
+   * ChatMessage createMany
+   */
+  export type ChatMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatMessage createManyAndReturn
+   */
+  export type ChatMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMessage update
+   */
+  export type ChatMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatMessage.
+     */
+    data: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+    /**
+     * Choose, which ChatMessage to update.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage updateMany
+   */
+  export type ChatMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatMessages.
+     */
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMessages to update
+     */
+    where?: ChatMessageWhereInput
+  }
+
+  /**
+   * ChatMessage upsert
+   */
+  export type ChatMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatMessage to update in case it exists.
+     */
+    where: ChatMessageWhereUniqueInput
+    /**
+     * In case the ChatMessage found by the `where` argument doesn't exist, create a new ChatMessage with this data.
+     */
+    create: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+    /**
+     * In case the ChatMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatMessage delete
+   */
+  export type ChatMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter which ChatMessage to delete.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage deleteMany
+   */
+  export type ChatMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessages to delete
+     */
+    where?: ChatMessageWhereInput
+  }
+
+  /**
+   * ChatMessage without action
+   */
+  export type ChatMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserPreferences
+   */
+
+  export type AggregateUserPreferences = {
+    _count: UserPreferencesCountAggregateOutputType | null
+    _min: UserPreferencesMinAggregateOutputType | null
+    _max: UserPreferencesMaxAggregateOutputType | null
+  }
+
+  export type UserPreferencesMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    riskTolerance: $Enums.RiskTolerance | null
+    automationLevel: $Enums.AutomationLevel | null
+    aiPersonality: string | null
+    aiResponseStyle: string | null
+    theme: string | null
+    tutorialCompleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserPreferencesMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    riskTolerance: $Enums.RiskTolerance | null
+    automationLevel: $Enums.AutomationLevel | null
+    aiPersonality: string | null
+    aiResponseStyle: string | null
+    theme: string | null
+    tutorialCompleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserPreferencesCountAggregateOutputType = {
+    id: number
+    userId: number
+    riskTolerance: number
+    automationLevel: number
+    notificationPreferences: number
+    aiPersonality: number
+    aiResponseStyle: number
+    theme: number
+    tutorialCompleted: number
+    tutorialPosition: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserPreferencesMinAggregateInputType = {
+    id?: true
+    userId?: true
+    riskTolerance?: true
+    automationLevel?: true
+    aiPersonality?: true
+    aiResponseStyle?: true
+    theme?: true
+    tutorialCompleted?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserPreferencesMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    riskTolerance?: true
+    automationLevel?: true
+    aiPersonality?: true
+    aiResponseStyle?: true
+    theme?: true
+    tutorialCompleted?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserPreferencesCountAggregateInputType = {
+    id?: true
+    userId?: true
+    riskTolerance?: true
+    automationLevel?: true
+    notificationPreferences?: true
+    aiPersonality?: true
+    aiResponseStyle?: true
+    theme?: true
+    tutorialCompleted?: true
+    tutorialPosition?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserPreferencesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserPreferences to aggregate.
+     */
+    where?: UserPreferencesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserPreferences to fetch.
+     */
+    orderBy?: UserPreferencesOrderByWithRelationInput | UserPreferencesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserPreferencesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserPreferences
+    **/
+    _count?: true | UserPreferencesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserPreferencesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserPreferencesMaxAggregateInputType
+  }
+
+  export type GetUserPreferencesAggregateType<T extends UserPreferencesAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserPreferences]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserPreferences[P]>
+      : GetScalarType<T[P], AggregateUserPreferences[P]>
+  }
+
+
+
+
+  export type UserPreferencesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserPreferencesWhereInput
+    orderBy?: UserPreferencesOrderByWithAggregationInput | UserPreferencesOrderByWithAggregationInput[]
+    by: UserPreferencesScalarFieldEnum[] | UserPreferencesScalarFieldEnum
+    having?: UserPreferencesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserPreferencesCountAggregateInputType | true
+    _min?: UserPreferencesMinAggregateInputType
+    _max?: UserPreferencesMaxAggregateInputType
+  }
+
+  export type UserPreferencesGroupByOutputType = {
+    id: string
+    userId: string
+    riskTolerance: $Enums.RiskTolerance
+    automationLevel: $Enums.AutomationLevel
+    notificationPreferences: JsonValue | null
+    aiPersonality: string | null
+    aiResponseStyle: string | null
+    theme: string | null
+    tutorialCompleted: boolean
+    tutorialPosition: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: UserPreferencesCountAggregateOutputType | null
+    _min: UserPreferencesMinAggregateOutputType | null
+    _max: UserPreferencesMaxAggregateOutputType | null
+  }
+
+  type GetUserPreferencesGroupByPayload<T extends UserPreferencesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserPreferencesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserPreferencesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserPreferencesGroupByOutputType[P]>
+            : GetScalarType<T[P], UserPreferencesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserPreferencesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    riskTolerance?: boolean
+    automationLevel?: boolean
+    notificationPreferences?: boolean
+    aiPersonality?: boolean
+    aiResponseStyle?: boolean
+    theme?: boolean
+    tutorialCompleted?: boolean
+    tutorialPosition?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userPreferences"]>
+
+  export type UserPreferencesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    riskTolerance?: boolean
+    automationLevel?: boolean
+    notificationPreferences?: boolean
+    aiPersonality?: boolean
+    aiResponseStyle?: boolean
+    theme?: boolean
+    tutorialCompleted?: boolean
+    tutorialPosition?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userPreferences"]>
+
+  export type UserPreferencesSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    riskTolerance?: boolean
+    automationLevel?: boolean
+    notificationPreferences?: boolean
+    aiPersonality?: boolean
+    aiResponseStyle?: boolean
+    theme?: boolean
+    tutorialCompleted?: boolean
+    tutorialPosition?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserPreferencesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserPreferencesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserPreferencesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserPreferences"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      riskTolerance: $Enums.RiskTolerance
+      automationLevel: $Enums.AutomationLevel
+      notificationPreferences: Prisma.JsonValue | null
+      aiPersonality: string | null
+      aiResponseStyle: string | null
+      theme: string | null
+      tutorialCompleted: boolean
+      tutorialPosition: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userPreferences"]>
+    composites: {}
+  }
+
+  type UserPreferencesGetPayload<S extends boolean | null | undefined | UserPreferencesDefaultArgs> = $Result.GetResult<Prisma.$UserPreferencesPayload, S>
+
+  type UserPreferencesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<UserPreferencesFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: UserPreferencesCountAggregateInputType | true
+    }
+
+  export interface UserPreferencesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserPreferences'], meta: { name: 'UserPreferences' } }
+    /**
+     * Find zero or one UserPreferences that matches the filter.
+     * @param {UserPreferencesFindUniqueArgs} args - Arguments to find a UserPreferences
+     * @example
+     * // Get one UserPreferences
+     * const userPreferences = await prisma.userPreferences.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserPreferencesFindUniqueArgs>(args: SelectSubset<T, UserPreferencesFindUniqueArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one UserPreferences that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {UserPreferencesFindUniqueOrThrowArgs} args - Arguments to find a UserPreferences
+     * @example
+     * // Get one UserPreferences
+     * const userPreferences = await prisma.userPreferences.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserPreferencesFindUniqueOrThrowArgs>(args: SelectSubset<T, UserPreferencesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first UserPreferences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesFindFirstArgs} args - Arguments to find a UserPreferences
+     * @example
+     * // Get one UserPreferences
+     * const userPreferences = await prisma.userPreferences.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserPreferencesFindFirstArgs>(args?: SelectSubset<T, UserPreferencesFindFirstArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first UserPreferences that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesFindFirstOrThrowArgs} args - Arguments to find a UserPreferences
+     * @example
+     * // Get one UserPreferences
+     * const userPreferences = await prisma.userPreferences.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserPreferencesFindFirstOrThrowArgs>(args?: SelectSubset<T, UserPreferencesFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more UserPreferences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserPreferences
+     * const userPreferences = await prisma.userPreferences.findMany()
+     * 
+     * // Get first 10 UserPreferences
+     * const userPreferences = await prisma.userPreferences.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userPreferencesWithIdOnly = await prisma.userPreferences.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserPreferencesFindManyArgs>(args?: SelectSubset<T, UserPreferencesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a UserPreferences.
+     * @param {UserPreferencesCreateArgs} args - Arguments to create a UserPreferences.
+     * @example
+     * // Create one UserPreferences
+     * const UserPreferences = await prisma.userPreferences.create({
+     *   data: {
+     *     // ... data to create a UserPreferences
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserPreferencesCreateArgs>(args: SelectSubset<T, UserPreferencesCreateArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many UserPreferences.
+     * @param {UserPreferencesCreateManyArgs} args - Arguments to create many UserPreferences.
+     * @example
+     * // Create many UserPreferences
+     * const userPreferences = await prisma.userPreferences.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserPreferencesCreateManyArgs>(args?: SelectSubset<T, UserPreferencesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserPreferences and returns the data saved in the database.
+     * @param {UserPreferencesCreateManyAndReturnArgs} args - Arguments to create many UserPreferences.
+     * @example
+     * // Create many UserPreferences
+     * const userPreferences = await prisma.userPreferences.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserPreferences and only return the `id`
+     * const userPreferencesWithIdOnly = await prisma.userPreferences.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserPreferencesCreateManyAndReturnArgs>(args?: SelectSubset<T, UserPreferencesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a UserPreferences.
+     * @param {UserPreferencesDeleteArgs} args - Arguments to delete one UserPreferences.
+     * @example
+     * // Delete one UserPreferences
+     * const UserPreferences = await prisma.userPreferences.delete({
+     *   where: {
+     *     // ... filter to delete one UserPreferences
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserPreferencesDeleteArgs>(args: SelectSubset<T, UserPreferencesDeleteArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one UserPreferences.
+     * @param {UserPreferencesUpdateArgs} args - Arguments to update one UserPreferences.
+     * @example
+     * // Update one UserPreferences
+     * const userPreferences = await prisma.userPreferences.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserPreferencesUpdateArgs>(args: SelectSubset<T, UserPreferencesUpdateArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more UserPreferences.
+     * @param {UserPreferencesDeleteManyArgs} args - Arguments to filter UserPreferences to delete.
+     * @example
+     * // Delete a few UserPreferences
+     * const { count } = await prisma.userPreferences.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserPreferencesDeleteManyArgs>(args?: SelectSubset<T, UserPreferencesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserPreferences
+     * const userPreferences = await prisma.userPreferences.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserPreferencesUpdateManyArgs>(args: SelectSubset<T, UserPreferencesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserPreferences.
+     * @param {UserPreferencesUpsertArgs} args - Arguments to update or create a UserPreferences.
+     * @example
+     * // Update or create a UserPreferences
+     * const userPreferences = await prisma.userPreferences.upsert({
+     *   create: {
+     *     // ... data to create a UserPreferences
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserPreferences we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserPreferencesUpsertArgs>(args: SelectSubset<T, UserPreferencesUpsertArgs<ExtArgs>>): Prisma__UserPreferencesClient<$Result.GetResult<Prisma.$UserPreferencesPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of UserPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesCountArgs} args - Arguments to filter UserPreferences to count.
+     * @example
+     * // Count the number of UserPreferences
+     * const count = await prisma.userPreferences.count({
+     *   where: {
+     *     // ... the filter for the UserPreferences we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserPreferencesCountArgs>(
+      args?: Subset<T, UserPreferencesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserPreferencesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserPreferencesAggregateArgs>(args: Subset<T, UserPreferencesAggregateArgs>): Prisma.PrismaPromise<GetUserPreferencesAggregateType<T>>
+
+    /**
+     * Group by UserPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserPreferencesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserPreferencesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserPreferencesGroupByArgs['orderBy'] }
+        : { orderBy?: UserPreferencesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserPreferencesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserPreferencesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserPreferences model
+   */
+  readonly fields: UserPreferencesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserPreferences.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserPreferencesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserPreferences model
+   */ 
+  interface UserPreferencesFieldRefs {
+    readonly id: FieldRef<"UserPreferences", 'String'>
+    readonly userId: FieldRef<"UserPreferences", 'String'>
+    readonly riskTolerance: FieldRef<"UserPreferences", 'RiskTolerance'>
+    readonly automationLevel: FieldRef<"UserPreferences", 'AutomationLevel'>
+    readonly notificationPreferences: FieldRef<"UserPreferences", 'Json'>
+    readonly aiPersonality: FieldRef<"UserPreferences", 'String'>
+    readonly aiResponseStyle: FieldRef<"UserPreferences", 'String'>
+    readonly theme: FieldRef<"UserPreferences", 'String'>
+    readonly tutorialCompleted: FieldRef<"UserPreferences", 'Boolean'>
+    readonly tutorialPosition: FieldRef<"UserPreferences", 'Json'>
+    readonly createdAt: FieldRef<"UserPreferences", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserPreferences", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserPreferences findUnique
+   */
+  export type UserPreferencesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter, which UserPreferences to fetch.
+     */
+    where: UserPreferencesWhereUniqueInput
+  }
+
+  /**
+   * UserPreferences findUniqueOrThrow
+   */
+  export type UserPreferencesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter, which UserPreferences to fetch.
+     */
+    where: UserPreferencesWhereUniqueInput
+  }
+
+  /**
+   * UserPreferences findFirst
+   */
+  export type UserPreferencesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter, which UserPreferences to fetch.
+     */
+    where?: UserPreferencesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserPreferences to fetch.
+     */
+    orderBy?: UserPreferencesOrderByWithRelationInput | UserPreferencesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserPreferences.
+     */
+    cursor?: UserPreferencesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserPreferences.
+     */
+    distinct?: UserPreferencesScalarFieldEnum | UserPreferencesScalarFieldEnum[]
+  }
+
+  /**
+   * UserPreferences findFirstOrThrow
+   */
+  export type UserPreferencesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter, which UserPreferences to fetch.
+     */
+    where?: UserPreferencesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserPreferences to fetch.
+     */
+    orderBy?: UserPreferencesOrderByWithRelationInput | UserPreferencesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserPreferences.
+     */
+    cursor?: UserPreferencesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserPreferences.
+     */
+    distinct?: UserPreferencesScalarFieldEnum | UserPreferencesScalarFieldEnum[]
+  }
+
+  /**
+   * UserPreferences findMany
+   */
+  export type UserPreferencesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter, which UserPreferences to fetch.
+     */
+    where?: UserPreferencesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserPreferences to fetch.
+     */
+    orderBy?: UserPreferencesOrderByWithRelationInput | UserPreferencesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserPreferences.
+     */
+    cursor?: UserPreferencesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserPreferences.
+     */
+    skip?: number
+    distinct?: UserPreferencesScalarFieldEnum | UserPreferencesScalarFieldEnum[]
+  }
+
+  /**
+   * UserPreferences create
+   */
+  export type UserPreferencesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserPreferences.
+     */
+    data: XOR<UserPreferencesCreateInput, UserPreferencesUncheckedCreateInput>
+  }
+
+  /**
+   * UserPreferences createMany
+   */
+  export type UserPreferencesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserPreferences.
+     */
+    data: UserPreferencesCreateManyInput | UserPreferencesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserPreferences createManyAndReturn
+   */
+  export type UserPreferencesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many UserPreferences.
+     */
+    data: UserPreferencesCreateManyInput | UserPreferencesCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserPreferences update
+   */
+  export type UserPreferencesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserPreferences.
+     */
+    data: XOR<UserPreferencesUpdateInput, UserPreferencesUncheckedUpdateInput>
+    /**
+     * Choose, which UserPreferences to update.
+     */
+    where: UserPreferencesWhereUniqueInput
+  }
+
+  /**
+   * UserPreferences updateMany
+   */
+  export type UserPreferencesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserPreferences.
+     */
+    data: XOR<UserPreferencesUpdateManyMutationInput, UserPreferencesUncheckedUpdateManyInput>
+    /**
+     * Filter which UserPreferences to update
+     */
+    where?: UserPreferencesWhereInput
+  }
+
+  /**
+   * UserPreferences upsert
+   */
+  export type UserPreferencesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserPreferences to update in case it exists.
+     */
+    where: UserPreferencesWhereUniqueInput
+    /**
+     * In case the UserPreferences found by the `where` argument doesn't exist, create a new UserPreferences with this data.
+     */
+    create: XOR<UserPreferencesCreateInput, UserPreferencesUncheckedCreateInput>
+    /**
+     * In case the UserPreferences was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserPreferencesUpdateInput, UserPreferencesUncheckedUpdateInput>
+  }
+
+  /**
+   * UserPreferences delete
+   */
+  export type UserPreferencesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+    /**
+     * Filter which UserPreferences to delete.
+     */
+    where: UserPreferencesWhereUniqueInput
+  }
+
+  /**
+   * UserPreferences deleteMany
+   */
+  export type UserPreferencesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserPreferences to delete
+     */
+    where?: UserPreferencesWhereInput
+  }
+
+  /**
+   * UserPreferences without action
+   */
+  export type UserPreferencesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserPreferences
+     */
+    select?: UserPreferencesSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserPreferencesInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8578,14 +14664,24 @@ export namespace Prisma {
   export const TransactionScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    plaidAccountId: 'plaidAccountId',
+    plaidTransactionId: 'plaidTransactionId',
     date: 'date',
     amount: 'amount',
     merchant: 'merchant',
     category: 'category',
+    subcategory: 'subcategory',
     source: 'source',
     isRecurring: 'isRecurring',
     recurringGroupId: 'recurringGroupId',
     notes: 'notes',
+    aiCategorized: 'aiCategorized',
+    aiCategory: 'aiCategory',
+    aiConfidence: 'aiConfidence',
+    isPending: 'isPending',
+    location: 'location',
+    paymentChannel: 'paymentChannel',
+    transactionType: 'transactionType',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8629,6 +14725,100 @@ export namespace Prisma {
   };
 
   export type InsightCacheScalarFieldEnum = (typeof InsightCacheScalarFieldEnum)[keyof typeof InsightCacheScalarFieldEnum]
+
+
+  export const PlaidAccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    plaidAccountId: 'plaidAccountId',
+    plaidItemId: 'plaidItemId',
+    name: 'name',
+    officialName: 'officialName',
+    type: 'type',
+    subtype: 'subtype',
+    mask: 'mask',
+    institutionName: 'institutionName',
+    institutionLogo: 'institutionLogo',
+    currentBalance: 'currentBalance',
+    availableBalance: 'availableBalance',
+    limit: 'limit',
+    lastSyncAt: 'lastSyncAt',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlaidAccountScalarFieldEnum = (typeof PlaidAccountScalarFieldEnum)[keyof typeof PlaidAccountScalarFieldEnum]
+
+
+  export const AIInsightScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    title: 'title',
+    message: 'message',
+    actionRequired: 'actionRequired',
+    actionType: 'actionType',
+    actionData: 'actionData',
+    priority: 'priority',
+    isRead: 'isRead',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AIInsightScalarFieldEnum = (typeof AIInsightScalarFieldEnum)[keyof typeof AIInsightScalarFieldEnum]
+
+
+  export const AutomationRuleScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    description: 'description',
+    triggerType: 'triggerType',
+    triggerData: 'triggerData',
+    actionType: 'actionType',
+    actionData: 'actionData',
+    isActive: 'isActive',
+    lastExecutedAt: 'lastExecutedAt',
+    executionCount: 'executionCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AutomationRuleScalarFieldEnum = (typeof AutomationRuleScalarFieldEnum)[keyof typeof AutomationRuleScalarFieldEnum]
+
+
+  export const ChatMessageScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    message: 'message',
+    response: 'response',
+    context: 'context',
+    messageType: 'messageType',
+    isAI: 'isAI',
+    createdAt: 'createdAt'
+  };
+
+  export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
+
+
+  export const UserPreferencesScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    riskTolerance: 'riskTolerance',
+    automationLevel: 'automationLevel',
+    notificationPreferences: 'notificationPreferences',
+    aiPersonality: 'aiPersonality',
+    aiResponseStyle: 'aiResponseStyle',
+    theme: 'theme',
+    tutorialCompleted: 'tutorialCompleted',
+    tutorialPosition: 'tutorialPosition',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserPreferencesScalarFieldEnum = (typeof UserPreferencesScalarFieldEnum)[keyof typeof UserPreferencesScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8797,6 +14987,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'GoalType'
    */
   export type EnumGoalTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GoalType'>
@@ -8825,6 +15029,62 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AIInsightType'
+   */
+  export type EnumAIInsightTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIInsightType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AIInsightType[]'
+   */
+  export type ListEnumAIInsightTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIInsightType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AIInsightPriority'
+   */
+  export type EnumAIInsightPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIInsightPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'AIInsightPriority[]'
+   */
+  export type ListEnumAIInsightPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIInsightPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationTriggerType'
+   */
+  export type EnumAutomationTriggerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTriggerType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationTriggerType[]'
+   */
+  export type ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTriggerType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationActionType'
+   */
+  export type EnumAutomationActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationActionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationActionType[]'
+   */
+  export type ListEnumAutomationActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationActionType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -8835,6 +15095,48 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatMessageType'
+   */
+  export type EnumChatMessageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatMessageType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatMessageType[]'
+   */
+  export type ListEnumChatMessageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatMessageType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'RiskTolerance'
+   */
+  export type EnumRiskToleranceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskTolerance'>
+    
+
+
+  /**
+   * Reference to a field of type 'RiskTolerance[]'
+   */
+  export type ListEnumRiskToleranceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskTolerance[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationLevel'
+   */
+  export type EnumAutomationLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'AutomationLevel[]'
+   */
+  export type ListEnumAutomationLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationLevel[]'>
     
   /**
    * Deep Input Types
@@ -8860,6 +15162,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleListRelationFilter
     goals?: GoalListRelationFilter
     insightCaches?: InsightCacheListRelationFilter
+    plaidAccounts?: PlaidAccountListRelationFilter
+    aiInsights?: AIInsightListRelationFilter
+    automationRules?: AutomationRuleListRelationFilter
+    chatMessages?: ChatMessageListRelationFilter
+    userPreferences?: UserPreferencesListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8878,6 +15185,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleOrderByRelationAggregateInput
     goals?: GoalOrderByRelationAggregateInput
     insightCaches?: InsightCacheOrderByRelationAggregateInput
+    plaidAccounts?: PlaidAccountOrderByRelationAggregateInput
+    aiInsights?: AIInsightOrderByRelationAggregateInput
+    automationRules?: AutomationRuleOrderByRelationAggregateInput
+    chatMessages?: ChatMessageOrderByRelationAggregateInput
+    userPreferences?: UserPreferencesOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8899,6 +15211,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleListRelationFilter
     goals?: GoalListRelationFilter
     insightCaches?: InsightCacheListRelationFilter
+    plaidAccounts?: PlaidAccountListRelationFilter
+    aiInsights?: AIInsightListRelationFilter
+    automationRules?: AutomationRuleListRelationFilter
+    chatMessages?: ChatMessageListRelationFilter
+    userPreferences?: UserPreferencesListRelationFilter
   }, "id" | "supabaseUserId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -9067,65 +15384,108 @@ export namespace Prisma {
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     id?: StringFilter<"Transaction"> | string
     userId?: StringFilter<"Transaction"> | string
+    plaidAccountId?: StringNullableFilter<"Transaction"> | string | null
+    plaidTransactionId?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
     amount?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     merchant?: StringFilter<"Transaction"> | string
     category?: StringFilter<"Transaction"> | string
+    subcategory?: StringNullableFilter<"Transaction"> | string | null
     source?: StringFilter<"Transaction"> | string
     isRecurring?: BoolFilter<"Transaction"> | boolean
     recurringGroupId?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
+    aiCategorized?: BoolFilter<"Transaction"> | boolean
+    aiCategory?: StringNullableFilter<"Transaction"> | string | null
+    aiConfidence?: FloatNullableFilter<"Transaction"> | number | null
+    isPending?: BoolFilter<"Transaction"> | boolean
+    location?: JsonNullableFilter<"Transaction">
+    paymentChannel?: StringNullableFilter<"Transaction"> | string | null
+    transactionType?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
+    plaidAccount?: XOR<PlaidAccountNullableRelationFilter, PlaidAccountWhereInput> | null
   }
 
   export type TransactionOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    plaidAccountId?: SortOrderInput | SortOrder
+    plaidTransactionId?: SortOrderInput | SortOrder
     date?: SortOrder
     amount?: SortOrder
     merchant?: SortOrder
     category?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
     source?: SortOrder
     isRecurring?: SortOrder
     recurringGroupId?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
+    aiCategorized?: SortOrder
+    aiCategory?: SortOrderInput | SortOrder
+    aiConfidence?: SortOrderInput | SortOrder
+    isPending?: SortOrder
+    location?: SortOrderInput | SortOrder
+    paymentChannel?: SortOrderInput | SortOrder
+    transactionType?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    plaidAccount?: PlaidAccountOrderByWithRelationInput
   }
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    plaidTransactionId?: string
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     userId?: StringFilter<"Transaction"> | string
+    plaidAccountId?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
     amount?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     merchant?: StringFilter<"Transaction"> | string
     category?: StringFilter<"Transaction"> | string
+    subcategory?: StringNullableFilter<"Transaction"> | string | null
     source?: StringFilter<"Transaction"> | string
     isRecurring?: BoolFilter<"Transaction"> | boolean
     recurringGroupId?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
+    aiCategorized?: BoolFilter<"Transaction"> | boolean
+    aiCategory?: StringNullableFilter<"Transaction"> | string | null
+    aiConfidence?: FloatNullableFilter<"Transaction"> | number | null
+    isPending?: BoolFilter<"Transaction"> | boolean
+    location?: JsonNullableFilter<"Transaction">
+    paymentChannel?: StringNullableFilter<"Transaction"> | string | null
+    transactionType?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
-  }, "id">
+    plaidAccount?: XOR<PlaidAccountNullableRelationFilter, PlaidAccountWhereInput> | null
+  }, "id" | "plaidTransactionId">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    plaidAccountId?: SortOrderInput | SortOrder
+    plaidTransactionId?: SortOrderInput | SortOrder
     date?: SortOrder
     amount?: SortOrder
     merchant?: SortOrder
     category?: SortOrder
+    subcategory?: SortOrderInput | SortOrder
     source?: SortOrder
     isRecurring?: SortOrder
     recurringGroupId?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
+    aiCategorized?: SortOrder
+    aiCategory?: SortOrderInput | SortOrder
+    aiConfidence?: SortOrderInput | SortOrder
+    isPending?: SortOrder
+    location?: SortOrderInput | SortOrder
+    paymentChannel?: SortOrderInput | SortOrder
+    transactionType?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TransactionCountOrderByAggregateInput
@@ -9141,14 +15501,24 @@ export namespace Prisma {
     NOT?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Transaction"> | string
     userId?: StringWithAggregatesFilter<"Transaction"> | string
+    plaidAccountId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    plaidTransactionId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     date?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     amount?: DecimalWithAggregatesFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     merchant?: StringWithAggregatesFilter<"Transaction"> | string
     category?: StringWithAggregatesFilter<"Transaction"> | string
+    subcategory?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     source?: StringWithAggregatesFilter<"Transaction"> | string
     isRecurring?: BoolWithAggregatesFilter<"Transaction"> | boolean
     recurringGroupId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     notes?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    aiCategorized?: BoolWithAggregatesFilter<"Transaction"> | boolean
+    aiCategory?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    aiConfidence?: FloatNullableWithAggregatesFilter<"Transaction"> | number | null
+    isPending?: BoolWithAggregatesFilter<"Transaction"> | boolean
+    location?: JsonNullableWithAggregatesFilter<"Transaction">
+    paymentChannel?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    transactionType?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   }
@@ -9347,6 +15717,483 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"InsightCache"> | Date | string
   }
 
+  export type PlaidAccountWhereInput = {
+    AND?: PlaidAccountWhereInput | PlaidAccountWhereInput[]
+    OR?: PlaidAccountWhereInput[]
+    NOT?: PlaidAccountWhereInput | PlaidAccountWhereInput[]
+    id?: StringFilter<"PlaidAccount"> | string
+    userId?: StringFilter<"PlaidAccount"> | string
+    plaidAccountId?: StringFilter<"PlaidAccount"> | string
+    plaidItemId?: StringFilter<"PlaidAccount"> | string
+    name?: StringFilter<"PlaidAccount"> | string
+    officialName?: StringNullableFilter<"PlaidAccount"> | string | null
+    type?: StringFilter<"PlaidAccount"> | string
+    subtype?: StringNullableFilter<"PlaidAccount"> | string | null
+    mask?: StringNullableFilter<"PlaidAccount"> | string | null
+    institutionName?: StringFilter<"PlaidAccount"> | string
+    institutionLogo?: StringNullableFilter<"PlaidAccount"> | string | null
+    currentBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    limit?: DecimalNullableFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    isActive?: BoolFilter<"PlaidAccount"> | boolean
+    createdAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    transactions?: TransactionListRelationFilter
+  }
+
+  export type PlaidAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidItemId?: SortOrder
+    name?: SortOrder
+    officialName?: SortOrderInput | SortOrder
+    type?: SortOrder
+    subtype?: SortOrderInput | SortOrder
+    mask?: SortOrderInput | SortOrder
+    institutionName?: SortOrder
+    institutionLogo?: SortOrderInput | SortOrder
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    transactions?: TransactionOrderByRelationAggregateInput
+  }
+
+  export type PlaidAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    plaidAccountId?: string
+    AND?: PlaidAccountWhereInput | PlaidAccountWhereInput[]
+    OR?: PlaidAccountWhereInput[]
+    NOT?: PlaidAccountWhereInput | PlaidAccountWhereInput[]
+    userId?: StringFilter<"PlaidAccount"> | string
+    plaidItemId?: StringFilter<"PlaidAccount"> | string
+    name?: StringFilter<"PlaidAccount"> | string
+    officialName?: StringNullableFilter<"PlaidAccount"> | string | null
+    type?: StringFilter<"PlaidAccount"> | string
+    subtype?: StringNullableFilter<"PlaidAccount"> | string | null
+    mask?: StringNullableFilter<"PlaidAccount"> | string | null
+    institutionName?: StringFilter<"PlaidAccount"> | string
+    institutionLogo?: StringNullableFilter<"PlaidAccount"> | string | null
+    currentBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    limit?: DecimalNullableFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    isActive?: BoolFilter<"PlaidAccount"> | boolean
+    createdAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    transactions?: TransactionListRelationFilter
+  }, "id" | "plaidAccountId">
+
+  export type PlaidAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidItemId?: SortOrder
+    name?: SortOrder
+    officialName?: SortOrderInput | SortOrder
+    type?: SortOrder
+    subtype?: SortOrderInput | SortOrder
+    mask?: SortOrderInput | SortOrder
+    institutionName?: SortOrder
+    institutionLogo?: SortOrderInput | SortOrder
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrderInput | SortOrder
+    lastSyncAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlaidAccountCountOrderByAggregateInput
+    _avg?: PlaidAccountAvgOrderByAggregateInput
+    _max?: PlaidAccountMaxOrderByAggregateInput
+    _min?: PlaidAccountMinOrderByAggregateInput
+    _sum?: PlaidAccountSumOrderByAggregateInput
+  }
+
+  export type PlaidAccountScalarWhereWithAggregatesInput = {
+    AND?: PlaidAccountScalarWhereWithAggregatesInput | PlaidAccountScalarWhereWithAggregatesInput[]
+    OR?: PlaidAccountScalarWhereWithAggregatesInput[]
+    NOT?: PlaidAccountScalarWhereWithAggregatesInput | PlaidAccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    userId?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    plaidAccountId?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    plaidItemId?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    name?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    officialName?: StringNullableWithAggregatesFilter<"PlaidAccount"> | string | null
+    type?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    subtype?: StringNullableWithAggregatesFilter<"PlaidAccount"> | string | null
+    mask?: StringNullableWithAggregatesFilter<"PlaidAccount"> | string | null
+    institutionName?: StringWithAggregatesFilter<"PlaidAccount"> | string
+    institutionLogo?: StringNullableWithAggregatesFilter<"PlaidAccount"> | string | null
+    currentBalance?: DecimalWithAggregatesFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalWithAggregatesFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    limit?: DecimalNullableWithAggregatesFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeWithAggregatesFilter<"PlaidAccount"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"PlaidAccount"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PlaidAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlaidAccount"> | Date | string
+  }
+
+  export type AIInsightWhereInput = {
+    AND?: AIInsightWhereInput | AIInsightWhereInput[]
+    OR?: AIInsightWhereInput[]
+    NOT?: AIInsightWhereInput | AIInsightWhereInput[]
+    id?: StringFilter<"AIInsight"> | string
+    userId?: StringFilter<"AIInsight"> | string
+    type?: EnumAIInsightTypeFilter<"AIInsight"> | $Enums.AIInsightType
+    title?: StringFilter<"AIInsight"> | string
+    message?: StringFilter<"AIInsight"> | string
+    actionRequired?: BoolFilter<"AIInsight"> | boolean
+    actionType?: StringNullableFilter<"AIInsight"> | string | null
+    actionData?: JsonNullableFilter<"AIInsight">
+    priority?: EnumAIInsightPriorityFilter<"AIInsight"> | $Enums.AIInsightPriority
+    isRead?: BoolFilter<"AIInsight"> | boolean
+    expiresAt?: DateTimeNullableFilter<"AIInsight"> | Date | string | null
+    createdAt?: DateTimeFilter<"AIInsight"> | Date | string
+    updatedAt?: DateTimeFilter<"AIInsight"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type AIInsightOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    actionRequired?: SortOrder
+    actionType?: SortOrderInput | SortOrder
+    actionData?: SortOrderInput | SortOrder
+    priority?: SortOrder
+    isRead?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AIInsightWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AIInsightWhereInput | AIInsightWhereInput[]
+    OR?: AIInsightWhereInput[]
+    NOT?: AIInsightWhereInput | AIInsightWhereInput[]
+    userId?: StringFilter<"AIInsight"> | string
+    type?: EnumAIInsightTypeFilter<"AIInsight"> | $Enums.AIInsightType
+    title?: StringFilter<"AIInsight"> | string
+    message?: StringFilter<"AIInsight"> | string
+    actionRequired?: BoolFilter<"AIInsight"> | boolean
+    actionType?: StringNullableFilter<"AIInsight"> | string | null
+    actionData?: JsonNullableFilter<"AIInsight">
+    priority?: EnumAIInsightPriorityFilter<"AIInsight"> | $Enums.AIInsightPriority
+    isRead?: BoolFilter<"AIInsight"> | boolean
+    expiresAt?: DateTimeNullableFilter<"AIInsight"> | Date | string | null
+    createdAt?: DateTimeFilter<"AIInsight"> | Date | string
+    updatedAt?: DateTimeFilter<"AIInsight"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AIInsightOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    actionRequired?: SortOrder
+    actionType?: SortOrderInput | SortOrder
+    actionData?: SortOrderInput | SortOrder
+    priority?: SortOrder
+    isRead?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AIInsightCountOrderByAggregateInput
+    _max?: AIInsightMaxOrderByAggregateInput
+    _min?: AIInsightMinOrderByAggregateInput
+  }
+
+  export type AIInsightScalarWhereWithAggregatesInput = {
+    AND?: AIInsightScalarWhereWithAggregatesInput | AIInsightScalarWhereWithAggregatesInput[]
+    OR?: AIInsightScalarWhereWithAggregatesInput[]
+    NOT?: AIInsightScalarWhereWithAggregatesInput | AIInsightScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AIInsight"> | string
+    userId?: StringWithAggregatesFilter<"AIInsight"> | string
+    type?: EnumAIInsightTypeWithAggregatesFilter<"AIInsight"> | $Enums.AIInsightType
+    title?: StringWithAggregatesFilter<"AIInsight"> | string
+    message?: StringWithAggregatesFilter<"AIInsight"> | string
+    actionRequired?: BoolWithAggregatesFilter<"AIInsight"> | boolean
+    actionType?: StringNullableWithAggregatesFilter<"AIInsight"> | string | null
+    actionData?: JsonNullableWithAggregatesFilter<"AIInsight">
+    priority?: EnumAIInsightPriorityWithAggregatesFilter<"AIInsight"> | $Enums.AIInsightPriority
+    isRead?: BoolWithAggregatesFilter<"AIInsight"> | boolean
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"AIInsight"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AIInsight"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AIInsight"> | Date | string
+  }
+
+  export type AutomationRuleWhereInput = {
+    AND?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    OR?: AutomationRuleWhereInput[]
+    NOT?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    id?: StringFilter<"AutomationRule"> | string
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    description?: StringNullableFilter<"AutomationRule"> | string | null
+    triggerType?: EnumAutomationTriggerTypeFilter<"AutomationRule"> | $Enums.AutomationTriggerType
+    triggerData?: JsonFilter<"AutomationRule">
+    actionType?: EnumAutomationActionTypeFilter<"AutomationRule"> | $Enums.AutomationActionType
+    actionData?: JsonFilter<"AutomationRule">
+    isActive?: BoolFilter<"AutomationRule"> | boolean
+    lastExecutedAt?: DateTimeNullableFilter<"AutomationRule"> | Date | string | null
+    executionCount?: IntFilter<"AutomationRule"> | number
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type AutomationRuleOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    triggerType?: SortOrder
+    triggerData?: SortOrder
+    actionType?: SortOrder
+    actionData?: SortOrder
+    isActive?: SortOrder
+    lastExecutedAt?: SortOrderInput | SortOrder
+    executionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AutomationRuleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    OR?: AutomationRuleWhereInput[]
+    NOT?: AutomationRuleWhereInput | AutomationRuleWhereInput[]
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    description?: StringNullableFilter<"AutomationRule"> | string | null
+    triggerType?: EnumAutomationTriggerTypeFilter<"AutomationRule"> | $Enums.AutomationTriggerType
+    triggerData?: JsonFilter<"AutomationRule">
+    actionType?: EnumAutomationActionTypeFilter<"AutomationRule"> | $Enums.AutomationActionType
+    actionData?: JsonFilter<"AutomationRule">
+    isActive?: BoolFilter<"AutomationRule"> | boolean
+    lastExecutedAt?: DateTimeNullableFilter<"AutomationRule"> | Date | string | null
+    executionCount?: IntFilter<"AutomationRule"> | number
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AutomationRuleOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    triggerType?: SortOrder
+    triggerData?: SortOrder
+    actionType?: SortOrder
+    actionData?: SortOrder
+    isActive?: SortOrder
+    lastExecutedAt?: SortOrderInput | SortOrder
+    executionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AutomationRuleCountOrderByAggregateInput
+    _avg?: AutomationRuleAvgOrderByAggregateInput
+    _max?: AutomationRuleMaxOrderByAggregateInput
+    _min?: AutomationRuleMinOrderByAggregateInput
+    _sum?: AutomationRuleSumOrderByAggregateInput
+  }
+
+  export type AutomationRuleScalarWhereWithAggregatesInput = {
+    AND?: AutomationRuleScalarWhereWithAggregatesInput | AutomationRuleScalarWhereWithAggregatesInput[]
+    OR?: AutomationRuleScalarWhereWithAggregatesInput[]
+    NOT?: AutomationRuleScalarWhereWithAggregatesInput | AutomationRuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AutomationRule"> | string
+    userId?: StringWithAggregatesFilter<"AutomationRule"> | string
+    name?: StringWithAggregatesFilter<"AutomationRule"> | string
+    description?: StringNullableWithAggregatesFilter<"AutomationRule"> | string | null
+    triggerType?: EnumAutomationTriggerTypeWithAggregatesFilter<"AutomationRule"> | $Enums.AutomationTriggerType
+    triggerData?: JsonWithAggregatesFilter<"AutomationRule">
+    actionType?: EnumAutomationActionTypeWithAggregatesFilter<"AutomationRule"> | $Enums.AutomationActionType
+    actionData?: JsonWithAggregatesFilter<"AutomationRule">
+    isActive?: BoolWithAggregatesFilter<"AutomationRule"> | boolean
+    lastExecutedAt?: DateTimeNullableWithAggregatesFilter<"AutomationRule"> | Date | string | null
+    executionCount?: IntWithAggregatesFilter<"AutomationRule"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AutomationRule"> | Date | string
+  }
+
+  export type ChatMessageWhereInput = {
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    userId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    response?: StringFilter<"ChatMessage"> | string
+    context?: JsonNullableFilter<"ChatMessage">
+    messageType?: EnumChatMessageTypeFilter<"ChatMessage"> | $Enums.ChatMessageType
+    isAI?: BoolFilter<"ChatMessage"> | boolean
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type ChatMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    message?: SortOrder
+    response?: SortOrder
+    context?: SortOrderInput | SortOrder
+    messageType?: SortOrder
+    isAI?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ChatMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    userId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    response?: StringFilter<"ChatMessage"> | string
+    context?: JsonNullableFilter<"ChatMessage">
+    messageType?: EnumChatMessageTypeFilter<"ChatMessage"> | $Enums.ChatMessageType
+    isAI?: BoolFilter<"ChatMessage"> | boolean
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ChatMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    message?: SortOrder
+    response?: SortOrder
+    context?: SortOrderInput | SortOrder
+    messageType?: SortOrder
+    isAI?: SortOrder
+    createdAt?: SortOrder
+    _count?: ChatMessageCountOrderByAggregateInput
+    _max?: ChatMessageMaxOrderByAggregateInput
+    _min?: ChatMessageMinOrderByAggregateInput
+  }
+
+  export type ChatMessageScalarWhereWithAggregatesInput = {
+    AND?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    OR?: ChatMessageScalarWhereWithAggregatesInput[]
+    NOT?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChatMessage"> | string
+    userId?: StringWithAggregatesFilter<"ChatMessage"> | string
+    message?: StringWithAggregatesFilter<"ChatMessage"> | string
+    response?: StringWithAggregatesFilter<"ChatMessage"> | string
+    context?: JsonNullableWithAggregatesFilter<"ChatMessage">
+    messageType?: EnumChatMessageTypeWithAggregatesFilter<"ChatMessage"> | $Enums.ChatMessageType
+    isAI?: BoolWithAggregatesFilter<"ChatMessage"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string
+  }
+
+  export type UserPreferencesWhereInput = {
+    AND?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
+    OR?: UserPreferencesWhereInput[]
+    NOT?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
+    id?: StringFilter<"UserPreferences"> | string
+    userId?: StringFilter<"UserPreferences"> | string
+    riskTolerance?: EnumRiskToleranceFilter<"UserPreferences"> | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFilter<"UserPreferences"> | $Enums.AutomationLevel
+    notificationPreferences?: JsonNullableFilter<"UserPreferences">
+    aiPersonality?: StringNullableFilter<"UserPreferences"> | string | null
+    aiResponseStyle?: StringNullableFilter<"UserPreferences"> | string | null
+    theme?: StringNullableFilter<"UserPreferences"> | string | null
+    tutorialCompleted?: BoolFilter<"UserPreferences"> | boolean
+    tutorialPosition?: JsonNullableFilter<"UserPreferences">
+    createdAt?: DateTimeFilter<"UserPreferences"> | Date | string
+    updatedAt?: DateTimeFilter<"UserPreferences"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type UserPreferencesOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    riskTolerance?: SortOrder
+    automationLevel?: SortOrder
+    notificationPreferences?: SortOrderInput | SortOrder
+    aiPersonality?: SortOrderInput | SortOrder
+    aiResponseStyle?: SortOrderInput | SortOrder
+    theme?: SortOrderInput | SortOrder
+    tutorialCompleted?: SortOrder
+    tutorialPosition?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserPreferencesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
+    OR?: UserPreferencesWhereInput[]
+    NOT?: UserPreferencesWhereInput | UserPreferencesWhereInput[]
+    riskTolerance?: EnumRiskToleranceFilter<"UserPreferences"> | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFilter<"UserPreferences"> | $Enums.AutomationLevel
+    notificationPreferences?: JsonNullableFilter<"UserPreferences">
+    aiPersonality?: StringNullableFilter<"UserPreferences"> | string | null
+    aiResponseStyle?: StringNullableFilter<"UserPreferences"> | string | null
+    theme?: StringNullableFilter<"UserPreferences"> | string | null
+    tutorialCompleted?: BoolFilter<"UserPreferences"> | boolean
+    tutorialPosition?: JsonNullableFilter<"UserPreferences">
+    createdAt?: DateTimeFilter<"UserPreferences"> | Date | string
+    updatedAt?: DateTimeFilter<"UserPreferences"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type UserPreferencesOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    riskTolerance?: SortOrder
+    automationLevel?: SortOrder
+    notificationPreferences?: SortOrderInput | SortOrder
+    aiPersonality?: SortOrderInput | SortOrder
+    aiResponseStyle?: SortOrderInput | SortOrder
+    theme?: SortOrderInput | SortOrder
+    tutorialCompleted?: SortOrder
+    tutorialPosition?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserPreferencesCountOrderByAggregateInput
+    _max?: UserPreferencesMaxOrderByAggregateInput
+    _min?: UserPreferencesMinOrderByAggregateInput
+  }
+
+  export type UserPreferencesScalarWhereWithAggregatesInput = {
+    AND?: UserPreferencesScalarWhereWithAggregatesInput | UserPreferencesScalarWhereWithAggregatesInput[]
+    OR?: UserPreferencesScalarWhereWithAggregatesInput[]
+    NOT?: UserPreferencesScalarWhereWithAggregatesInput | UserPreferencesScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserPreferences"> | string
+    userId?: StringWithAggregatesFilter<"UserPreferences"> | string
+    riskTolerance?: EnumRiskToleranceWithAggregatesFilter<"UserPreferences"> | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelWithAggregatesFilter<"UserPreferences"> | $Enums.AutomationLevel
+    notificationPreferences?: JsonNullableWithAggregatesFilter<"UserPreferences">
+    aiPersonality?: StringNullableWithAggregatesFilter<"UserPreferences"> | string | null
+    aiResponseStyle?: StringNullableWithAggregatesFilter<"UserPreferences"> | string | null
+    theme?: StringNullableWithAggregatesFilter<"UserPreferences"> | string | null
+    tutorialCompleted?: BoolWithAggregatesFilter<"UserPreferences"> | boolean
+    tutorialPosition?: JsonNullableWithAggregatesFilter<"UserPreferences">
+    createdAt?: DateTimeWithAggregatesFilter<"UserPreferences"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserPreferences"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     supabaseUserId: string
@@ -9363,6 +16210,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9381,6 +16233,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -9399,6 +16256,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9417,6 +16279,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9595,60 +16462,100 @@ export namespace Prisma {
 
   export type TransactionCreateInput = {
     id?: string
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
+    plaidAccount?: PlaidAccountCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateInput = {
     id?: string
     userId: string
+    plaidAccountId?: string | null
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TransactionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
+    plaidAccount?: PlaidAccountUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9656,28 +16563,47 @@ export namespace Prisma {
   export type TransactionCreateManyInput = {
     id?: string
     userId: string
+    plaidAccountId?: string | null
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TransactionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9685,14 +16611,24 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9897,6 +16833,558 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlaidAccountCreateInput = {
+    id?: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlaidAccountsInput
+    transactions?: TransactionCreateNestedManyWithoutPlaidAccountInput
+  }
+
+  export type PlaidAccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionUncheckedCreateNestedManyWithoutPlaidAccountInput
+  }
+
+  export type PlaidAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlaidAccountsNestedInput
+    transactions?: TransactionUpdateManyWithoutPlaidAccountNestedInput
+  }
+
+  export type PlaidAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUncheckedUpdateManyWithoutPlaidAccountNestedInput
+  }
+
+  export type PlaidAccountCreateManyInput = {
+    id?: string
+    userId: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlaidAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlaidAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightCreateInput = {
+    id?: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAiInsightsInput
+  }
+
+  export type AIInsightUncheckedCreateInput = {
+    id?: string
+    userId: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AIInsightUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAiInsightsNestedInput
+  }
+
+  export type AIInsightUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightCreateManyInput = {
+    id?: string
+    userId: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AIInsightUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAutomationRulesInput
+  }
+
+  export type AutomationRuleUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAutomationRulesNestedInput
+  }
+
+  export type AutomationRuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageCreateInput = {
+    id?: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutChatMessagesInput
+  }
+
+  export type ChatMessageUncheckedCreateInput = {
+    id?: string
+    userId: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutChatMessagesNestedInput
+  }
+
+  export type ChatMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageCreateManyInput = {
+    id?: string
+    userId: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesCreateInput = {
+    id?: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserPreferencesInput
+  }
+
+  export type UserPreferencesUncheckedCreateInput = {
+    id?: string
+    userId: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserPreferencesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserPreferencesNestedInput
+  }
+
+  export type UserPreferencesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesCreateManyInput = {
+    id?: string
+    userId: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserPreferencesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -9979,6 +17467,36 @@ export namespace Prisma {
     none?: InsightCacheWhereInput
   }
 
+  export type PlaidAccountListRelationFilter = {
+    every?: PlaidAccountWhereInput
+    some?: PlaidAccountWhereInput
+    none?: PlaidAccountWhereInput
+  }
+
+  export type AIInsightListRelationFilter = {
+    every?: AIInsightWhereInput
+    some?: AIInsightWhereInput
+    none?: AIInsightWhereInput
+  }
+
+  export type AutomationRuleListRelationFilter = {
+    every?: AutomationRuleWhereInput
+    some?: AutomationRuleWhereInput
+    none?: AutomationRuleWhereInput
+  }
+
+  export type ChatMessageListRelationFilter = {
+    every?: ChatMessageWhereInput
+    some?: ChatMessageWhereInput
+    none?: ChatMessageWhereInput
+  }
+
+  export type UserPreferencesListRelationFilter = {
+    every?: UserPreferencesWhereInput
+    some?: UserPreferencesWhereInput
+    none?: UserPreferencesWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -10005,6 +17523,26 @@ export namespace Prisma {
   }
 
   export type InsightCacheOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlaidAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AIInsightOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AutomationRuleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserPreferencesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10316,36 +17854,72 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type PlaidAccountNullableRelationFilter = {
+    is?: PlaidAccountWhereInput | null
+    isNot?: PlaidAccountWhereInput | null
+  }
+
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidTransactionId?: SortOrder
     date?: SortOrder
     amount?: SortOrder
     merchant?: SortOrder
     category?: SortOrder
+    subcategory?: SortOrder
     source?: SortOrder
     isRecurring?: SortOrder
     recurringGroupId?: SortOrder
     notes?: SortOrder
+    aiCategorized?: SortOrder
+    aiCategory?: SortOrder
+    aiConfidence?: SortOrder
+    isPending?: SortOrder
+    location?: SortOrder
+    paymentChannel?: SortOrder
+    transactionType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TransactionAvgOrderByAggregateInput = {
     amount?: SortOrder
+    aiConfidence?: SortOrder
   }
 
   export type TransactionMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidTransactionId?: SortOrder
     date?: SortOrder
     amount?: SortOrder
     merchant?: SortOrder
     category?: SortOrder
+    subcategory?: SortOrder
     source?: SortOrder
     isRecurring?: SortOrder
     recurringGroupId?: SortOrder
     notes?: SortOrder
+    aiCategorized?: SortOrder
+    aiCategory?: SortOrder
+    aiConfidence?: SortOrder
+    isPending?: SortOrder
+    paymentChannel?: SortOrder
+    transactionType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10353,20 +17927,30 @@ export namespace Prisma {
   export type TransactionMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidTransactionId?: SortOrder
     date?: SortOrder
     amount?: SortOrder
     merchant?: SortOrder
     category?: SortOrder
+    subcategory?: SortOrder
     source?: SortOrder
     isRecurring?: SortOrder
     recurringGroupId?: SortOrder
     notes?: SortOrder
+    aiCategorized?: SortOrder
+    aiCategory?: SortOrder
+    aiConfidence?: SortOrder
+    isPending?: SortOrder
+    paymentChannel?: SortOrder
+    transactionType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TransactionSumOrderByAggregateInput = {
     amount?: SortOrder
+    aiConfidence?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -10383,6 +17967,22 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type BudgetRuleCountOrderByAggregateInput = {
@@ -10569,6 +18169,424 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type PlaidAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidItemId?: SortOrder
+    name?: SortOrder
+    officialName?: SortOrder
+    type?: SortOrder
+    subtype?: SortOrder
+    mask?: SortOrder
+    institutionName?: SortOrder
+    institutionLogo?: SortOrder
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrder
+    lastSyncAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlaidAccountAvgOrderByAggregateInput = {
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrder
+  }
+
+  export type PlaidAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidItemId?: SortOrder
+    name?: SortOrder
+    officialName?: SortOrder
+    type?: SortOrder
+    subtype?: SortOrder
+    mask?: SortOrder
+    institutionName?: SortOrder
+    institutionLogo?: SortOrder
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrder
+    lastSyncAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlaidAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    plaidAccountId?: SortOrder
+    plaidItemId?: SortOrder
+    name?: SortOrder
+    officialName?: SortOrder
+    type?: SortOrder
+    subtype?: SortOrder
+    mask?: SortOrder
+    institutionName?: SortOrder
+    institutionLogo?: SortOrder
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrder
+    lastSyncAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlaidAccountSumOrderByAggregateInput = {
+    currentBalance?: SortOrder
+    availableBalance?: SortOrder
+    limit?: SortOrder
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAIInsightTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightType | EnumAIInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightTypeFilter<$PrismaModel> | $Enums.AIInsightType
+  }
+
+  export type EnumAIInsightPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightPriority | EnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightPriorityFilter<$PrismaModel> | $Enums.AIInsightPriority
+  }
+
+  export type AIInsightCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    actionRequired?: SortOrder
+    actionType?: SortOrder
+    actionData?: SortOrder
+    priority?: SortOrder
+    isRead?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AIInsightMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    actionRequired?: SortOrder
+    actionType?: SortOrder
+    priority?: SortOrder
+    isRead?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AIInsightMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    actionRequired?: SortOrder
+    actionType?: SortOrder
+    priority?: SortOrder
+    isRead?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAIInsightTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightType | EnumAIInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightTypeWithAggregatesFilter<$PrismaModel> | $Enums.AIInsightType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAIInsightTypeFilter<$PrismaModel>
+    _max?: NestedEnumAIInsightTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAIInsightPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightPriority | EnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightPriorityWithAggregatesFilter<$PrismaModel> | $Enums.AIInsightPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAIInsightPriorityFilter<$PrismaModel>
+    _max?: NestedEnumAIInsightPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumAutomationTriggerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTriggerType | EnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel> | $Enums.AutomationTriggerType
+  }
+
+  export type EnumAutomationActionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationActionType | EnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationActionTypeFilter<$PrismaModel> | $Enums.AutomationActionType
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type AutomationRuleCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    triggerType?: SortOrder
+    triggerData?: SortOrder
+    actionType?: SortOrder
+    actionData?: SortOrder
+    isActive?: SortOrder
+    lastExecutedAt?: SortOrder
+    executionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutomationRuleAvgOrderByAggregateInput = {
+    executionCount?: SortOrder
+  }
+
+  export type AutomationRuleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    triggerType?: SortOrder
+    actionType?: SortOrder
+    isActive?: SortOrder
+    lastExecutedAt?: SortOrder
+    executionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutomationRuleMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    triggerType?: SortOrder
+    actionType?: SortOrder
+    isActive?: SortOrder
+    lastExecutedAt?: SortOrder
+    executionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutomationRuleSumOrderByAggregateInput = {
+    executionCount?: SortOrder
+  }
+
+  export type EnumAutomationTriggerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTriggerType | EnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerTypeWithAggregatesFilter<$PrismaModel> | $Enums.AutomationTriggerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel>
+    _max?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAutomationActionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationActionType | EnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationActionTypeWithAggregatesFilter<$PrismaModel> | $Enums.AutomationActionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationActionTypeFilter<$PrismaModel>
+    _max?: NestedEnumAutomationActionTypeFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumChatMessageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatMessageType | EnumChatMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatMessageTypeFilter<$PrismaModel> | $Enums.ChatMessageType
+  }
+
+  export type ChatMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    message?: SortOrder
+    response?: SortOrder
+    context?: SortOrder
+    messageType?: SortOrder
+    isAI?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    message?: SortOrder
+    response?: SortOrder
+    messageType?: SortOrder
+    isAI?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    message?: SortOrder
+    response?: SortOrder
+    messageType?: SortOrder
+    isAI?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumChatMessageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatMessageType | EnumChatMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatMessageTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChatMessageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatMessageTypeFilter<$PrismaModel>
+    _max?: NestedEnumChatMessageTypeFilter<$PrismaModel>
+  }
+
+  export type EnumRiskToleranceFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskTolerance | EnumRiskToleranceFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskToleranceFilter<$PrismaModel> | $Enums.RiskTolerance
+  }
+
+  export type EnumAutomationLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationLevel | EnumAutomationLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationLevelFilter<$PrismaModel> | $Enums.AutomationLevel
+  }
+
+  export type UserPreferencesCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    riskTolerance?: SortOrder
+    automationLevel?: SortOrder
+    notificationPreferences?: SortOrder
+    aiPersonality?: SortOrder
+    aiResponseStyle?: SortOrder
+    theme?: SortOrder
+    tutorialCompleted?: SortOrder
+    tutorialPosition?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserPreferencesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    riskTolerance?: SortOrder
+    automationLevel?: SortOrder
+    aiPersonality?: SortOrder
+    aiResponseStyle?: SortOrder
+    theme?: SortOrder
+    tutorialCompleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserPreferencesMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    riskTolerance?: SortOrder
+    automationLevel?: SortOrder
+    aiPersonality?: SortOrder
+    aiResponseStyle?: SortOrder
+    theme?: SortOrder
+    tutorialCompleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumRiskToleranceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskTolerance | EnumRiskToleranceFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskToleranceWithAggregatesFilter<$PrismaModel> | $Enums.RiskTolerance
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRiskToleranceFilter<$PrismaModel>
+    _max?: NestedEnumRiskToleranceFilter<$PrismaModel>
+  }
+
+  export type EnumAutomationLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationLevel | EnumAutomationLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationLevelWithAggregatesFilter<$PrismaModel> | $Enums.AutomationLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationLevelFilter<$PrismaModel>
+    _max?: NestedEnumAutomationLevelFilter<$PrismaModel>
+  }
+
   export type SubscriptionCreateNestedManyWithoutUserInput = {
     create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
@@ -10611,6 +18629,41 @@ export namespace Prisma {
     connect?: InsightCacheWhereUniqueInput | InsightCacheWhereUniqueInput[]
   }
 
+  export type PlaidAccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput> | PlaidAccountCreateWithoutUserInput[] | PlaidAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutUserInput | PlaidAccountCreateOrConnectWithoutUserInput[]
+    createMany?: PlaidAccountCreateManyUserInputEnvelope
+    connect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+  }
+
+  export type AIInsightCreateNestedManyWithoutUserInput = {
+    create?: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput> | AIInsightCreateWithoutUserInput[] | AIInsightUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AIInsightCreateOrConnectWithoutUserInput | AIInsightCreateOrConnectWithoutUserInput[]
+    createMany?: AIInsightCreateManyUserInputEnvelope
+    connect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+  }
+
+  export type AutomationRuleCreateNestedManyWithoutUserInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+  }
+
+  export type ChatMessageCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
+  export type UserPreferencesCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput> | UserPreferencesCreateWithoutUserInput[] | UserPreferencesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserPreferencesCreateOrConnectWithoutUserInput | UserPreferencesCreateOrConnectWithoutUserInput[]
+    createMany?: UserPreferencesCreateManyUserInputEnvelope
+    connect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+  }
+
   export type SubscriptionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
@@ -10651,6 +18704,41 @@ export namespace Prisma {
     connectOrCreate?: InsightCacheCreateOrConnectWithoutUserInput | InsightCacheCreateOrConnectWithoutUserInput[]
     createMany?: InsightCacheCreateManyUserInputEnvelope
     connect?: InsightCacheWhereUniqueInput | InsightCacheWhereUniqueInput[]
+  }
+
+  export type PlaidAccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput> | PlaidAccountCreateWithoutUserInput[] | PlaidAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutUserInput | PlaidAccountCreateOrConnectWithoutUserInput[]
+    createMany?: PlaidAccountCreateManyUserInputEnvelope
+    connect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+  }
+
+  export type AIInsightUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput> | AIInsightCreateWithoutUserInput[] | AIInsightUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AIInsightCreateOrConnectWithoutUserInput | AIInsightCreateOrConnectWithoutUserInput[]
+    createMany?: AIInsightCreateManyUserInputEnvelope
+    connect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+  }
+
+  export type AutomationRuleUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+  }
+
+  export type ChatMessageUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
+  export type UserPreferencesUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput> | UserPreferencesCreateWithoutUserInput[] | UserPreferencesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserPreferencesCreateOrConnectWithoutUserInput | UserPreferencesCreateOrConnectWithoutUserInput[]
+    createMany?: UserPreferencesCreateManyUserInputEnvelope
+    connect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -10753,6 +18841,76 @@ export namespace Prisma {
     deleteMany?: InsightCacheScalarWhereInput | InsightCacheScalarWhereInput[]
   }
 
+  export type PlaidAccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput> | PlaidAccountCreateWithoutUserInput[] | PlaidAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutUserInput | PlaidAccountCreateOrConnectWithoutUserInput[]
+    upsert?: PlaidAccountUpsertWithWhereUniqueWithoutUserInput | PlaidAccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlaidAccountCreateManyUserInputEnvelope
+    set?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    disconnect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    delete?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    connect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    update?: PlaidAccountUpdateWithWhereUniqueWithoutUserInput | PlaidAccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlaidAccountUpdateManyWithWhereWithoutUserInput | PlaidAccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlaidAccountScalarWhereInput | PlaidAccountScalarWhereInput[]
+  }
+
+  export type AIInsightUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput> | AIInsightCreateWithoutUserInput[] | AIInsightUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AIInsightCreateOrConnectWithoutUserInput | AIInsightCreateOrConnectWithoutUserInput[]
+    upsert?: AIInsightUpsertWithWhereUniqueWithoutUserInput | AIInsightUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AIInsightCreateManyUserInputEnvelope
+    set?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    disconnect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    delete?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    connect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    update?: AIInsightUpdateWithWhereUniqueWithoutUserInput | AIInsightUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AIInsightUpdateManyWithWhereWithoutUserInput | AIInsightUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AIInsightScalarWhereInput | AIInsightScalarWhereInput[]
+  }
+
+  export type AutomationRuleUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    upsert?: AutomationRuleUpsertWithWhereUniqueWithoutUserInput | AutomationRuleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    set?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    disconnect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    delete?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    update?: AutomationRuleUpdateWithWhereUniqueWithoutUserInput | AutomationRuleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AutomationRuleUpdateManyWithWhereWithoutUserInput | AutomationRuleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+  }
+
+  export type ChatMessageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type UserPreferencesUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput> | UserPreferencesCreateWithoutUserInput[] | UserPreferencesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserPreferencesCreateOrConnectWithoutUserInput | UserPreferencesCreateOrConnectWithoutUserInput[]
+    upsert?: UserPreferencesUpsertWithWhereUniqueWithoutUserInput | UserPreferencesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserPreferencesCreateManyUserInputEnvelope
+    set?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    disconnect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    delete?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    connect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    update?: UserPreferencesUpdateWithWhereUniqueWithoutUserInput | UserPreferencesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserPreferencesUpdateManyWithWhereWithoutUserInput | UserPreferencesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserPreferencesScalarWhereInput | UserPreferencesScalarWhereInput[]
+  }
+
   export type SubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
@@ -10837,6 +18995,76 @@ export namespace Prisma {
     deleteMany?: InsightCacheScalarWhereInput | InsightCacheScalarWhereInput[]
   }
 
+  export type PlaidAccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput> | PlaidAccountCreateWithoutUserInput[] | PlaidAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutUserInput | PlaidAccountCreateOrConnectWithoutUserInput[]
+    upsert?: PlaidAccountUpsertWithWhereUniqueWithoutUserInput | PlaidAccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlaidAccountCreateManyUserInputEnvelope
+    set?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    disconnect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    delete?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    connect?: PlaidAccountWhereUniqueInput | PlaidAccountWhereUniqueInput[]
+    update?: PlaidAccountUpdateWithWhereUniqueWithoutUserInput | PlaidAccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlaidAccountUpdateManyWithWhereWithoutUserInput | PlaidAccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlaidAccountScalarWhereInput | PlaidAccountScalarWhereInput[]
+  }
+
+  export type AIInsightUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput> | AIInsightCreateWithoutUserInput[] | AIInsightUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AIInsightCreateOrConnectWithoutUserInput | AIInsightCreateOrConnectWithoutUserInput[]
+    upsert?: AIInsightUpsertWithWhereUniqueWithoutUserInput | AIInsightUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AIInsightCreateManyUserInputEnvelope
+    set?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    disconnect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    delete?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    connect?: AIInsightWhereUniqueInput | AIInsightWhereUniqueInput[]
+    update?: AIInsightUpdateWithWhereUniqueWithoutUserInput | AIInsightUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AIInsightUpdateManyWithWhereWithoutUserInput | AIInsightUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AIInsightScalarWhereInput | AIInsightScalarWhereInput[]
+  }
+
+  export type AutomationRuleUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput> | AutomationRuleCreateWithoutUserInput[] | AutomationRuleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AutomationRuleCreateOrConnectWithoutUserInput | AutomationRuleCreateOrConnectWithoutUserInput[]
+    upsert?: AutomationRuleUpsertWithWhereUniqueWithoutUserInput | AutomationRuleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AutomationRuleCreateManyUserInputEnvelope
+    set?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    disconnect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    delete?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    connect?: AutomationRuleWhereUniqueInput | AutomationRuleWhereUniqueInput[]
+    update?: AutomationRuleUpdateWithWhereUniqueWithoutUserInput | AutomationRuleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AutomationRuleUpdateManyWithWhereWithoutUserInput | AutomationRuleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type UserPreferencesUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput> | UserPreferencesCreateWithoutUserInput[] | UserPreferencesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserPreferencesCreateOrConnectWithoutUserInput | UserPreferencesCreateOrConnectWithoutUserInput[]
+    upsert?: UserPreferencesUpsertWithWhereUniqueWithoutUserInput | UserPreferencesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserPreferencesCreateManyUserInputEnvelope
+    set?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    disconnect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    delete?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    connect?: UserPreferencesWhereUniqueInput | UserPreferencesWhereUniqueInput[]
+    update?: UserPreferencesUpdateWithWhereUniqueWithoutUserInput | UserPreferencesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserPreferencesUpdateManyWithWhereWithoutUserInput | UserPreferencesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserPreferencesScalarWhereInput | UserPreferencesScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSubscriptionsInput = {
     create?: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSubscriptionsInput
@@ -10891,6 +19119,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type PlaidAccountCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<PlaidAccountCreateWithoutTransactionsInput, PlaidAccountUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutTransactionsInput
+    connect?: PlaidAccountWhereUniqueInput
+  }
+
   export type DecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string
     increment?: Decimal | DecimalJsLike | number | string
@@ -10899,12 +19133,30 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
     create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
     upsert?: UserUpsertWithoutTransactionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type PlaidAccountUpdateOneWithoutTransactionsNestedInput = {
+    create?: XOR<PlaidAccountCreateWithoutTransactionsInput, PlaidAccountUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: PlaidAccountCreateOrConnectWithoutTransactionsInput
+    upsert?: PlaidAccountUpsertWithoutTransactionsInput
+    disconnect?: PlaidAccountWhereInput | boolean
+    delete?: PlaidAccountWhereInput | boolean
+    connect?: PlaidAccountWhereUniqueInput
+    update?: XOR<XOR<PlaidAccountUpdateToOneWithWhereWithoutTransactionsInput, PlaidAccountUpdateWithoutTransactionsInput>, PlaidAccountUncheckedUpdateWithoutTransactionsInput>
   }
 
   export type UserCreateNestedOneWithoutBudgetRulesInput = {
@@ -10955,6 +19207,162 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutInsightCachesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInsightCachesInput, UserUpdateWithoutInsightCachesInput>, UserUncheckedUpdateWithoutInsightCachesInput>
+  }
+
+  export type UserCreateNestedOneWithoutPlaidAccountsInput = {
+    create?: XOR<UserCreateWithoutPlaidAccountsInput, UserUncheckedCreateWithoutPlaidAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlaidAccountsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TransactionCreateNestedManyWithoutPlaidAccountInput = {
+    create?: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput> | TransactionCreateWithoutPlaidAccountInput[] | TransactionUncheckedCreateWithoutPlaidAccountInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutPlaidAccountInput | TransactionCreateOrConnectWithoutPlaidAccountInput[]
+    createMany?: TransactionCreateManyPlaidAccountInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutPlaidAccountInput = {
+    create?: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput> | TransactionCreateWithoutPlaidAccountInput[] | TransactionUncheckedCreateWithoutPlaidAccountInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutPlaidAccountInput | TransactionCreateOrConnectWithoutPlaidAccountInput[]
+    createMany?: TransactionCreateManyPlaidAccountInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type UserUpdateOneRequiredWithoutPlaidAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutPlaidAccountsInput, UserUncheckedCreateWithoutPlaidAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlaidAccountsInput
+    upsert?: UserUpsertWithoutPlaidAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlaidAccountsInput, UserUpdateWithoutPlaidAccountsInput>, UserUncheckedUpdateWithoutPlaidAccountsInput>
+  }
+
+  export type TransactionUpdateManyWithoutPlaidAccountNestedInput = {
+    create?: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput> | TransactionCreateWithoutPlaidAccountInput[] | TransactionUncheckedCreateWithoutPlaidAccountInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutPlaidAccountInput | TransactionCreateOrConnectWithoutPlaidAccountInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutPlaidAccountInput | TransactionUpsertWithWhereUniqueWithoutPlaidAccountInput[]
+    createMany?: TransactionCreateManyPlaidAccountInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutPlaidAccountInput | TransactionUpdateWithWhereUniqueWithoutPlaidAccountInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutPlaidAccountInput | TransactionUpdateManyWithWhereWithoutPlaidAccountInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutPlaidAccountNestedInput = {
+    create?: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput> | TransactionCreateWithoutPlaidAccountInput[] | TransactionUncheckedCreateWithoutPlaidAccountInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutPlaidAccountInput | TransactionCreateOrConnectWithoutPlaidAccountInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutPlaidAccountInput | TransactionUpsertWithWhereUniqueWithoutPlaidAccountInput[]
+    createMany?: TransactionCreateManyPlaidAccountInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutPlaidAccountInput | TransactionUpdateWithWhereUniqueWithoutPlaidAccountInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutPlaidAccountInput | TransactionUpdateManyWithWhereWithoutPlaidAccountInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAiInsightsInput = {
+    create?: XOR<UserCreateWithoutAiInsightsInput, UserUncheckedCreateWithoutAiInsightsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAiInsightsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAIInsightTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AIInsightType
+  }
+
+  export type EnumAIInsightPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.AIInsightPriority
+  }
+
+  export type UserUpdateOneRequiredWithoutAiInsightsNestedInput = {
+    create?: XOR<UserCreateWithoutAiInsightsInput, UserUncheckedCreateWithoutAiInsightsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAiInsightsInput
+    upsert?: UserUpsertWithoutAiInsightsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAiInsightsInput, UserUpdateWithoutAiInsightsInput>, UserUncheckedUpdateWithoutAiInsightsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAutomationRulesInput = {
+    create?: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutomationRulesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAutomationTriggerTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AutomationTriggerType
+  }
+
+  export type EnumAutomationActionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AutomationActionType
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutAutomationRulesNestedInput = {
+    create?: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAutomationRulesInput
+    upsert?: UserUpsertWithoutAutomationRulesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAutomationRulesInput, UserUpdateWithoutAutomationRulesInput>, UserUncheckedUpdateWithoutAutomationRulesInput>
+  }
+
+  export type UserCreateNestedOneWithoutChatMessagesInput = {
+    create?: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatMessagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumChatMessageTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ChatMessageType
+  }
+
+  export type UserUpdateOneRequiredWithoutChatMessagesNestedInput = {
+    create?: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatMessagesInput
+    upsert?: UserUpsertWithoutChatMessagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChatMessagesInput, UserUpdateWithoutChatMessagesInput>, UserUncheckedUpdateWithoutChatMessagesInput>
+  }
+
+  export type UserCreateNestedOneWithoutUserPreferencesInput = {
+    create?: XOR<UserCreateWithoutUserPreferencesInput, UserUncheckedCreateWithoutUserPreferencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserPreferencesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumRiskToleranceFieldUpdateOperationsInput = {
+    set?: $Enums.RiskTolerance
+  }
+
+  export type EnumAutomationLevelFieldUpdateOperationsInput = {
+    set?: $Enums.AutomationLevel
+  }
+
+  export type UserUpdateOneRequiredWithoutUserPreferencesNestedInput = {
+    create?: XOR<UserCreateWithoutUserPreferencesInput, UserUncheckedCreateWithoutUserPreferencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserPreferencesInput
+    upsert?: UserUpsertWithoutUserPreferencesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserPreferencesInput, UserUpdateWithoutUserPreferencesInput>, UserUncheckedUpdateWithoutUserPreferencesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -11205,6 +19613,17 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -11219,6 +19638,22 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumGoalTypeFilter<$PrismaModel = never> = {
@@ -11275,6 +19710,179 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAIInsightTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightType | EnumAIInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightTypeFilter<$PrismaModel> | $Enums.AIInsightType
+  }
+
+  export type NestedEnumAIInsightPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightPriority | EnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightPriorityFilter<$PrismaModel> | $Enums.AIInsightPriority
+  }
+
+  export type NestedEnumAIInsightTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightType | EnumAIInsightTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightType[] | ListEnumAIInsightTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightTypeWithAggregatesFilter<$PrismaModel> | $Enums.AIInsightType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAIInsightTypeFilter<$PrismaModel>
+    _max?: NestedEnumAIInsightTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAIInsightPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AIInsightPriority | EnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AIInsightPriority[] | ListEnumAIInsightPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAIInsightPriorityWithAggregatesFilter<$PrismaModel> | $Enums.AIInsightPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAIInsightPriorityFilter<$PrismaModel>
+    _max?: NestedEnumAIInsightPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAutomationTriggerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTriggerType | EnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel> | $Enums.AutomationTriggerType
+  }
+
+  export type NestedEnumAutomationActionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationActionType | EnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationActionTypeFilter<$PrismaModel> | $Enums.AutomationActionType
+  }
+
+  export type NestedEnumAutomationTriggerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationTriggerType | EnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationTriggerType[] | ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationTriggerTypeWithAggregatesFilter<$PrismaModel> | $Enums.AutomationTriggerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel>
+    _max?: NestedEnumAutomationTriggerTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAutomationActionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationActionType | EnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationActionType[] | ListEnumAutomationActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationActionTypeWithAggregatesFilter<$PrismaModel> | $Enums.AutomationActionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationActionTypeFilter<$PrismaModel>
+    _max?: NestedEnumAutomationActionTypeFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumChatMessageTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatMessageType | EnumChatMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatMessageTypeFilter<$PrismaModel> | $Enums.ChatMessageType
+  }
+
+  export type NestedEnumChatMessageTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatMessageType | EnumChatMessageTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatMessageType[] | ListEnumChatMessageTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatMessageTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChatMessageType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatMessageTypeFilter<$PrismaModel>
+    _max?: NestedEnumChatMessageTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRiskToleranceFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskTolerance | EnumRiskToleranceFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskToleranceFilter<$PrismaModel> | $Enums.RiskTolerance
+  }
+
+  export type NestedEnumAutomationLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationLevel | EnumAutomationLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationLevelFilter<$PrismaModel> | $Enums.AutomationLevel
+  }
+
+  export type NestedEnumRiskToleranceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskTolerance | EnumRiskToleranceFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskTolerance[] | ListEnumRiskToleranceFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskToleranceWithAggregatesFilter<$PrismaModel> | $Enums.RiskTolerance
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRiskToleranceFilter<$PrismaModel>
+    _max?: NestedEnumRiskToleranceFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAutomationLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AutomationLevel | EnumAutomationLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AutomationLevel[] | ListEnumAutomationLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumAutomationLevelWithAggregatesFilter<$PrismaModel> | $Enums.AutomationLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAutomationLevelFilter<$PrismaModel>
+    _max?: NestedEnumAutomationLevelFilter<$PrismaModel>
   }
 
   export type SubscriptionCreateWithoutUserInput = {
@@ -11335,28 +19943,48 @@ export namespace Prisma {
 
   export type TransactionCreateWithoutUserInput = {
     id?: string
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    plaidAccount?: PlaidAccountCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutUserInput = {
     id?: string
+    plaidAccountId?: string | null
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11453,6 +20081,206 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlaidAccountCreateWithoutUserInput = {
+    id?: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionCreateNestedManyWithoutPlaidAccountInput
+  }
+
+  export type PlaidAccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionUncheckedCreateNestedManyWithoutPlaidAccountInput
+  }
+
+  export type PlaidAccountCreateOrConnectWithoutUserInput = {
+    where: PlaidAccountWhereUniqueInput
+    create: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type PlaidAccountCreateManyUserInputEnvelope = {
+    data: PlaidAccountCreateManyUserInput | PlaidAccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AIInsightCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AIInsightUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AIInsightCreateOrConnectWithoutUserInput = {
+    where: AIInsightWhereUniqueInput
+    create: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput>
+  }
+
+  export type AIInsightCreateManyUserInputEnvelope = {
+    data: AIInsightCreateManyUserInput | AIInsightCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AutomationRuleCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleCreateOrConnectWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    create: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput>
+  }
+
+  export type AutomationRuleCreateManyUserInputEnvelope = {
+    data: AutomationRuleCreateManyUserInput | AutomationRuleCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatMessageCreateWithoutUserInput = {
+    id?: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUncheckedCreateWithoutUserInput = {
+    id?: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageCreateOrConnectWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMessageCreateManyUserInputEnvelope = {
+    data: ChatMessageCreateManyUserInput | ChatMessageCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserPreferencesCreateWithoutUserInput = {
+    id?: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserPreferencesUncheckedCreateWithoutUserInput = {
+    id?: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserPreferencesCreateOrConnectWithoutUserInput = {
+    where: UserPreferencesWhereUniqueInput
+    create: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserPreferencesCreateManyUserInputEnvelope = {
+    data: UserPreferencesCreateManyUserInput | UserPreferencesCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SubscriptionUpsertWithWhereUniqueWithoutUserInput = {
     where: SubscriptionWhereUniqueInput
     update: XOR<SubscriptionUpdateWithoutUserInput, SubscriptionUncheckedUpdateWithoutUserInput>
@@ -11533,14 +20361,24 @@ export namespace Prisma {
     NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
     id?: StringFilter<"Transaction"> | string
     userId?: StringFilter<"Transaction"> | string
+    plaidAccountId?: StringNullableFilter<"Transaction"> | string | null
+    plaidTransactionId?: StringNullableFilter<"Transaction"> | string | null
     date?: DateTimeFilter<"Transaction"> | Date | string
     amount?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
     merchant?: StringFilter<"Transaction"> | string
     category?: StringFilter<"Transaction"> | string
+    subcategory?: StringNullableFilter<"Transaction"> | string | null
     source?: StringFilter<"Transaction"> | string
     isRecurring?: BoolFilter<"Transaction"> | boolean
     recurringGroupId?: StringNullableFilter<"Transaction"> | string | null
     notes?: StringNullableFilter<"Transaction"> | string | null
+    aiCategorized?: BoolFilter<"Transaction"> | boolean
+    aiCategory?: StringNullableFilter<"Transaction"> | string | null
+    aiConfidence?: FloatNullableFilter<"Transaction"> | number | null
+    isPending?: BoolFilter<"Transaction"> | boolean
+    location?: JsonNullableFilter<"Transaction">
+    paymentChannel?: StringNullableFilter<"Transaction"> | string | null
+    transactionType?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
   }
@@ -11631,6 +20469,180 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"InsightCache"> | Date | string
   }
 
+  export type PlaidAccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: PlaidAccountWhereUniqueInput
+    update: XOR<PlaidAccountUpdateWithoutUserInput, PlaidAccountUncheckedUpdateWithoutUserInput>
+    create: XOR<PlaidAccountCreateWithoutUserInput, PlaidAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type PlaidAccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: PlaidAccountWhereUniqueInput
+    data: XOR<PlaidAccountUpdateWithoutUserInput, PlaidAccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PlaidAccountUpdateManyWithWhereWithoutUserInput = {
+    where: PlaidAccountScalarWhereInput
+    data: XOR<PlaidAccountUpdateManyMutationInput, PlaidAccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PlaidAccountScalarWhereInput = {
+    AND?: PlaidAccountScalarWhereInput | PlaidAccountScalarWhereInput[]
+    OR?: PlaidAccountScalarWhereInput[]
+    NOT?: PlaidAccountScalarWhereInput | PlaidAccountScalarWhereInput[]
+    id?: StringFilter<"PlaidAccount"> | string
+    userId?: StringFilter<"PlaidAccount"> | string
+    plaidAccountId?: StringFilter<"PlaidAccount"> | string
+    plaidItemId?: StringFilter<"PlaidAccount"> | string
+    name?: StringFilter<"PlaidAccount"> | string
+    officialName?: StringNullableFilter<"PlaidAccount"> | string | null
+    type?: StringFilter<"PlaidAccount"> | string
+    subtype?: StringNullableFilter<"PlaidAccount"> | string | null
+    mask?: StringNullableFilter<"PlaidAccount"> | string | null
+    institutionName?: StringFilter<"PlaidAccount"> | string
+    institutionLogo?: StringNullableFilter<"PlaidAccount"> | string | null
+    currentBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string
+    limit?: DecimalNullableFilter<"PlaidAccount"> | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    isActive?: BoolFilter<"PlaidAccount"> | boolean
+    createdAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"PlaidAccount"> | Date | string
+  }
+
+  export type AIInsightUpsertWithWhereUniqueWithoutUserInput = {
+    where: AIInsightWhereUniqueInput
+    update: XOR<AIInsightUpdateWithoutUserInput, AIInsightUncheckedUpdateWithoutUserInput>
+    create: XOR<AIInsightCreateWithoutUserInput, AIInsightUncheckedCreateWithoutUserInput>
+  }
+
+  export type AIInsightUpdateWithWhereUniqueWithoutUserInput = {
+    where: AIInsightWhereUniqueInput
+    data: XOR<AIInsightUpdateWithoutUserInput, AIInsightUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AIInsightUpdateManyWithWhereWithoutUserInput = {
+    where: AIInsightScalarWhereInput
+    data: XOR<AIInsightUpdateManyMutationInput, AIInsightUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AIInsightScalarWhereInput = {
+    AND?: AIInsightScalarWhereInput | AIInsightScalarWhereInput[]
+    OR?: AIInsightScalarWhereInput[]
+    NOT?: AIInsightScalarWhereInput | AIInsightScalarWhereInput[]
+    id?: StringFilter<"AIInsight"> | string
+    userId?: StringFilter<"AIInsight"> | string
+    type?: EnumAIInsightTypeFilter<"AIInsight"> | $Enums.AIInsightType
+    title?: StringFilter<"AIInsight"> | string
+    message?: StringFilter<"AIInsight"> | string
+    actionRequired?: BoolFilter<"AIInsight"> | boolean
+    actionType?: StringNullableFilter<"AIInsight"> | string | null
+    actionData?: JsonNullableFilter<"AIInsight">
+    priority?: EnumAIInsightPriorityFilter<"AIInsight"> | $Enums.AIInsightPriority
+    isRead?: BoolFilter<"AIInsight"> | boolean
+    expiresAt?: DateTimeNullableFilter<"AIInsight"> | Date | string | null
+    createdAt?: DateTimeFilter<"AIInsight"> | Date | string
+    updatedAt?: DateTimeFilter<"AIInsight"> | Date | string
+  }
+
+  export type AutomationRuleUpsertWithWhereUniqueWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    update: XOR<AutomationRuleUpdateWithoutUserInput, AutomationRuleUncheckedUpdateWithoutUserInput>
+    create: XOR<AutomationRuleCreateWithoutUserInput, AutomationRuleUncheckedCreateWithoutUserInput>
+  }
+
+  export type AutomationRuleUpdateWithWhereUniqueWithoutUserInput = {
+    where: AutomationRuleWhereUniqueInput
+    data: XOR<AutomationRuleUpdateWithoutUserInput, AutomationRuleUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AutomationRuleUpdateManyWithWhereWithoutUserInput = {
+    where: AutomationRuleScalarWhereInput
+    data: XOR<AutomationRuleUpdateManyMutationInput, AutomationRuleUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AutomationRuleScalarWhereInput = {
+    AND?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+    OR?: AutomationRuleScalarWhereInput[]
+    NOT?: AutomationRuleScalarWhereInput | AutomationRuleScalarWhereInput[]
+    id?: StringFilter<"AutomationRule"> | string
+    userId?: StringFilter<"AutomationRule"> | string
+    name?: StringFilter<"AutomationRule"> | string
+    description?: StringNullableFilter<"AutomationRule"> | string | null
+    triggerType?: EnumAutomationTriggerTypeFilter<"AutomationRule"> | $Enums.AutomationTriggerType
+    triggerData?: JsonFilter<"AutomationRule">
+    actionType?: EnumAutomationActionTypeFilter<"AutomationRule"> | $Enums.AutomationActionType
+    actionData?: JsonFilter<"AutomationRule">
+    isActive?: BoolFilter<"AutomationRule"> | boolean
+    lastExecutedAt?: DateTimeNullableFilter<"AutomationRule"> | Date | string | null
+    executionCount?: IntFilter<"AutomationRule"> | number
+    createdAt?: DateTimeFilter<"AutomationRule"> | Date | string
+    updatedAt?: DateTimeFilter<"AutomationRule"> | Date | string
+  }
+
+  export type ChatMessageUpsertWithWhereUniqueWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    update: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
+    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMessageUpdateWithWhereUniqueWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    data: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ChatMessageUpdateManyWithWhereWithoutUserInput = {
+    where: ChatMessageScalarWhereInput
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ChatMessageScalarWhereInput = {
+    AND?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    OR?: ChatMessageScalarWhereInput[]
+    NOT?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    userId?: StringFilter<"ChatMessage"> | string
+    message?: StringFilter<"ChatMessage"> | string
+    response?: StringFilter<"ChatMessage"> | string
+    context?: JsonNullableFilter<"ChatMessage">
+    messageType?: EnumChatMessageTypeFilter<"ChatMessage"> | $Enums.ChatMessageType
+    isAI?: BoolFilter<"ChatMessage"> | boolean
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+  }
+
+  export type UserPreferencesUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserPreferencesWhereUniqueInput
+    update: XOR<UserPreferencesUpdateWithoutUserInput, UserPreferencesUncheckedUpdateWithoutUserInput>
+    create: XOR<UserPreferencesCreateWithoutUserInput, UserPreferencesUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserPreferencesUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserPreferencesWhereUniqueInput
+    data: XOR<UserPreferencesUpdateWithoutUserInput, UserPreferencesUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserPreferencesUpdateManyWithWhereWithoutUserInput = {
+    where: UserPreferencesScalarWhereInput
+    data: XOR<UserPreferencesUpdateManyMutationInput, UserPreferencesUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserPreferencesScalarWhereInput = {
+    AND?: UserPreferencesScalarWhereInput | UserPreferencesScalarWhereInput[]
+    OR?: UserPreferencesScalarWhereInput[]
+    NOT?: UserPreferencesScalarWhereInput | UserPreferencesScalarWhereInput[]
+    id?: StringFilter<"UserPreferences"> | string
+    userId?: StringFilter<"UserPreferences"> | string
+    riskTolerance?: EnumRiskToleranceFilter<"UserPreferences"> | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFilter<"UserPreferences"> | $Enums.AutomationLevel
+    notificationPreferences?: JsonNullableFilter<"UserPreferences">
+    aiPersonality?: StringNullableFilter<"UserPreferences"> | string | null
+    aiResponseStyle?: StringNullableFilter<"UserPreferences"> | string | null
+    theme?: StringNullableFilter<"UserPreferences"> | string | null
+    tutorialCompleted?: BoolFilter<"UserPreferences"> | boolean
+    tutorialPosition?: JsonNullableFilter<"UserPreferences">
+    createdAt?: DateTimeFilter<"UserPreferences"> | Date | string
+    updatedAt?: DateTimeFilter<"UserPreferences"> | Date | string
+  }
+
   export type UserCreateWithoutSubscriptionsInput = {
     id?: string
     supabaseUserId: string
@@ -11646,6 +20658,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -11663,6 +20680,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -11696,6 +20718,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -11713,6 +20740,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutConnectionsInput = {
@@ -11730,6 +20762,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConnectionsInput = {
@@ -11747,6 +20784,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConnectionsInput = {
@@ -11780,6 +20822,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConnectionsInput = {
@@ -11797,6 +20844,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -11814,6 +20866,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -11831,11 +20888,63 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+  }
+
+  export type PlaidAccountCreateWithoutTransactionsInput = {
+    id?: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlaidAccountsInput
+  }
+
+  export type PlaidAccountUncheckedCreateWithoutTransactionsInput = {
+    id?: string
+    userId: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlaidAccountCreateOrConnectWithoutTransactionsInput = {
+    where: PlaidAccountWhereUniqueInput
+    create: XOR<PlaidAccountCreateWithoutTransactionsInput, PlaidAccountUncheckedCreateWithoutTransactionsInput>
   }
 
   export type UserUpsertWithoutTransactionsInput = {
@@ -11864,6 +20973,11 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -11881,6 +20995,64 @@ export namespace Prisma {
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PlaidAccountUpsertWithoutTransactionsInput = {
+    update: XOR<PlaidAccountUpdateWithoutTransactionsInput, PlaidAccountUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<PlaidAccountCreateWithoutTransactionsInput, PlaidAccountUncheckedCreateWithoutTransactionsInput>
+    where?: PlaidAccountWhereInput
+  }
+
+  export type PlaidAccountUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: PlaidAccountWhereInput
+    data: XOR<PlaidAccountUpdateWithoutTransactionsInput, PlaidAccountUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type PlaidAccountUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlaidAccountsNestedInput
+  }
+
+  export type PlaidAccountUncheckedUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutBudgetRulesInput = {
@@ -11898,6 +21070,11 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBudgetRulesInput = {
@@ -11915,6 +21092,11 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBudgetRulesInput = {
@@ -11948,6 +21130,11 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBudgetRulesInput = {
@@ -11965,6 +21152,11 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGoalsInput = {
@@ -11982,6 +21174,11 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGoalsInput = {
@@ -11999,6 +21196,11 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGoalsInput = {
@@ -12032,6 +21234,11 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -12049,6 +21256,11 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutInsightCachesInput = {
@@ -12066,6 +21278,11 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
     goals?: GoalCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInsightCachesInput = {
@@ -12083,6 +21300,11 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
     goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInsightCachesInput = {
@@ -12116,6 +21338,11 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
     goals?: GoalUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInsightCachesInput = {
@@ -12133,6 +21360,605 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
     goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPlaidAccountsInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    connections?: ConnectionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPlaidAccountsInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    connections?: ConnectionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPlaidAccountsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlaidAccountsInput, UserUncheckedCreateWithoutPlaidAccountsInput>
+  }
+
+  export type TransactionCreateWithoutPlaidAccountInput = {
+    id?: string
+    plaidTransactionId?: string | null
+    date: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    merchant: string
+    category: string
+    subcategory?: string | null
+    source: string
+    isRecurring?: boolean
+    recurringGroupId?: string | null
+    notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type TransactionUncheckedCreateWithoutPlaidAccountInput = {
+    id?: string
+    userId: string
+    plaidTransactionId?: string | null
+    date: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    merchant: string
+    category: string
+    subcategory?: string | null
+    source: string
+    isRecurring?: boolean
+    recurringGroupId?: string | null
+    notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionCreateOrConnectWithoutPlaidAccountInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput>
+  }
+
+  export type TransactionCreateManyPlaidAccountInputEnvelope = {
+    data: TransactionCreateManyPlaidAccountInput | TransactionCreateManyPlaidAccountInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutPlaidAccountsInput = {
+    update: XOR<UserUpdateWithoutPlaidAccountsInput, UserUncheckedUpdateWithoutPlaidAccountsInput>
+    create: XOR<UserCreateWithoutPlaidAccountsInput, UserUncheckedCreateWithoutPlaidAccountsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlaidAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlaidAccountsInput, UserUncheckedUpdateWithoutPlaidAccountsInput>
+  }
+
+  export type UserUpdateWithoutPlaidAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlaidAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutPlaidAccountInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutPlaidAccountInput, TransactionUncheckedUpdateWithoutPlaidAccountInput>
+    create: XOR<TransactionCreateWithoutPlaidAccountInput, TransactionUncheckedCreateWithoutPlaidAccountInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutPlaidAccountInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutPlaidAccountInput, TransactionUncheckedUpdateWithoutPlaidAccountInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutPlaidAccountInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutPlaidAccountInput>
+  }
+
+  export type UserCreateWithoutAiInsightsInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    connections?: ConnectionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAiInsightsInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    connections?: ConnectionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAiInsightsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAiInsightsInput, UserUncheckedCreateWithoutAiInsightsInput>
+  }
+
+  export type UserUpsertWithoutAiInsightsInput = {
+    update: XOR<UserUpdateWithoutAiInsightsInput, UserUncheckedUpdateWithoutAiInsightsInput>
+    create: XOR<UserCreateWithoutAiInsightsInput, UserUncheckedCreateWithoutAiInsightsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAiInsightsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAiInsightsInput, UserUncheckedUpdateWithoutAiInsightsInput>
+  }
+
+  export type UserUpdateWithoutAiInsightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAiInsightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAutomationRulesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    connections?: ConnectionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAutomationRulesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    connections?: ConnectionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAutomationRulesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+  }
+
+  export type UserUpsertWithoutAutomationRulesInput = {
+    update: XOR<UserUpdateWithoutAutomationRulesInput, UserUncheckedUpdateWithoutAutomationRulesInput>
+    create: XOR<UserCreateWithoutAutomationRulesInput, UserUncheckedCreateWithoutAutomationRulesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAutomationRulesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAutomationRulesInput, UserUncheckedUpdateWithoutAutomationRulesInput>
+  }
+
+  export type UserUpdateWithoutAutomationRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAutomationRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutChatMessagesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    connections?: ConnectionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutChatMessagesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    connections?: ConnectionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    userPreferences?: UserPreferencesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutChatMessagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+  }
+
+  export type UserUpsertWithoutChatMessagesInput = {
+    update: XOR<UserUpdateWithoutChatMessagesInput, UserUncheckedUpdateWithoutChatMessagesInput>
+    create: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutChatMessagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutChatMessagesInput, UserUncheckedUpdateWithoutChatMessagesInput>
+  }
+
+  export type UserUpdateWithoutChatMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutChatMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    userPreferences?: UserPreferencesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutUserPreferencesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    connections?: ConnectionCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserPreferencesInput = {
+    id?: string
+    supabaseUserId: string
+    email: string
+    phone?: string | null
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    twoFactorEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    connections?: ConnectionUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    budgetRules?: BudgetRuleUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
+    insightCaches?: InsightCacheUncheckedCreateNestedManyWithoutUserInput
+    plaidAccounts?: PlaidAccountUncheckedCreateNestedManyWithoutUserInput
+    aiInsights?: AIInsightUncheckedCreateNestedManyWithoutUserInput
+    automationRules?: AutomationRuleUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserPreferencesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserPreferencesInput, UserUncheckedCreateWithoutUserPreferencesInput>
+  }
+
+  export type UserUpsertWithoutUserPreferencesInput = {
+    update: XOR<UserUpdateWithoutUserPreferencesInput, UserUncheckedUpdateWithoutUserPreferencesInput>
+    create: XOR<UserCreateWithoutUserPreferencesInput, UserUncheckedCreateWithoutUserPreferencesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserPreferencesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserPreferencesInput, UserUncheckedUpdateWithoutUserPreferencesInput>
+  }
+
+  export type UserUpdateWithoutUserPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    supabaseUserId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    connections?: ConnectionUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    budgetRules?: BudgetRuleUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
+    insightCaches?: InsightCacheUncheckedUpdateManyWithoutUserNestedInput
+    plaidAccounts?: PlaidAccountUncheckedUpdateManyWithoutUserNestedInput
+    aiInsights?: AIInsightUncheckedUpdateManyWithoutUserNestedInput
+    automationRules?: AutomationRuleUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubscriptionCreateManyUserInput = {
@@ -12155,14 +21981,24 @@ export namespace Prisma {
 
   export type TransactionCreateManyUserInput = {
     id?: string
+    plaidAccountId?: string | null
+    plaidTransactionId?: string | null
     date: Date | string
     amount: Decimal | DecimalJsLike | number | string
     merchant: string
     category: string
+    subcategory?: string | null
     source: string
     isRecurring?: boolean
     recurringGroupId?: string | null
     notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12191,6 +22027,80 @@ export namespace Prisma {
     payload: JsonNullValueInput | InputJsonValue
     expiresAt: Date | string
     createdAt?: Date | string
+  }
+
+  export type PlaidAccountCreateManyUserInput = {
+    id?: string
+    plaidAccountId: string
+    plaidItemId: string
+    name: string
+    officialName?: string | null
+    type: string
+    subtype?: string | null
+    mask?: string | null
+    institutionName: string
+    institutionLogo?: string | null
+    currentBalance: Decimal | DecimalJsLike | number | string
+    availableBalance: Decimal | DecimalJsLike | number | string
+    limit?: Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: Date | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AIInsightCreateManyUserInput = {
+    id?: string
+    type: $Enums.AIInsightType
+    title: string
+    message: string
+    actionRequired?: boolean
+    actionType?: string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: $Enums.AIInsightPriority
+    isRead?: boolean
+    expiresAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutomationRuleCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    triggerType: $Enums.AutomationTriggerType
+    triggerData: JsonNullValueInput | InputJsonValue
+    actionType: $Enums.AutomationActionType
+    actionData: JsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    lastExecutedAt?: Date | string | null
+    executionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ChatMessageCreateManyUserInput = {
+    id?: string
+    message: string
+    response: string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: $Enums.ChatMessageType
+    isAI?: boolean
+    createdAt?: Date | string
+  }
+
+  export type UserPreferencesCreateManyUserInput = {
+    id?: string
+    riskTolerance?: $Enums.RiskTolerance
+    automationLevel?: $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: string | null
+    aiResponseStyle?: string | null
+    theme?: string | null
+    tutorialCompleted?: boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SubscriptionUpdateWithoutUserInput = {
@@ -12249,42 +22159,72 @@ export namespace Prisma {
 
   export type TransactionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plaidAccount?: PlaidAccountUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TransactionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     merchant?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     source?: StringFieldUpdateOperationsInput | string
     isRecurring?: BoolFieldUpdateOperationsInput | boolean
     recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12367,6 +22307,326 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlaidAccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUpdateManyWithoutPlaidAccountNestedInput
+  }
+
+  export type PlaidAccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUncheckedUpdateManyWithoutPlaidAccountNestedInput
+  }
+
+  export type PlaidAccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidAccountId?: StringFieldUpdateOperationsInput | string
+    plaidItemId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    officialName?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    subtype?: NullableStringFieldUpdateOperationsInput | string | null
+    mask?: NullableStringFieldUpdateOperationsInput | string | null
+    institutionName?: StringFieldUpdateOperationsInput | string
+    institutionLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    currentBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    availableBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    limit?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastSyncAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AIInsightUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAIInsightTypeFieldUpdateOperationsInput | $Enums.AIInsightType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionRequired?: BoolFieldUpdateOperationsInput | boolean
+    actionType?: NullableStringFieldUpdateOperationsInput | string | null
+    actionData?: NullableJsonNullValueInput | InputJsonValue
+    priority?: EnumAIInsightPriorityFieldUpdateOperationsInput | $Enums.AIInsightPriority
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutomationRuleUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    triggerType?: EnumAutomationTriggerTypeFieldUpdateOperationsInput | $Enums.AutomationTriggerType
+    triggerData?: JsonNullValueInput | InputJsonValue
+    actionType?: EnumAutomationActionTypeFieldUpdateOperationsInput | $Enums.AutomationActionType
+    actionData?: JsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    executionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    response?: StringFieldUpdateOperationsInput | string
+    context?: NullableJsonNullValueInput | InputJsonValue
+    messageType?: EnumChatMessageTypeFieldUpdateOperationsInput | $Enums.ChatMessageType
+    isAI?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferencesUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    riskTolerance?: EnumRiskToleranceFieldUpdateOperationsInput | $Enums.RiskTolerance
+    automationLevel?: EnumAutomationLevelFieldUpdateOperationsInput | $Enums.AutomationLevel
+    notificationPreferences?: NullableJsonNullValueInput | InputJsonValue
+    aiPersonality?: NullableStringFieldUpdateOperationsInput | string | null
+    aiResponseStyle?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    tutorialCompleted?: BoolFieldUpdateOperationsInput | boolean
+    tutorialPosition?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionCreateManyPlaidAccountInput = {
+    id?: string
+    userId: string
+    plaidTransactionId?: string | null
+    date: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    merchant: string
+    category: string
+    subcategory?: string | null
+    source: string
+    isRecurring?: boolean
+    recurringGroupId?: string | null
+    notes?: string | null
+    aiCategorized?: boolean
+    aiCategory?: string | null
+    aiConfidence?: number | null
+    isPending?: boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: string | null
+    transactionType?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionUpdateWithoutPlaidAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    merchant?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    isRecurring?: BoolFieldUpdateOperationsInput | boolean
+    recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutPlaidAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    merchant?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    isRecurring?: BoolFieldUpdateOperationsInput | boolean
+    recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutPlaidAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plaidTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    merchant?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    isRecurring?: BoolFieldUpdateOperationsInput | boolean
+    recurringGroupId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    aiCategorized?: BoolFieldUpdateOperationsInput | boolean
+    aiCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    aiConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPending?: BoolFieldUpdateOperationsInput | boolean
+    location?: NullableJsonNullValueInput | InputJsonValue
+    paymentChannel?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -12376,6 +22636,10 @@ export namespace Prisma {
      * @deprecated Use UserCountOutputTypeDefaultArgs instead
      */
     export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PlaidAccountCountOutputTypeDefaultArgs instead
+     */
+    export type PlaidAccountCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlaidAccountCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UserDefaultArgs instead
      */
@@ -12404,6 +22668,26 @@ export namespace Prisma {
      * @deprecated Use InsightCacheDefaultArgs instead
      */
     export type InsightCacheArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = InsightCacheDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PlaidAccountDefaultArgs instead
+     */
+    export type PlaidAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlaidAccountDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AIInsightDefaultArgs instead
+     */
+    export type AIInsightArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AIInsightDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AutomationRuleDefaultArgs instead
+     */
+    export type AutomationRuleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AutomationRuleDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ChatMessageDefaultArgs instead
+     */
+    export type ChatMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ChatMessageDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use UserPreferencesDefaultArgs instead
+     */
+    export type UserPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserPreferencesDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

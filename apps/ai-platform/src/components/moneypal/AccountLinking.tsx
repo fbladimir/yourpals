@@ -64,7 +64,8 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
       setIsLoading(true)
       setError(null)
 
-      const response = await fetch('/api/plaid/exchange-token', {
+      // Step 1: Exchange public token for access token
+      const exchangeResponse = await fetch('/api/plaid/exchange-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,15 +73,36 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
         body: JSON.stringify({ publicToken }),
       })
 
-      if (!response.ok) {
+      if (!exchangeResponse.ok) {
         throw new Error('Failed to link accounts')
       }
 
-      const data = await response.json()
+      const exchangeData = await exchangeResponse.json()
       
       // Store access token securely (in production, this should be encrypted)
-      localStorage.setItem('moneypal-access-token', data.access_token)
-      localStorage.setItem('moneypal-item-id', data.item_id)
+      localStorage.setItem('moneypal-access-token', exchangeData.access_token)
+      localStorage.setItem('moneypal-item-id', exchangeData.item_id)
+      
+      // Step 2: Sync accounts and transactions
+      console.log('Starting account sync...')
+      const syncResponse = await fetch('/api/plaid/sync-accounts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          userId, 
+          accessToken: exchangeData.access_token, 
+          plaidItemId: exchangeData.item_id 
+        }),
+      })
+
+      if (!syncResponse.ok) {
+        console.warn('Account sync failed, but accounts are linked')
+      } else {
+        const syncData = await syncResponse.json()
+        console.log('Sync completed:', syncData)
+      }
       
       setSuccess(true)
       
