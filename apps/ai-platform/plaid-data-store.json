@@ -2,7 +2,7 @@
   "53406980-f439-458f-981a-0a18c1092590": {
     "accounts": [
       {
-        "id": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "id": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "name": "Plaid Checking",
         "type": "depository",
         "subtype": "checking",
@@ -13,7 +13,7 @@
         "institutionName": "Plaid Institution"
       },
       {
-        "id": "Rg3MRnmGK3sgdyyVVd73S9ZdedyAAJha6pmJk",
+        "id": "pKM8Vw1eG4H9EAGdWLpWhrE9zMqPV6fp45zWl",
         "name": "Plaid Saving",
         "type": "depository",
         "subtype": "savings",
@@ -24,7 +24,7 @@
         "institutionName": "Plaid Institution"
       },
       {
-        "id": "6Wl6oDrvqlfNA77JJApLIVqn9namm8F8EDVGD",
+        "id": "oq1gVEM7AaUJGmjw6ZX6CMkJrePR65soaNbz5",
         "name": "Plaid Cash Management",
         "type": "depository",
         "subtype": "cash management",
@@ -37,108 +37,452 @@
     ],
     "transactions": [
       {
-        "id": "pVwDa4oABwuwkllJJkPqSjaWklrKx1CJGkK4w",
+        "id": "AAwr3NamjXcgKJyn3PR3slNjq9x6xai9x7kbA",
         "amount": -500,
         "date": "2025-08-15",
         "description": "United Airlines",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "United Airlines",
         "isPending": false,
         "paymentChannel": "in store",
         "transactionType": "special"
       },
       {
-        "id": "oVEDxapyzEuQkxx55kRlhKxEA8MBbaUpDrKaZ",
+        "id": "G9naPZem1XskKlXxPWBPsM5exRnmnyI67lLV3",
         "amount": 12,
         "date": "2025-08-14",
         "description": "McDonald's",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "McDonald's",
         "isPending": false,
         "paymentChannel": "in store",
         "transactionType": "place"
       },
       {
-        "id": "gV9Xvqj7g9uXNWWqqNRvIw7pJv9ZVDULBrMbV",
+        "id": "nlRoVEZjWdIBG4P6DJmDHeKR4kzyz7HAMdXaQ",
         "amount": 4.33,
         "date": "2025-08-14",
         "description": "Starbucks",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "Starbucks",
         "isPending": false,
         "paymentChannel": "in store",
         "transactionType": "place"
       },
       {
-        "id": "8GKmWXBZrKFxrggVVrW4faVBm9kKdQHZ6zrAa",
+        "id": "bkD4VEBq7nIMGAl3e8veIeNjydm8m9Hm65JR6",
         "amount": 89.4,
         "date": "2025-08-13",
         "description": "SparkFun",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "FUN",
         "isPending": false,
         "paymentChannel": "in store",
         "transactionType": "place"
       },
       {
-        "id": "GPZzjXLdMZCDMgg66MrZU96d1oMy8xuGv8nlN",
+        "id": "vdgzVXEkKQSDEemXp3BpcznVJjy1y4FqZjPLQ",
         "amount": -4.22,
         "date": "2025-08-12",
         "description": "INTRST PYMNT",
         "category": "Uncategorized",
-        "accountId": "Rg3MRnmGK3sgdyyVVd73S9ZdedyAAJha6pmJk",
+        "accountId": "pKM8Vw1eG4H9EAGdWLpWhrE9zMqPV6fp45zWl",
         "merchant": "INTRST PYMNT",
         "isPending": false,
         "paymentChannel": "other",
         "transactionType": "special"
       },
       {
-        "id": "E4eKaXM3QeFWGXXggGqyUXANp1mgy6ug7VEw7",
+        "id": "mRMpVyQPExS5EaNDMj9MsmMA4zwbwKUgQblGe",
         "amount": 6.33,
         "date": "2025-07-31",
         "description": "Uber 072515 SF**POOL**",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "Uber",
         "isPending": false,
         "paymentChannel": "online",
         "transactionType": "special"
       },
       {
-        "id": "nVEDBdLArEun8MM1185gCVvwLle7G4f3REGdP",
+        "id": "RdwLg3W9bnSGQNB6zZlzhEneM38y8kuaoKL6g",
         "amount": 25,
         "date": "2025-07-18",
         "description": "CREDIT CARD 3333 PAYMENT *//",
         "category": "Uncategorized",
-        "accountId": "Rg3MRnmGK3sgdyyVVd73S9ZdedyAAJha6pmJk",
+        "accountId": "pKM8Vw1eG4H9EAGdWLpWhrE9zMqPV6fp45zWl",
         "merchant": "CREDIT CARD 3333 PAYMENT *//",
         "isPending": false,
         "paymentChannel": "other",
         "transactionType": "special"
       },
       {
-        "id": "WGNMKn6kxNFj6PPzz61RcRjZr7VwB6iP8v4rV",
+        "id": "yNkxlqGpB1TZ9nGXyrkyi3bg8vBEBpU489ZJn",
         "amount": 5.4,
         "date": "2025-07-18",
         "description": "Uber 063015 SF**POOL**",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
         "merchant": "Uber",
         "isPending": false,
         "paymentChannel": "online",
         "transactionType": "special"
       },
       {
-        "id": "A3NVqX7KPNuoAGGwwAz6HMPmGela8qH4Dyo7k",
+        "id": "91RpnrqZBXuENgknyZQyUV5GQRBbBPu49L37x",
         "amount": -500,
         "date": "2025-07-16",
         "description": "United Airlines",
         "category": "Uncategorized",
-        "accountId": "vVXDpQGlNXuLK66llKgNHR5EVE1vvacqL69lb",
+        "accountId": "LKp7ZlL98XHRbByqmjQmTAy9MQewK1SkbNERW",
+        "merchant": "United Airlines",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "special"
+      }
+    ],
+    "summary": {
+      "totalBalance": 12380,
+      "totalSavings": 210,
+      "monthlyIncome": 0,
+      "monthlyExpenses": 1004.22,
+      "creditScore": 785
+    },
+    "insights": [
+      {
+        "id": "1",
+        "type": "spending",
+        "title": "Real Plaid Data Loaded",
+        "message": "Successfully loaded 3 accounts and 9 transactions from Plaid.",
+        "priority": "high"
+      }
+    ],
+    "goals": [
+      {
+        "id": "1",
+        "name": "Emergency Fund",
+        "targetAmount": 37140,
+        "currentAmount": 12380,
+        "targetDate": "2024-06-01"
+      }
+    ]
+  },
+  "aae1881b-caa6-4b8c-acc1-eb1b7e74b860": {
+    "accounts": [
+      {
+        "id": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "name": "Plaid Checking",
+        "type": "depository",
+        "subtype": "checking",
+        "balance": 110,
+        "currency": "USD",
+        "accountNumber": "****0000",
+        "officialName": "Plaid Gold Standard 0% Interest Checking",
+        "institutionName": "Plaid Institution"
+      },
+      {
+        "id": "jdaMB3PjayigARKoWxwQsKPx736g7Es64LJyV",
+        "name": "Plaid Saving",
+        "type": "depository",
+        "subtype": "savings",
+        "balance": 210,
+        "currency": "USD",
+        "accountNumber": "****1111",
+        "officialName": "Plaid Silver Standard 0.1% Interest Saving",
+        "institutionName": "Plaid Institution"
+      },
+      {
+        "id": "7je17vl6eZFxE6pyJPDKFQRPnvMbnrFdQnXNG",
+        "name": "Plaid Cash Management",
+        "type": "depository",
+        "subtype": "cash management",
+        "balance": 12060,
+        "currency": "USD",
+        "accountNumber": "****9002",
+        "officialName": "Plaid Growth Cash Management",
+        "institutionName": "Plaid Institution"
+      }
+    ],
+    "transactions": [
+      {
+        "id": "xoJ31L5AJ4f6PB1WDM8bI1mP6LzgxjS64wxwR",
+        "amount": -500,
+        "date": "2025-08-15",
+        "description": "United Airlines",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "United Airlines",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "special"
+      },
+      {
+        "id": "dKrPve8xrWsyW73PB5Z4h3yZoWm5xeuJENvNe",
+        "amount": 12,
+        "date": "2025-08-14",
+        "description": "McDonald's",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "McDonald's",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "aAlavJ9zlgTnvR9DGE6xh984D7rjyEUZ5484Q",
+        "amount": 4.33,
+        "date": "2025-08-14",
+        "description": "Starbucks",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "Starbucks",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "44PQNwG9P7iLEywAv6D1FP7JvQxda3tJb5X5M",
+        "amount": 89.4,
+        "date": "2025-08-13",
+        "description": "SparkFun",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "FUN",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "7je17vl6eZFxE6pyJPDKFQRNBMLjDpCdJQRQy",
+        "amount": -4.22,
+        "date": "2025-08-12",
+        "description": "INTRST PYMNT",
+        "category": "Uncategorized",
+        "accountId": "jdaMB3PjayigARKoWxwQsKPx736g7Es64LJyV",
+        "merchant": "INTRST PYMNT",
+        "isPending": false,
+        "paymentChannel": "other",
+        "transactionType": "special"
+      },
+      {
+        "id": "Nd9QvVgo9zi458ARdLy9clDdpezP9xiy6ZEZQ",
+        "amount": 6.33,
+        "date": "2025-07-31",
+        "description": "Uber 072515 SF**POOL**",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "Uber",
+        "isPending": false,
+        "paymentChannel": "online",
+        "transactionType": "special"
+      },
+      {
+        "id": "erzjl41dzAu9j7wpEMZNSwDA5P8zBatr9D8D9",
+        "amount": 25,
+        "date": "2025-07-18",
+        "description": "CREDIT CARD 3333 PAYMENT *//",
+        "category": "Uncategorized",
+        "accountId": "jdaMB3PjayigARKoWxwQsKPx736g7Es64LJyV",
+        "merchant": "CREDIT CARD 3333 PAYMENT *//",
+        "isPending": false,
+        "paymentChannel": "other",
+        "transactionType": "special"
+      },
+      {
+        "id": "P4wMvRo8w3iP5LqQRdW6t3jJp1n7ewuo6dGdy",
+        "amount": 5.4,
+        "date": "2025-07-18",
+        "description": "Uber 063015 SF**POOL**",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "Uber",
+        "isPending": false,
+        "paymentChannel": "online",
+        "transactionType": "special"
+      },
+      {
+        "id": "jdaMB3PjayigARKoWxwQsKPXA6LQpbt6W4P4K",
+        "amount": -500,
+        "date": "2025-07-16",
+        "description": "United Airlines",
+        "category": "Uncategorized",
+        "accountId": "P4wMvRo8w3iP5LqQRdW6t3jo8V1m8duodWzwl",
+        "merchant": "United Airlines",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "special"
+      }
+    ],
+    "summary": {
+      "totalBalance": 12380,
+      "totalSavings": 210,
+      "monthlyIncome": 0,
+      "monthlyExpenses": 1004.22,
+      "creditScore": 785
+    },
+    "insights": [
+      {
+        "id": "1",
+        "type": "spending",
+        "title": "Real Plaid Data Loaded",
+        "message": "Successfully loaded 3 accounts and 9 transactions from Plaid.",
+        "priority": "high"
+      }
+    ],
+    "goals": [
+      {
+        "id": "1",
+        "name": "Emergency Fund",
+        "targetAmount": 37140,
+        "currentAmount": 12380,
+        "targetDate": "2024-06-01"
+      }
+    ]
+  },
+  "d6ad34a6-03a9-40a0-bd2b-03b2c8633481": {
+    "accounts": [
+      {
+        "id": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "name": "Plaid Checking",
+        "type": "depository",
+        "subtype": "checking",
+        "balance": 110,
+        "currency": "USD",
+        "accountNumber": "****0000",
+        "officialName": "Plaid Gold Standard 0% Interest Checking",
+        "institutionName": "Plaid Institution"
+      },
+      {
+        "id": "pyn98geZ4LCEz7g9n8GdUwK4k6DvKzfpbNBny",
+        "name": "Plaid Saving",
+        "type": "depository",
+        "subtype": "savings",
+        "balance": 210,
+        "currency": "USD",
+        "accountNumber": "****1111",
+        "officialName": "Plaid Silver Standard 0.1% Interest Saving",
+        "institutionName": "Plaid Institution"
+      },
+      {
+        "id": "oGn9gb7QaXtGrz9Jd8jwIQBlA5wvBrTo1ngyJ",
+        "name": "Plaid Cash Management",
+        "type": "depository",
+        "subtype": "cash management",
+        "balance": 12060,
+        "currency": "USD",
+        "accountNumber": "****9002",
+        "officialName": "Plaid Growth Cash Management",
+        "institutionName": "Plaid Institution"
+      }
+    ],
+    "transactions": [
+      {
+        "id": "nGnwo4jedptGKoXBNvP6IneD5K3ybDcAl6KDK",
+        "amount": -500,
+        "date": "2025-08-15",
+        "description": "United Airlines",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "United Airlines",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "special"
+      },
+      {
+        "id": "bGWg4pqrn3tG4RZMmVl3IweVaNQ87VtmbVNP3",
+        "amount": 12,
+        "date": "2025-08-14",
+        "description": "McDonald's",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "McDonald's",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "mGnbpJP7xLtEqGZ5mvNDUPmVrMXbEVtgyLMkP",
+        "amount": 4.33,
+        "date": "2025-08-14",
+        "description": "Starbucks",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "Starbucks",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "yXn5xdpy13C9ja7ZVwGXsL3W4beEZWF46yWMo",
+        "amount": 89.4,
+        "date": "2025-08-13",
+        "description": "SparkFun",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "FUN",
+        "isPending": false,
+        "paymentChannel": "in store",
+        "transactionType": "place"
+      },
+      {
+        "id": "63EdMX75DmUB3mlyVaePi4DZ1vGaLZc8DgbkA",
+        "amount": -4.22,
+        "date": "2025-08-12",
+        "description": "INTRST PYMNT",
+        "category": "Uncategorized",
+        "accountId": "pyn98geZ4LCEz7g9n8GdUwK4k6DvKzfpbNBny",
+        "merchant": "INTRST PYMNT",
+        "isPending": false,
+        "paymentChannel": "other",
+        "transactionType": "special"
+      },
+      {
+        "id": "9aEKpkZDXVCNaveE6PknsKVdr5ebjdh4xRVBK",
+        "amount": 6.33,
+        "date": "2025-07-31",
+        "description": "Uber 072515 SF**POOL**",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "Uber",
+        "isPending": false,
+        "paymentChannel": "online",
+        "transactionType": "special"
+      },
+      {
+        "id": "XeWBlo96J1Tblz8KeGjdToPpRkbmepFbKdPJz",
+        "amount": 25,
+        "date": "2025-07-18",
+        "description": "CREDIT CARD 3333 PAYMENT *//",
+        "category": "Uncategorized",
+        "accountId": "pyn98geZ4LCEz7g9n8GdUwK4k6DvKzfpbNBny",
+        "merchant": "CREDIT CARD 3333 PAYMENT *//",
+        "isPending": false,
+        "paymentChannel": "other",
+        "transactionType": "special"
+      },
+      {
+        "id": "vwnAzBkyQ5UE45yDavmXULzegn91GeFq6WnJJ",
+        "amount": 5.4,
+        "date": "2025-07-18",
+        "description": "Uber 063015 SF**POOL**",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
+        "merchant": "Uber",
+        "isPending": false,
+        "paymentChannel": "online",
+        "transactionType": "special"
+      },
+      {
+        "id": "RaDoLB96nVCQ5vpGWoB6TrEgKnxypgFapRXM5",
+        "amount": -500,
+        "date": "2025-07-16",
+        "description": "United Airlines",
+        "category": "Uncategorized",
+        "accountId": "LrDo7M96Xjtb5JXR3GyqToNLJ1q3NMSkqy1az",
         "merchant": "United Airlines",
         "isPending": false,
         "paymentChannel": "in store",

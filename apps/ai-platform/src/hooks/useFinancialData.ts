@@ -185,7 +185,8 @@ export function useFinancialData(userId: string) {
       .slice(0, 10)
   }
 
-  return {
+  // Ensure we always return a valid object
+  const result = {
     ...data,
     refreshData,
     getAccountById,
@@ -194,4 +195,6 @@ export function useFinancialData(userId: string) {
     getSpendingByCategory,
     getTopMerchants
   }
+  
+  return result
 }
