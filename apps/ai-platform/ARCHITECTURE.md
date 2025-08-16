@@ -531,72 +531,141 @@ While the current tutorial system provides excellent guidance, we're implementin
 
 ---
 
-## 🎯 **TODAY'S ACCOMPLISHMENTS (YourPal AI Manager Implementation)**
+## 🎯 TODAY'S ACCOMPLISHMENTS (YourPal AI Manager UI/UX Enhancement - Phase 2)
 
-### **What We Built Today:**
-✅ **YourPal Avatar Component** (`src/components/YourPalAvatar.tsx`)
-- Floating avatar in bottom right corner with rotating prompts
-- Hover effects and professional design
-- Integration with main dashboard
+### ✅ **Major UI/UX Improvements Completed:**
 
-✅ **YourPal Chat Modal** (`src/components/YourPalChatModal.tsx`)
-- Compact live chat window (384px × 500px)
-- Minimize/maximize functionality
-- Welcome screen with quick question buttons
-- AI knowledge base for all AI pals
+#### **1. Avatar Enhancement & Visibility**
+- **Increased Size**: Avatar now 28x28 (w-28) for much better visibility
+- **Removed Overlay**: Eliminated "Click to chat" text covering the avatar
+- **Better Proportions**: Improved icon overlays and visual hierarchy
+- **Enhanced Glow Effects**: Better pulse ring and shadow animations
 
-✅ **Dashboard Integration** (`src/components/Dashboard.tsx`)
-- Seamless integration of YourPal components
-- Professional chat experience within dashboard context
+#### **2. Interactive Features Implementation**
+- **Draggable Avatar**: Users can drag YourPal anywhere on the dashboard
+- **Resizable Avatar**: Users can resize YourPal from 80px to 200px
+- **Position Persistence**: Avatar position and size saved to localStorage
+- **Viewport Bounds**: Avatar stays within screen boundaries
 
-### **Current YourPal Features:**
-- **AI Pal Knowledge Base** - Comprehensive information about MoneyPal, SalesPal, FitnessPal, etc.
-- **Smart Response Generation** - Context-aware answers about platform and AI pals
-- **Quick Question System** - Pre-built questions for easy exploration
-- **Live Chat Interface** - Natural conversation flow with typing indicators
+#### **3. Auto-Communication System**
+- **Rotating Prompts**: YourPal automatically shows helpful messages every 8 seconds
+- **Smart Timing**: Chat bubble appears for 4 seconds, then hides
+- **Contextual Messages**: Prompts about different AI pals and features
+- **Hover Fallback**: Hover still shows "Click to chat" when auto-bubble is hidden
 
-### **UI/UX Issues Identified (Need Fixing):**
-- **Avatar too small** - Current 14x14 size needs adjustment
-- **Hitbox problems** - Click area needs improvement for better usability
-- **Chat window layout** - Content doesn't fit properly, scrolling issues
-- **Visual hierarchy** - Some elements need better spacing and sizing
+#### **4. Chat Window Enhancement**
+- **Resizable Interface**: Users can resize chat window from 320x400 to 800x800
+- **Responsive Content**: Chat content adapts to window size changes
+- **Position Persistence**: Chat window position saved to localStorage
+- **Better Scrolling**: Fixed scrolling issues with proper flexbox layout
 
-### **Next Session Goals:**
-1. **Fix YourPal Avatar** - Increase size, improve hitbox, better visual presence
-2. **Optimize Chat Window** - Fix scrolling, improve content layout, better proportions
-3. **Polish UI/UX** - Ensure professional, polished appearance
-4. **Test User Experience** - Verify smooth interaction and usability
+#### **5. Professional UI Elements**
+- **Drag Handle**: Top-left move icon for repositioning
+- **Resize Handle**: Bottom-right resize icon for window sizing
+- **Smooth Animations**: Enhanced transitions and hover effects
+- **Better Spacing**: Improved layout and content fitting
 
-### **Immediate Next Steps:**
-1. **✅ Enhance Main Dashboard UI/UX** - Professional design matching MoneyPal quality
-2. **🔄 Refine YourPal AI Manager UI/UX** - Fix avatar size, hitbox, chat window scrolling and layout
-3. **Create SalesPal Template** - Ecommerce AI assistant using MoneyPal foundation
-4. **Implement Data Integration** - Amazon, Shopify, manual data entry
-5. **Refine Template System** - Standardize components for future AI pals
+### 🎨 **Phase 2 UI/UX Refinements (Latest Session):**
 
-### **Technical Implementation**
-```typescript
-// Core tutorial state
-const [showTutorial, setShowTutorial] = useState(false)
-const [tutorialStep, setTutorialStep] = useState(0)
-const [tutorialPosition, setTutorialPosition] = useState({ x: 16, y: 16 })
-const [isDragging, setIsDragging] = useState(false)
-const [typingText, setTypingText] = useState('')
-const [isTyping, setIsTyping] = useState(false)
+#### **6. Clean Avatar Design**
+- **Container Removal**: Eliminated square container for clean, rounded avatar appearance
+- **Rounded Design**: Changed from rounded-2xl to rounded-full for modern look
+- **Subtle Effects**: Replaced harsh borders with subtle glow and shadow effects
+- **Professional Appearance**: Clean, minimal design that matches dashboard aesthetic
 
-// Tutorial configuration
-const tutorialSteps = [
-  {
-    id: 'step-id',
-    title: "Step Title",
-    message: "AI explanation text",
-    action: "User action prompt",
-    targetTab: 'tab-name',
-    highlightElement: 'element-id',
-    scrollTo: 'element-id'
-  }
-]
-```
+#### **7. Enhanced Hover Animations**
+- **Smooth Scaling**: Hover now includes scale(1.1) and subtle rotation(2°)
+- **Cute Random Animations**: Avatar performs gentle wiggle and bounce every 15 seconds
+- **Interactive Feedback**: Better visual response to user interactions
+- **Subtle Glow**: Hover shows subtle blue glow instead of harsh borders
+
+#### **8. Improved Chat Bubble Positioning**
+- **Natural Conversation**: Chat bubbles positioned closer to avatar for natural feel
+- **Better Spacing**: Reduced margins from mb-3 to mb-2 for tighter positioning
+- **Smaller Size**: Reduced padding and text size for less intrusive appearance
+- **Arrow Positioning**: Adjusted chat bubble arrow for better visual flow
+
+#### **9. Enhanced Drag & Resize UX**
+- **Larger Hitboxes**: Increased handle sizes from 6x6 to 8x8 for better usability
+- **Better Event Handling**: Improved mouse event handling with stopPropagation
+- **Improved Cursors**: Better visual feedback with proper cursor states
+- **Smoother Interactions**: Enhanced performance and responsiveness
+
+#### **10. Fixed Positioning Issues**
+- **Proper Default Position**: Chat window now appears near avatar, not top-left
+- **Responsive Positioning**: Handles window resize and maintains proper positioning
+- **Hydration Fix**: Resolved SSR issues with conditional client-side rendering
+- **Z-Index Optimization**: Ensures proper layering above dashboard content
+
+#### **11. Enhanced Minimized Window UX (Latest Session)**
+- **Proper Positioning**: Minimized window now appears near YourPal avatar in bottom-right
+- **Draggable Minimized State**: Users can drag the minimized window anywhere
+- **Smart Positioning**: Automatically positions near avatar with proper spacing
+- **Responsive Behavior**: Adjusts position when window is resized
+- **Visual Feedback**: Shows grab/grabbing cursors for better UX
+- **Avatar Visibility**: Positioned to the left of avatar to avoid covering it
+
+### 🔧 **Technical Implementation Details:**
+
+#### **State Management:**
+- `position`: Avatar and chat window positioning
+- `size`: Avatar and chat window dimensions
+- `showAutoBubble`: Controls auto-rotating chat bubble
+- `isAnimating`: Controls cute random animations
+- `isDragging`/`isResizing`: Drag and resize state management
+- `isClient`: Prevents hydration issues
+
+#### **Local Storage Integration:**
+- `yourpal-position`: Saves avatar position
+- `yourpal-size`: Saves avatar size
+- `yourpal-chat-size`: Saves chat window dimensions
+- `yourpal-chat-position`: Saves chat window position
+
+#### **Event Handling:**
+- **Global Mouse Events**: Proper drag and resize handling
+- **Boundary Checking**: Keeps elements within viewport
+- **Smooth Interactions**: Optimized performance and user experience
+- **Event Propagation**: Proper event handling with stopPropagation
+
+### 🎨 **User Experience Improvements:**
+
+#### **Before (Issues Fixed):**
+- ❌ "Click to chat" overlay covered avatar
+- ❌ Avatar too small and hard to see
+- ❌ Chat window couldn't scroll properly
+- ❌ Input field had visibility issues
+- ❌ No customization options
+- ❌ Square container looked clunky
+- ❌ Chat window appeared in wrong position
+- ❌ Drag/resize hitboxes were too small
+
+#### **After (Enhancements):**
+- ✅ Clean avatar visibility with no overlay
+- ✅ Large, prominent avatar (28x28)
+- ✅ Smooth scrolling and proper content fitting
+- ✅ Clear input field with proper text visibility
+- ✅ Full customization: drag, resize, position
+- ✅ Clean, rounded avatar design
+- ✅ Chat window appears near avatar
+- ✅ Large, accessible drag/resize handles
+
+### 🚀 **Next Session Goals:**
+1. **Test Interactive Features** - Verify drag, resize, and positioning work smoothly
+2. **Polish Auto-Communication** - Fine-tune timing and message rotation
+3. **User Feedback Integration** - Gather feedback on new interactive features
+4. **SalesPal Template Creation** - Begin building the next AI pal application
+
+### 📊 **Current Status Summary:**
+- **Main Dashboard**: ✅ Enhanced with professional UI/UX
+- **YourPal AI Manager**: ✅ **FULLY ENHANCED** with interactive features + Phase 2 refinements
+- **MoneyPal**: ✅ Complete with onboarding and Plaid integration
+- **SalesPal**: 🔄 Ready to begin development
+- **Template System**: 🔄 Foundation established for rapid AI pal creation
+
+### 🎯 **Immediate Next Steps:**
+1. **Test YourPal Interactive Features** - Ensure smooth user experience
+2. **Begin SalesPal Development** - Create ecommerce AI pal template
+3. **Template Refinement** - Optimize the AI pal creation process
 
 ### **Reusability Across Apps**
 - **FitnessPal**: Guide users through workout tracking, goal setting, AI coaching
