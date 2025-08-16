@@ -844,16 +844,16 @@ export default function MoneyPalPage() {
         transition={{ duration: 0.6 }}
         className="sticky top-0 z-40 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
             <Link 
               href="/dashboard"
               className="flex items-center gap-2 text-robot-green hover:text-robot-blue transition-colors duration-200"
-            >
-              <ArrowLeft className="w-5 h-5" />
+              >
+                <ArrowLeft className="w-5 h-5" />
               Back to Dashboard
             </Link>
-          </div>
+                </div>
           
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-robot-blue/20 rounded-full flex items-center justify-center">
@@ -967,7 +967,7 @@ export default function MoneyPalPage() {
                 </div>
                 <p className="text-sm text-gray-400">65% Complete</p>
               </div>
-              
+
               <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center">
                 <div className="w-16 h-16 bg-robot-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="w-8 h-8 text-robot-blue" />
@@ -979,7 +979,7 @@ export default function MoneyPalPage() {
                 </div>
                 <p className="text-sm text-gray-400">42% Complete</p>
               </div>
-              
+
               <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center">
                 <div className="w-16 h-16 bg-robot-purple/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <PiggyBank className="w-8 h-8 text-robot-purple" />
@@ -992,13 +992,13 @@ export default function MoneyPalPage() {
                 <p className="text-sm text-gray-400">78% Complete</p>
               </div>
             </div>
-            
+
             <div className="text-center">
               <button className="bg-gradient-to-r from-robot-green to-robot-blue px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-200">
                 + Create New Goal
               </button>
-            </div>
-          </div>
+                </div>
+              </div>
         </CollapsibleSection>
         )}
         
@@ -1029,24 +1029,24 @@ export default function MoneyPalPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Privacy</span>
                     <span className="text-robot-green">Private</span>
-                  </div>
                 </div>
               </div>
-              
+            </div>
+
               <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
                 <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-robot-blue" />
                   Security
                 </h4>
-                <div className="space-y-3">
+              <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">2FA</span>
                     <span className="text-robot-green">Enabled</span>
-                  </div>
+                      </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Last Login</span>
                     <span className="text-white">Today</span>
-                  </div>
+                      </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Password</span>
                     <span className="text-robot-green">Strong</span>
@@ -1082,7 +1082,7 @@ export default function MoneyPalPage() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
-            <motion.div
+          <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}

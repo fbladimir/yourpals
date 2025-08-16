@@ -15,7 +15,13 @@ import {
   Search,
   Star,
   Crown,
-  Check
+  Check,
+  ChevronRight,
+  Zap,
+  Heart,
+  Brain,
+  Rocket,
+  Clock
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
@@ -23,6 +29,8 @@ import FinanceBot from '@/components/robots/FinanceBot'
 import FitnessBot from '@/components/robots/FitnessBot'
 import BusinessBot from '@/components/robots/BusinessBot'
 import GeneralBot from '@/components/robots/GeneralBot'
+import YourPalAvatar from '@/components/YourPalAvatar'
+import YourPalChatModal from '@/components/YourPalChatModal'
 
 interface DashboardProps {
   userGoals: string[]
@@ -43,6 +51,8 @@ export default function Dashboard({
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
+  const [hoveredApp, setHoveredApp] = useState<string | null>(null)
+  const [showYourPalChat, setShowYourPalChat] = useState(false)
 
   const aiApps = [
     { 
@@ -50,36 +60,52 @@ export default function Dashboard({
       name: 'MoneyPal', 
       icon: '💰', 
       color: 'from-robot-green to-robot-blue', 
-      description: 'Personal finance management', 
+      description: 'Personal finance management with AI insights', 
       status: 'active',
-      bot: 'finance'
+      bot: 'finance',
+      features: ['Smart budgeting', 'AI insights', 'Goal tracking', 'Account linking'],
+      avatar: '/moneypal/robotavatar.PNG',
+      lastUsed: '2 hours ago',
+      usage: 'High'
     },
     { 
       id: 'fitnesspal', 
       name: 'FitnessPal', 
       icon: '💪', 
       color: 'from-robot-orange to-robot-red', 
-      description: 'Health and fitness tracking', 
+      description: 'Your AI workout buddy and health coach', 
       status: 'coming-soon',
-      bot: 'fitness'
+      bot: 'fitness',
+      features: ['Workout planning', 'Nutrition tracking', 'Progress analytics', 'AI coaching'],
+      avatar: '/moneypal/robotavatar.PNG', // Placeholder - will be unique for each pal
+      lastUsed: 'Never',
+      usage: 'N/A'
     },
     { 
       id: 'productivitypal', 
       name: 'ProductivityPal', 
       icon: '⚡', 
       color: 'from-robot-purple to-robot-pink', 
-      description: 'Time management tools', 
+      description: 'Streamline tasks with AI-powered efficiency', 
       status: 'coming-soon',
-      bot: 'productivity'
+      bot: 'productivity',
+      features: ['Task automation', 'Time tracking', 'Smart scheduling', 'Focus optimization'],
+      avatar: '/moneypal/robotavatar.PNG', // Placeholder
+      lastUsed: 'Never',
+      usage: 'N/A'
     },
     { 
       id: 'businesspal', 
       name: 'BusinessPal', 
       icon: '🏢', 
       color: 'from-robot-blue to-robot-cyan', 
-      description: 'Business optimization', 
+      description: 'AI insights to grow your business', 
       status: 'coming-soon',
-      bot: 'business'
+      bot: 'business',
+      features: ['Market analysis', 'Performance metrics', 'Strategy insights', 'Growth tracking'],
+      avatar: '/moneypal/robotavatar.PNG', // Placeholder
+      lastUsed: 'Never',
+      usage: 'N/A'
     }
   ]
 
@@ -163,34 +189,42 @@ export default function Dashboard({
 
   const renderOverview = () => (
     <div className="space-y-8">
-      {/* Welcome Section */}
+      {/* Enhanced Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-2xl p-8 border border-robot-blue/20"
+        className="relative overflow-hidden bg-gradient-to-br from-robot-blue/10 via-robot-purple/10 to-robot-pink/10 rounded-3xl p-8 border border-robot-blue/20 shadow-2xl shadow-robot-blue/10"
       >
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-robot-blue to-robot-purple rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-br from-robot-purple to-robot-pink rounded-full blur-3xl"></div>
+        </div>
+
         {/* AI Mode Indicator */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-6"
+          className="relative mb-8 flex justify-center"
         >
           <div className="relative inline-block">
-            <img 
-              src="/yourpalsRobot.png" 
+            <motion.img 
+              src="/moneypal/robotavatar.PNG" 
               alt="AI Mode Active" 
-              className="h-16 mx-auto"
+              className="h-20 w-20 rounded-2xl shadow-2xl"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              transition={{ duration: 0.3 }}
             />
             {/* AI Mode Pulse Ring */}
             <motion.div
               animate={{ 
-                scale: [1, 1.2, 1],
+                scale: [1, 1.3, 1],
                 opacity: [0.6, 0, 0.6]
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              className="absolute inset-0 border-2 border-robot-blue rounded-full"
+              className="absolute inset-0 border-2 border-robot-blue rounded-2xl"
             />
           </div>
         </motion.div>
@@ -199,175 +233,331 @@ export default function Dashboard({
           animate={{ 
             textShadow: [
               "0 0 0 rgba(59, 130, 246, 0)",
-              "0 0 15px rgba(59, 130, 246, 0.6)",
+              "0 0 20px rgba(59, 130, 246, 0.8)",
               "0 0 0 rgba(59, 130, 246, 0)"
             ]
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="text-robot-blue font-mono text-sm tracking-widest mb-3 text-center"
+          className="text-robot-blue font-mono text-sm tracking-widest mb-4 text-center"
         >
           AI MODE: OPERATIONAL
         </motion.div>
         
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-white">
+        <div className="text-center relative z-10">
+          <motion.h2 
+            className="text-3xl font-bold text-white mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             {getPersonalizedWelcome()}
-          </h2>
-          <p className="text-gray-300">
+          </motion.h2>
+          <motion.p 
+            className="text-gray-300 text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             You're all set up with your personalized AI team. Here's what's available to you:
-          </p>
+          </motion.p>
         </div>
       </motion.div>
 
-      {/* AI Apps Grid */}
+      {/* Enhanced AI Apps Grid */}
       <div>
-        <h3 className="text-xl font-semibold text-white mb-4">Your AI Applications</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <motion.h3 
+          className="text-2xl font-bold text-white mb-6 flex items-center gap-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Sparkles className="w-6 h-6 text-robot-blue" />
+          Your AI Applications
+        </motion.h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {aiApps.map((app, index) => (
             <motion.div
               key={app.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`p-6 rounded-xl border-2 ${
+              className={`group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 ${
                 app.status === 'active' 
-                  ? 'border-robot-green shadow-lg shadow-robot-green/20' 
-                  : 'border-gray-700'
+                  ? 'border-robot-green/50 bg-gradient-to-br from-gray-800/50 to-gray-900/50 shadow-xl shadow-robot-green/20 hover:shadow-2xl hover:shadow-robot-green/30' 
+                  : 'border-gray-700/50 bg-gradient-to-br from-gray-800/30 to-gray-900/30'
               }`}
+              onMouseEnter={() => setHoveredApp(app.id)}
+              onMouseLeave={() => setHoveredApp(null)}
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-12 h-12 bg-gradient-to-br ${app.color} rounded-lg flex items-center justify-center text-2xl`}>
-                  {app.icon}
+              {/* Hover Effect Overlay */}
+              {app.status === 'active' && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-robot-green/5 to-robot-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={false}
+                  animate={{ opacity: hoveredApp === app.id ? 1 : 0 }}
+                />
+              )}
+
+              <div className="relative z-10 p-6">
+                {/* App Header */}
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="relative">
+                    <motion.img
+                      src={app.avatar}
+                      alt={`${app.name} Avatar`}
+                      className="w-16 h-16 rounded-xl shadow-lg"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    {app.status === 'active' && (
+                      <motion.div
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-robot-green rounded-full flex items-center justify-center"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                      >
+                        <Check className="w-3 h-3 text-white" />
+                      </motion.div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="text-xl font-bold text-white mb-2">{app.name}</h5>
+                    <p className="text-gray-300 mb-3">{app.description}</p>
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        app.status === 'active' 
+                          ? 'bg-robot-green/20 text-robot-green border border-robot-green/30' 
+                          : 'bg-gray-600/50 text-gray-400 border border-gray-600/50'
+                      }`}>
+                        {app.status === 'active' ? 'Active' : 'Coming Soon'}
+                      </span>
+                      {app.status === 'active' && (
+                        <span className="text-robot-blue text-sm font-medium flex items-center gap-1">
+                          <Zap className="w-3 h-3" />
+                          {app.usage} Usage
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h5 className="text-lg font-semibold text-white">{app.name}</h5>
-                  <p className="text-sm text-gray-400">{app.description}</p>
-                </div>
+
+                {/* App Features */}
+                {app.status === 'active' && (
+                  <motion.div
+                    className="mb-6"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
+                  >
+                    <h6 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">Key Features</h6>
+                    <div className="grid grid-cols-2 gap-2">
+                      {app.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                          <div className="w-1.5 h-1.5 bg-robot-green rounded-full"></div>
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+                
+                {/* Action Button */}
                 {app.status === 'active' ? (
-                  <span className="bg-robot-green text-white px-2 py-1 rounded-full text-xs font-semibold">
-                    Active
-                  </span>
+                  <motion.button
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleLaunchApp(app.id)}
+                    className="w-full group/btn relative overflow-hidden py-4 px-6 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-robot-green/25"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      Launch {app.name}
+                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                    </span>
+                    {/* Button Hover Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-robot-blue to-robot-green opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
+                      initial={false}
+                    />
+                  </motion.button>
                 ) : (
-                  <span className="bg-gray-600 text-gray-300 px-2 py-1 rounded-full text-xs">
+                  <div className="w-full py-4 px-6 bg-gray-700/50 text-gray-400 rounded-xl font-semibold border border-gray-600/50 flex items-center justify-center gap-2">
+                    <Clock className="w-4 h-4" />
                     Coming Soon
-                  </span>
+                  </div>
                 )}
               </div>
-              
-              {app.status === 'active' ? (
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleLaunchApp(app.id)}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
-                >
-                  Launch {app.name}
-                </motion.button>
-              ) : (
-                <button className="w-full py-3 px-4 bg-gray-700 text-gray-400 rounded-lg font-semibold cursor-not-allowed">
-                  Coming Soon
-                </button>
-              )}
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Enhanced Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="bg-gradient-to-br from-robot-purple/10 to-robot-pink/10 rounded-xl p-6 border border-robot-purple/20"
+        className="bg-gradient-to-br from-robot-purple/10 via-robot-pink/10 to-robot-orange/10 rounded-2xl p-8 border border-robot-purple/20 shadow-xl shadow-robot-purple/10"
       >
-        <h3 className="text-xl font-semibold text-white mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <Zap className="w-6 h-6 text-robot-purple" />
+          Quick Actions
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <motion.button
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-robot-blue/20 rounded-lg border border-robot-blue/30 text-white hover:bg-robot-blue/30 transition-all duration-200"
+            className="group relative overflow-hidden p-6 bg-gradient-to-br from-robot-blue/20 to-robot-blue/10 rounded-xl border border-robot-blue/30 text-white hover:bg-robot-blue/30 transition-all duration-300 hover:shadow-lg hover:shadow-robot-blue/20"
           >
-            <div className="text-2xl mb-2">⚙️</div>
-            <div className="font-semibold">Settings</div>
+            <div className="relative z-10">
+              <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">⚙️</div>
+              <div className="font-semibold text-lg">Settings</div>
+              <div className="text-sm text-gray-300 mt-1">Customize your experience</div>
+            </div>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-robot-blue/20 to-robot-blue/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              initial={false}
+            />
           </motion.button>
           
           <motion.button
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-robot-green/20 rounded-lg border border-robot-green/30 text-white hover:bg-robot-green/30 transition-all duration-200"
+            className="group relative overflow-hidden p-6 bg-gradient-to-br from-robot-green/20 to-robot-green/10 rounded-xl border border-robot-green/30 text-white hover:bg-robot-green/30 transition-all duration-300 hover:shadow-lg hover:shadow-robot-green/20"
           >
-            <div className="text-2xl mb-2">📊</div>
-            <div className="font-semibold">Analytics</div>
+            <div className="relative z-10">
+              <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">📊</div>
+              <div className="font-semibold text-lg">Analytics</div>
+              <div className="text-sm text-gray-300 mt-1">View your progress</div>
+            </div>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-robot-green/20 to-robot-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              initial={false}
+            />
           </motion.button>
           
           <motion.button
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-robot-orange/20 rounded-lg border border-robot-orange/30 text-white hover:bg-robot-orange/30 transition-all duration-200"
+            className="group relative overflow-hidden p-6 bg-gradient-to-br from-robot-orange/20 to-robot-orange/10 rounded-xl border border-robot-orange/30 text-white hover:bg-robot-orange/30 transition-all duration-300 hover:shadow-lg hover:shadow-robot-orange/20"
           >
-            <div className="text-2xl mb-2">🔔</div>
-            <div className="font-semibold">Notifications</div>
+            <div className="relative z-10">
+              <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">🔔</div>
+              <div className="font-semibold text-lg">Notifications</div>
+              <div className="text-sm text-gray-300 mt-1">Stay updated</div>
+            </div>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-robot-orange/20 to-robot-orange/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              initial={false}
+            />
           </motion.button>
         </div>
       </motion.div>
 
-      {/* Current Plan */}
-      <div className="bg-gradient-to-br from-robot-blue/10 to-robot-purple/10 rounded-xl p-6 border border-robot-blue/20">
-        <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-          <Crown className="w-5 h-5 text-robot-blue" />
+      {/* Enhanced Current Plan */}
+      <motion.div 
+        className="bg-gradient-to-br from-robot-blue/10 via-robot-purple/10 to-robot-cyan/10 rounded-2xl p-8 border border-robot-blue/20 shadow-xl shadow-robot-blue/10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+      >
+        <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <Crown className="w-6 h-6 text-robot-blue" />
           Your Current Plan: {selectedPlan}
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h4 className="font-medium text-white mb-2">Plan Features:</h4>
-            <ul className="space-y-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <Star className="w-5 h-5 text-robot-green" />
+              Plan Features
+            </h4>
+            <ul className="space-y-3">
               {getPlanFeatures().map((feature, index) => (
-                <li key={index} className="flex items-center gap-2 text-sm text-gray-300">
-                  <Check className="w-4 h-4 text-robot-green" />
+                <motion.li 
+                  key={index} 
+                  className="flex items-center gap-3 text-gray-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                >
+                  <div className="w-2 h-2 bg-robot-green rounded-full"></div>
                   {feature}
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
           
-          <div>
-            <h4 className="font-medium text-white mb-2">Your Goals:</h4>
-            <div className="space-y-2">
-              <div className="text-sm text-gray-300">
-                <span className="font-medium">Primary:</span> {selectedGoal}
-              </div>
-              <div className="text-sm text-gray-300">
-                <span className="font-medium">Use Case:</span> {isBusiness ? 'Business' : 'Personal'}
-              </div>
-              <div className="text-sm text-gray-300">
-                <span className="font-medium">Focus Areas:</span> {userGoals.join(', ')}
-              </div>
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <Target className="w-5 h-5 text-robot-purple" />
+              Your Goals
+            </h4>
+            <div className="space-y-3">
+              <motion.div 
+                className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg border border-gray-700/50"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.8 }}
+              >
+                <span className="text-gray-300 font-medium">Primary Goal:</span>
+                <span className="text-white font-semibold capitalize">{selectedGoal}</span>
+              </motion.div>
+              <motion.div 
+                className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg border border-gray-700/50"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.9 }}
+              >
+                <span className="text-gray-300 font-medium">Use Case:</span>
+                <span className="text-white font-semibold">{isBusiness ? 'Business' : 'Personal'}</span>
+              </motion.div>
+              <motion.div 
+                className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg border border-gray-700/50"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 1.0 }}
+              >
+                <span className="text-gray-300 font-medium">Focus Areas:</span>
+                <span className="text-white font-semibold">{userGoals.join(', ')}</span>
+              </motion.div>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 
   const renderAIApps = () => (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-white mb-4">AI Applications</h3>
+      <motion.h3 
+        className="text-2xl font-bold text-white mb-6 flex items-center gap-3"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Sparkles className="w-6 h-6 text-robot-blue" />
+        AI Applications
+      </motion.h3>
       
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+      {/* Enhanced Search Bar */}
+      <motion.div 
+        className="relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+      >
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
         <input
           type="text"
           placeholder="Search AI applications..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-robot-blue"
+          className="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-robot-blue focus:ring-2 focus:ring-robot-blue/20 transition-all duration-200"
         />
-      </div>
+      </motion.div>
 
-      {/* Apps List */}
-      <div className="space-y-4">
+      {/* Enhanced Apps List */}
+      <div className="space-y-6">
         {aiApps
           .filter(app => 
             app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -379,46 +569,119 @@ export default function Dashboard({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`p-6 rounded-xl border-2 ${
+              className={`group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 ${
                 app.status === 'active' 
-                  ? 'border-robot-green shadow-lg shadow-robot-green/20' 
-                  : 'border-gray-700'
+                  ? 'border-robot-green/50 bg-gradient-to-br from-gray-800/50 to-gray-900/50 shadow-xl shadow-robot-green/20 hover:shadow-2xl hover:shadow-robot-green/30' 
+                  : 'border-gray-700/50 bg-gradient-to-br from-gray-800/30 to-gray-900/30'
               }`}
+              onMouseEnter={() => setHoveredApp(app.id)}
+              onMouseLeave={() => setHoveredApp(null)}
             >
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 bg-gradient-to-br ${app.color} rounded-xl flex items-center justify-center text-3xl`}>
-                  {app.icon}
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-xl font-semibold text-white mb-2">{app.name}</h4>
-                  <p className="text-gray-300 mb-3">{app.description}</p>
-                  <div className="flex items-center gap-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      app.status === 'active' 
-                        ? 'bg-robot-green text-white' 
-                        : 'bg-gray-600 text-gray-300'
-                    }`}>
-                      {app.status === 'active' ? 'Active' : 'Coming Soon'}
-                    </span>
+              {/* Hover Effect Overlay */}
+              {app.status === 'active' && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-robot-green/5 to-robot-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={false}
+                  animate={{ opacity: hoveredApp === app.id ? 1 : 0 }}
+                />
+              )}
+
+              <div className="relative z-10 p-6">
+                <div className="flex items-center gap-6">
+                  <div className="relative">
+                    <motion.img
+                      src={app.avatar}
+                      alt={`${app.name} Avatar`}
+                      className="w-20 h-20 rounded-2xl shadow-lg"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.3 }}
+                    />
                     {app.status === 'active' && (
-                      <span className="text-robot-blue text-sm">Primary: {getBotName(app.bot)}</span>
+                      <motion.div
+                        className="absolute -top-2 -right-2 w-7 h-7 bg-robot-green rounded-full flex items-center justify-center shadow-lg"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                      >
+                        <Check className="w-4 h-4 text-white" />
+                      </motion.div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-2xl font-bold text-white mb-3">{app.name}</h4>
+                    <p className="text-gray-300 mb-4 text-lg">{app.description}</p>
+                    
+                    {/* Enhanced Status and Info */}
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                        app.status === 'active' 
+                          ? 'bg-robot-green/20 text-robot-green border border-robot-green/30' 
+                          : 'bg-gray-600/50 text-gray-400 border border-gray-600/50'
+                      }`}>
+                        {app.status === 'active' ? 'Active' : 'Coming Soon'}
+                      </span>
+                      {app.status === 'active' && (
+                        <>
+                          <span className="text-robot-blue text-sm font-medium flex items-center gap-2">
+                            <Zap className="w-4 h-4" />
+                            {app.usage} Usage
+                          </span>
+                          <span className="text-gray-400 text-sm font-medium flex items-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            {app.lastUsed}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* App Features */}
+                    {app.status === 'active' && (
+                      <motion.div
+                        className="mb-6"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                      >
+                        <h6 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">Key Features</h6>
+                        <div className="grid grid-cols-2 gap-3">
+                          {app.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                              <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+                              {feature}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                  
+                  {/* Action Button */}
+                  <div className="flex-shrink-0">
+                    {app.status === 'active' ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleLaunchApp(app.id)}
+                        className="group/btn relative overflow-hidden px-8 py-4 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-robot-green/25"
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          Launch
+                          <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                        </span>
+                        {/* Button Hover Effect */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-robot-blue to-robot-green opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
+                          initial={false}
+                        />
+                      </motion.button>
+                    ) : (
+                      <div className="px-8 py-4 bg-gray-700/50 text-gray-400 rounded-xl font-semibold border border-gray-600/50 flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        Coming Soon
+                      </div>
                     )}
                   </div>
                 </div>
-                {app.status === 'active' ? (
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleLaunchApp(app.id)}
-                    className="px-6 py-3 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
-                  >
-                    Launch
-                  </motion.button>
-                ) : (
-                  <button className="px-6 py-3 bg-gray-700 text-gray-400 rounded-lg font-semibold cursor-not-allowed">
-                    Coming Soon
-                  </button>
-                )}
               </div>
             </motion.div>
           ))}
@@ -428,70 +691,88 @@ export default function Dashboard({
 
   const renderSettings = () => (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-white mb-4">Settings & Preferences</h3>
+      <motion.h3 
+        className="text-2xl font-bold text-white mb-6 flex items-center gap-3"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Settings className="w-6 h-6 text-robot-blue" />
+        Settings & Preferences
+      </motion.h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Profile Settings */}
-        <div className="bg-gray-800/30 rounded-xl p-6 border border-gray-700">
-          <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <User className="w-5 h-5" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Enhanced Profile Settings */}
+        <motion.div 
+          className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl p-8 border border-gray-700/50 shadow-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+            <User className="w-6 h-6 text-robot-blue" />
             Profile Settings
           </h4>
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+              <label className="block text-sm font-semibold text-gray-300 mb-3">Full Name</label>
               <input
                 type="text"
                 defaultValue={user?.user_metadata?.full_name || ''}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-robot-blue"
+                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:border-robot-blue focus:ring-2 focus:ring-robot-blue/20 transition-all duration-200"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+              <label className="block text-sm font-semibold text-gray-300 mb-3">Email</label>
               <input
                 type="email"
                 defaultValue={user?.email || ''}
                 disabled
-                className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-gray-400 cursor-not-allowed"
+                className="w-full px-4 py-3 bg-gray-600/50 border border-gray-500/50 rounded-xl text-gray-400 cursor-not-allowed"
               />
             </div>
             <motion.button
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-2 px-4 bg-robot-blue text-white rounded-lg font-semibold hover:bg-robot-blue/80 transition-colors duration-200"
+              className="w-full py-3 px-6 bg-gradient-to-r from-robot-blue to-robot-purple text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-robot-blue/25 transition-all duration-200"
             >
               Update Profile
             </motion.button>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Preferences */}
-        <div className="bg-gray-800/30 rounded-xl p-6 border border-gray-700">
-          <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Settings className="w-5 h-5" />
+        {/* Enhanced Preferences */}
+        <motion.div 
+          className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl p-8 border border-gray-700/50 shadow-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+            <Settings className="w-6 h-6 text-robot-purple" />
             Preferences
           </h4>
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Primary Goal</label>
-              <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+              <label className="block text-sm font-semibold text-gray-300 mb-3">Primary Goal</label>
+              <div className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white font-medium">
                 {selectedGoal.charAt(0).toUpperCase() + selectedGoal.slice(1)}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Use Case</label>
-              <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+              <label className="block text-sm font-semibold text-gray-300 mb-3">Use Case</label>
+              <div className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white font-medium">
                 {isBusiness ? 'Business' : 'Personal'}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Plan</label>
-              <div className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+              <label className="block text-sm font-semibold text-gray-300 mb-3">Plan</label>
+              <div className="px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white font-medium">
                 {selectedPlan}
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   )
@@ -508,20 +789,22 @@ export default function Dashboard({
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
+      {/* Enhanced Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="sticky top-0 z-50 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-blue/20 rounded-b-2xl"
+        className="sticky top-0 z-50 mb-8 p-8 bg-gradient-to-br from-gray-900/90 via-gray-900/95 to-gray-900/90 backdrop-blur-xl border-b border-robot-blue/20 rounded-b-3xl shadow-2xl shadow-robot-blue/10"
       >
         {/* AI Mode Status */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-8">
           <div className="relative">
-            <img 
-              src="/yourpalsRobot.png" 
+            <motion.img 
+              src="/moneypal/robotavatar.PNG" 
               alt="AI Mode Active" 
-              className="h-8 w-8"
+              className="h-10 w-10 rounded-xl shadow-lg"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ duration: 0.3 }}
             />
             {/* AI Mode Pulse Ring */}
             <motion.div
@@ -530,61 +813,89 @@ export default function Dashboard({
                 opacity: [0.6, 0, 0.6]
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              className="absolute inset-0 border border-robot-blue rounded-full"
+              className="absolute inset-0 border border-robot-blue rounded-xl"
             />
           </div>
-          <div className="text-robot-blue font-mono text-sm tracking-widest">
+          <motion.div 
+            className="text-robot-blue font-mono text-sm tracking-widest"
+            animate={{ 
+              textShadow: [
+                "0 0 0 rgba(59, 130, 246, 0)",
+                "0 0 10px rgba(59, 130, 246, 0.6)",
+                "0 0 0 rgba(59, 130, 246, 0)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
             AI MODE: OPERATIONAL
-          </div>
+          </motion.div>
         </div>
 
         {/* User Info and Navigation */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <h1 className="text-2xl font-bold text-white">
+          <div className="flex items-center gap-8">
+            <motion.h1 
+              className="text-3xl font-bold text-white"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               {user?.user_metadata?.full_name || 'User'}
-            </h1>
+            </motion.h1>
             
-            {/* Navigation Tabs */}
-            <div className="flex gap-2">
-              {tabs.map((tab) => (
-                <button
+            {/* Enhanced Navigation Tabs */}
+            <div className="flex gap-3">
+              {tabs.map((tab, index) => (
+                <motion.button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 ${
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-3 ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-robot-purple to-robot-pink text-white shadow-lg'
+                      ? 'bg-gradient-to-r from-robot-purple to-robot-pink text-white shadow-lg shadow-robot-purple/25' 
                       : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                   }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
                 >
-                  <tab.icon className="w-4 h-4" />
+                  <tab.icon className="w-5 h-5" />
                   {tab.label}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
+          {/* Enhanced Action Buttons */}
+          <div className="flex items-center gap-4">
             <motion.div
               animate={{ 
                 textShadow: [
                   "0 0 0 rgba(59, 130, 246, 0)",
-                  "0 0 15px rgba(59, 130, 246, 0.6)",
+                  "0 0 15px rgba(59, 130, 246, 0.8)",
                   "0 0 0 rgba(59, 130, 246, 0)"
-                ]
+                ],
+                opacity: 1,
+                scale: 1
               }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="px-4 py-2 bg-robot-blue text-white rounded-lg font-medium text-sm"
+              transition={{ 
+                textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                opacity: { duration: 0.6, delay: 0.5 },
+                scale: { duration: 0.6, delay: 0.5 }
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              className="px-6 py-3 bg-gradient-to-r from-robot-blue to-robot-purple text-white rounded-xl font-semibold text-sm shadow-lg shadow-robot-blue/25"
             >
               AI ASSISTANT READY
             </motion.div>
             
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleSignOut}
-              className="px-4 py-2 bg-gray-800 text-white rounded-lg font-medium text-sm hover:bg-gray-700 transition-colors duration-200 flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-xl font-semibold text-sm hover:from-gray-700 hover:to-gray-600 transition-all duration-200 flex items-center gap-3 shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
             >
               <LogOut className="w-4 h-4" />
               Exit AI Mode
@@ -599,6 +910,15 @@ export default function Dashboard({
         {activeTab === 'apps' && renderAIApps()}
         {activeTab === 'settings' && renderSettings()}
       </main>
+
+      {/* YourPal AI Manager */}
+      <YourPalAvatar onOpenChat={() => setShowYourPalChat(true)} />
+      
+      {/* YourPal Chat Modal */}
+      <YourPalChatModal 
+        isOpen={showYourPalChat} 
+        onClose={() => setShowYourPalChat(false)} 
+      />
     </div>
   )
 }
