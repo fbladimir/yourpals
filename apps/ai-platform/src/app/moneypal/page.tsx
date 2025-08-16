@@ -34,6 +34,12 @@ import AccountLinking from '@/components/moneypal/AccountLinking'
 import FloatingAvatar from '@/components/moneypal/FloatingAvatar'
 import ChatModal from '@/components/moneypal/ChatModal'
 import ContextualAI from '@/components/moneypal/ContextualAI'
+import AIInsightsEngine from '@/components/moneypal/AIInsightsEngine'
+import SmartNotifications from '@/components/moneypal/SmartNotifications'
+import PersonalizedCoaching from '@/components/moneypal/PersonalizedCoaching'
+import AdvancedAutomation from '@/components/moneypal/AdvancedAutomation'
+import HeroSection from '@/components/moneypal/HeroSection'
+import SummaryCards from '@/components/moneypal/SummaryCards'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
@@ -450,7 +456,7 @@ export default function MoneyPalPage() {
           highlightedElement === 'ai-insights' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
         }`}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-white">AI Insights & Recommendations</h3>
           <div className="flex items-center gap-2 px-2 py-1 bg-robot-green/20 text-robot-green rounded-full text-xs">
             <div className="w-2 h-2 bg-robot-green rounded-full animate-pulse"></div>
@@ -458,40 +464,15 @@ export default function MoneyPalPage() {
           </div>
         </div>
         
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-           {(insights && insights.length > 0) ? insights.map((insight) => (
-             <motion.div
-               key={insight.id}
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               className="bg-gray-800/30 rounded-xl p-4 border border-gray-700 hover:border-robot-green/50 transition-all duration-200"
-             >
-               <div className="flex items-center gap-2 mb-2">
-                 <div className={`w-2 h-2 rounded-full ${
-                   insight.priority === 'high' ? 'bg-red-500' : 
-                   insight.priority === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
-                 }`}></div>
-                 <span className="text-xs text-gray-400 uppercase tracking-wider">{insight.priority}</span>
-               </div>
-               <h4 className="text-white font-semibold mb-2">{insight.title}</h4>
-               <p className="text-gray-300 text-sm">{insight.message}</p>
-             </motion.div>
-           )) : (
-             <div className="col-span-full text-center py-8">
-               <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                 <Image
-                   src="/moneypal/robotavatar.PNG"
-                   alt="No Insights"
-                   width={32}
-                   height={32}
-                   className="rounded-full"
-                 />
-               </div>
-               <h4 className="text-white font-semibold mb-2">No AI Insights Yet</h4>
-               <p className="text-gray-400 text-sm">Link your accounts to get personalized financial insights</p>
-             </div>
-           )}
-        </div>
+        {/* Enhanced AI Insights Engine */}
+        <AIInsightsEngine
+          accounts={accounts}
+          transactions={transactions}
+          summary={summary}
+          insights={insights}
+          goals={goals}
+          onOpenChat={() => setIsChatOpen(true)}
+        />
       </div>
 
       {/* Quick Actions */}
@@ -754,6 +735,61 @@ export default function MoneyPalPage() {
           insights={insights}
           goals={goals}
           onOpenChat={() => setIsChatOpen(true)}
+        />
+      </div>
+
+      {/* Smart Notifications System */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SmartNotifications
+          accounts={accounts}
+          transactions={transactions}
+          summary={summary}
+          insights={insights}
+          goals={goals}
+          onOpenChat={() => setIsChatOpen(true)}
+        />
+      </div>
+
+      {/* Personalized Financial Coaching */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PersonalizedCoaching
+          accounts={accounts}
+          transactions={transactions}
+          summary={summary}
+          insights={insights}
+          goals={goals}
+          onOpenChat={() => setIsChatOpen(true)}
+        />
+      </div>
+
+      {/* Advanced Automation Rules */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdvancedAutomation
+          accounts={accounts}
+          transactions={transactions}
+          summary={summary}
+          insights={insights}
+          goals={goals}
+          onOpenChat={() => setIsChatOpen(true)}
+        />
+      </div>
+
+      {/* New Hero Section & Financial Summary */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <HeroSection
+          userName={user?.email?.split('@')[0] || 'there'}
+          onLinkAccounts={handleLinkAccounts}
+          onAddTransaction={() => setIsChatOpen(true)}
+          onRefreshData={() => refreshData()}
+        />
+        
+        <SummaryCards
+          totalBalance={summary?.totalBalance || 0}
+          monthlySavings={summary?.monthlySavings || 0}
+          creditScore={summary?.creditScore || 750}
+          cashFlow={summary?.monthlyIncome ? (summary.monthlyIncome + (summary.monthlySavings || 0)) : 0}
+          monthlyIncome={summary?.monthlyIncome || 0}
+          monthlyChange={summary?.monthlyChange || 0}
         />
       </div>
 
