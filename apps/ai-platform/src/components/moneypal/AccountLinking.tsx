@@ -202,21 +202,21 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
             className="rounded-full"
           />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-white mb-2">
           Connect Your Financial Accounts
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-300">
           Link your bank accounts, credit cards, and investment accounts to get started with MoneyPal's AI-powered financial insights.
         </p>
       </div>
 
       {/* Security Info */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div className="bg-robot-blue/10 border border-robot-blue/30 rounded-lg p-4 mb-6">
         <div className="flex items-start space-x-3">
-          <Shield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <Shield className="w-5 h-5 text-robot-blue mt-0.5 flex-shrink-0" />
           <div>
-            <h4 className="font-medium text-blue-900 mb-1">Bank-Level Security</h4>
-            <p className="text-sm text-blue-700">
+            <h4 className="font-medium text-white mb-1">Bank-Level Security</h4>
+            <p className="text-sm text-gray-300">
               Your financial data is encrypted and secure. We use Plaid, the same technology trusted by thousands of financial institutions.
             </p>
           </div>
@@ -225,20 +225,20 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
 
       {/* Account Types */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
+        <div className="text-center p-4 bg-gray-800/50 border border-gray-700/50 rounded-lg">
           <Building2 className="w-8 h-8 text-robot-blue mx-auto mb-2" />
-          <h4 className="text-gray-900">Bank Accounts</h4>
-          <p className="text-sm text-gray-600">Checking & Savings</p>
+          <h4 className="text-white">Bank Accounts</h4>
+          <p className="text-sm text-gray-300">Checking & Savings</p>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
+        <div className="text-center p-4 bg-gray-800/50 border border-gray-700/50 rounded-lg">
           <CreditCard className="w-8 h-8 text-robot-green mx-auto mb-2" />
-          <h4 className="font-medium text-gray-900">Credit Cards</h4>
-          <p className="text-sm text-gray-600">All major providers</p>
+          <h4 className="font-medium text-white">Credit Cards</h4>
+          <p className="text-sm text-gray-300">All major providers</p>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
+        <div className="text-center p-4 bg-gray-800/50 border border-gray-700/50 rounded-lg">
           <PiggyBank className="w-8 h-8 text-robot-purple mx-auto mb-2" />
-          <h4 className="font-medium text-gray-900">Investments</h4>
-          <p className="text-sm text-gray-600">Portfolios & 401(k)s</p>
+          <h4 className="font-medium text-white">Investments</h4>
+          <p className="text-sm text-gray-300">Portfolios & 401(k)s</p>
         </div>
       </div>
 
@@ -249,11 +249,11 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+            className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6"
           >
             <div className="flex items-center space-x-2">
-              <AlertCircle className="w-5 h-5 text-red-600" />
-              <span className="text-red-800">{error}</span>
+              <AlertCircle className="w-5 h-5 text-red-400" />
+              <span className="text-red-300">{error}</span>
             </div>
           </motion.div>
         )}
@@ -286,7 +286,7 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
         </button>
         
         {!linkToken && !isLoading && (
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             Initializing secure connection...
           </p>
         )}
@@ -294,15 +294,15 @@ export default function AccountLinking({ userId, onAccountsLinked }: AccountLink
 
       {/* Benefits */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-4 bg-robot-green/5 rounded-lg">
+        <div className="p-4 bg-robot-green/10 border border-robot-green/20 rounded-lg">
           <h4 className="font-medium text-robot-green mb-2">Real-time Sync</h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-300">
             Your financial data stays up-to-date automatically
           </p>
         </div>
-        <div className="p-4 bg-robot-purple/5 rounded-lg">
+        <div className="p-4 bg-robot-purple/10 border border-robot-purple/20 rounded-lg">
           <h4 className="font-medium text-robot-purple mb-2">AI Insights</h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-300">
             Get personalized financial advice and spending analysis
           </p>
         </div>

@@ -59,17 +59,26 @@ export default function EnhancedAccountCard({
   }
 
   const formatLastSync = (lastSync?: string) => {
-    if (!lastSync) return 'Never synced'
-    const date = new Date(lastSync)
-    const now = new Date()
-    const diffMs = now.getTime() - date.getTime()
-    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+    if (!lastSync || lastSync === 'never' || lastSync === 'Never synced') {
+      return 'Never synced'
+    }
     
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
-    return date.toLocaleDateString()
+    try {
+      const date = new Date(lastSync)
+      if (isNaN(date.getTime())) return 'Never synced'
+      
+      const now = new Date()
+      const diffMs = now.getTime() - date.getTime()
+      const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+      
+      if (diffDays === 0) return 'Today'
+      if (diffDays === 1) return 'Yesterday'
+      if (diffDays < 7) return `${diffDays} days ago`
+      if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
+      return date.toLocaleDateString()
+    } catch (error) {
+      return 'Never synced'
+    }
   }
 
   const getAccountIcon = (type: string) => {
@@ -124,15 +133,15 @@ export default function EnhancedAccountCard({
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className="relative group"
+      className="relative group h-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative overflow-hidden rounded-xl border border-gray-700/50 bg-gray-800/50 hover:bg-gray-800/70 transition-all duration-300 hover:border-gray-600/50">
+      <div className="relative overflow-hidden rounded-xl border border-gray-700/50 bg-gray-800/50 hover:bg-gray-800/70 transition-all duration-300 hover:border-gray-600/50 h-full flex flex-col">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         
-        <div className="relative p-5">
+        <div className="relative p-5 flex flex-col h-full">
           {/* Header Row */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -229,7 +238,7 @@ export default function EnhancedAccountCard({
           </div>
           
           {/* Footer */}
-          <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="flex items-center justify-between text-xs text-gray-500 mt-auto">
             <span>Last sync: {formatLastSync(account.lastSync)}</span>
             <span className="uppercase">{account.currency}</span>
           </div>

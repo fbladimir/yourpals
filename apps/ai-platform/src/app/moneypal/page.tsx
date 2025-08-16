@@ -48,6 +48,8 @@ import SpendingTrendsChart from '@/components/moneypal/SpendingTrendsChart'
 import CategoryBreakdownChart from '@/components/moneypal/CategoryBreakdownChart'
 import ForecastingChart from '@/components/moneypal/ForecastingChart'
 import ClientOnly from '@/components/moneypal/ClientOnly'
+import CollapsibleSection from '@/components/moneypal/CollapsibleSection'
+import OnboardingModal from '@/components/moneypal/OnboardingModal'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
@@ -123,9 +125,10 @@ export default function MoneyPalPage() {
     clearChat: clearAIChat,
     lastAIResponse
   } = aiChatData
-  
+
   const [activeTab, setActiveTab] = useState('overview')
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
   const [showTutorial, setShowTutorial] = useState(false)
   const [tutorialStep, setTutorialStep] = useState(0)
   const [hasSeenTutorial, setHasSeenTutorial] = useState(false)
@@ -140,17 +143,78 @@ export default function MoneyPalPage() {
   const [showAccountBalances, setShowAccountBalances] = useState(true)
   const [showTransactionAmounts, setShowTransactionAmounts] = useState(true)
   const [showAmounts, setShowAmounts] = useState(true)
+  const [manualData, setManualData] = useState<any>(null)
 
   // Refs for scrolling to elements
   const navTabsRef = useRef<HTMLDivElement>(null)
   const accountsSectionRef = useRef<HTMLDivElement>(null)
 
+  // Get actual financial data (combines Plaid data with manual data)
+  const getActualFinancialData = () => {
+    // If user has manual data, use that
+    if (manualData) {
+      return {
+        accounts: manualData.accounts || [],
+        summary: manualData.summary || {
+          totalBalance: 0,
+          monthlyIncome: 0,
+          monthlyExpenses: 0,
+          monthlySavings: 0,
+          creditScore: 750,
+          emergencyFund: 0,
+          totalDebt: 0,
+          investmentAmount: 0,
+          monthlyChange: 0
+        },
+        goals: manualData.goals || [],
+        transactions: []
+      }
+    }
+
+    // If user has Plaid data, use that
+    if (accounts && accounts.length > 0) {
+      return {
+        accounts,
+        summary,
+        goals,
+        transactions
+      }
+    }
+
+    // Default: show zero balances for new users
+    return {
+      accounts: [],
+      summary: {
+        totalBalance: 0,
+        monthlyIncome: 0,
+        monthlyExpenses: 0,
+        monthlySavings: 0,
+        creditScore: 750,
+        emergencyFund: 0,
+        totalDebt: 0,
+        investmentAmount: 0,
+        monthlyChange: 0
+      },
+      goals: [],
+      transactions: []
+    }
+  }
+
+  const actualData = getActualFinancialData()
+
   // Check if this is the user's first time
   useEffect(() => {
     const tutorialSeen = localStorage.getItem('moneypal-tutorial-completed')
+    const onboardingCompleted = localStorage.getItem('moneypal-onboarding-completed')
+    
     if (!tutorialSeen) {
       setShowTutorial(true)
       setTutorialMode(true)
+    }
+    
+    // Show onboarding if not completed
+    if (!onboardingCompleted) {
+      setShowOnboarding(true)
     }
     
     // Load saved tutorial position
@@ -163,6 +227,20 @@ export default function MoneyPalPage() {
       }
     }
   }, [])
+
+  // Load manual data if available
+  useEffect(() => {
+    if (user?.id) {
+      const savedManualData = localStorage.getItem(`moneypal-manual-data-${user.id}`)
+      if (savedManualData) {
+        try {
+          setManualData(JSON.parse(savedManualData))
+        } catch (e) {
+          console.log('Could not load manual data')
+        }
+      }
+    }
+  }, [user?.id])
 
   // Tutorial steps
   const tutorialSteps = [
@@ -258,6 +336,27 @@ export default function MoneyPalPage() {
   const handleAccountsLinked = () => {
     setIsLinkingAccounts(false)
     refreshData()
+  }
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem('moneypal-onboarding-completed', 'true')
+    setShowOnboarding(false)
+    
+    // Load manual data if available
+    const savedManualData = localStorage.getItem(`moneypal-manual-data-${user?.id}`)
+    if (savedManualData) {
+      try {
+        setManualData(JSON.parse(savedManualData))
+      } catch (e) {
+        console.log('Could not load manual data')
+      }
+    }
+    
+    // Optionally show tutorial after onboarding
+    if (!localStorage.getItem('moneypal-tutorial-completed')) {
+      setShowTutorial(true)
+      setTutorialMode(true)
+    }
   }
 
   const handleUnlinkAccount = (accountId: string) => {
@@ -424,73 +523,87 @@ export default function MoneyPalPage() {
       </div>
 
       {/* Financial Health Metrics */}
-      <div id="progress-metrics" className="space-y-6">
+      <CollapsibleSection
+        title="Financial Health Metrics"
+        subtitle="Track your financial health score and get AI-powered insights"
+        icon={<TrendingUp className="w-5 h-5 text-robot-green" />}
+        defaultOpen={true}
+      >
         <ProgressMetrics
-          totalBalance={summary?.totalBalance || 0}
-          monthlySavings={summary?.monthlySavings || 0}
-          monthlyIncome={summary?.monthlyIncome || 0}
-          monthlyExpenses={summary?.monthlyExpenses || 0}
-          creditScore={summary?.creditScore || 750}
-          emergencyFund={summary?.emergencyFund || 0}
-          debtAmount={summary?.totalDebt || 0}
-          investmentAmount={summary?.investmentAmount || 0}
+          totalBalance={actualData.summary.totalBalance}
+          monthlySavings={actualData.summary.monthlySavings}
+          monthlyIncome={actualData.summary.monthlyIncome}
+          monthlyExpenses={actualData.summary.monthlyExpenses}
+          creditScore={actualData.summary.creditScore}
+          emergencyFund={actualData.summary.emergencyFund}
+          debtAmount={actualData.summary.totalDebt}
+          investmentAmount={actualData.summary.investmentAmount}
           showAmounts={showAmounts}
         />
-      </div>
+      </CollapsibleSection>
 
       {/* Budget Visualization */}
-      <div className="space-y-6">
+      <CollapsibleSection
+        title="Budget Management"
+        subtitle="Track your spending against budgets and get insights"
+        icon={<PiggyBank className="w-5 h-5 text-robot-blue" />}
+        defaultOpen={true}
+      >
         <BudgetVisualization
-          categories={[
-            {
-              id: 'food',
-              name: 'Food & Dining',
-              budgeted: 500,
-              spent: 450,
-              remaining: 50,
-              color: '#f97316',
-              icon: '🍽️',
-              trend: 'down',
-              status: 'under'
-            },
-            {
-              id: 'transport',
-              name: 'Transportation',
-              budgeted: 300,
-              spent: 320,
-              remaining: -20,
-              color: '#3b82f6',
-              icon: '🚗',
-              trend: 'up',
-              status: 'over'
-            },
-            {
-              id: 'entertainment',
-              name: 'Entertainment',
-              budgeted: 200,
-              spent: 180,
-              remaining: 20,
-              color: '#ec4899',
-              icon: '🎬',
-              trend: 'down',
-              status: 'under'
-            }
-          ]}
-          monthlyIncome={summary?.monthlyIncome || 0}
-          monthlyExpenses={summary?.monthlyExpenses || 0}
-          monthlySavings={summary?.monthlySavings || 0}
+          categories={
+            actualData.summary.monthlyExpenses > 0 ? [
+              {
+                id: 'food',
+                name: 'Food & Dining',
+                budgeted: 500,
+                spent: 450,
+                remaining: 50,
+                color: '#f97316',
+                icon: '🍽️',
+                trend: 'down',
+                status: 'under'
+              },
+              {
+                id: 'transport',
+                name: 'Transportation',
+                budgeted: 300,
+                spent: 320,
+                remaining: -20,
+                color: '#3b82f6',
+                icon: '🚗',
+                trend: 'up',
+                status: 'over'
+              },
+              {
+                id: 'entertainment',
+                name: 'Entertainment',
+                budgeted: 200,
+                spent: 180,
+                remaining: 20,
+                color: '#ec4899',
+                icon: '🎬',
+                trend: 'down',
+                status: 'under'
+              }
+            ] : []
+          }
+          monthlyIncome={actualData.summary.monthlyIncome}
+          monthlyExpenses={actualData.summary.monthlyExpenses}
+          monthlySavings={actualData.summary.monthlySavings}
           showAmounts={showAmounts}
           onToggleAmounts={() => setShowAmounts(!showAmounts)}
           onCategoryClick={(categoryId) => console.log('Category clicked:', categoryId)}
         />
-      </div>
+      </CollapsibleSection>
 
       {/* Advanced Analytics & Charts */}
-      <div className="space-y-8">
-        <div className="text-center">
-          <h3 className="text-2xl font-bold text-white mb-2">📊 Advanced Analytics</h3>
-          <p className="text-gray-400">AI-powered insights and forecasting for smarter financial decisions</p>
-        </div>
+      <CollapsibleSection
+        title="Advanced Analytics & Charts"
+        subtitle="AI-powered insights and forecasting for smarter financial decisions"
+        icon={<BarChart3 className="w-5 h-5 text-robot-purple" />}
+        defaultOpen={false}
+      >
+        <div className="space-y-8">
 
         {/* Spending Trends Chart */}
         <ClientOnly fallback={
@@ -604,11 +717,16 @@ export default function MoneyPalPage() {
             onToggleAmounts={() => setShowAmounts(!showAmounts)}
           />
         </ClientOnly>
-      </div>
+        </div>
+      </CollapsibleSection>
 
       {/* Recent Transactions */}
-      <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-white">Recent Transactions</h3>
+      <CollapsibleSection
+        title="Recent Transactions"
+        subtitle="View and manage your latest financial activity"
+        icon={<Clock className="w-5 h-5 text-robot-orange" />}
+        defaultOpen={true}
+      >
         <TransactionHistory
           transactions={transactions.slice(0, 10).map(tx => ({
             id: tx.id,
@@ -630,20 +748,19 @@ export default function MoneyPalPage() {
           showAmounts={showTransactionAmounts}
           onToggleAmounts={() => setShowTransactionAmounts(!showTransactionAmounts)}
         />
-      </div>
+      </CollapsibleSection>
     </div>
   )
 
   const renderAccounts = () => (
-    <div 
-      id="accounts-section" 
-      ref={accountsSectionRef}
-      className={`space-y-6 transition-all duration-300 ${
-        highlightedElement === 'accounts-section' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
-      }`}
+    <CollapsibleSection
+      title="Your Accounts"
+      subtitle="Manage and monitor your linked financial accounts"
+      icon={<CreditCard className="w-5 h-5 text-robot-green" />}
+      defaultOpen={true}
     >
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold text-white">Your Accounts</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-semibold text-white">Linked Accounts</h3>
         <button
           onClick={handleLinkAccounts}
           className="flex items-center gap-2 px-4 py-2 bg-robot-green text-white rounded-lg hover:bg-robot-green/90 transition-colors"
@@ -660,9 +777,9 @@ export default function MoneyPalPage() {
           </div>
           <p className="text-gray-400">Loading your accounts...</p>
         </div>
-      ) : (accounts && accounts.length > 0) ? (
+      ) : (actualData.accounts && actualData.accounts.length > 0) ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {accounts.map((account) => (
+          {actualData.accounts.map((account: any) => (
             <EnhancedAccountCard
               key={account.id}
               account={{
@@ -705,7 +822,7 @@ export default function MoneyPalPage() {
           </button>
         </div>
       )}
-    </div>
+      </CollapsibleSection>
   )
 
   const tabs = [
@@ -751,6 +868,15 @@ export default function MoneyPalPage() {
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <div className="text-robot-green font-mono text-xs tracking-wider">AI FINANCIAL CO-PILOT</div>
           </div>
+
+          {/* Onboarding Button */}
+          <button
+            onClick={() => setShowOnboarding(true)}
+            className="flex items-center gap-2 px-3 py-2 bg-robot-green/20 text-robot-green rounded-lg hover:bg-robot-green/30 transition-colors mr-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span className="hidden sm:inline">Onboarding</span>
+          </button>
 
           {/* Tutorial Button */}
           <button
@@ -805,12 +931,12 @@ export default function MoneyPalPage() {
         
         <div id="summary-cards">
           <SummaryCards
-            totalBalance={summary?.totalBalance || 0}
-            monthlySavings={summary?.monthlySavings || 0}
-            creditScore={summary?.creditScore || 750}
-            cashFlow={summary?.monthlyIncome ? (summary.monthlyIncome + (summary.monthlySavings || 0)) : 0}
-            monthlyIncome={summary?.monthlyIncome || 0}
-            monthlyChange={summary?.monthlyChange || 0}
+            totalBalance={actualData.summary.totalBalance}
+            monthlySavings={actualData.summary.monthlySavings}
+            creditScore={actualData.summary.creditScore}
+            cashFlow={actualData.summary.monthlyIncome + actualData.summary.monthlySavings}
+            monthlyIncome={actualData.summary.monthlyIncome}
+            monthlyChange={actualData.summary.monthlyChange}
           />
         </div>
       </div>
@@ -820,11 +946,13 @@ export default function MoneyPalPage() {
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'accounts' && renderAccounts()}
         {activeTab === 'goals' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-white mb-2">🎯 Financial Goals</h3>
-              <p className="text-gray-400">Set, track, and achieve your financial milestones</p>
-            </div>
+          <CollapsibleSection
+            title="🎯 Financial Goals"
+            subtitle="Set, track, and achieve your financial milestones"
+            icon={<Target className="w-5 h-5 text-robot-orange" />}
+            defaultOpen={true}
+          >
+            <div className="space-y-8">
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Sample Goal Cards - In real app, these would be dynamic */}
@@ -871,14 +999,17 @@ export default function MoneyPalPage() {
               </button>
             </div>
           </div>
+        </CollapsibleSection>
         )}
         
         {activeTab === 'settings' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-white mb-2">⚙️ Account Settings</h3>
-              <p className="text-gray-400">Manage your preferences and account details</p>
-            </div>
+          <CollapsibleSection
+            title="⚙️ Account Settings"
+            subtitle="Manage your preferences and account details"
+            icon={<Settings className="w-5 h-5 text-robot-blue" />}
+            defaultOpen={true}
+          >
+            <div className="space-y-8">
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
@@ -930,8 +1061,17 @@ export default function MoneyPalPage() {
               </button>
             </div>
           </div>
+        </CollapsibleSection>
         )}
       </main>
+
+      {/* Onboarding Modal */}
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+        userId={user?.id || ''}
+        onComplete={handleOnboardingComplete}
+      />
 
       {/* Account Linking Modal */}
       <AnimatePresence>
