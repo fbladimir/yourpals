@@ -26,22 +26,28 @@ import {
   SkipForward,
   Sparkles,
   Trash2,
-  Send
+  Send,
+  PieChart,
+  User,
+  Shield
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import AccountLinking from '@/components/moneypal/AccountLinking'
 import FloatingAvatar from '@/components/moneypal/FloatingAvatar'
 import ChatModal from '@/components/moneypal/ChatModal'
-import ContextualAI from '@/components/moneypal/ContextualAI'
-import AIInsightsEngine from '@/components/moneypal/AIInsightsEngine'
-import SmartNotifications from '@/components/moneypal/SmartNotifications'
-import PersonalizedCoaching from '@/components/moneypal/PersonalizedCoaching'
-import AdvancedAutomation from '@/components/moneypal/AdvancedAutomation'
+
 import HeroSection from '@/components/moneypal/HeroSection'
 import SummaryCards from '@/components/moneypal/SummaryCards'
 import EnhancedAccountCard from '@/components/moneypal/EnhancedAccountCard'
 import TransactionHistory from '@/components/moneypal/TransactionHistory'
+import GoalTrackingCard from '@/components/moneypal/GoalTrackingCard'
+import BudgetVisualization from '@/components/moneypal/BudgetVisualization'
+import ProgressMetrics from '@/components/moneypal/ProgressMetrics'
+import SpendingTrendsChart from '@/components/moneypal/SpendingTrendsChart'
+import CategoryBreakdownChart from '@/components/moneypal/CategoryBreakdownChart'
+import ForecastingChart from '@/components/moneypal/ForecastingChart'
+import ClientOnly from '@/components/moneypal/ClientOnly'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
@@ -133,11 +139,9 @@ export default function MoneyPalPage() {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [showAccountBalances, setShowAccountBalances] = useState(true)
   const [showTransactionAmounts, setShowTransactionAmounts] = useState(true)
+  const [showAmounts, setShowAmounts] = useState(true)
 
   // Refs for scrolling to elements
-  const overviewCardsRef = useRef<HTMLDivElement>(null)
-  const aiInsightsRef = useRef<HTMLDivElement>(null)
-  const quickActionsRef = useRef<HTMLDivElement>(null)
   const navTabsRef = useRef<HTMLDivElement>(null)
   const accountsSectionRef = useRef<HTMLDivElement>(null)
 
@@ -171,19 +175,19 @@ export default function MoneyPalPage() {
     {
       title: "Financial Overview 📊",
       message: "Here you can see your total balance, savings, and credit score at a glance.",
-      target: 'overview-cards',
+      target: 'summary-cards',
       position: { x: 16, y: 16 }
     },
     {
-      title: "AI Insights 💡",
-      message: "Get personalized financial insights and recommendations powered by AI.",
-      target: 'ai-insights',
+      title: "Financial Health Metrics 💡",
+      message: "Track your financial health score and get AI-powered insights for improvement.",
+      target: 'progress-metrics',
       position: { x: 16, y: 16 }
     },
     {
       title: "Quick Actions ⚡",
       message: "Link your bank accounts, refresh data, and access key features quickly.",
-      target: 'quick-actions',
+      target: 'hero-section',
       position: { x: 16, y: 16 }
     },
     {
@@ -413,155 +417,193 @@ export default function MoneyPalPage() {
 
   const renderOverview = () => (
     <div className="space-y-8">
-      {/* Financial Summary Cards */}
-      <div 
-        id="overview-cards" 
-        ref={overviewCardsRef}
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-300 ${
-          highlightedElement === 'overview-cards' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
-        }`}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-robot-green to-robot-blue rounded-2xl p-6 shadow-lg"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold">Total Balance</h3>
-            <Wallet className="w-5 h-5 text-robot-green" />
-          </div>
-          <div className="text-3xl font-bold text-white">${((summary?.totalBalance) || 0).toLocaleString()}</div>
-          <div className="text-robot-green text-sm mt-2">+$247.63 this month</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-robot-purple to-robot-pink rounded-2xl p-6 shadow-lg"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold">Monthly Savings</h3>
-            <PiggyBank className="w-5 h-5 text-robot-purple" />
-          </div>
-          <div className="text-3xl font-bold text-white">${((summary?.monthlySavings) || 0).toLocaleString()}</div>
-          <div className="text-robot-purple text-sm mt-2">23% of income</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-robot-orange to-robot-yellow rounded-2xl p-6 shadow-lg"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold">Credit Score</h3>
-            <TrendingUp className="w-5 h-5 text-robot-orange" />
-          </div>
-          <div className="text-3xl font-bold text-white">{summary?.creditScore || 785}</div>
-          <div className="text-robot-orange text-sm mt-2">+12 this month</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-br from-robot-blue to-robot-cyan rounded-2xl p-6 shadow-lg"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold">Cash Flow</h3>
-            <BarChart3 className="w-5 h-5 text-robot-blue" />
-          </div>
-          <div className="text-3xl font-bold text-white">+${((summary?.monthlyIncome) || 0) - ((summary?.monthlyExpenses) || 0)}</div>
-          <div className="text-robot-blue text-sm mt-2">Net monthly</div>
-        </motion.div>
+      {/* Overview Header */}
+      <div className="text-center">
+        <h3 className="text-2xl font-bold text-white mb-2">📊 Financial Overview</h3>
+        <p className="text-gray-400">Your complete financial picture with AI-powered insights</p>
       </div>
 
-      {/* AI Insights */}
-      <div 
-        id="ai-insights" 
-        ref={aiInsightsRef}
-        className={`space-y-6 transition-all duration-300 ${
-          highlightedElement === 'ai-insights' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
-        }`}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-white">AI Insights & Recommendations</h3>
-          <div className="flex items-center gap-2 px-2 py-1 bg-robot-green/20 text-robot-green rounded-full text-xs">
-            <div className="w-2 h-2 bg-robot-green rounded-full animate-pulse"></div>
-            AI Powered
-          </div>
-        </div>
-        
-        {/* Enhanced AI Insights Engine */}
-        <AIInsightsEngine
-          accounts={accounts}
-          transactions={transactions}
-          summary={summary}
-          insights={insights}
-          goals={goals}
-          onOpenChat={() => setIsChatOpen(true)}
+      {/* Financial Health Metrics */}
+      <div id="progress-metrics" className="space-y-6">
+        <ProgressMetrics
+          totalBalance={summary?.totalBalance || 0}
+          monthlySavings={summary?.monthlySavings || 0}
+          monthlyIncome={summary?.monthlyIncome || 0}
+          monthlyExpenses={summary?.monthlyExpenses || 0}
+          creditScore={summary?.creditScore || 750}
+          emergencyFund={summary?.emergencyFund || 0}
+          debtAmount={summary?.totalDebt || 0}
+          investmentAmount={summary?.investmentAmount || 0}
+          showAmounts={showAmounts}
         />
       </div>
 
-      {/* Quick Actions */}
-      <div 
-        id="quick-actions" 
-        ref={quickActionsRef}
-        className={`space-y-6 transition-all duration-300 ${
-          highlightedElement === 'quick-actions' && tutorialMode ? 'ring-4 ring-robot-green/50 scale-105 shadow-2xl shadow-robot-green/20 animate-pulse' : ''
-        }`}
-      >
-        <h3 className="text-xl font-semibold text-white">Quick Actions</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleLinkAccounts}
-            className="bg-gradient-to-r from-robot-green to-robot-blue p-6 rounded-xl text-white text-center hover:shadow-lg transition-all duration-200"
-          >
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Plus className="w-6 h-6" />
-            </div>
-            <h4 className="font-semibold mb-1">Link Accounts</h4>
-            <p className="text-sm text-white/80">Connect your bank accounts</p>
-          </motion.button>
+      {/* Budget Visualization */}
+      <div className="space-y-6">
+        <BudgetVisualization
+          categories={[
+            {
+              id: 'food',
+              name: 'Food & Dining',
+              budgeted: 500,
+              spent: 450,
+              remaining: 50,
+              color: '#f97316',
+              icon: '🍽️',
+              trend: 'down',
+              status: 'under'
+            },
+            {
+              id: 'transport',
+              name: 'Transportation',
+              budgeted: 300,
+              spent: 320,
+              remaining: -20,
+              color: '#3b82f6',
+              icon: '🚗',
+              trend: 'up',
+              status: 'over'
+            },
+            {
+              id: 'entertainment',
+              name: 'Entertainment',
+              budgeted: 200,
+              spent: 180,
+              remaining: 20,
+              color: '#ec4899',
+              icon: '🎬',
+              trend: 'down',
+              status: 'under'
+            }
+          ]}
+          monthlyIncome={summary?.monthlyIncome || 0}
+          monthlyExpenses={summary?.monthlyExpenses || 0}
+          monthlySavings={summary?.monthlySavings || 0}
+          showAmounts={showAmounts}
+          onToggleAmounts={() => setShowAmounts(!showAmounts)}
+          onCategoryClick={(categoryId) => console.log('Category clicked:', categoryId)}
+        />
+      </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={refreshData}
-            disabled={loading}
-            className="bg-gradient-to-r from-robot-purple to-robot-pink p-6 rounded-xl text-white text-center hover:shadow-lg transition-all duration-200 disabled:opacity-50"
-          >
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Zap className="w-6 h-6" />
-            </div>
-            <h4 className="font-semibold mb-1">Refresh Data</h4>
-            <p className="text-sm text-white/80">{loading ? 'Updating...' : 'Sync latest data'}</p>
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setIsChatOpen(true)}
-            className="bg-gradient-to-r from-robot-orange to-robot-yellow p-6 rounded-xl text-white text-center hover:shadow-lg transition-all duration-200"
-          >
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <MessageCircle className="w-6 h-6" />
-            </div>
-            <h4 className="font-semibold mb-1">Chat with AI</h4>
-            <p className="text-sm text-white/80">Get financial advice</p>
-          </motion.button>
+      {/* Advanced Analytics & Charts */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <h3 className="text-2xl font-bold text-white mb-2">📊 Advanced Analytics</h3>
+          <p className="text-gray-400">AI-powered insights and forecasting for smarter financial decisions</p>
         </div>
 
-        {error && (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-            <p className="text-red-400 text-sm">{error}</p>
+        {/* Spending Trends Chart */}
+        <ClientOnly fallback={
+          <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="w-8 h-8 text-robot-green" />
+            </div>
+            <h4 className="text-lg font-semibold text-white mb-2">Loading Analytics...</h4>
+            <p className="text-gray-400">Preparing your financial insights</p>
           </div>
-        )}
+        }>
+          <SpendingTrendsChart
+            data={transactions.map(tx => ({
+              date: tx.date,
+              amount: tx.amount,
+              category: tx.category || 'Uncategorized',
+              type: tx.amount > 0 ? 'income' : 'expense'
+            }))}
+            showAmounts={showAmounts}
+            onToggleAmounts={() => setShowAmounts(!showAmounts)}
+            onCategoryClick={(category) => console.log('Category clicked:', category)}
+          />
+        </ClientOnly>
+
+        {/* Category Breakdown Chart */}
+        <ClientOnly fallback={
+          <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <PieChart className="w-8 h-8 text-robot-green" />
+            </div>
+            <h4 className="text-lg font-semibold text-white mb-2">Loading Categories...</h4>
+            <p className="text-gray-400">Analyzing your spending patterns</p>
+          </div>
+        }>
+          <CategoryBreakdownChart
+            categories={[
+              {
+                id: 'food',
+                name: 'Food & Dining',
+                amount: 450,
+                color: '#f97316',
+                icon: '🍽️',
+                trend: 'down',
+                percentage: 25
+              },
+              {
+                id: 'transport',
+                name: 'Transportation',
+                amount: 320,
+                color: '#3b82f6',
+                icon: '🚗',
+                trend: 'up',
+                percentage: 18
+              },
+              {
+                id: 'entertainment',
+                name: 'Entertainment',
+                amount: 280,
+                color: '#ec4899',
+                icon: '🎬',
+                trend: 'down',
+                percentage: 16
+              },
+              {
+                id: 'shopping',
+                name: 'Shopping',
+                amount: 250,
+                color: '#8b5cf6',
+                icon: '🛍️',
+                trend: 'stable',
+                percentage: 14
+              },
+              {
+                id: 'utilities',
+                name: 'Utilities',
+                amount: 200,
+                color: '#10b981',
+                icon: '💡',
+                trend: 'stable',
+                percentage: 11
+              },
+              {
+                id: 'other',
+                name: 'Other',
+                amount: 300,
+                color: '#6b7280',
+                icon: '📦',
+                trend: 'up',
+                percentage: 16
+              }
+            ]}
+            showAmounts={showAmounts}
+            onToggleAmounts={() => setShowAmounts(!showAmounts)}
+            onCategoryClick={(category) => console.log('Category clicked:', category)}
+          />
+        </ClientOnly>
+
+        {/* Financial Forecasting Chart */}
+        <ClientOnly fallback={
+          <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <TrendingUp className="w-8 h-8 text-robot-green" />
+            </div>
+            <h4 className="text-lg font-semibold text-white mb-2">Loading Forecast...</h4>
+            <p className="text-gray-400">Calculating your financial future</p>
+          </div>
+        }>
+          <ForecastingChart
+            historicalData={transactions}
+            showAmounts={showAmounts}
+            onToggleAmounts={() => setShowAmounts(!showAmounts)}
+          />
+        </ClientOnly>
       </div>
 
       {/* Recent Transactions */}
@@ -748,72 +790,29 @@ export default function MoneyPalPage() {
         </div>
       </motion.div>
 
-      {/* Contextual AI Suggestions */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ContextualAI
-          activeTab={activeTab}
-          accounts={accounts}
-          transactions={transactions}
-          summary={summary}
-          insights={insights}
-          goals={goals}
-          onOpenChat={() => setIsChatOpen(true)}
-        />
-      </div>
 
-      {/* Smart Notifications System */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SmartNotifications
-          accounts={accounts}
-          transactions={transactions}
-          summary={summary}
-          insights={insights}
-          goals={goals}
-          onOpenChat={() => setIsChatOpen(true)}
-        />
-      </div>
-
-      {/* Personalized Financial Coaching */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <PersonalizedCoaching
-          accounts={accounts}
-          transactions={transactions}
-          summary={summary}
-          insights={insights}
-          goals={goals}
-          onOpenChat={() => setIsChatOpen(true)}
-        />
-      </div>
-
-      {/* Advanced Automation Rules */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AdvancedAutomation
-          accounts={accounts}
-          transactions={transactions}
-          summary={summary}
-          insights={insights}
-          goals={goals}
-          onOpenChat={() => setIsChatOpen(true)}
-        />
-      </div>
 
       {/* New Hero Section & Financial Summary */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <HeroSection
-          userName={user?.email?.split('@')[0] || 'there'}
-          onLinkAccounts={handleLinkAccounts}
-          onAddTransaction={() => setIsChatOpen(true)}
-          onRefreshData={() => refreshData()}
-        />
+        <div id="hero-section">
+          <HeroSection
+            userName={user?.email?.split('@')[0] || 'there'}
+            onLinkAccounts={handleLinkAccounts}
+            onAddTransaction={() => setIsChatOpen(true)}
+            onRefreshData={() => refreshData()}
+          />
+        </div>
         
-        <SummaryCards
-          totalBalance={summary?.totalBalance || 0}
-          monthlySavings={summary?.monthlySavings || 0}
-          creditScore={summary?.creditScore || 750}
-          cashFlow={summary?.monthlyIncome ? (summary.monthlyIncome + (summary.monthlySavings || 0)) : 0}
-          monthlyIncome={summary?.monthlyIncome || 0}
-          monthlyChange={summary?.monthlyChange || 0}
-        />
+        <div id="summary-cards">
+          <SummaryCards
+            totalBalance={summary?.totalBalance || 0}
+            monthlySavings={summary?.monthlySavings || 0}
+            creditScore={summary?.creditScore || 750}
+            cashFlow={summary?.monthlyIncome ? (summary.monthlyIncome + (summary.monthlySavings || 0)) : 0}
+            monthlyIncome={summary?.monthlyIncome || 0}
+            monthlyChange={summary?.monthlyChange || 0}
+          />
+        </div>
       </div>
 
       {/* Main Content */}
@@ -821,33 +820,115 @@ export default function MoneyPalPage() {
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'accounts' && renderAccounts()}
         {activeTab === 'goals' && (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-robot-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Image
-                src="/moneypal/robotavatar.PNG"
-                alt="Goals"
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
+          <div className="space-y-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white mb-2">🎯 Financial Goals</h3>
+              <p className="text-gray-400">Set, track, and achieve your financial milestones</p>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Goals Coming Soon</h3>
-            <p className="text-gray-400">Goal setting and tracking will be available in the next phase</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Sample Goal Cards - In real app, these would be dynamic */}
+              <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-robot-green" />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Emergency Fund</h4>
+                <p className="text-gray-400 mb-4">Build 6 months of expenses</p>
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div className="bg-robot-green h-2 rounded-full" style={{ width: '65%' }}></div>
+                </div>
+                <p className="text-sm text-gray-400">65% Complete</p>
+              </div>
+              
+              <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-robot-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-robot-blue" />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Investment Portfolio</h4>
+                <p className="text-gray-400 mb-4">Reach $50,000 invested</p>
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div className="bg-robot-blue h-2 rounded-full" style={{ width: '42%' }}></div>
+                </div>
+                <p className="text-sm text-gray-400">42% Complete</p>
+              </div>
+              
+              <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-robot-purple/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <PiggyBank className="w-8 h-8 text-robot-purple" />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Debt Free</h4>
+                <p className="text-gray-400 mb-4">Pay off all credit cards</p>
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div className="bg-robot-purple h-2 rounded-full" style={{ width: '78%' }}></div>
+                </div>
+                <p className="text-sm text-gray-400">78% Complete</p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <button className="bg-gradient-to-r from-robot-green to-robot-blue px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-200">
+                + Create New Goal
+              </button>
+            </div>
           </div>
         )}
+        
         {activeTab === 'settings' && (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-robot-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Image
-                src="/moneypal/robotavatar.PNG"
-                alt="Settings"
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
+          <div className="space-y-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white mb-2">⚙️ Account Settings</h3>
+              <p className="text-gray-400">Manage your preferences and account details</p>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Settings Coming Soon</h3>
-            <p className="text-gray-400">Account settings and preferences will be available in the next phase</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-robot-green" />
+                  Profile Settings
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Email</span>
+                    <span className="text-white">{user?.email}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Notifications</span>
+                    <span className="text-robot-green">Enabled</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Privacy</span>
+                    <span className="text-robot-green">Private</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-robot-blue" />
+                  Security
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">2FA</span>
+                    <span className="text-robot-green">Enabled</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Last Login</span>
+                    <span className="text-white">Today</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Password</span>
+                    <span className="text-robot-green">Strong</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <button className="bg-gradient-to-r from-robot-green to-robot-blue px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-200">
+                Save Changes
+              </button>
+            </div>
           </div>
         )}
       </main>
