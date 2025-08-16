@@ -40,6 +40,8 @@ import PersonalizedCoaching from '@/components/moneypal/PersonalizedCoaching'
 import AdvancedAutomation from '@/components/moneypal/AdvancedAutomation'
 import HeroSection from '@/components/moneypal/HeroSection'
 import SummaryCards from '@/components/moneypal/SummaryCards'
+import EnhancedAccountCard from '@/components/moneypal/EnhancedAccountCard'
+import TransactionHistory from '@/components/moneypal/TransactionHistory'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
@@ -129,6 +131,8 @@ export default function MoneyPalPage() {
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [showAccountBalances, setShowAccountBalances] = useState(true)
+  const [showTransactionAmounts, setShowTransactionAmounts] = useState(true)
 
   // Refs for scrolling to elements
   const overviewCardsRef = useRef<HTMLDivElement>(null)
@@ -255,6 +259,32 @@ export default function MoneyPalPage() {
   const handleUnlinkAccount = (accountId: string) => {
     // TODO: Implement account unlinking
     console.log('Unlinking account:', accountId)
+  }
+
+  const handleRefreshAccount = (accountId: string) => {
+    // TODO: Implement account refresh
+    console.log('Refresh account:', accountId)
+    refreshData()
+  }
+
+  const handleViewAccountDetails = (accountId: string) => {
+    // TODO: Implement account details view
+    console.log('View account details:', accountId)
+  }
+
+  const handleTransactionClick = (transaction: any) => {
+    // TODO: Implement transaction details view
+    console.log('Transaction clicked:', transaction)
+  }
+
+  const handleCategoryChange = (transactionId: string, newCategory: string) => {
+    // TODO: Implement category change
+    console.log('Change category:', transactionId, newCategory)
+  }
+
+  const handleAddTag = (transactionId: string, tag: string) => {
+    // TODO: Implement tag addition
+    console.log('Add tag:', transactionId, tag)
   }
 
   // Tutorial drag handlers
@@ -533,6 +563,32 @@ export default function MoneyPalPage() {
           </div>
         )}
       </div>
+
+      {/* Recent Transactions */}
+      <div className="space-y-6">
+        <h3 className="text-xl font-semibold text-white">Recent Transactions</h3>
+        <TransactionHistory
+          transactions={transactions.slice(0, 10).map(tx => ({
+            id: tx.id,
+            date: tx.date,
+            amount: tx.amount,
+            description: tx.description || tx.name,
+            category: tx.category || 'Uncategorized',
+            accountId: tx.accountId,
+            accountName: accounts.find(acc => acc.id === tx.accountId)?.name || 'Unknown Account',
+            merchant: tx.merchant,
+            type: tx.amount > 0 ? 'income' : 'expense',
+            status: 'completed',
+            aiInsights: tx.aiInsights,
+            tags: tx.tags
+          }))}
+          onTransactionClick={handleTransactionClick}
+          onCategoryChange={handleCategoryChange}
+          onAddTag={handleAddTag}
+          showAmounts={showTransactionAmounts}
+          onToggleAmounts={() => setShowTransactionAmounts(!showTransactionAmounts)}
+        />
+      </div>
     </div>
   )
 
@@ -562,61 +618,28 @@ export default function MoneyPalPage() {
           </div>
           <p className="text-gray-400">Loading your accounts...</p>
         </div>
-             ) : (accounts && accounts.length > 0) ? (
+      ) : (accounts && accounts.length > 0) ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {accounts.map((account) => (
-            <motion.div
+            <EnhancedAccountCard
               key={account.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-800/30 rounded-xl p-6 border border-gray-700 hover:border-robot-green/50 transition-all duration-200"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    account.type === 'checking' ? 'bg-robot-blue/20' :
-                    account.type === 'savings' ? 'bg-robot-green/20' :
-                    account.type === 'credit' ? 'bg-robot-orange/20' : 'bg-gray-600/20'
-                  }`}>
-                    {account.type === 'checking' ? '🏦' :
-                     account.type === 'savings' ? '💰' :
-                     account.type === 'credit' ? '💳' : '🏛️'}
-                  </div>
-                  <div>
-                    <h4 className="text-white font-semibold">{account.name}</h4>
-                    <p className="text-gray-400 text-sm capitalize">{account.type}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleUnlinkAccount(account.id)}
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                  title="Unlink Account"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Balance:</span>
-                  <span className={`font-semibold ${
-                    (account.balance || 0) >= 0 ? 'text-robot-green' : 'text-red-400'
-                  }`}>
-                    {(account.balance || 0) >= 0 ? '+' : ''}${Math.abs(account.balance || 0).toFixed(2)}
-                  </span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Account:</span>
-                  <span className="text-white font-mono text-sm">{account.accountNumber}</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Last sync:</span>
-                  <span className="text-white text-sm">{account.lastSync || 'Just now'}</span>
-                </div>
-              </div>
-            </motion.div>
+              account={{
+                id: account.id,
+                name: account.name,
+                type: account.type,
+                balance: account.balance || 0,
+                currency: account.currency || 'USD',
+                lastSync: account.lastSync,
+                institution: account.institution,
+                accountNumber: account.accountNumber,
+                status: 'active'
+              }}
+              onRefresh={handleRefreshAccount}
+              onUnlink={handleUnlinkAccount}
+              onViewDetails={handleViewAccountDetails}
+              showBalance={showAccountBalances}
+              onToggleBalance={() => setShowAccountBalances(!showAccountBalances)}
+            />
           ))}
         </div>
       ) : (
