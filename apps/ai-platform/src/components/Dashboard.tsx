@@ -23,7 +23,8 @@ import {
   Rocket,
   Clock,
   DollarSign,
-  ShoppingCart
+  ShoppingCart,
+  ChefHat
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
@@ -60,12 +61,12 @@ export default function Dashboard({
     {
       id: 'moneypal',
       name: 'MoneyPal',
-      description: 'Personal finance management with AI insights',
+      description: 'AI financial assistant for smart money management',
       icon: DollarSign,
       avatar: '/moneypal/robotavatar.PNG',
-      features: ['Smart budgeting', 'Goal tracking', 'AI insights', 'Account linking'],
+      features: ['Budget tracking', 'Expense analysis', 'Financial insights', 'AI automation'],
       lastUsed: '2 hours ago',
-      usage: 'High Usage',
+      usage: 'Frequently used',
       status: 'active',
       href: '/moneypal'
     },
@@ -74,7 +75,7 @@ export default function Dashboard({
       name: 'SellerPal',
       description: 'AI eCommerce co-pilot for business growth',
       icon: ShoppingCart,
-      avatar: '/sellerpal/robotavatar.PNG',
+      avatar: '/sellerpal/robotavatar.png',
       features: ['Inventory management', 'Sales analytics', 'Competitive insights', 'AI automation'],
       lastUsed: 'Never used',
       usage: 'New',
@@ -82,40 +83,16 @@ export default function Dashboard({
       href: '/sellerpal'
     },
     {
-      id: 'fitnesspal',
-      name: 'FitnessPal',
-      description: 'Your AI workout buddy and health coach',
-      icon: Heart,
-      avatar: '/moneypal/robotavatar.PNG',
-      features: ['Workout planning', 'Nutrition guidance', 'Progress tracking', 'Health insights'],
+      id: 'cookingpal',
+      name: 'CookingPal',
+      description: 'AI kitchen companion for smart meal planning',
+      icon: ChefHat,
+      avatar: '/cookingpal/robotavatar.png',
+      features: ['Recipe generation', 'Meal planning', 'Budget-aware cooking', 'AI automation'],
       lastUsed: 'Never used',
-      usage: 'Coming Soon',
-      status: 'coming-soon',
-      href: '#'
-    },
-    {
-      id: 'productivitypal',
-      name: 'ProductivityPal',
-      description: 'AI-powered productivity and time management',
-      icon: Brain,
-      avatar: '/moneypal/robotavatar.PNG',
-      features: ['Task automation', 'Time tracking', 'Focus optimization', 'Performance analytics'],
-      lastUsed: 'Never used',
-      usage: 'Coming Soon',
-      status: 'coming-soon',
-      href: '#'
-    },
-    {
-      id: 'businesspal',
-      name: 'BusinessPal',
-      description: 'AI business strategist and growth advisor',
-      icon: Rocket,
-      avatar: '/moneypal/robotavatar.PNG',
-      features: ['Market analysis', 'Strategy development', 'Growth optimization', 'Competitive intelligence'],
-      lastUsed: 'Never used',
-      usage: 'Coming Soon',
-      status: 'coming-soon',
-      href: '#'
+      usage: 'New',
+      status: 'active',
+      href: '/cookingpal'
     }
   ]
 
@@ -180,9 +157,12 @@ export default function Dashboard({
       case 'moneypal':
         router.push('/moneypal')
         break
-      case 'sellerpal':
-        router.push('/sellerpal')
-        break
+          case 'sellerpal':
+      router.push('/sellerpal')
+      break
+    case 'cookingpal':
+      router.push('/cookingpal')
+      break
       case 'fitnesspal':
         // TODO: Implement when FitnessPal is ready
         console.log('FitnessPal coming soon!')
