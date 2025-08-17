@@ -231,6 +231,14 @@ export default function AIPalTemplate({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4 rotate-180" />
+                  <span className="text-sm font-medium">Back to Dashboard</span>
+                </button>
+                <div className="w-px h-8 bg-white/20"></div>
                 <div className={`w-12 h-12 ${appColor} rounded-xl flex items-center justify-center`}>
                   <AppIcon className="w-6 h-6 text-white" />
                 </div>

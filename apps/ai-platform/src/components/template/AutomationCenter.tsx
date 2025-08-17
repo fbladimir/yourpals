@@ -81,36 +81,7 @@ export default function AutomationCenter({
   const [searchTerm, setSearchTerm] = useState('')
 
   // Mock automations - in real app, these would come from props or API
-  const [automations, setAutomations] = useState<Automation[]>([
-    {
-      id: '1',
-      name: 'Weekly Summary Report',
-      description: 'Send weekly business summary every Monday at 9 AM',
-      type: 'schedule',
-      frequency: 'Every Monday at 9:00 AM',
-      action: 'Send email report with weekly metrics',
-      isActive: true,
-      lastRun: new Date('2024-01-15T09:00:00'),
-      nextRun: new Date('2024-01-22T09:00:00'),
-      category: 'Reporting',
-      icon: Mail,
-      color: 'from-blue-500 to-purple-600'
-    },
-    {
-      id: '2',
-      name: 'Low Stock Alert',
-      description: 'Alert when inventory drops below threshold',
-      type: 'trigger',
-      frequency: 'Real-time monitoring',
-      action: 'Send push notification and email alert',
-      isActive: true,
-      lastRun: new Date('2024-01-16T14:30:00'),
-      nextRun: undefined,
-      category: 'Inventory',
-      icon: Package,
-      color: 'from-orange-500 to-red-600'
-    }
-  ])
+  const [automations, setAutomations] = useState<Automation[]>([])
 
   const handleCreateAutomation = (template: AutomationTemplate) => {
     const newAutomation: Omit<Automation, 'id'> = {

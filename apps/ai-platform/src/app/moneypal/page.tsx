@@ -38,6 +38,7 @@ import Image from 'next/image'
 import AccountLinking from '@/components/moneypal/AccountLinking'
 import FloatingAvatar from '@/components/moneypal/FloatingAvatar'
 import ChatModal from '@/components/moneypal/ChatModal'
+import ManualDataEntry from '@/components/moneypal/ManualDataEntry'
 
 import HeroSection from '@/components/moneypal/HeroSection'
 import SummaryCards from '@/components/moneypal/SummaryCards'
@@ -144,6 +145,20 @@ export default function MoneyPalPage() {
     console.log('Editing MoneyPal automation:', automation)
     // In real app, this would open edit modal
   }
+
+  // Handle manual data entry
+  const handleManualDataEntered = (data: any) => {
+    setManualData(data)
+    setShowManualDataEntry(false)
+    
+    // Save to localStorage
+    if (user?.id) {
+      localStorage.setItem(`moneypal-manual-data-${user.id}`, JSON.stringify(data))
+    }
+    
+    // Show success message
+    console.log('Manual data saved successfully:', data)
+  }
   
   // Add safety check for auth hook
   if (!authData) {
@@ -232,6 +247,7 @@ export default function MoneyPalPage() {
   const [showTransactionAmounts, setShowTransactionAmounts] = useState(true)
   const [showAmounts, setShowAmounts] = useState(true)
   const [manualData, setManualData] = useState<any>(null)
+  const [showManualDataEntry, setShowManualDataEntry] = useState(false)
 
   // Refs for scrolling to elements
   const navTabsRef = useRef<HTMLDivElement>(null)
@@ -849,13 +865,22 @@ export default function MoneyPalPage() {
     >
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white">Linked Accounts</h3>
-        <button
-          onClick={handleLinkAccounts}
-          className="flex items-center gap-2 px-4 py-2 bg-robot-green text-white rounded-lg hover:bg-robot-green/90 transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Link Account
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowManualDataEntry(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-robot-orange text-white rounded-lg hover:bg-robot-orange/90 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Manual Entry
+          </button>
+          <button
+            onClick={handleLinkAccounts}
+            className="flex items-center gap-2 px-4 py-2 bg-robot-green text-white rounded-lg hover:bg-robot-green/90 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Link Account
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -900,14 +925,31 @@ export default function MoneyPalPage() {
               className="rounded-full"
             />
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">No Accounts Linked</h3>
-          <p className="text-gray-400 mb-4">Link your bank accounts to get started with MoneyPal</p>
-          <button
-            onClick={handleLinkAccounts}
-            className="px-6 py-3 bg-robot-green text-white rounded-lg font-semibold hover:bg-robot-green/90 transition-colors"
-          >
-            Link Your First Account
-          </button>
+          <h3 className="text-xl font-semibold text-white mb-2">
+            {manualData ? 'No Bank Accounts Linked' : 'No Accounts Linked'}
+          </h3>
+          <p className="text-gray-400 mb-4">
+            {manualData 
+              ? 'You have manual data entered. Link your bank accounts for real-time updates, or continue using manual entry.'
+              : 'Link your bank accounts to get started with MoneyPal, or enter your financial data manually.'
+            }
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            {manualData && (
+              <button
+                onClick={() => setShowManualDataEntry(true)}
+                className="px-6 py-3 bg-robot-orange text-white rounded-lg font-semibold hover:bg-robot-orange/90 transition-colors"
+              >
+                Update Manual Data
+              </button>
+            )}
+            <button
+              onClick={handleLinkAccounts}
+              className="px-6 py-3 bg-robot-green text-white rounded-lg font-semibold hover:bg-robot-green/90 transition-colors"
+            >
+              Link Your First Account
+            </button>
+          </div>
         </div>
       )}
       </CollapsibleSection>
@@ -1215,6 +1257,34 @@ export default function MoneyPalPage() {
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
       />
+
+      {/* Manual Data Entry Modal */}
+      <AnimatePresence>
+        {showManualDataEntry && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-gray-900 rounded-3xl border border-gray-700/50 shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
+            >
+              <div className="p-6">
+                <ManualDataEntry
+                  onDataEntered={handleManualDataEntered}
+                  onClose={() => setShowManualDataEntry(false)}
+                  initialData={manualData}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
