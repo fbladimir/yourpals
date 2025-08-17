@@ -6,34 +6,50 @@ export const dynamic = 'force-dynamic'
 // For now, we'll use a simple in-memory store for demonstration
 const manualDataStore = new Map<string, any>()
 
+// Helper function to get data from localStorage (server-side)
+function getDataFromLocalStorage(userId: string) {
+  // Since this is server-side, we can't access localStorage directly
+  // In a real app, this would be a database call
+  // For now, we'll return the in-memory store data
+  return manualDataStore.get(userId)
+}
+
+// Helper function to save data to localStorage (server-side)
+function saveDataToLocalStorage(userId: string, data: any) {
+  // Since this is server-side, we can't access localStorage directly
+  // In a real app, this would be a database call
+  // For now, we'll save to the in-memory store
+  manualDataStore.set(userId, { ...data, lastUpdated: new Date().toISOString() })
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
-
+    
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing userId parameter' }, { status: 400 })
     }
-
-    const userData = manualDataStore.get(userId)
+    
+    const userData = getDataFromLocalStorage(userId)
     
     if (!userData) {
+      // Return empty data structure
       return NextResponse.json({
         success: true,
         data: {
           accounts: [],
+          debtAccounts: [],
           transactions: [],
           summary: {
-            totalBalance: 0,
+            totalAssets: 0,
+            totalDebt: 0,
+            netWorth: 0,
             monthlyIncome: 0,
             monthlyExpenses: 0,
             monthlySavings: 0,
             creditScore: 750,
             emergencyFund: 0,
-            totalDebt: 0,
             investmentAmount: 0,
             monthlyChange: 0
           },
@@ -42,111 +58,82 @@ export async function GET(request: NextRequest) {
         }
       })
     }
-
-    return NextResponse.json({
-      success: true,
-      data: userData
-    })
-
+    
+    return NextResponse.json({ success: true, data: userData })
   } catch (error: any) {
     console.error('Error fetching manual financial data:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to fetch manual financial data',
-        details: error.message
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      error: 'Failed to fetch manual financial data', 
+      details: error.message 
+    }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { userId, data } = await request.json()
-
+    
     if (!userId || !data) {
-      return NextResponse.json(
-        { error: 'Missing userId or data' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing userId or data' }, { status: 400 })
     }
-
-    // Store the manual data
-    manualDataStore.set(userId, {
-      ...data,
-      lastUpdated: new Date().toISOString()
+    
+    saveDataToLocalStorage(userId, data)
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Manual financial data saved successfully' 
     })
-
-    return NextResponse.json({
-      success: true,
-      message: 'Manual financial data saved successfully'
-    })
-
   } catch (error: any) {
     console.error('Error saving manual financial data:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to save manual financial data',
-        details: error.message
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      error: 'Failed to save manual financial data', 
+      details: error.message 
+    }, { status: 500 })
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
     const { userId, updates } = await request.json()
-
+    
     if (!userId || !updates) {
-      return NextResponse.json(
-        { error: 'Missing userId or updates' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing userId or updates' }, { status: 400 })
     }
-
-    const existingData = manualDataStore.get(userId) || {
+    
+    const existingData = getDataFromLocalStorage(userId) || {
       accounts: [],
+      debtAccounts: [],
       transactions: [],
       summary: {
-        totalBalance: 0,
+        totalAssets: 0,
+        totalDebt: 0,
+        netWorth: 0,
         monthlyIncome: 0,
         monthlyExpenses: 0,
         monthlySavings: 0,
         creditScore: 750,
         emergencyFund: 0,
-        totalDebt: 0,
         investmentAmount: 0,
         monthlyChange: 0
       },
       goals: [],
       lastUpdated: new Date().toISOString()
     }
-
-    // Merge updates with existing data
-    const updatedData = {
-      ...existingData,
-      ...updates,
-      lastUpdated: new Date().toISOString()
-    }
-
-    manualDataStore.set(userId, updatedData)
-
-    return NextResponse.json({
-      success: true,
-      message: 'Manual financial data updated successfully',
-      data: updatedData
+    
+    const updatedData = { ...existingData, ...updates, lastUpdated: new Date().toISOString() }
+    saveDataToLocalStorage(userId, updatedData)
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Manual financial data updated successfully', 
+      data: updatedData 
     })
-
   } catch (error: any) {
     console.error('Error updating manual financial data:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to update manual financial data',
-        details: error.message
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      error: 'Failed to update manual financial data', 
+      details: error.message 
+    }, { status: 500 })
   }
 }
 
@@ -154,29 +141,22 @@ export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
-
+    
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Missing userId parameter' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing userId parameter' }, { status: 400 })
     }
-
+    
     manualDataStore.delete(userId)
-
-    return NextResponse.json({
-      success: true,
-      message: 'Manual financial data deleted successfully'
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Manual financial data deleted successfully' 
     })
-
   } catch (error: any) {
     console.error('Error deleting manual financial data:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to delete manual financial data',
-        details: error.message
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      error: 'Failed to delete manual financial data', 
+      details: error.message 
+    }, { status: 500 })
   }
 }

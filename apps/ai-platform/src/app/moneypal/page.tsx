@@ -58,6 +58,7 @@ import { useFinancialData } from '@/hooks/useFinancialData'
 import { useUnifiedFinancialData } from '@/hooks/useUnifiedFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
 import AutomationCenter from '@/components/template/AutomationCenter'
+import TestModeToggle from '@/components/moneypal/TestModeToggle'
 
 export default function MoneyPalPage() {
   const authData = useAuth()
@@ -201,15 +202,35 @@ export default function MoneyPalPage() {
     if (user?.id) {
       console.log('Overview data changed:', overviewData)
       
-      // Update the unified data store
-      updateSummary(overviewData)
+      // Calculate proper monthly savings and cash flow
+      const monthlyIncome = overviewData.monthlyIncome || 0
+      const monthlyExpenses = overviewData.monthlyExpenses || 0
+      const monthlySavings = monthlyIncome - monthlyExpenses
+      
+      console.log('Calculated values:', {
+        monthlyIncome,
+        monthlyExpenses,
+        monthlySavings,
+        monthlyChange: monthlySavings
+      })
+      
+      const correctedOverviewData = {
+        ...overviewData,
+        monthlySavings,
+        monthlyChange: monthlySavings // This is what cash flow should use
+      }
+      
+      console.log('Corrected overview data:', correctedOverviewData)
+      
+      // Update the unified data store with corrected data
+      updateSummary(correctedOverviewData)
       
       // Also save to localStorage for persistence
       const existingData = localStorage.getItem(`moneypal-manual-data-${user.id}`)
       if (existingData) {
         try {
           const parsedData = JSON.parse(existingData)
-          const updatedData = { ...parsedData, summary: { ...parsedData.summary, ...overviewData } }
+          const updatedData = { ...parsedData, summary: { ...parsedData.summary, ...correctedOverviewData } }
           localStorage.setItem(`moneypal-manual-data-${user.id}`, JSON.stringify(updatedData))
           console.log('Overview data saved to localStorage:', updatedData)
         } catch (e) {
@@ -343,6 +364,181 @@ export default function MoneyPalPage() {
   const [showAmounts, setShowAmounts] = useState(true)
   const [manualData, setManualData] = useState<any>(null)
   const [showManualDataEntry, setShowManualDataEntry] = useState(false)
+  const [isTestMode, setIsTestMode] = useState(false)
+
+  // Test mode data
+  const testData = {
+    accounts: [
+      {
+        id: 'test-1',
+        name: 'Chase Checking',
+        type: 'checking' as const,
+        balance: 2500,
+        currency: 'USD',
+        institution: 'Chase Bank',
+        lastSync: new Date().toISOString(),
+        status: 'active' as const,
+        source: 'test' as const
+      },
+      {
+        id: 'test-2',
+        name: 'Chase Savings',
+        type: 'savings' as const,
+        balance: 8500,
+        currency: 'USD',
+        institution: 'Chase Bank',
+        lastSync: new Date().toISOString(),
+        status: 'active' as const,
+        source: 'test' as const
+      }
+    ],
+    debtAccounts: [
+      {
+        id: 'test-debt-1',
+        name: 'Chase Credit Card',
+        type: 'credit-card' as const,
+        balance: 1200,
+        currency: 'USD',
+        institution: 'Chase Bank',
+        interestRate: 18.99,
+        minimumPayment: 35,
+        dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        status: 'active' as const,
+        source: 'test' as const
+      }
+    ],
+    transactions: [
+      {
+        id: 'test-tx-1',
+        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        description: 'Grocery Store',
+        amount: -85.50,
+        category: 'Food & Dining',
+        accountId: 'test-1',
+        merchant: 'Whole Foods',
+        source: 'test' as const
+      },
+      {
+        id: 'test-tx-2',
+        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        description: 'Salary Deposit',
+        amount: 3200,
+        category: 'Income',
+        accountId: 'test-1',
+        merchant: 'Employer',
+        source: 'test' as const
+      }
+    ],
+    goals: [
+      {
+        id: 'test-goal-1',
+        name: 'Emergency Fund',
+        target: 10000,
+        current: 8500,
+        deadline: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        type: 'emergency' as const,
+        priority: 'high' as const,
+        status: 'active' as const,
+        source: 'test' as const
+      }
+    ],
+    summary: {
+      totalAssets: 11000,
+      totalDebt: 1200,
+      netWorth: 9800,
+      monthlyIncome: 3200,
+      monthlyExpenses: 2500,
+      monthlySavings: 700,
+      creditScore: 780,
+      emergencyFund: 8500,
+      investmentAmount: 0,
+      monthlyChange: 700
+    }
+  }
+
+  // Test mode handlers
+  const handleEnterTestMode = () => {
+    setIsTestMode(true)
+    // Load test data into unified store
+    updateAccounts(testData.accounts)
+    updateDebtAccounts(testData.debtAccounts)
+    updateTransactions(testData.transactions)
+    updateGoals(testData.goals)
+    updateSummary(testData.summary)
+    
+    // Save test data to localStorage
+    if (user?.id) {
+      localStorage.setItem(`moneypal-test-data-${user.id}`, JSON.stringify(testData))
+    }
+  }
+
+  const handleExitTestMode = () => {
+    if (confirm('Are you sure you want to exit test mode? All test data will be removed and your dashboard will be reset to empty.')) {
+      setIsTestMode(false)
+      
+      // Clear all data from unified store
+      updateAccounts([])
+      updateDebtAccounts([])
+      updateTransactions([])
+      updateGoals([])
+      updateSummary({
+        totalAssets: 0,
+        totalDebt: 0,
+        netWorth: 0,
+        monthlyIncome: 0,
+        monthlyExpenses: 0,
+        monthlySavings: 0,
+        creditScore: 750,
+        emergencyFund: 0,
+        investmentAmount: 0,
+        monthlyChange: 0,
+        debtToIncomeRatio: 0,
+        savingsRate: 0
+      })
+      
+      // Clear localStorage completely
+      if (user?.id) {
+        localStorage.removeItem(`moneypal-test-data-${user.id}`)
+        localStorage.removeItem(`moneypal-manual-data-${user.id}`)
+        
+        // Also clear the API store by sending empty data
+        fetch('/api/moneypal/manual-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            data: {
+              accounts: [],
+              debtAccounts: [],
+              transactions: [],
+              summary: {
+                totalAssets: 0,
+                totalDebt: 0,
+                netWorth: 0,
+                monthlyIncome: 0,
+                monthlyExpenses: 0,
+                monthlySavings: 0,
+                creditScore: 750,
+                emergencyFund: 0,
+                investmentAmount: 0,
+                monthlyChange: 0
+              },
+              goals: [],
+              lastUpdated: new Date().toISOString()
+            }
+          })
+        }).then(() => {
+          console.log('Test mode data cleared from API')
+        }).catch((error) => {
+          console.error('Error clearing test mode data:', error)
+        })
+      }
+      
+      console.log('Test mode exited - all data cleared')
+    }
+  }
 
   // Refs for scrolling to elements
   const navTabsRef = useRef<HTMLDivElement>(null)
@@ -1595,6 +1791,13 @@ export default function MoneyPalPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Test Mode Toggle */}
+      <TestModeToggle
+        isTestMode={isTestMode}
+        onEnterTestMode={handleEnterTestMode}
+        onExitTestMode={handleExitTestMode}
+      />
     </div>
   )
 }

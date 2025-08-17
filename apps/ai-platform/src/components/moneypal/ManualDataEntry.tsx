@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   HelpCircle
 } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Account {
   id: string
@@ -90,6 +91,8 @@ const CATEGORIES = [
 ]
 
 export default function ManualDataEntry({ onDataEntered, onClose, initialData, onOverviewDataChange }: ManualDataEntryProps) {
+  const { user } = useAuth()
+  
   const [formData, setFormData] = useState({
     accounts: [
       {
@@ -392,7 +395,7 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData, o
     setFormData({ ...formData, financialGoals: newGoals })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateData()) { return }
     
     const transformedData = {
@@ -430,7 +433,7 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData, o
         recurringFrequency: tx.recurringFrequency
       })),
       summary: {
-        totalBalance: formData.accounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
+        totalAssets: formData.accounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
         totalDebt: formData.debtAccounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
         netWorth: formData.accounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0) - formData.debtAccounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
         monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
@@ -439,7 +442,7 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData, o
         creditScore: parseFloat(formData.creditScore) || 750,
         emergencyFund: parseFloat(formData.emergencyFund) || 0,
         investmentAmount: parseFloat(formData.investmentAmount) || 0,
-        monthlyChange: 0
+        monthlyChange: (parseFloat(formData.monthlyIncome) || 0) - (parseFloat(formData.monthlyExpenses) || 0)
       },
       goals: formData.financialGoals.filter(goal => goal.name && goal.target).map(goal => ({
         id: goal.id, 
@@ -453,6 +456,29 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData, o
       }))
     }
     
+    // Save to API first
+    try {
+      const response = await fetch('/api/moneypal/manual-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user?.id || 'current-user', // This should come from auth context
+          data: transformedData
+        })
+      })
+      
+      if (response.ok) {
+        console.log('Data saved to API successfully')
+      } else {
+        console.error('Failed to save data to API')
+      }
+    } catch (error) {
+      console.error('Error saving data to API:', error)
+    }
+    
+    // Then call the callback
     onDataEntered(transformedData)
   }
 

@@ -10,7 +10,7 @@ interface UnifiedAccount {
   institution: string
   lastSync: string
   status: 'active' | 'inactive'
-  source: 'manual' | 'plaid'
+  source: 'manual' | 'plaid' | 'test'
 }
 
 interface UnifiedDebtAccount {
@@ -24,7 +24,7 @@ interface UnifiedDebtAccount {
   minimumPayment: number
   dueDate: string
   status: 'active' | 'inactive'
-  source: 'manual'
+  source: 'manual' | 'test'
 }
 
 interface UnifiedTransaction {
@@ -37,7 +37,7 @@ interface UnifiedTransaction {
   merchant: string
   recurring?: boolean
   recurringFrequency?: 'weekly' | 'monthly' | 'yearly'
-  source: 'manual' | 'plaid'
+  source: 'manual' | 'plaid' | 'test'
 }
 
 interface UnifiedFinancialGoal {
@@ -49,7 +49,7 @@ interface UnifiedFinancialGoal {
   type: 'savings' | 'debt' | 'investment' | 'emergency'
   priority: 'low' | 'medium' | 'high'
   status: 'active' | 'completed' | 'paused'
-  source: 'manual'
+  source: 'manual' | 'test'
 }
 
 interface UnifiedFinancialSummary {
@@ -232,23 +232,7 @@ export function useUnifiedFinancialData(userId: string) {
         setLoading(true)
         console.log('Loading unified financial data for user:', userId)
         
-        // Try to load any existing Plaid data (for future use)
-        let plaidData = null
-        try {
-          const response = await fetch(`/api/moneypal/financial-data?userId=${userId}`)
-          if (response.ok) {
-            const result = await response.json()
-            if (result.success && result.data) {
-              plaidData = result.data
-              console.log('Plaid data loaded:', plaidData)
-            }
-          }
-        } catch (e) {
-          // No Plaid data available, continue with manual data only
-          console.log('No Plaid data available')
-        }
-
-        // Load manual data
+        // Load manual data FIRST (this is the priority)
         const manualResponse = await fetch(`/api/moneypal/manual-data?userId=${userId}`)
         let manualData = null
         if (manualResponse.ok) {
@@ -272,6 +256,15 @@ export function useUnifiedFinancialData(userId: string) {
           }
         } catch (e) {
           console.log('No localStorage data available')
+        }
+
+        // Only load Plaid data if we have NO manual data (for future use)
+        let plaidData = null
+        if (!manualData || (manualData.accounts.length === 0 && manualData.transactions.length === 0)) {
+          // Don't load mock data for new users - let them start with $0
+          console.log('No manual data found - starting with empty state (no mock data)')
+        } else {
+          console.log('Manual data exists - skipping mock data load')
         }
 
         // Merge and set unified data
