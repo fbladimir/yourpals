@@ -29,7 +29,9 @@ import {
   Send,
   PieChart,
   User,
-  Shield
+  Shield,
+  Mail,
+  AlertTriangle
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -53,9 +55,95 @@ import OnboardingModal from '@/components/moneypal/OnboardingModal'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFinancialData } from '@/hooks/useFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
+import AutomationCenter from '@/components/template/AutomationCenter'
 
 export default function MoneyPalPage() {
   const authData = useAuth()
+  
+  // MoneyPal automation templates
+  const automationTemplates = [
+    {
+      name: 'Weekly Spending Summary',
+      description: 'Get a comprehensive weekly spending report every Sunday',
+      type: 'schedule' as const,
+      frequency: 'Every Sunday at 9:00 AM',
+      action: 'Send email with weekly spending breakdown and insights',
+      category: 'Reporting',
+      icon: Mail,
+      color: 'from-blue-500 to-purple-600'
+    },
+    {
+      name: 'Low Balance Alert',
+      description: 'Get notified when your account balance drops below threshold',
+      type: 'trigger' as const,
+      frequency: 'Real-time monitoring',
+      action: 'Send push notification and email when balance is low',
+      category: 'Alerts',
+      icon: AlertTriangle,
+      color: 'from-orange-500 to-red-600'
+    },
+    {
+      name: 'Monthly Budget Review',
+      description: 'Review your monthly budget performance and get recommendations',
+      type: 'schedule' as const,
+      frequency: '1st of every month at 10:00 AM',
+      action: 'Generate monthly budget report with AI insights',
+      category: 'Budgeting',
+      icon: BarChart3,
+      color: 'from-green-500 to-blue-600'
+    },
+    {
+      name: 'Goal Progress Update',
+      description: 'Track your financial goals and get progress updates',
+      type: 'schedule' as const,
+      frequency: 'Every Friday at 5:00 PM',
+      action: 'Send weekly goal progress summary and motivation',
+      category: 'Goals',
+      icon: Target,
+      color: 'from-purple-500 to-pink-600'
+    },
+    {
+      name: 'Unusual Spending Alert',
+      description: 'Detect unusual spending patterns and get alerts',
+      type: 'monitor' as const,
+      frequency: 'Daily analysis',
+      action: 'Analyze spending patterns and alert on anomalies',
+      category: 'Security',
+      icon: Shield,
+      color: 'from-red-500 to-orange-600'
+    },
+    {
+      name: 'Investment Reminder',
+      description: 'Get reminded to review and rebalance your investments',
+      type: 'schedule' as const,
+      frequency: 'Every 2 weeks on Monday',
+      action: 'Send investment review reminder with market insights',
+      category: 'Investing',
+      icon: TrendingUp,
+      color: 'from-green-500 to-emerald-600'
+    }
+  ]
+
+  // Automation handlers
+  const handleAutomationCreate = (automation: any) => {
+    console.log('Creating MoneyPal automation:', automation)
+    // In real app, this would save to database/API
+  }
+
+  const handleAutomationToggle = (id: string, isActive: boolean) => {
+    console.log('Toggling MoneyPal automation:', id, isActive)
+    // In real app, this would update database/API
+  }
+
+  const handleAutomationDelete = (id: string) => {
+    console.log('Deleting MoneyPal automation:', id)
+    // In real app, this would remove from database/API
+  }
+
+  const handleAutomationEdit = (automation: any) => {
+    console.log('Editing MoneyPal automation:', automation)
+    // In real app, this would open edit modal
+  }
   
   // Add safety check for auth hook
   if (!authData) {
@@ -829,6 +917,7 @@ export default function MoneyPalPage() {
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'accounts', label: 'Accounts', icon: CreditCard },
     { id: 'goals', label: 'Goals', icon: Target },
+    { id: 'automation', label: 'Automation', icon: Zap },
     { id: 'settings', label: 'Settings', icon: Settings }
   ]
 
@@ -1002,6 +1091,26 @@ export default function MoneyPalPage() {
         </CollapsibleSection>
         )}
         
+        {activeTab === 'automation' && (
+          <CollapsibleSection
+            title="🤖 Automation Center"
+            subtitle="Automate your financial tasks and get insights"
+            icon={<Zap className="w-5 h-5 text-robot-purple" />}
+            defaultOpen={true}
+          >
+                         <AutomationCenter
+               appName="MoneyPal"
+               appIcon={DollarSign}
+               appColor="from-green-500 to-blue-600"
+               automationTemplates={automationTemplates}
+               onAutomationCreate={handleAutomationCreate}
+               onAutomationToggle={handleAutomationToggle}
+               onAutomationDelete={handleAutomationDelete}
+               onAutomationEdit={handleAutomationEdit}
+             />
+          </CollapsibleSection>
+        )}
+
         {activeTab === 'settings' && (
           <CollapsibleSection
             title="⚙️ Account Settings"
