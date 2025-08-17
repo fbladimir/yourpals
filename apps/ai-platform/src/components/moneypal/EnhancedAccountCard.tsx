@@ -33,6 +33,7 @@ interface EnhancedAccountCardProps {
   onRefresh: (accountId: string) => void
   onUnlink: (accountId: string) => void
   onViewDetails: (accountId: string) => void
+  onDelete?: (accountId: string) => void
   showBalance: boolean
   onToggleBalance: () => void
 }
@@ -42,6 +43,7 @@ export default function EnhancedAccountCard({
   onRefresh,
   onUnlink,
   onViewDetails,
+  onDelete,
   showBalance,
   onToggleBalance
 }: EnhancedAccountCardProps) {
@@ -214,6 +216,15 @@ export default function EnhancedAccountCard({
                         <AlertTriangle className="w-4 h-4" />
                         Unlink Account
                       </button>
+                      {onDelete && (
+                        <button
+                          onClick={() => onDelete(account.id)}
+                          className="w-full px-4 py-2 text-left text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 flex items-center gap-2"
+                        >
+                          <AlertTriangle className="w-4 h-4" />
+                          Delete Account
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 )}

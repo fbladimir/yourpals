@@ -69,6 +69,7 @@ interface ManualDataEntryProps {
   onDataEntered: (data: any) => void
   onClose: () => void
   initialData?: any
+  onOverviewDataChange?: (overviewData: any) => void
 }
 
 const CATEGORIES = [
@@ -88,7 +89,7 @@ const CATEGORIES = [
   'Other'
 ]
 
-export default function ManualDataEntry({ onDataEntered, onClose, initialData }: ManualDataEntryProps) {
+export default function ManualDataEntry({ onDataEntered, onClose, initialData, onOverviewDataChange }: ManualDataEntryProps) {
   const [formData, setFormData] = useState({
     accounts: [
       {
@@ -164,13 +165,43 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData }:
     if (initialData) {
       setFormData(prev => ({
         ...prev,
-        ...initialData,
         accounts: initialData.accounts || prev.accounts,
+        debtAccounts: initialData.debtAccounts || prev.debtAccounts,
         transactions: initialData.transactions || prev.transactions,
-        financialGoals: initialData.financialGoals || prev.financialGoals
+        financialGoals: initialData.goals || prev.financialGoals,
+        // Load overview data
+        monthlyIncome: initialData.summary?.monthlyIncome?.toString() || '',
+        monthlyExpenses: initialData.summary?.monthlyExpenses?.toString() || '',
+        creditScore: initialData.summary?.creditScore?.toString() || '750',
+        emergencyFund: initialData.summary?.emergencyFund?.toString() || '',
+        totalDebt: initialData.summary?.totalDebt?.toString() || '',
+        investmentAmount: initialData.summary?.investmentAmount?.toString() || ''
       }))
     }
   }, [initialData])
+
+  // Auto-save overview data when it changes
+  useEffect(() => {
+    if (onOverviewDataChange) {
+      const overviewData = {
+        monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
+        monthlyExpenses: parseFloat(formData.monthlyExpenses) || 0,
+        creditScore: parseFloat(formData.creditScore) || 750,
+        emergencyFund: parseFloat(formData.emergencyFund) || 0,
+        totalDebt: parseFloat(formData.totalDebt) || 0,
+        investmentAmount: parseFloat(formData.investmentAmount) || 0
+      }
+      onOverviewDataChange(overviewData)
+    }
+  }, [
+    formData.monthlyIncome,
+    formData.monthlyExpenses,
+    formData.creditScore,
+    formData.emergencyFund,
+    formData.totalDebt,
+    formData.investmentAmount,
+    onOverviewDataChange
+  ])
 
   // Validation function
   const validateData = () => {
@@ -362,64 +393,46 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData }:
   }
 
   const handleSubmit = () => {
-    if (!validateData()) {
-      return
-    }
-
-    // Transform the data to match our expected format
+    if (!validateData()) { return }
+    
     const transformedData = {
-      accounts: formData.accounts
-        .filter(acc => acc.name && acc.balance && acc.institution)
-        .map(acc => ({
-          id: acc.id,
-          name: acc.name,
-          type: acc.type,
-          balance: parseFloat(acc.balance) || 0,
-          currency: acc.currency,
-          lastSync: new Date().toISOString(),
-          institution: acc.institution,
-          status: 'active'
-        })),
-      debtAccounts: formData.debtAccounts
-        .filter(acc => acc.name && acc.balance && acc.institution)
-        .map(acc => ({
-          id: acc.id,
-          name: acc.name,
-          type: acc.type,
-          balance: parseFloat(acc.balance) || 0,
-          currency: acc.currency,
-          institution: acc.institution,
-          interestRate: parseFloat(acc.interestRate) || 0,
-          minimumPayment: parseFloat(acc.minimumPayment) || 0,
-          dueDate: acc.dueDate,
-          status: 'active'
-        })),
-      transactions: formData.transactions
-        .filter(tx => tx.description && tx.amount && tx.date)
-        .map(tx => ({
-          id: tx.id,
-          date: tx.date,
-          description: tx.description,
-          amount: parseFloat(tx.amount) || 0,
-          category: tx.category,
-          accountId: tx.accountId,
-          merchant: tx.description,
-          recurring: tx.recurring || false,
-          recurringFrequency: tx.recurringFrequency
-        })),
+      accounts: formData.accounts.filter(acc => acc.name && acc.balance && acc.institution).map(acc => ({
+        id: acc.id, 
+        name: acc.name, 
+        type: acc.type, 
+        balance: parseFloat(acc.balance) || 0, 
+        currency: acc.currency, 
+        lastSync: new Date().toISOString(), 
+        institution: acc.institution, 
+        status: 'active'
+      })),
+      debtAccounts: formData.debtAccounts.filter(acc => acc.name && acc.balance && acc.institution).map(acc => ({
+        id: acc.id, 
+        name: acc.name, 
+        type: acc.type, 
+        balance: parseFloat(acc.balance) || 0, 
+        currency: acc.currency, 
+        institution: acc.institution, 
+        interestRate: parseFloat(acc.interestRate) || 0, 
+        minimumPayment: parseFloat(acc.minimumPayment) || 0, 
+        dueDate: acc.dueDate, 
+        status: 'active'
+      })),
+      transactions: formData.transactions.filter(tx => tx.description && tx.amount && tx.date).map(tx => ({
+        id: tx.id, 
+        date: tx.date, 
+        description: tx.description, 
+        amount: parseFloat(tx.amount) || 0, 
+        category: tx.category, 
+        accountId: tx.accountId, 
+        merchant: tx.description, 
+        recurring: tx.recurring || false, 
+        recurringFrequency: tx.recurringFrequency
+      })),
       summary: {
-        totalBalance: formData.accounts
-          .filter(acc => acc.balance)
-          .reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
-        totalDebt: formData.debtAccounts
-          .filter(acc => acc.balance)
-          .reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
-        netWorth: formData.accounts
-          .filter(acc => acc.balance)
-          .reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0) - 
-          formData.debtAccounts
-            .filter(acc => acc.balance)
-            .reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
+        totalBalance: formData.accounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
+        totalDebt: formData.debtAccounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
+        netWorth: formData.accounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0) - formData.debtAccounts.filter(acc => acc.balance).reduce((sum, acc) => sum + (parseFloat(acc.balance) || 0), 0),
         monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
         monthlyExpenses: parseFloat(formData.monthlyExpenses) || 0,
         monthlySavings: (parseFloat(formData.monthlyIncome) || 0) - (parseFloat(formData.monthlyExpenses) || 0),
@@ -428,20 +441,18 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData }:
         investmentAmount: parseFloat(formData.investmentAmount) || 0,
         monthlyChange: 0
       },
-      goals: formData.financialGoals
-        .filter(goal => goal.name && goal.target)
-        .map(goal => ({
-          id: goal.id,
-          name: goal.name,
-          target: parseFloat(goal.target) || 0,
-          current: parseFloat(goal.current) || 0,
-          deadline: goal.deadline,
-          type: goal.type,
-          priority: goal.priority,
-          status: 'active'
-        }))
+      goals: formData.financialGoals.filter(goal => goal.name && goal.target).map(goal => ({
+        id: goal.id, 
+        name: goal.name, 
+        target: parseFloat(goal.target) || 0, 
+        current: parseFloat(goal.current) || 0, 
+        deadline: goal.deadline, 
+        type: goal.type, 
+        priority: goal.priority, 
+        status: 'active'
+      }))
     }
-
+    
     onDataEntered(transformedData)
   }
 
@@ -462,6 +473,13 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData }:
   const totalExpenses = formData.transactions
     .filter(tx => tx.type === 'expense' && tx.amount)
     .reduce((sum, tx) => sum + (parseFloat(tx.amount) || 0), 0)
+
+  const handleOverviewChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   return (
     <div className="space-y-6">
@@ -844,121 +862,123 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData }:
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-4"
+          className="space-y-6"
         >
           <h4 className="text-lg font-semibold text-white flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-robot-green" />
             Financial Overview
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Monthly Income</label>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={formData.monthlyIncome}
-                onChange={(e) => setFormData({ ...formData, monthlyIncome: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-blue-400" />
+              <p className="text-sm text-blue-300">
+                <strong>Auto-save enabled:</strong> Your overview data is automatically saved as you type. 
+                This information helps MoneyPal's AI provide personalized financial insights.
+              </p>
             </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Monthly Expenses</label>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={formData.monthlyExpenses}
-                onChange={(e) => setFormData({ ...formData, monthlyExpenses: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
+          </div>
+
+          {/* Overview Input Fields - Better Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Monthly Income</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={formData.monthlyIncome}
+                  onChange={(e) => setFormData({ ...formData, monthlyIncome: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Credit Score</label>
+                <input
+                  type="number"
+                  placeholder="750"
+                  value={formData.creditScore}
+                  onChange={(e) => setFormData({ ...formData, creditScore: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Emergency Fund</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={formData.emergencyFund}
+                  onChange={(e) => setFormData({ ...formData, emergencyFund: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Credit Score</label>
-              <input
-                type="number"
-                placeholder="750"
-                value={formData.creditScore}
-                onChange={(e) => setFormData({ ...formData, creditScore: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Emergency Fund</label>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={formData.emergencyFund}
-                onChange={(e) => setFormData({ ...formData, emergencyFund: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Total Debt</label>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={formData.totalDebt}
-                onChange={(e) => setFormData({ ...formData, totalDebt: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Investment Amount</label>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={formData.investmentAmount}
-                onChange={(e) => setFormData({ ...formData, investmentAmount: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none"
-              />
+            {/* Right Column */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Monthly Expenses</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={formData.monthlyExpenses}
+                  onChange={(e) => setFormData({ ...formData, monthlyExpenses: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Total Debt</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={formData.totalDebt}
+                  onChange={(e) => setFormData({ ...formData, totalDebt: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Investment Amount</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={formData.investmentAmount}
+                  onChange={(e) => setFormData({ ...formData, investmentAmount: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-robot-green focus:outline-none focus:ring-2 focus:ring-robot-green/20"
+                />
+              </div>
             </div>
           </div>
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-            <div className="bg-robot-green/10 border border-robot-green/30 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h5 className="font-semibold text-white">Total Assets</h5>
-                <span className="text-xl font-bold text-robot-green">
-                  ${totalBalance.toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-300">From {formData.accounts.length} accounts</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 text-center">
+              <h5 className="text-sm font-medium text-gray-400 mb-2">Monthly Savings</h5>
+              <p className="text-xl font-bold text-robot-green">
+                ${((parseFloat(formData.monthlyIncome) || 0) - (parseFloat(formData.monthlyExpenses) || 0)).toLocaleString()}
+              </p>
             </div>
-
-            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h5 className="font-semibold text-white">Total Debt</h5>
-                <span className="text-xl font-bold text-red-400">
-                  ${totalDebt.toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-300">From {formData.debtAccounts.length} debt accounts</p>
+            <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 text-center">
+              <h5 className="text-sm font-medium text-gray-400 mb-2">Debt-to-Income Ratio</h5>
+              <p className="text-xl font-bold text-robot-orange">
+                {parseFloat(formData.monthlyIncome) > 0 
+                  ? (((parseFloat(formData.totalDebt) || 0) / parseFloat(formData.monthlyIncome)) * 100).toFixed(1)
+                  : '0'
+                }%
+              </p>
             </div>
-
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h5 className="font-semibold text-white">Net Worth</h5>
-                <span className={`text-xl font-bold ${netWorth >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
-                  ${netWorth.toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-300">{netWorth >= 0 ? 'Positive' : 'Negative'} net worth</p>
-            </div>
-
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h5 className="font-semibold text-white">Monthly Cash Flow</h5>
-                <span className={`text-xl font-bold ${(totalIncome - totalExpenses) >= 0 ? 'text-purple-400' : 'text-red-400'}`}>
-                  ${(totalIncome - totalExpenses).toLocaleString()}
-                </span>
-              </div>
-              <p className="text-sm text-gray-300">Income - Expenses</p>
+            <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 text-center">
+              <h5 className="text-sm font-medium text-gray-400 mb-2">Savings Rate</h5>
+              <p className="text-xl font-bold text-robot-blue">
+                {parseFloat(formData.monthlyIncome) > 0 
+                  ? ((((parseFloat(formData.monthlyIncome) || 0) - (parseFloat(formData.monthlyExpenses) || 0)) / parseFloat(formData.monthlyIncome)) * 100).toFixed(1)
+                  : '0'
+                }%
+              </p>
             </div>
           </div>
         </motion.div>

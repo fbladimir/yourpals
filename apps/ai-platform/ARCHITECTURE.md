@@ -1381,7 +1381,7 @@ When MoneyPal is complete, users will experience:
 - [ ] **Browser Compatibility**: Test on major browsers (Chrome, Safari, Firefox)
 - [ ] **Accessibility**: Ensure WCAG 2.1 AA compliance
 
-## **🚀 Current Development Status - Phase 3: Manual Data Entry & AI Foundation**
+## 🚀 **Current Development Status - Phase 4: Unified Data Integration & AI Foundation**
 
 ### **✅ COMPLETED (Phase 1 & 2):**
 - **Professional UI/UX Foundation** - Beautiful dashboard with all components
@@ -1390,34 +1390,39 @@ When MoneyPal is complete, users will experience:
 - **Automation Center** - Template system for financial automations
 - **Account Linking** - Plaid integration (sandbox environment)
 
-### **✅ COMPLETED (Phase 3 - Manual Data Entry):**
+### **✅ COMPLETED (Phase 3 - Manual Data Entry System):**
 - **Enhanced ManualDataEntry Component** - Tabbed interface for accounts, transactions, overview, goals
 - **Transaction Management** - Add/edit/delete individual transactions with categories
-- **Account Management** - Create and manage multiple financial accounts
-- **Financial Goals** - Set and track savings, debt, investment goals
-- **Data Validation** - Comprehensive validation for all manual entries
+- **Account Management** - Create and manage multiple financial accounts (checking, savings, investment)
+- **Debt & Liabilities Management** - Credit cards, loans, mortgages with interest rates and payments
+- **Financial Goals** - Set and track savings, debt, investment goals with priorities
+- **Data Validation** - Tab-specific validation with contextual error messages
 - **useManualFinancialData Hook** - Local storage persistence and real-time updates
 - **Manual Data API** - RESTful endpoints for data operations
 - **Real-time Dashboard Updates** - Dashboard reflects manual data changes immediately
 
-### **🔄 IN PROGRESS (Phase 3 - AI Intelligence Foundation):**
-- **AI Learning Engine** - AI that analyzes manual data for insights
-- **Personalized Recommendations** - AI provides actionable financial advice
-- **Spending Pattern Analysis** - AI identifies trends and anomalies
-- **Goal Progress AI** - AI tracks and suggests goal improvements
+### **🔄 IN PROGRESS (Phase 4 - Unified Data Integration):**
+- **Data State Unification** - Single source of truth for all financial data
+- **Real-time Sync** - Manual entry modal ↔ Dashboard synchronization
+- **Debt Accounts Dashboard** - Display debt accounts in main dashboard
+- **Transaction Sync** - Manual transactions appear in Recent Transactions
+- **Overview Data Persistence** - Auto-save monthly income, expenses, credit score
+- **Goals Dashboard Integration** - Manual goals visible in dashboard goals section
+- **Account Management UX** - Delete/edit accounts directly from dashboard
 
-### **🎯 NEXT PRIORITIES (Phase 4 - AI Intelligence):**
-1. **AI Pattern Recognition** - Analyze spending patterns from manual data
-2. **Personalized Insights Engine** - Generate contextual financial advice
-3. **Smart Notifications** - AI-powered alerts based on manual data
-4. **Budget Optimization AI** - Suggest improvements based on spending patterns
-5. **Goal Achievement AI** - Proactive suggestions for reaching financial goals
+### **🎯 NEXT PRIORITIES (Phase 4 - Complete Integration):**
+1. **Unified Data Store** - Central data management for all components
+2. **Real-time Updates** - Changes in modal reflect immediately in dashboard
+3. **Enhanced Dashboard** - Show debt accounts, sync transactions, display overview data
+4. **Account Management** - Full CRUD operations from dashboard
+5. **Data Consistency** - Same data everywhere in the app
 
 ### **🔮 FUTURE PHASES:**
-- **Phase 5: Production Plaid Integration** - Real bank data (after approval)
-- **Phase 6: Advanced AI Features** - Predictive analytics, forecasting
-- **Phase 7: Automation Execution** - Real automation engine
-- **Phase 8: Production Launch** - Full production deployment
+- **Phase 5: AI Intelligence Engine** - AI that learns from unified data
+- **Phase 6: Production Plaid Integration** - Real bank data (after approval)
+- **Phase 7: Advanced AI Features** - Predictive analytics, forecasting
+- **Phase 8: Automation Execution** - Real automation engine
+- **Phase 9: Production Launch** - Full production deployment
 
 ---
 
@@ -1426,16 +1431,18 @@ When MoneyPal is complete, users will experience:
 ### **Component Architecture:**
 ```
 ManualDataEntry.tsx
-├── Tabbed Interface (Accounts, Transactions, Overview, Goals)
-├── Data Validation & Error Handling
+├── Tabbed Interface (Accounts, Debt & Liabilities, Transactions, Overview, Goals)
+├── Tab-Specific Data Validation & Error Handling
 ├── Real-time Form Updates
-└── Data Transformation & Submission
+├── Data Transformation & Submission
+└── Auto-save Overview Data
 
 useManualFinancialData Hook
 ├── Local Storage Persistence
 ├── Real-time Data Updates
 ├── Data Calculations & Summaries
-└── CRUD Operations for All Data Types
+├── CRUD Operations for All Data Types
+└── Unified Data State Management
 
 Manual Data API
 ├── GET /api/moneypal/manual-data - Fetch user data
@@ -1444,26 +1451,26 @@ Manual Data API
 └── DELETE /api/moneypal/manual-data - Clear user data
 ```
 
-### **Data Flow:**
+### **Data Flow (Current):**
 1. **User Input** → ManualDataEntry component
-2. **Validation** → Client-side validation with error display
+2. **Validation** → Tab-specific validation with contextual errors
 3. **Data Processing** → Transform to API format
 4. **API Storage** → Save to backend (currently in-memory, future: database)
 5. **Local Storage** → Persist in browser for offline access
 6. **Dashboard Update** → Real-time reflection of changes
 7. **AI Analysis** → AI processes manual data for insights
 
-### **Key Features:**
-- **Tabbed Interface** - Organized data entry by category
-- **Real-time Validation** - Immediate feedback on data quality
-- **Data Persistence** - Saves between sessions
-- **Export/Import** - Data portability for users
-- **Real-time Updates** - Dashboard reflects changes immediately
-- **AI Integration Ready** - Data format matches AI requirements
+### **Data Flow (Target - Unified):**
+1. **User Input** → Any component (modal, dashboard, etc.)
+2. **Central Data Store** → Single source of truth
+3. **Real-time Sync** → All components update immediately
+4. **Persistent Storage** → Data saved automatically
+5. **Dashboard Integration** → Debt accounts, transactions, goals visible everywhere
+6. **AI Intelligence** → AI has complete, unified data for best insights
 
 ---
 
-## 🎯 **Current Status: MoneyPal is approximately 80% complete.**
+## 🎯 **Current Status: MoneyPal is approximately 85% complete.**
 
 ### **What's Working:**
 - ✅ **Professional UI/UX** - Beautiful, responsive dashboard
@@ -1471,16 +1478,23 @@ Manual Data API
 - ✅ **Data Persistence** - Local storage and API endpoints
 - ✅ **Template System** - Foundation for future AI pals
 - ✅ **Onboarding** - User guidance and tutorial system
+- ✅ **Debt Management** - Proper debt/liability tracking
+- ✅ **Tab-Specific Validation** - Contextual error messages
 
-### **What Needs Completion:**
-- 🚨 **AI Intelligence** - AI that learns from manual data (20% remaining)
-- 🚨 **Production Data** - Real Plaid integration (future phase)
-- 🚨 **Automation Engine** - Real automation execution (future phase)
+### **What Needs Completion (Phase 4):**
+- 🚨 **Data Unification** - Single source of truth for all data (15% remaining)
+- 🚨 **Real-time Sync** - Modal ↔ Dashboard synchronization
+- 🚨 **Dashboard Integration** - Show debt accounts, sync transactions
+- 🚨 **Account Management** - Delete/edit from dashboard
+- 🚨 **Overview Data Persistence** - Auto-save monthly data
 
-### **Next Session Goals:**
-1. **Complete AI Intelligence** - AI that analyzes manual data
-2. **Personalized Insights** - AI provides real financial advice
-3. **Smart Notifications** - AI alerts based on user data
-4. **Goal Tracking AI** - AI helps users achieve financial goals
+### **Next Session Goals (Phase 4):**
+1. **Create Unified Data Store** - Central data management
+2. **Implement Real-time Sync** - All components update together
+3. **Add Debt Accounts to Dashboard** - Separate section for liabilities
+4. **Sync Transactions** - Manual transactions appear in Recent Transactions
+5. **Persist Overview Data** - Auto-save income, expenses, credit score
+6. **Integrate Goals** - Manual goals visible in dashboard
+7. **Enhanced Account Management** - Full CRUD from dashboard
 
-**MoneyPal is now a fully functional financial dashboard with manual data entry. The next phase focuses on making the AI truly intelligent by learning from user data and providing personalized insights.**
+**MoneyPal now has a complete manual data entry system with proper debt management. The next phase focuses on unifying all this data so the dashboard feels like one cohesive, professional financial app where everything syncs seamlessly.**
