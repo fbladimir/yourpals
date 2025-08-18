@@ -166,35 +166,70 @@ export default function ManualDataEntry({ onDataEntered, onClose, initialData, o
   // Load initial data if provided
   useEffect(() => {
     if (initialData) {
-      setFormData(prev => ({
-        ...prev,
-        accounts: initialData.accounts || prev.accounts,
-        debtAccounts: initialData.debtAccounts || prev.debtAccounts,
-        transactions: initialData.transactions || prev.transactions,
-        financialGoals: initialData.goals || prev.financialGoals,
-        // Load overview data
-        monthlyIncome: initialData.summary?.monthlyIncome?.toString() || '',
-        monthlyExpenses: initialData.summary?.monthlyExpenses?.toString() || '',
-        creditScore: initialData.summary?.creditScore?.toString() || '750',
-        emergencyFund: initialData.summary?.emergencyFund?.toString() || '',
-        totalDebt: initialData.summary?.totalDebt?.toString() || '',
-        investmentAmount: initialData.summary?.investmentAmount?.toString() || ''
-      }))
+      console.log('ManualDataEntry: Loading initial data:', initialData)
+      console.log('ManualDataEntry: Overview data from initialData:', {
+        monthlyIncome: initialData.summary?.monthlyIncome,
+        monthlyExpenses: initialData.summary?.monthlyExpenses,
+        creditScore: initialData.summary?.creditScore,
+        emergencyFund: initialData.summary?.emergencyFund,
+        totalDebt: initialData.summary?.totalDebt,
+        investmentAmount: initialData.summary?.investmentAmount
+      })
+      
+      try {
+        setFormData(prev => ({
+          ...prev,
+          accounts: initialData.accounts || prev.accounts,
+          debtAccounts: initialData.debtAccounts || prev.debtAccounts,
+          transactions: initialData.transactions || prev.transactions,
+          financialGoals: initialData.goals || prev.financialGoals,
+          // Load overview data - ensure we don't overwrite with undefined values
+          monthlyIncome: initialData.summary?.monthlyIncome ? initialData.summary.monthlyIncome.toString() : prev.monthlyIncome,
+          monthlyExpenses: initialData.summary?.monthlyExpenses ? initialData.summary.monthlyExpenses.toString() : prev.monthlyExpenses,
+          creditScore: initialData.summary?.creditScore ? initialData.summary.creditScore.toString() : prev.creditScore,
+          emergencyFund: initialData.summary?.emergencyFund ? initialData.summary.emergencyFund.toString() : prev.emergencyFund,
+          totalDebt: initialData.summary?.totalDebt ? initialData.summary.totalDebt.toString() : prev.totalDebt,
+          investmentAmount: initialData.summary?.investmentAmount ? initialData.summary.investmentAmount.toString() : prev.investmentAmount
+        }))
+        
+        console.log('ManualDataEntry: Form data updated with overview values')
+      } catch (error) {
+        console.error('ManualDataEntry: Error updating form data:', error)
+        // Fallback to default state if there's an error
+        setFormData(prev => ({
+          ...prev,
+          accounts: [],
+          debtAccounts: [],
+          transactions: [],
+          financialGoals: [],
+          monthlyIncome: '',
+          monthlyExpenses: '',
+          creditScore: '750',
+          emergencyFund: '',
+          totalDebt: '',
+          investmentAmount: ''
+        }))
+      }
     }
   }, [initialData])
 
-  // Auto-save overview data when it changes
+  // Auto-save overview data when it changes (with debouncing)
   useEffect(() => {
     if (onOverviewDataChange) {
-      const overviewData = {
-        monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
-        monthlyExpenses: parseFloat(formData.monthlyExpenses) || 0,
-        creditScore: parseFloat(formData.creditScore) || 750,
-        emergencyFund: parseFloat(formData.emergencyFund) || 0,
-        totalDebt: parseFloat(formData.totalDebt) || 0,
-        investmentAmount: parseFloat(formData.investmentAmount) || 0
-      }
-      onOverviewDataChange(overviewData)
+      // Debounce the auto-save to prevent glitching
+      const timeoutId = setTimeout(() => {
+        const overviewData = {
+          monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
+          monthlyExpenses: parseFloat(formData.monthlyExpenses) || 0,
+          creditScore: parseFloat(formData.creditScore) || 750,
+          emergencyFund: parseFloat(formData.emergencyFund) || 0,
+          totalDebt: parseFloat(formData.totalDebt) || 0,
+          investmentAmount: parseFloat(formData.investmentAmount) || 0
+        }
+        onOverviewDataChange(overviewData)
+      }, 500) // 500ms delay to prevent excessive calls
+      
+      return () => clearTimeout(timeoutId)
     }
   }, [
     formData.monthlyIncome,

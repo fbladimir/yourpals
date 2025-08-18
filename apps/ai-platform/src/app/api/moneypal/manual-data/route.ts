@@ -1,25 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { promises as fs } from 'fs'
+import path from 'path'
 
 export const dynamic = 'force-dynamic'
 
-// In a real app, this would be stored in a database
-// For now, we'll use a simple in-memory store for demonstration
-const manualDataStore = new Map<string, any>()
-
-// Helper function to get data from localStorage (server-side)
-function getDataFromLocalStorage(userId: string) {
-  // Since this is server-side, we can't access localStorage directly
-  // In a real app, this would be a database call
-  // For now, we'll return the in-memory store data
-  return manualDataStore.get(userId)
+// File-based persistence for development (in production, use a real database)
+const DATA_DIR = path.join(process.cwd(), 'data', 'manual-data')
+const ensureDataDir = async () => {
+  try {
+    await fs.mkdir(DATA_DIR, { recursive: true })
+  } catch (error) {
+    console.log('Data directory already exists or cannot be created')
+  }
 }
 
-// Helper function to save data to localStorage (server-side)
-function saveDataToLocalStorage(userId: string, data: any) {
-  // Since this is server-side, we can't access localStorage directly
-  // In a real app, this would be a database call
-  // For now, we'll save to the in-memory store
-  manualDataStore.set(userId, { ...data, lastUpdated: new Date().toISOString() })
+// Helper function to get data from file storage
+async function getDataFromStorage(userId: string) {
+  try {
+    await ensureDataDir()
+    const filePath = path.join(DATA_DIR, `${userId}.json`)
+    const fileContent = await fs.readFile(filePath, 'utf-8')
+    return JSON.parse(fileContent)
+  } catch (error) {
+    // File doesn't exist or can't be read
+    return null
+  }
+}
+
+// Helper function to save data to file storage
+async function saveDataToStorage(userId: string, data: any) {
+  try {
+    await ensureDataDir()
+    const filePath = path.join(DATA_DIR, `${userId}.json`)
+    const dataToSave = { ...data, lastUpdated: new Date().toISOString() }
+    await fs.writeFile(filePath, JSON.stringify(dataToSave, null, 2))
+    console.log(`Data saved to file for user ${userId}`)
+  } catch (error) {
+    console.error(`Error saving data for user ${userId}:`, error)
+    throw error
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -31,7 +50,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing userId parameter' }, { status: 400 })
     }
     
-    const userData = getDataFromLocalStorage(userId)
+    const userData = await getDataFromStorage(userId)
     
     if (!userData) {
       // Return empty data structure
@@ -77,7 +96,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing userId or data' }, { status: 400 })
     }
     
-    saveDataToLocalStorage(userId, data)
+    await saveDataToStorage(userId, data)
     
     return NextResponse.json({ 
       success: true, 
@@ -100,7 +119,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Missing userId or updates' }, { status: 400 })
     }
     
-    const existingData = getDataFromLocalStorage(userId) || {
+    const existingData = await getDataFromStorage(userId) || {
       accounts: [],
       debtAccounts: [],
       transactions: [],
@@ -121,7 +140,7 @@ export async function PUT(request: NextRequest) {
     }
     
     const updatedData = { ...existingData, ...updates, lastUpdated: new Date().toISOString() }
-    saveDataToLocalStorage(userId, updatedData)
+    await saveDataToStorage(userId, updatedData)
     
     return NextResponse.json({ 
       success: true, 
@@ -146,12 +165,21 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Missing userId parameter' }, { status: 400 })
     }
     
-    manualDataStore.delete(userId)
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Manual financial data deleted successfully' 
-    })
+    const filePath = path.join(DATA_DIR, `${userId}.json`)
+    try {
+      await fs.unlink(filePath)
+      console.log(`Data file for user ${userId} deleted`)
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Manual financial data deleted successfully' 
+      })
+    } catch (error: any) {
+      console.error(`Error deleting data file for user ${userId}:`, error)
+      return NextResponse.json({ 
+        error: 'Failed to delete manual financial data', 
+        details: error.message 
+      }, { status: 500 })
+    }
   } catch (error: any) {
     console.error('Error deleting manual financial data:', error)
     return NextResponse.json({ 

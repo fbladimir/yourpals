@@ -46,6 +46,9 @@ next-env.d.ts
 .pnpm-store
 .env*.local
 
+# User data storage (development)
+data/
+
 # Prisma - ignore future generations but allow committed client
 packages/core/generated/prisma-client/
 !packages/core/generated/prisma-client/index.d.ts
