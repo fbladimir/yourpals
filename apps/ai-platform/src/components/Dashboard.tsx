@@ -50,17 +50,33 @@ export default function Dashboard({
   selectedPlan, 
   onSignOut 
 }: DashboardProps) {
-  const { user } = useAuth()
+  const authData = useAuth()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
   const [hoveredApp, setHoveredApp] = useState<string | null>(null)
   const [showYourPalChat, setShowYourPalChat] = useState(false)
 
+  // Add safety check for auth hook
+  if (!authData) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-8 h-8 border-4 border-robot-green border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-gray-400">Loading authentication...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const { user } = authData
+
   const aiApps = [
-    {
-      id: 'moneypal',
-      name: 'MoneyPal',
+    { 
+      id: 'moneypal', 
+      name: 'MoneyPal', 
       description: 'AI financial assistant for smart money management',
       icon: DollarSign,
       avatar: '/moneypal/robotavatar.PNG',
@@ -312,8 +328,8 @@ export default function Dashboard({
                         <Check className="w-3 h-3 text-white" />
                       </motion.div>
                     )}
-                  </div>
-                  <div className="flex-1">
+                </div>
+                <div className="flex-1">
                     <h5 className="text-xl font-bold text-white mb-2">{app.name}</h5>
                     <p className="text-gray-300 mb-3">{app.description}</p>
                     <div className="flex items-center gap-3">
@@ -365,7 +381,7 @@ export default function Dashboard({
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       Launch {app.name}
                       <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
-                    </span>
+                  </span>
                     {/* Button Hover Effect */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-robot-blue to-robot-green opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
@@ -599,20 +615,20 @@ export default function Dashboard({
                         <Check className="w-4 h-4 text-white" />
                       </motion.div>
                     )}
-                  </div>
-                  <div className="flex-1">
+                </div>
+                <div className="flex-1">
                     <h4 className="text-2xl font-bold text-white mb-3">{app.name}</h4>
                     <p className="text-gray-300 mb-4 text-lg">{app.description}</p>
                     
                     {/* Enhanced Status and Info */}
                     <div className="flex items-center gap-4 mb-4">
                       <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                        app.status === 'active' 
+                      app.status === 'active' 
                           ? 'bg-robot-green/20 text-robot-green border border-robot-green/30' 
                           : 'bg-gray-600/50 text-gray-400 border border-gray-600/50'
-                      }`}>
-                        {app.status === 'active' ? 'Active' : 'Coming Soon'}
-                      </span>
+                    }`}>
+                      {app.status === 'active' ? 'Active' : 'Coming Soon'}
+                    </span>
                       {app.status === 'active' && (
                         <>
                           <span className="text-robot-blue text-sm font-medium flex items-center gap-2">
@@ -650,15 +666,15 @@ export default function Dashboard({
                   
                   {/* Action Button */}
                   <div className="flex-shrink-0">
-                    {app.status === 'active' ? (
-                      <motion.button
+                {app.status === 'active' ? (
+                  <motion.button
                         whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.98 }}
                         onClick={() => handleLaunchApp(app.id)}
                         className="group/btn relative overflow-hidden px-8 py-4 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-robot-green/25"
-                      >
+                  >
                         <span className="relative z-10 flex items-center gap-2">
-                          Launch
+                    Launch
                           <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
                         </span>
                         {/* Button Hover Effect */}
@@ -666,13 +682,13 @@ export default function Dashboard({
                           className="absolute inset-0 bg-gradient-to-r from-robot-blue to-robot-green opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
                           initial={false}
                         />
-                      </motion.button>
-                    ) : (
+                  </motion.button>
+                ) : (
                       <div className="px-8 py-4 bg-gray-700/50 text-gray-400 rounded-xl font-semibold border border-gray-600/50 flex items-center gap-2">
                         <Clock className="w-4 h-4" />
-                        Coming Soon
+                    Coming Soon
                       </div>
-                    )}
+                )}
                   </div>
                 </div>
               </div>

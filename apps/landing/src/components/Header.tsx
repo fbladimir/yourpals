@@ -87,11 +87,10 @@ export default function Header() {
   };
 
   const nav = [
-    { href: "#apps", label: "Apps" },
+    { href: "#apps", label: "AI Pals" },
     { href: "#how", label: "How it works" },
-    { href: "#pricing", label: "Pricing" }, // placeholder
+    { href: "#pricing", label: "Pricing" },
     { href: "#safety", label: "Safety" },
-    { href: "#blog", label: "Blog" }, // placeholder
   ];
   
   return (
@@ -99,26 +98,38 @@ export default function Header() {
       <header className="sticky top-4 sm:top-6 z-50 px-4 sm:px-6 lg:px-8">
         <div className="rounded-xl sm:rounded-2xl bg-white/5 px-3 sm:px-4 py-2 sm:py-3 ring-1 ring-white/10 backdrop-blur-sm">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-              <div className="w-10 h-10 sm:w-12 sm:h-12">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
                 <Image
-                  src="/yourpalsRobot.png"
-                  alt="YourPals Robot"
-                  width={96}
-                  height={96}
-                  className="w-full h-full object-contain"
+                  src="/yourpalAvatar.PNG"
+                  alt="YourPals"
+                  width={40}
+                  height={40}
+                  className="rounded-full group-hover:scale-110 transition-transform duration-200"
+                />
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    opacity: [0.8, 0, 0.8]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 border-2 border-blueA rounded-full"
                 />
               </div>
-              <span className="font-semibold tracking-tight text-sm sm:text-base text-white">YourPals</span>
+              <div className="text-left">
+                <div className="text-blueA text-xs font-mono tracking-wider">AI MODE</div>
+                <div className="text-white font-bold text-lg">YourPals</div>
+              </div>
             </Link>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm text-white/80">
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-white/80">
               {nav.map(n => (
                 <a 
                   key={n.href} 
                   href={n.href} 
-                  className="hover:text-white transition-colors duration-200 px-2 py-1 rounded-lg hover:bg-white/5"
+                  className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
                   onClick={() => setOpen(false)}
                 >
                   {n.label}
@@ -126,7 +137,7 @@ export default function Header() {
               ))}
               
               {/* Auth Section */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {!loading && isSignedIn ? (
                   <div className="relative">
                     {/* User Profile Picture */}
@@ -155,17 +166,6 @@ export default function Header() {
                       
                       {/* Glowing ring on hover */}
                       <div className="absolute inset-0 rounded-full ring-2 ring-white/0 group-hover:ring-white/50 transition-all duration-300 group-hover:scale-110 pointer-events-none"></div>
-                      
-                      {/* Enhanced sparkle effect */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-                        <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-white/80 rounded-full animate-ping group-hover:animate-bounce"></div>
-                        <div className="absolute bottom-0.5 right-0.5 w-1.5 h-1.5 bg-white/80 rounded-full animate-ping group-hover:animate-bounce" style={{ animationDelay: '0.3s' }}></div>
-                        <div className="absolute top-1.5 right-1.5 w-1 h-1 bg-white/60 rounded-full animate-ping group-hover:animate-bounce" style={{ animationDelay: '0.6s' }}></div>
-                        <div className="absolute bottom-1.5 left-1.5 w-1 h-1 bg-white/60 rounded-full animate-ping group-hover:animate-bounce" style={{ animationDelay: '0.9s' }}></div>
-                      </div>
-                      
-                      {/* Additional shine effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                     </button>
 
                     {/* User Dropdown Menu */}
@@ -195,163 +195,155 @@ export default function Header() {
                                     {user?.email?.charAt(0).toUpperCase() || 'U'}
                                   </span>
                                 )}
-                                
-                                {/* Shiny overlay effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 transform -skew-x-12 -translate-x-full group-hover:translate-x-full pointer-events-none"></div>
-                                
-                                {/* Glowing ring on hover */}
-                                <div className="absolute inset-0 rounded-full ring-2 ring-blue-200/0 group-hover:ring-blue-400/60 transition-all duration-300 group-hover:scale-105 pointer-events-none"></div>
-                                
-                                {/* Enhanced sparkle effect */}
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-                                  <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-blue-400/80 rounded-full animate-ping"></div>
-                                  <div className="absolute bottom-0.5 right-0.5 w-1.5 h-1.5 bg-blue-400/80 rounded-full animate-ping" style={{ animationDelay: '0.3s' }}></div>
-                                  <div className="absolute top-1.5 right-1.5 w-1 h-1 bg-blue-400/60 rounded-full animate-ping" style={{ animationDelay: '0.6s' }}></div>
-                                </div>
-                                
-                                {/* Additional shine effect */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                               </div>
                               <div>
                                 <p className="text-sm font-medium text-gray-900">
-                                  {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'}
+                                  {user?.user_metadata?.full_name || 'User'}
                                 </p>
                                 <p className="text-xs text-gray-500">{user?.email}</p>
                               </div>
                             </div>
                           </div>
 
-                          {/* Menu Options */}
+                          {/* Menu Items */}
                           <div className="py-1">
                             <button
                               onClick={() => {
                                 setShowAccountModal(true);
                                 setShowUserMenu(false);
                               }}
-                              className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                             >
-                              <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              </svg>
-                              Manage account
+                              Account Settings
                             </button>
-                            
+                            <button
+                              onClick={() => router.push(config.aiPlatformUrl)}
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                            >
+                              Go to Dashboard
+                            </button>
                             <button
                               onClick={handleSignOut}
-                              className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
                             >
-                              <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                              </svg>
-                              Sign out
+                              Sign Out
                             </button>
-                          </div>
-
-                          {/* Footer */}
-                          <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-yellow-50 border-t border-gray-100">
-                            <div className="flex items-center space-x-2 text-xs text-gray-600">
-                              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">S</span>
-                              </div>
-                              <span>Secured by Supabase</span>
-                            </div>
-                            <div className="text-xs text-orange-600 font-medium mt-1">
-                              Production mode
-                            </div>
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <a href={config.aiPlatformUrl}>
-                    <button className="rounded-lg sm:rounded-xl bg-white/10 px-3 py-1.5 sm:px-3 sm:py-1 ring-1 ring-white/10 hover:bg-white/20 transition-colors duration-200 text-sm">
-                      Sign in
-                    </button>
-                  </a>
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={config.aiPlatformUrl}
+                      className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
+                    >
+                      Login
+                    </a>
+                    <a
+                      href={config.aiPlatformUrl}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 hover:shadow-lg"
+                    >
+                      Get Started
+                    </a>
+                  </div>
                 )}
-                
-                <a 
-                  href={config.aiPlatformUrl}
-                  className="rounded-lg sm:rounded-xl bg-blueA px-3 py-1.5 sm:px-3 sm:py-1 hover:bg-blueB transition-colors duration-200 text-sm font-medium"
-                >
-                  Get started
-                </a>
               </div>
             </nav>
-            
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setOpen(!open)} 
-              className="md:hidden rounded-lg sm:rounded-xl bg-white/10 px-3 py-1.5 sm:px-3 sm:py-1 ring-1 ring-white/10 hover:bg-white/20 transition-colors duration-200 text-sm active:scale-95 touch-manipulation"
-              aria-label="Toggle menu"
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="md:hidden p-2 text-white/80 hover:text-white transition-colors duration-200"
             >
-              {open ? 'Close' : 'Menu'}
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {open ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
             </button>
           </div>
-          
-          {/* Mobile Navigation Menu */}
-          {open && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="mt-3 grid gap-1 sm:gap-2 md:hidden text-sm text-white/80 border-t border-white/10 pt-3"
-            >
-              {nav.map(n => (
-                <a 
-                  key={n.href} 
-                  href={n.href} 
-                  className="rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
-                  onClick={() => setOpen(false)}
-                >
-                  {n.label}
-                </a>
-              ))}
-              <div className="border-t border-white/10 pt-2 mt-2">
-                {!loading && isSignedIn ? (
-                  <>
-                    <button 
-                      onClick={() => {
-                        setShowAccountModal(true);
-                        setOpen(false);
-                      }}
-                      className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
-                    >
-                      Account
-                    </button>
-                    <button 
-                      onClick={() => {
-                        handleSignOut();
-                        setOpen(false);
-                      }}
-                      className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
-                    >
-                      Sign out
-                    </button>
-                  </>
-                ) : (
-                  <a href={config.aiPlatformUrl}>
-                    <button 
-                      className="block w-full text-left rounded-lg px-3 py-2 hover:bg-white/10 transition-colors duration-200 active:bg-white/20"
+
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden mt-4 pt-4 border-t border-white/10"
+              >
+                <nav className="flex flex-col space-y-2">
+                  {nav.map(n => (
+                    <a
+                      key={n.href}
+                      href={n.href}
+                      className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
                       onClick={() => setOpen(false)}
                     >
-                      Sign in
-                    </button>
-                  </a>
-                )}
-                <a 
-                  href={config.aiPlatformUrl}
-                  className="block rounded-lg px-3 py-2 bg-blueA text-white hover:bg-blueB transition-colors duration-200 active:bg-blueB mt-1"
-                  onClick={() => setOpen(false)}
-                >
-                  Get started
-                </a>
-              </div>
-            </motion.div>
-          )}
+                      {n.label}
+                    </a>
+                  ))}
+                  
+                  {/* Mobile Auth Section */}
+                  <div className="pt-2 border-t border-white/10">
+                    {!loading && isSignedIn ? (
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => {
+                            setShowAccountModal(true);
+                            setOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                        >
+                          Account Settings
+                        </button>
+                        <button
+                          onClick={() => {
+                            router.push(config.aiPlatformUrl);
+                            setOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                        >
+                          Go to Dashboard
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleSignOut();
+                            setOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors duration-200"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <a
+                          href={config.aiPlatformUrl}
+                          className="block px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                          onClick={() => setOpen(false)}
+                        >
+                          Login
+                        </a>
+                        <a
+                          href={config.aiPlatformUrl}
+                          className="block px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+                          onClick={() => setOpen(false)}
+                        >
+                          Get Started
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 

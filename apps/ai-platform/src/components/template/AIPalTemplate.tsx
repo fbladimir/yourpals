@@ -79,12 +79,28 @@ export default function AIPalTemplate({
   onAutomationDelete,
   onAutomationEdit
 }: AIPalTemplateProps) {
-  const { user } = useAuth()
+  const authData = useAuth()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
   const [showOnboardingModal, setShowOnboardingModal] = useState(false)
   const [showYourPalChat, setShowYourPalChat] = useState(false)
   const [hoveredApp, setHoveredApp] = useState<string | null>(null)
+
+  // Add safety check for auth hook
+  if (!authData) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-8 h-8 border-4 border-robot-green border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-gray-400">Loading authentication...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const { user } = authData
 
   // Default hero content if none provided
   const defaultHeroContent = (

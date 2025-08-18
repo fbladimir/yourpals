@@ -1165,6 +1165,7 @@ export default function HomePage() {
                 onComplete={handleOnboardingComplete}
               />
             </div>
+
           </div>
         )}
       </div>

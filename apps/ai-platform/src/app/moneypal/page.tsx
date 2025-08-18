@@ -68,6 +68,21 @@ import AIAutomationSystem from '@/components/moneypal/AIAutomationSystem'
 export default function MoneyPalPage() {
   const authData = useAuth()
   
+  // Add safety check for auth hook
+  if (!authData) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-8 h-8 border-4 border-robot-green border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-gray-400">Loading authentication...</p>
+        </div>
+      </div>
+    )
+  }
+  
+  
   // MoneyPal automation templates
   const automationTemplates = [
     {
@@ -948,7 +963,7 @@ export default function MoneyPalPage() {
     const isLastStep = tutorialStep === tutorialSteps.length - 1
 
     return (
-      <motion.div
+        <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -1396,8 +1411,8 @@ export default function MoneyPalPage() {
           />
         </div>
       </CollapsibleSection>
-    </div>
-  )
+      </div>
+    )
 
   const renderAccounts = () => (
     <CollapsibleSection
@@ -1505,13 +1520,13 @@ export default function MoneyPalPage() {
               <AlertTriangle className="w-5 h-5 text-red-400" />
               Debt & Liabilities
             </h3>
-            <button
+              <button
               onClick={() => setShowManualDataEntry(true)}
               className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-            >
+              >
               <Plus className="w-4 h-4" />
               Manage Debt
-            </button>
+              </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1521,19 +1536,19 @@ export default function MoneyPalPage() {
                 className="bg-gray-800/50 border border-red-500/30 rounded-xl p-6 hover:border-red-500/50 transition-colors"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
                       <AlertTriangle className="w-5 h-5 text-red-400" />
-                    </div>
-                    <div>
+                </div>
+                <div>
                       <h4 className="font-semibold text-white">{debtAccount.name}</h4>
                       <p className="text-sm text-gray-400 capitalize">{debtAccount.type.replace('-', ' ')}</p>
-                    </div>
-                  </div>
+                </div>
+              </div>
                   <span className="text-2xl font-bold text-red-400">
                     ${debtAccount.balance.toLocaleString()}
                   </span>
-                </div>
+            </div>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -1566,17 +1581,17 @@ export default function MoneyPalPage() {
                     className="w-full px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
                   >
                     Edit Debt Account
-                  </button>
+              </button>
                   <button
                     onClick={() => handleDeleteDebtAccount(debtAccount.id)}
                     className="w-full px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition-colors text-sm mt-2"
                   >
                     Delete Debt Account
-                  </button>
-                </div>
-              </div>
-            ))}
+              </button>
+            </div>
           </div>
+            ))}
+        </div>
         </div>
       )}
       </CollapsibleSection>
@@ -1598,17 +1613,17 @@ export default function MoneyPalPage() {
                 className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 text-center relative group"
               >
                 {/* Delete Button */}
-                <button
+              <button
                   onClick={() => handleDeleteGoal(goal.id)}
                   className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
                   title="Delete Goal"
                 >
                   <X className="w-4 h-4" />
-                </button>
+              </button>
 
                 <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="w-8 h-8 text-robot-green" />
-                </div>
+        </div>
                 <h4 className="text-lg font-semibold text-white mb-2">{goal.name}</h4>
                 <p className="text-gray-400 mb-4 capitalize">{goal.type}</p>
                 
@@ -1691,7 +1706,7 @@ export default function MoneyPalPage() {
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-4">
             <Zap className="w-8 h-8 text-white" />
-          </div>
+                </div>
           <h3 className="text-xl font-semibold text-white mb-2">Automate Your Finances</h3>
           <p className="text-gray-400">
             Let AI handle your financial tasks and get personalized insights
@@ -1709,8 +1724,8 @@ export default function MoneyPalPage() {
             // Hook for future persistence/integration
           }}
         />
-      </div>
-      
+              </div>
+
       <AutomationCenter
         appName="MoneyPal"
         appIcon={DollarSign}
@@ -1743,7 +1758,7 @@ export default function MoneyPalPage() {
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Email</span>
               <span className="text-white">{user?.email}</span>
-            </div>
+                </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Notifications</span>
               <span className="text-robot-green">Enabled</span>
@@ -1752,8 +1767,8 @@ export default function MoneyPalPage() {
               <span className="text-gray-400">Privacy</span>
               <span className="text-robot-green">Private</span>
             </div>
-          </div>
-        </div>
+              </div>
+            </div>
 
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
           <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -1764,18 +1779,18 @@ export default function MoneyPalPage() {
             <div className="flex items-center justify-between">
               <span className="text-gray-400">2FA</span>
               <span className="text-robot-green">Enabled</span>
-            </div>
+                </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Last Login</span>
               <span className="text-white">Today</span>
-            </div>
+              </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Password</span>
               <span className="text-robot-green">Strong</span>
-            </div>
-          </div>
-        </div>
-      </div>
+                  </div>
+                </div>
+                  </div>
+                </div>
 
       {/* Test Mode & Data Management Section */}
       <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
@@ -1790,13 +1805,13 @@ export default function MoneyPalPage() {
               <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" />
               </div>
-              <div>
+                  <div>
                 <h5 className="text-white font-medium">Test Mode</h5>
                 <p className="text-sm text-gray-400">
                   {isTestMode ? 'Currently active with sample data' : 'Experience MoneyPal with sample data'}
                 </p>
-              </div>
-            </div>
+                  </div>
+                </div>
             <div className="flex items-center gap-3">
               {isTestMode ? (
                 <button
@@ -1813,25 +1828,25 @@ export default function MoneyPalPage() {
                   Enter Test Mode
                 </button>
               )}
+              </div>
             </div>
-          </div>
 
           {/* Reset Data Option */}
           {!isTestMode && (actualData.accounts.length > 0 || actualData.summary.monthlyIncome > 0) && (
             <div className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
-              <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-rose-600 rounded-lg flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                </div>
-                <div>
+                      </div>
+                      <div>
                   <h5 className="text-white font-medium">Reset All Data</h5>
                   <p className="text-sm text-gray-400">
                     Clear all manually entered financial data
                   </p>
-                </div>
-              </div>
+                      </div>
+                    </div>
               <button
                 onClick={() => {
                   if (confirm('Are you sure you want to reset all your manual data? This will clear everything and cannot be undone.')) {
@@ -1868,16 +1883,16 @@ export default function MoneyPalPage() {
               >
                 Reset Data
               </button>
-            </div>
+                    </div>
           )}
-        </div>
-      </div>
+                  </div>
+              </div>
       
       <div className="text-center">
         <button className="bg-gradient-to-r from-robot-green to-robot-blue px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-200">
           Save Changes
         </button>
-      </div>
+            </div>
     </div>
   </CollapsibleSection>
   )
@@ -1896,10 +1911,10 @@ export default function MoneyPalPage() {
       {renderInteractiveTutorial()}
 
       {/* Header */}
-      <motion.div
+          <motion.div
         initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
         className="sticky top-0 z-40 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
       >
           <div className="flex items-center justify-between">
@@ -1911,8 +1926,8 @@ export default function MoneyPalPage() {
                 <ArrowLeft className="w-5 h-5" />
               Back to Dashboard
             </Link>
-                </div>
-          
+            </div>
+            
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-robot-blue/20 rounded-full flex items-center justify-center">
               <Image
@@ -1955,8 +1970,8 @@ export default function MoneyPalPage() {
               Tutorial
             </button>
           </div>
-        </div>
-
+            </div>
+            
         {/* Navigation Tabs */}
         <div 
           id="nav-tabs" 
@@ -1982,8 +1997,8 @@ export default function MoneyPalPage() {
               </button>
             )
           })}
-        </div>
-      </motion.div>
+            </div>
+          </motion.div>
 
 
 
@@ -1996,8 +2011,8 @@ export default function MoneyPalPage() {
             onAddTransaction={() => setIsChatOpen(true)}
             onRefreshData={() => refreshData()}
           />
-        </div>
-        
+            </div>
+            
         <div id="summary-cards">
           <SummaryCards
             totalBalance={actualData.summary?.totalAssets || 0}
@@ -2007,8 +2022,8 @@ export default function MoneyPalPage() {
             monthlyIncome={actualData.summary?.monthlyIncome || 0}
             monthlyChange={actualData.summary?.monthlyChange || 0}
           />
-        </div>
-      </div>
+              </div>
+              </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -2084,7 +2099,7 @@ export default function MoneyPalPage() {
                   initialData={manualData}
                   onOverviewDataChange={handleOverviewDataChange}
                 />
-              </div>
+            </div>
             </motion.div>
           </motion.div>
         )}
@@ -2139,8 +2154,8 @@ export default function MoneyPalPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
               Reset Data
-            </button>
-          </div>
+              </button>
+            </div>
         </div>
       )} */}
     </div>

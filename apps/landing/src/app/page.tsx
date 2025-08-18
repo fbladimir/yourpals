@@ -6,6 +6,7 @@ import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FooterCTA from "@/components/FooterCTA";
 import ScrollToTop from "@/components/ScrollToTop";
+import ComingSoon from "@/components/ComingSoon";
 
 export default function Page() {
   return (
@@ -13,6 +14,7 @@ export default function Page() {
       <Header />
       <Hero />
       <PalsOverview />
+      <ComingSoon />
       <HowItWorks />
       <Testimonials />
       <Pricing />

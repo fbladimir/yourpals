@@ -163,30 +163,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Listen for auth changes
     console.log('🔍 AuthContext: Setting up auth state listener...')
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('🔄 AuthContext: Auth state change event:', event)
-      console.log('🔄 AuthContext: Session data:', session)
+    let subscription: any
+    
+    try {
+      const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        console.log('🔄 AuthContext: Auth state change event:', event)
+        console.log('🔄 AuthContext: Session data:', session)
+        
+        // Handle specific events
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          if (session?.user?.email_confirmed_at) {
+            console.log('✅ AuthContext: Email verification detected via auth event!')
+            setIsEmailVerified(true)
+          } else {
+            console.log('⏳ AuthContext: User signed in but email not verified yet')
+            setIsEmailVerified(false)
+          }
+        }
+        
+        setSession(session)
+        setUser(session?.user ?? null)
+        setIsEmailVerified(!!session?.user?.email_confirmed_at)
+        setLoading(false)
+        console.log('🔄 AuthContext: User state updated to:', session?.user?.email || 'null')
+        console.log('🔄 AuthContext: Email verified:', !!session?.user?.email_confirmed_at)
+      })
       
-      // Handle specific events
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        if (session?.user?.email_confirmed_at) {
-          console.log('✅ AuthContext: Email verification detected via auth event!')
-          setIsEmailVerified(true)
-        } else {
-          console.log('⏳ AuthContext: User signed in but email not verified yet')
-          setIsEmailVerified(false)
+      subscription = data.subscription
+    } catch (error) {
+      console.error('❌ AuthContext: Error setting up auth listener:', error)
+      // Set loading to false to prevent infinite loading
+      setLoading(false)
+    }
+
+    return () => {
+      if (subscription) {
+        try {
+          subscription.unsubscribe()
+        } catch (error) {
+          console.error('❌ AuthContext: Error unsubscribing from auth listener:', error)
         }
       }
-      
-      setSession(session)
-      setUser(session?.user ?? null)
-      setIsEmailVerified(!!session?.user?.email_confirmed_at)
-      setLoading(false)
-      console.log('🔄 AuthContext: User state updated to:', session?.user?.email || 'null')
-      console.log('🔄 AuthContext: Email verified:', !!session?.user?.email_confirmed_at)
-    })
-
-    return () => subscription.unsubscribe()
+    }
   }, [retryCount])
 
   const signUp = async (email: string, password: string, name: string) => {
@@ -312,7 +330,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    console.warn('⚠️ useAuth called outside of AuthProvider - this should not happen')
+    // Return a safe default instead of throwing
+    return {
+      user: null,
+      session: null,
+      loading: true,
+      isEmailVerified: false,
+      signUp: async () => ({ data: null, error: { message: 'Auth not initialized' } }),
+      signIn: async () => ({ data: null, error: { message: 'Auth not initialized' } }),
+      signOut: async () => ({ error: { message: 'Auth not initialized' } }),
+      checkEmailVerification: async () => false,
+      checkEmailVerificationEnhanced: async () => false,
+      retryInitialization: async () => {},
+    }
   }
   return context
 }
