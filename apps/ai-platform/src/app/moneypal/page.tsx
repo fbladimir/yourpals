@@ -31,7 +31,8 @@ import {
   User,
   Shield,
   Mail,
-  AlertTriangle
+  AlertTriangle,
+  Calculator
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -59,6 +60,10 @@ import { useUnifiedFinancialData } from '@/hooks/useUnifiedFinancialData'
 import { useAIChat } from '@/hooks/useAIChat'
 import AutomationCenter from '@/components/template/AutomationCenter'
 import TestModeToggle from '@/components/moneypal/TestModeToggle'
+import ProactiveNotifications from '@/components/moneypal/ProactiveNotifications'
+import AIBudgetCreator from '@/components/moneypal/AIBudgetCreator'
+import PredictiveAnalytics from '@/components/moneypal/PredictiveAnalytics'
+import AIAutomationSystem from '@/components/moneypal/AIAutomationSystem'
 
 export default function MoneyPalPage() {
   const authData = useAuth()
@@ -1250,6 +1255,147 @@ export default function MoneyPalPage() {
           onToggleAmounts={() => setShowTransactionAmounts(!showTransactionAmounts)}
         />
       </CollapsibleSection>
+
+      {/* Financial Summary */}
+      <CollapsibleSection
+        title="Financial Summary"
+        subtitle="Your key financial metrics at a glance"
+        icon={<BarChart3 className="w-5 h-5 text-robot-green" />}
+        defaultOpen={true}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Total Balance Card */}
+          <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Total Balance</h3>
+              <DollarSign className="w-6 h-6 text-blue-400" />
+            </div>
+            <div className="text-3xl font-bold text-white mb-2">
+              ${actualData.summary.totalAssets.toLocaleString()}
+            </div>
+            <div className="text-sm text-blue-300">
+              +${actualData.summary.monthlyChange.toLocaleString()} this month
+            </div>
+            <div className="mt-3">
+              <svg className="w-16 h-8 text-blue-400" viewBox="0 0 16 8">
+                <path d="M0 8 L4 4 L8 6 L12 2 L16 4 L16 8 Z" fill="currentColor" opacity="0.3"/>
+                <path d="M0 8 L4 4 L8 6 L12 2 L16 4" stroke="currentColor" strokeWidth="1" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* Monthly Savings Card */}
+          <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Monthly Savings</h3>
+              <PiggyBank className="w-6 h-6 text-green-400" />
+            </div>
+            <div className="text-3xl font-bold text-white mb-2">
+              ${actualData.summary.monthlySavings.toLocaleString()}
+            </div>
+            <div className="text-sm text-green-300">
+              {actualData.summary.monthlyIncome > 0 ? 
+                `${Math.round((actualData.summary.monthlySavings / actualData.summary.monthlyIncome) * 100)}% of income` : 
+                '0% of income'
+              }
+            </div>
+          </div>
+
+          {/* Credit Score Card */}
+          <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Credit Score</h3>
+              <CreditCard className="w-6 h-6 text-purple-400" />
+            </div>
+            <div className="text-3xl font-bold text-white mb-2">
+              {actualData.summary.creditScore}
+            </div>
+            <div className="text-sm text-purple-300">
+              {actualData.summary.creditScore >= 750 ? 'Excellent' : 
+               actualData.summary.creditScore >= 700 ? 'Good' : 
+               actualData.summary.creditScore >= 650 ? 'Fair' : 'Poor'}
+            </div>
+          </div>
+
+          {/* Cash Flow Card */}
+          <div className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 border border-orange-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-white">Cash Flow</h3>
+              <BarChart3 className="w-6 h-6 text-orange-400" />
+            </div>
+            <div className="text-3xl font-bold text-white mb-2">
+              ${(actualData.summary.monthlyIncome - actualData.summary.monthlyExpenses).toLocaleString()}
+            </div>
+            <div className="text-sm text-orange-300">
+              Monthly net
+            </div>
+          </div>
+        </div>
+      </CollapsibleSection>
+
+      {/* AI Budget Creator */}
+      <CollapsibleSection
+        title="AI Budget Creator"
+        subtitle="Get personalized budget recommendations powered by AI"
+        icon={<Calculator className="w-5 h-5 text-robot-green" />}
+        defaultOpen={false}
+      >
+        <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-6">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calculator className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Smart Budget Planning</h3>
+            <p className="text-gray-400">
+              Let AI analyze your financial data and create a personalized budget plan that adapts to your goals and situation
+            </p>
+          </div>
+          
+          <AIBudgetCreator
+            financialData={{
+              summary: actualData.summary,
+              transactions: actualData.transactions
+            }}
+            onBudgetCreated={(budget) => {
+              console.log('AI Budget created:', budget)
+              // Here you could save the budget to user preferences
+            }}
+          />
+        </div>
+      </CollapsibleSection>
+
+      {/* Predictive Analytics */}
+      <CollapsibleSection
+        title="Predictive Analytics"
+        subtitle="Get insights into your future financial health"
+        icon={<BarChart3 className="w-5 h-5 text-robot-purple" />}
+        defaultOpen={false}
+      >
+        <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-6">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Financial Forecasting</h3>
+            <p className="text-gray-400">
+              Predict your future financial health based on historical data
+            </p>
+          </div>
+          
+          <PredictiveAnalytics
+            financialData={{
+              summary: actualData.summary,
+              transactions: actualData.transactions,
+              goals: actualData.goals,
+              accounts: actualData.accounts
+            }}
+            onAction={(prediction) => {
+              console.log('Predictive forecast generated:', prediction)
+              // Here you could save the forecast to user preferences
+            }}
+          />
+        </div>
+      </CollapsibleSection>
     </div>
   )
 
@@ -1540,17 +1686,42 @@ export default function MoneyPalPage() {
       icon={<Zap className="w-5 h-5 text-robot-purple" />}
       defaultOpen={true}
     >
-                         <AutomationCenter
-               appName="MoneyPal"
-               appIcon={DollarSign}
-               appColor="from-green-500 to-blue-600"
-               automationTemplates={automationTemplates}
-               onAutomationCreate={handleAutomationCreate}
-               onAutomationToggle={handleAutomationToggle}
-               onAutomationDelete={handleAutomationDelete}
-               onAutomationEdit={handleAutomationEdit}
-             />
-          </CollapsibleSection>
+      {/* AI Automation System */}
+      <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-6 mb-6">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <Zap className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white mb-2">Automate Your Finances</h3>
+          <p className="text-gray-400">
+            Let AI handle your financial tasks and get personalized insights
+          </p>
+        </div>
+        <AIAutomationSystem
+          financialData={{
+            summary: actualData.summary,
+            transactions: actualData.transactions,
+            goals: actualData.goals,
+            accounts: actualData.accounts
+          }}
+          onAutomationTriggered={(automation, data) => {
+            console.log('AI automation triggered:', automation, data)
+            // Hook for future persistence/integration
+          }}
+        />
+      </div>
+      
+      <AutomationCenter
+        appName="MoneyPal"
+        appIcon={DollarSign}
+        appColor="from-green-500 to-blue-600"
+        automationTemplates={automationTemplates}
+        onAutomationCreate={handleAutomationCreate}
+        onAutomationToggle={handleAutomationToggle}
+        onAutomationDelete={handleAutomationDelete}
+        onAutomationEdit={handleAutomationEdit}
+      />
+    </CollapsibleSection>
   )
 
   const renderSettings = () => (
@@ -1755,24 +1926,35 @@ export default function MoneyPalPage() {
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <div className="text-robot-green font-mono text-xs tracking-wider">AI FINANCIAL CO-PILOT</div>
           </div>
-
-          {/* Onboarding Button */}
-          <button
-            onClick={() => setShowOnboarding(true)}
-            className="flex items-center gap-2 px-3 py-2 bg-robot-green/20 text-robot-green rounded-lg hover:bg-robot-green/30 transition-colors mr-2"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">Onboarding</span>
-          </button>
-
-          {/* Tutorial Button */}
-          <button
-            onClick={restartTutorial}
-            className="flex items-center gap-2 px-3 py-2 bg-robot-blue/20 text-robot-blue rounded-lg hover:bg-robot-blue/30 transition-colors"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span className="hidden sm:inline">Tutorial</span>
-          </button>
+          
+          <div className="flex items-center gap-4">
+            {/* Proactive Notifications */}
+            <ProactiveNotifications 
+              financialData={{
+                accounts: actualData.accounts,
+                transactions: actualData.transactions,
+                summary: actualData.summary,
+                goals: actualData.goals
+              }}
+              onAction={(notification) => {
+                // Handle notification actions (scroll to relevant section, etc.)
+                console.log('Notification action:', notification)
+              }}
+            />
+            
+            <button
+              onClick={() => setShowOnboarding(true)}
+              className="px-4 py-2 bg-gradient-to-r from-robot-green to-robot-blue text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+            >
+              Onboarding
+            </button>
+            <button
+              onClick={() => setShowTutorial(true)}
+              className="px-4 py-2 bg-gradient-to-r from-robot-purple to-robot-blue text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+            >
+              Tutorial
+            </button>
+          </div>
         </div>
 
         {/* Navigation Tabs */}
