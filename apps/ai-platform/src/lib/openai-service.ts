@@ -217,7 +217,26 @@ Please provide a helpful, personalized financial response based on this data.`
       }
     } catch (error) {
       console.error('Error parsing OpenAI response:', error)
-      return this.fallbackResponse("", { userFinancialData: { accounts: [], transactions: [], totalBalance: 0, monthlyIncome: 0, monthlyExpenses: 0 }, conversationHistory: [], userPreferences: { riskTolerance: 'MODERATE', automationLevel: 'BASIC', financialGoals: [] } })
+      return this.fallbackResponse("", { 
+        userFinancialData: { 
+          accounts: [], 
+          transactions: [], 
+          totalBalance: 0, 
+          monthlyIncome: 0, 
+          monthlyExpenses: 0,
+          monthlySavings: 0,
+          creditScore: 750,
+          emergencyFund: 0,
+          goals: [],
+          debtAccounts: []
+        }, 
+        conversationHistory: [], 
+        userPreferences: { 
+          riskTolerance: 'MODERATE', 
+          automationLevel: 'BASIC', 
+          financialGoals: [] 
+        } 
+      })
     }
   }
 

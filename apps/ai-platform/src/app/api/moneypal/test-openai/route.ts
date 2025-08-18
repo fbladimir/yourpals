@@ -20,7 +20,12 @@ export async function GET(request: NextRequest) {
               transactions: [],
               totalBalance: 1000,
               monthlyIncome: 5000,
-              monthlyExpenses: 3000
+              monthlyExpenses: 3000,
+              monthlySavings: 2000,
+              creditScore: 750,
+              emergencyFund: 5000,
+              goals: [],
+              debtAccounts: []
             },
             conversationHistory: [],
             userPreferences: {

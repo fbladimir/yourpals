@@ -1605,6 +1605,102 @@ export default function MoneyPalPage() {
           </div>
         </div>
       </div>
+
+      {/* Test Mode & Data Management Section */}
+      <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-6">
+        <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <Zap className="w-5 h-5 text-robot-green" />
+          Test Mode & Data Management
+        </h4>
+        <div className="space-y-4">
+          {/* Test Mode Toggle */}
+          <div className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                <Play className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h5 className="text-white font-medium">Test Mode</h5>
+                <p className="text-sm text-gray-400">
+                  {isTestMode ? 'Currently active with sample data' : 'Experience MoneyPal with sample data'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {isTestMode ? (
+                <button
+                  onClick={handleExitTestMode}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors duration-200"
+                >
+                  Exit Test Mode
+                </button>
+              ) : (
+                <button
+                  onClick={handleEnterTestMode}
+                  className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-lg font-medium transition-all duration-200"
+                >
+                  Enter Test Mode
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Reset Data Option */}
+          {!isTestMode && (actualData.accounts.length > 0 || actualData.summary.monthlyIncome > 0) && (
+            <div className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-rose-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </div>
+                <div>
+                  <h5 className="text-white font-medium">Reset All Data</h5>
+                  <p className="text-sm text-gray-400">
+                    Clear all manually entered financial data
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to reset all your manual data? This will clear everything and cannot be undone.')) {
+                    // Clear all data
+                    updateAccounts([])
+                    updateDebtAccounts([])
+                    updateTransactions([])
+                    updateGoals([])
+                    updateSummary({
+                      totalAssets: 0,
+                      totalDebt: 0,
+                      netWorth: 0,
+                      monthlyIncome: 0,
+                      monthlyExpenses: 0,
+                      monthlySavings: 0,
+                      creditScore: 750,
+                      emergencyFund: 0,
+                      investmentAmount: 0,
+                      monthlyChange: 0,
+                      debtToIncomeRatio: 0,
+                      savingsRate: 0
+                    })
+                    
+                    // Clear localStorage
+                    if (user?.id) {
+                      localStorage.removeItem(`moneypal-manual-data-${user.id}`)
+                      localStorage.removeItem(`moneypal-test-data-${user.id}`)
+                    }
+                    
+                    console.log('All manual data reset by user')
+                  }
+                }}
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors duration-200"
+              >
+                Reset Data
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
       
       <div className="text-center">
         <button className="bg-gradient-to-r from-robot-green to-robot-blue px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-200">
@@ -1812,57 +1908,59 @@ export default function MoneyPalPage() {
         )}
       </AnimatePresence>
 
-      {/* Test Mode Toggle */}
-      <TestModeToggle
+      {/* Test Mode Toggle - Moved to Settings tab for better UI/UX */}
+      {/* <TestModeToggle
         isTestMode={isTestMode}
         onEnterTestMode={handleEnterTestMode}
         onExitTestMode={handleExitTestMode}
-      />
+      /> */}
 
-      {/* Reset Data Button - Only show if user has data */}
-      {!isTestMode && (actualData.accounts.length > 0 || actualData.summary.monthlyIncome > 0) && (
+      {/* Reset Data Button - Moved to Settings tab for better UI/UX */}
+      {/* {!isTestMode && (actualData.accounts.length > 0 || actualData.summary.monthlyIncome > 0) && (
         <div className="fixed bottom-6 left-32 z-50">
-          <button
-            onClick={() => {
-              if (confirm('Are you sure you want to reset all your manual data? This will clear everything and cannot be undone.')) {
-                // Clear all data
-                updateAccounts([])
-                updateDebtAccounts([])
-                updateTransactions([])
-                updateGoals([])
-                updateSummary({
-                  totalAssets: 0,
-                  totalDebt: 0,
-                  netWorth: 0,
-                  monthlyIncome: 0,
-                  monthlyExpenses: 0,
-                  monthlySavings: 0,
-                  creditScore: 750,
-                  emergencyFund: 0,
-                  investmentAmount: 0,
-                  monthlyChange: 0,
-                  debtToIncomeRatio: 0,
-                  savingsRate: 0
-                })
-                
-                // Clear localStorage
-                if (user?.id) {
-                  localStorage.removeItem(`moneypal-manual-data-${user.id}`)
-                  localStorage.removeItem(`moneypal-test-data-${user.id}`)
+          <div className="bg-gradient-to-r from-red-500 to-rose-600 rounded-xl p-1 shadow-2xl border border-red-400/30">
+            <button
+              onClick={() => {
+                if (confirm('Are you sure you want to reset all your manual data? This will clear everything and cannot be undone.')) {
+                  // Clear all data
+                  updateAccounts([])
+                  updateDebtAccounts([])
+                  updateTransactions([])
+                  updateGoals([])
+                  updateSummary({
+                    totalAssets: 0,
+                    totalDebt: 0,
+                    netWorth: 0,
+                    monthlyIncome: 0,
+                    monthlyExpenses: 0,
+                    monthlySavings: 0,
+                    creditScore: 750,
+                    emergencyFund: 0,
+                    investmentAmount: 0,
+                    monthlyChange: 0,
+                    debtToIncomeRatio: 0,
+                    savingsRate: 0
+                  })
+                  
+                  // Clear localStorage
+                  if (user?.id) {
+                    localStorage.removeItem(`moneypal-manual-data-${user.id}`)
+                    localStorage.removeItem(`moneypal-test-data-${user.id}`)
+                  }
+                  
+                  console.log('All manual data reset by user')
                 }
-                
-                console.log('All manual data reset by user')
-              }
-            }}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-200 flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            Reset Data
-          </button>
+              }}
+              className="flex items-center gap-2 px-6 py-3 bg-gray-900 rounded-xl text-red-400 font-semibold hover:bg-gray-800 hover:text-red-300 transition-all duration-200 border border-gray-700/50"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Reset Data
+            </button>
+          </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

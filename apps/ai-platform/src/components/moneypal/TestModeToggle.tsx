@@ -74,10 +74,10 @@ export default function TestModeToggle({
         animate={{ opacity: 1, scale: 1 }}
         className="fixed bottom-6 left-6 z-50"
       >
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-full p-1 shadow-2xl">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-1 shadow-2xl border border-emerald-400/30">
           <button
             onClick={handleEnterTestMode}
-            className="flex items-center gap-3 px-6 py-3 bg-white rounded-full text-blue-600 font-semibold hover:shadow-lg transition-all duration-200 group"
+            className="flex items-center gap-3 px-6 py-3 bg-gray-900 rounded-xl text-emerald-400 font-semibold hover:bg-gray-800 hover:text-emerald-300 transition-all duration-200 group border border-gray-700/50"
           >
             <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
             <span>Try Test Mode</span>
