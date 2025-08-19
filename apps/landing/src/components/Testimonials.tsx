@@ -66,7 +66,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="mt-20 sm:mt-24 md:mt-28">
+    <section className="mt-20 sm:mt-24 md:mt-28 relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
@@ -98,7 +98,7 @@ export default function Testimonials() {
         <div className="lg:hidden mb-12">
           <div className="relative">
             {/* Single Testimonial Card */}
-            <div className="group relative rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:ring-white/20 overflow-hidden">
+            <div className="relative bg-white/5 border border-white/10 rounded-3xl p-8 text-center group hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:border-white/20 overflow-hidden">
               {/* Enhanced background decoration */}
               <div className="absolute inset-0 -z-10">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blueA to-blueB transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>

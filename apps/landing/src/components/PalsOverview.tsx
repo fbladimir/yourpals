@@ -37,7 +37,7 @@ export default function PalsOverview() {
       name: "MoneyPal",
       role: "AI Financial Co-Pilot",
       avatar: "/moneypalAvatar.PNG",
-      color: "emerald",
+      color: "green",
       accentColor: "green",
       capabilities: [
         {
@@ -105,8 +105,8 @@ export default function PalsOverview() {
       name: "CookingPal",
       role: "AI Culinary Companion",
       avatar: "/cookingpalAvatar.png",
-      color: "red",
-      accentColor: "red",
+      color: "yellow",
+      accentColor: "yellow",
       capabilities: [
         {
           title: "Smart Meal Planning",
@@ -172,14 +172,6 @@ export default function PalsOverview() {
 
   const currentPal = aiPals.find(pal => pal.id === selectedPal) || aiPals[0];
 
-  // Auto-rotate through capabilities
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveCapability((prev) => (prev + 1) % currentPal.capabilities.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [currentPal.capabilities.length]);
-
   // Animate when switching Pals
   useEffect(() => {
     controls.start({
@@ -190,12 +182,25 @@ export default function PalsOverview() {
     setActiveCapability(0);
   }, [selectedPal, controls]);
 
+  // Listen for pal selection events from hero avatars
+  useEffect(() => {
+    const handlePalSelection = (event: CustomEvent) => {
+      setSelectedPal(event.detail);
+    };
+
+    window.addEventListener('selectPal', handlePalSelection as EventListener);
+    
+    return () => {
+      window.removeEventListener('selectPal', handlePalSelection as EventListener);
+    };
+  }, []);
+
   return (
     <section id="ai-pals-overview" className="py-20 sm:py-24 md:py-28 lg:py-32 relative overflow-hidden">
       {/* Background Elements - Subtle and flowing */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/3 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500/3 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/2 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500/2 rounded-full blur-3xl"></div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">

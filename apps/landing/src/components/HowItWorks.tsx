@@ -125,8 +125,8 @@ export default function HowItWorks() {
     <section id="how" className="relative mt-12 sm:mt-16 overflow-hidden pt-16 sm:pt-20">
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-r from-blue-500/5 to-purple-500/5 blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 blur-3xl"></div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -135,9 +135,9 @@ export default function HowItWorks() {
           className="text-center"
         >
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 ring-1 ring-blue-500/30 text-blue-400 text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 ring-1 ring-white/10 text-white/60 text-sm font-medium mb-6"
           >
-            <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-white/40 animate-pulse"></span>
             Simple 4-Step Process
           </div>
           
@@ -170,7 +170,7 @@ export default function HowItWorks() {
                 className="relative group"
               >
                 {/* Enhanced step card */}
-                <div className="relative p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm ring-1 ring-white/20 hover:ring-white/40 transition-all duration-300 h-full">
+                <div className="relative p-6 sm:p-8 rounded-2xl bg-white/5 backdrop-blur-sm ring-1 ring-white/10 hover:ring-white/20 transition-all duration-300 h-full">
                   {/* Floating background elements */}
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}></div>
                   
@@ -232,7 +232,7 @@ export default function HowItWorks() {
                 className="relative group flex-shrink-0 w-80 sm:w-96 snap-center"
               >
                 {/* Enhanced step card */}
-                <div className="relative p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm ring-1 ring-white/20 hover:ring-white/40 transition-all duration-300 h-full">
+                <div className="relative p-6 sm:p-8 rounded-2xl bg-white/5 backdrop-blur-sm ring-1 ring-white/10 hover:ring-white/20 transition-all duration-300 h-full">
                   {/* Floating background elements */}
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}></div>
                   

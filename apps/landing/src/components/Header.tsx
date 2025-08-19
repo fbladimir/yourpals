@@ -27,6 +27,7 @@ export default function Header() {
   const [loading, setLoading] = useState(true);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showAIPalsDropdown, setShowAIPalsDropdown] = useState(false);
   const router = useRouter();
 
   const handleUserUpdate = (updatedUser: any) => {
@@ -87,10 +88,18 @@ export default function Header() {
   };
 
   const nav = [
-    { href: "#apps", label: "AI Pals" },
+    { href: "#apps", label: "AI Pals", hasDropdown: true },
     { href: "#how", label: "How it works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#safety", label: "Safety" },
+  ];
+  
+  // AI Pals data for dropdown
+  const aiPals = [
+    { name: "MoneyPal", role: "Financial Co-Pilot", avatar: "/moneypalAvatar.PNG", color: "green" },
+    { name: "SellerPal", role: "E-commerce Assistant", avatar: "/sellerpalAvatar.png", color: "orange" },
+    { name: "CookingPal", role: "Culinary Companion", avatar: "/cookingpalAvatar.png", color: "yellow" },
+    { name: "YourPal", role: "AI Platform Manager", avatar: "/yourpalAvatar.PNG", color: "purple" },
+    { name: "CarPal", role: "Automotive Assistant", avatar: "/carpalAvatar.PNG", color: "blue" },
+    { name: "CryptoPal", role: "Investment Advisor", avatar: "/cryptopalAvatar.PNG", color: "cyan" }
   ];
   
   return (
@@ -126,14 +135,90 @@ export default function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm text-white/80">
               {nav.map(n => (
-                <a 
-                  key={n.href} 
-                  href={n.href} 
-                  className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
-                  onClick={() => setOpen(false)}
-                >
-                  {n.label}
-                </a>
+                <div key={n.href} className="relative">
+                  {n.hasDropdown ? (
+                    <div 
+                      className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5 cursor-pointer"
+                      onMouseEnter={() => setShowAIPalsDropdown(true)}
+                      onMouseLeave={() => setShowAIPalsDropdown(false)}
+                    >
+                      {n.label}
+                      <svg className="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      
+                      {/* AI Pals Dropdown */}
+                      <AnimatePresence>
+                        {showAIPalsDropdown && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-2 w-80 bg-gray-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/30 py-4 z-50"
+                            onMouseEnter={() => setShowAIPalsDropdown(true)}
+                            onMouseLeave={() => setShowAIPalsDropdown(false)}
+                          >
+                            <div className="grid grid-cols-2 gap-3 px-4">
+                              {aiPals.map((pal, index) => (
+                                <motion.div
+                                  key={pal.name}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.2, delay: index * 0.05 }}
+                                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 transition-all duration-200 cursor-pointer group"
+                                  onClick={() => {
+                                    setShowAIPalsDropdown(false);
+                                    if (pal.name === 'MoneyPal' || pal.name === 'SellerPal' || pal.name === 'CookingPal') {
+                                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                      setTimeout(() => {
+                                        window.dispatchEvent(new CustomEvent('selectPal', { detail: pal.name.toLowerCase() }));
+                                      }, 500);
+                                    } else if (pal.name === 'CarPal' || pal.name === 'CryptoPal') {
+                                      document.getElementById('coming-soon')?.scrollIntoView({ behavior: 'smooth' });
+                                    } else if (pal.name === 'YourPal') {
+                                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                      setTimeout(() => {
+                                        window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
+                                      }, 500);
+                                    }
+                                  }}
+                                >
+                                  <div className="relative">
+                                    <Image
+                                      src={pal.avatar}
+                                      alt={pal.name}
+                                      width={40}
+                                      height={40}
+                                      className="rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-200"
+                                    />
+                                    <div className={`absolute -top-1 -right-1 w-3 h-3 bg-${pal.color}-500 rounded-full border-2 border-gray-900/95`}></div>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-semibold text-white text-sm group-hover:text-white transition-colors duration-200">
+                                      {pal.name}
+                                    </div>
+                                    <div className="text-white/80 text-xs group-hover:text-white/90 transition-colors duration-200 truncate">
+                                      {pal.role}
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <a 
+                      href={n.href} 
+                      className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
+                      onClick={() => setOpen(false)}
+                    >
+                      {n.label}
+                    </a>
+                  )}
+                </div>
               ))}
               
               {/* Auth Section */}
@@ -245,7 +330,7 @@ export default function Header() {
                       href={config.aiPlatformUrl}
                       className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 hover:shadow-lg"
                     >
-                      Get Started
+                      Try YourPals For Free
                     </a>
                   </div>
                 )}
