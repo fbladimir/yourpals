@@ -88,8 +88,11 @@ export default function Header() {
   };
 
   const nav = [
-    { href: "#apps", label: "AI Pals", hasDropdown: true },
-    { href: "#how", label: "How it works" },
+    { name: "AI pals", href: "#ai-pals-overview", hasDropdown: true },
+    { name: "How it works", href: "#how" },
+    { name: "Coming Soon", href: "/coming-soon" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Apply to Test", href: "/testers#apply" },
   ];
   
   // AI Pals data for dropdown
@@ -142,7 +145,7 @@ export default function Header() {
                       onMouseEnter={() => setShowAIPalsDropdown(true)}
                       onMouseLeave={() => setShowAIPalsDropdown(false)}
                     >
-                      {n.label}
+                      {n.name}
                       <svg className="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -210,13 +213,13 @@ export default function Header() {
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <a 
+                    <Link 
                       href={n.href} 
                       className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
                       onClick={() => setOpen(false)}
                     >
-                      {n.label}
-                    </a>
+                      {n.name}
+                    </Link>
                   )}
                 </div>
               ))}
@@ -364,14 +367,14 @@ export default function Header() {
               >
                 <nav className="flex flex-col space-y-2">
                   {nav.map(n => (
-                    <a
+                    <Link
                       key={n.href}
                       href={n.href}
                       className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
                       onClick={() => setOpen(false)}
                     >
-                      {n.label}
-                    </a>
+                      {n.name}
+                    </Link>
                   ))}
                   
                   {/* Mobile Auth Section */}

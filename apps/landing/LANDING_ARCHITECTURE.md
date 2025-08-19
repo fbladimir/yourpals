@@ -1,23 +1,27 @@
 # Landing Page Architecture & Development Roadmap
 
 ## Overview
-The landing page serves as the main entry point for YourPals, showcasing our AI Pal platform and driving user acquisition. It features a professional, Motion-inspired design with smooth animations and clear call-to-actions.
+The landing page serves as the main entry point for YourPals, showcasing our AI Pal platform and driving user acquisition. It features a professional, Motion-inspired design with smooth animations, clear call-to-actions, and an interactive demo experience.
 
-## Current Status: 98% COMPLETE ✅
+## Current Status: 95% COMPLETE ✅ (Mobile optimization required before production)
 
 ### COMPLETED FEATURES:
-- ✅ **Professional Header Redesign**: Modern navigation with AI MODE branding
-- ✅ **Hero Section**: Dynamic AI Pal avatar showcase with 6 avatars (MoneyPal, SellerPal, CookingPal, YourPal, CarPal, CryptoPal)
+- ✅ **Professional Header Redesign**: Modern navigation with AI MODE branding, AI Pals dropdown, Coming Soon page, How It Works, Pricing, and updated CTA buttons
+- ✅ **Hero Section**: Dynamic AI Pal avatar showcase with 6 avatars, enhanced subheadline with glowing underline effect
 - ✅ **AI Pal Showcase Section**: Grid layout with detailed cards for each available AI Pal
 - ✅ **Coming Soon Section**: Exciting preview of CarPal and CryptoPal with professional UI/UX
+- ✅ **Dedicated Coming Soon Page**: Immersive page showcasing new AI Pals in development with development progress, features, and waitlist signup
 - ✅ **Enhanced PalsOverview Section**: Motion-style interactive demo with AI Pal toggle system
+- ✅ **Interactive How It Works Section**: Fully interactive demo with real-time countdown, clickable step navigation, and real YourPals avatars
+- ✅ **Strategic Section Reordering**: How It Works moved after PalsOverview for better user flow and engagement
+- ✅ **Professional Spacing**: Optimized spacing between sections for cohesive, professional appearance
 - ✅ **Motion-inspired Card Layout**: Smooth animations and hover effects
 - ✅ **Responsive Design**: Mobile-first approach with tablet and desktop optimization
 - ✅ **Cross-platform Navigation**: Proper linking to main AI platform
 - ✅ **Background Flow**: Seamless transitions between sections
 
 ### IN PROGRESS:
-- 🔄 **Beta Access System**: Email collection and waitlist management
+- 🔄 **Email Collection System**: "Be the First" notification infrastructure
 
 ### REMAINING WORK:
 - ⏳ **Mobile Optimization**: Final testing and refinements
@@ -50,12 +54,52 @@ The landing page serves as the main entry point for YourPals, showcasing our AI 
 - **Dynamic content updates** based on selected AI Pal
 - **Seamless background flow** from Hero section
 
-### Phase 5: Beta Access & Testing 🔄
-- Email collection system
-- Admin dashboard for user management
-- Beta user onboarding flow
+### Phase 5: Interactive How It Works ✅
+- **Fully interactive demo experience** with 4-step process
+- **Real-time countdown timer** for auto-advance (12 seconds)
+- **Clickable step navigation** - users can jump to any step
+- **Real YourPals avatars** instead of emoji icons
+- **Multiple AI insights** - click to see different insights for each Pal
+- **Comprehensive automation dashboard** - shows all automations with status
+- **Smart user interaction tracking** - 30-second inactivity timer
+- **Professional spacing and flow** between sections
 
-### Phase 6: Optimization & Launch
+### Phase 6: Strategic Optimization ✅
+- **Section reordering**: How It Works moved after PalsOverview for better user flow
+- **Professional spacing**: Optimized margins and padding for cohesive appearance
+- **Hero enhancement**: Updated subheadline with glowing underline effect under "Everyday"
+- **Background element positioning**: Minimized visual separation between sections
+
+### Phase 7: Page Restructuring ✅
+- Remove pricing section from landing page
+- Create dedicated pricing page at `/pricing`
+- Build new bottom section inspired by "Use Motion" design
+- Interactive SellerPal scenario demonstrating time/profit savings
+- **Pricing tiers match actual subscription structure**: FREE, MoneyPal Pro ($19), All Access ($39)
+- **Coming Soon page uses actual avatar images** from public directory
+- **Navigation headers added** to both Coming Soon and Pricing pages for seamless UX
+- **Email modal functionality** implemented for Coming Soon page waitlist signup
+- **Monthly/Yearly billing toggle** with 20% yearly discount for Pricing page
+- **Smart CTA handling**: FREE plan directs to app, paid plans show "coming soon" message
+- **Beta tester showcase**: Updated hero badge to show "Beta Access" + "Meet Our Testers" 
+- **Dedicated testers page** at `/testers` featuring current beta testers and application process
+- **Updated tester profiles** to reflect personal use cases (e.g., Dylan as gym member + accounting professional)
+- **"Apply to Test" navigation** added to header directing to testers page application section
+- **Updated beta application flow**: Register → Complete onboarding → Wait for approval → Email notification → Access granted
+
+### Phase 8: Email Collection System ⏳
+- Add email input field to "Be the First" notification section
+- Create notification system for new pal releases (DLC-like experience)
+- Build email collection infrastructure for future announcements
+
+### Phase 9: Mobile Optimization (CRITICAL PRIORITY) ⏳
+- **Comprehensive mobile optimization** for all components
+- **Touch-friendly interactions** and responsive layouts
+- **Mobile-first design** approach across all pages
+- **Performance optimization** for mobile devices
+- **Cross-device testing** (iOS, Android, tablets)
+
+### Phase 10: Final Optimization & Launch ⏳
 - Performance optimization
 - A/B testing implementation
 - Analytics and conversion tracking
@@ -66,17 +110,22 @@ The landing page serves as the main entry point for YourPals, showcasing our AI 
 ```
 src/
 ├── components/
-│   ├── Header.tsx          ✅ Complete
-│   ├── Hero.tsx            ✅ Complete (6 avatars)
+│   ├── Header.tsx          ✅ Complete (AI Pals dropdown, Coming Soon, Pricing, updated CTAs)
+│   ├── Hero.tsx            ✅ Complete (6 avatars, glowing underline)
 │   ├── PalsOverview.tsx    ✅ Complete (Enhanced with interactive demo)
+│   ├── HowItWorks.tsx      ✅ Complete (Fully interactive demo)
 │   ├── ComingSoon.tsx      ✅ Complete (CarPal & CryptoPal)
-│   ├── HowItWorks.tsx      ✅ Complete
 │   ├── Testimonials.tsx    ✅ Complete
-│   ├── Pricing.tsx         ✅ Complete
 │   ├── FooterCTA.tsx       ✅ Complete
 │   └── ScrollToTop.tsx     ✅ Complete
 └── app/
-    └── page.tsx            ✅ Complete
+    ├── page.tsx            ✅ Complete (Optimized section order)
+    ├── pricing/
+    │   └── page.tsx        ✅ Complete (Dedicated pricing page)
+    ├── coming-soon/
+    │   └── page.tsx        ✅ Complete (Dedicated coming soon page)
+    └── testers/
+        └── page.tsx        ✅ Complete (Beta testers showcase page)
 ```
 
 ### Key Features:
@@ -85,6 +134,9 @@ src/
 - **Next.js Image**: Optimized image loading
 - **Responsive Grid**: Mobile-first layout approach
 - **Interactive Demo**: Motion-style toggle system for AI Pals
+- **Real-time Countdown**: Synchronized with auto-advance timing
+- **Smart State Management**: User interaction tracking and inactivity handling
+- **Professional Spacing**: Optimized margins and padding for cohesive flow
 
 ## AI Pal Integration
 
@@ -110,20 +162,26 @@ src/
 ## Next Steps for Live Testing
 
 ### Immediate Priorities (Next Session):
-1. **Complete Beta Access System** (2-3 hours)
-   - Implement email collection form in Coming Soon section
-   - Create simple admin dashboard for user management
-   - Set up basic waitlist notifications
+1. **Mobile Optimization (CRITICAL - 3-4 hours)**
+   - **Component-by-component mobile fixes** for all landing page components
+   - **Touch-friendly interactions** and responsive layouts
+   - **Mobile-first design** implementation
+   - **Cross-device testing** (iOS, Android, tablets)
 
-2. **Final Mobile Testing** (1-2 hours)
-   - Test on various devices and screen sizes
-   - Optimize touch interactions
-   - Ensure smooth performance on mobile
+2. **Landing Page Completion (2-3 hours)**
+   - **Email collection system** in "Be the First" section
+   - **Final mobile testing** and optimization
+   - **Performance optimization** for mobile devices
 
-3. **Performance Optimization** (1-2 hours)
-   - Image compression and lazy loading
-   - Bundle size optimization
-   - Core Web Vitals improvement
+3. **Beta Testing Infrastructure (Day 2-3 - 3-4 hours)**
+   - **Basic beta system** for MoneyPal testing
+   - **Admin dashboard** and approval system
+   - **Mobile-optimized** beta user experience
+
+4. **Production Deployment (Day 4-5 - 2-3 hours)**
+   - **Vercel deployment** to yourpals.app and ai.yourpals.app
+   - **Domain configuration** and SSL setup
+   - **Performance monitoring** and analytics
 
 ### Pre-Launch Checklist:
 - [ ] Beta access email collection working

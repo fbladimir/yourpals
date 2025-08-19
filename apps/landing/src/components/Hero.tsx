@@ -52,32 +52,32 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="inline-flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blueA/20 via-purple-500/20 to-tealA/20 p-1.5 sm:p-2 ring-1 ring-white/20 backdrop-blur-sm shadow-lg"
           >
-            {/* New indicator with pulse animation */}
+            {/* Beta indicator with pulse animation */}
             <motion.div 
-              className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-green-400/20 to-emerald-500/20 ring-1 ring-green-400/30"
+              className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-orange-400/20 to-yellow-500/20 ring-1 ring-orange-400/30"
               animate={{ 
                 boxShadow: [
-                  "0 0 0 0 rgba(34, 197, 94, 0.4)",
-                  "0 0 0 8px rgba(34, 197, 94, 0)",
-                  "0 0 0 0 rgba(34, 197, 94, 0)"
+                  "0 0 0 0 rgba(251, 146, 60, 0.4)",
+                  "0 0 0 8px rgba(251, 146, 60, 0)",
+                  "0 0 0 0 rgba(251, 146, 60, 0)"
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <motion.div 
-                className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-green-400"
+                className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-orange-400"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="text-xs sm:text-sm font-semibold text-green-300">Live Now</span>
+              <span className="text-xs sm:text-sm font-semibold text-orange-300">Beta Access</span>
             </motion.div>
             
             {/* Separator */}
             <div className="h-4 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
             
-            {/* AI Pals indicator */}
-            <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blueA/20 to-blueB/20 ring-1 ring-blueA/30">
-              <span className="text-xs sm:text-sm text-white/80">AI Platform Ready</span>
+            {/* Testers indicator */}
+            <Link href="/testers" className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blueA/20 to-blueB/20 ring-1 ring-blueA/30 hover:ring-blueA/50 transition-all duration-300 group">
+              <span className="text-xs sm:text-sm text-white/80 group-hover:text-white transition-colors">Meet Our Testers</span>
               <motion.div 
                 className="text-xs sm:text-sm font-bold text-blueA"
                 animate={{ 
@@ -89,9 +89,9 @@ export default function Hero() {
                 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
-                ✨
+                👥
               </motion.div>
-            </div>
+            </Link>
           </motion.div>
           
           {/* Main headline */}
