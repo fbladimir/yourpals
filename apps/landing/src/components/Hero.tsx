@@ -100,13 +100,45 @@ export default function Hero() {
             <span className="bg-gradient-to-r from-blueA to-purple-500 bg-clip-text text-transparent">
               AI Pals
             </span>{" "}
-            for Your Everyday Needs
+            for Your{" "}
+            <span className="relative">
+              Everyday
+              {/* Glowing underline effect */}
+              <motion.div
+                className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full"
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ 
+                  scaleX: [0, 1, 0.8, 1],
+                  opacity: [0, 1, 0.8, 1]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              {/* Glow effect */}
+              <motion.div
+                className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 rounded-full blur-sm opacity-60"
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ 
+                  scaleX: [0, 1, 0.8, 1],
+                  opacity: [0, 0.6, 0.4, 0.6]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.1
+                }}
+              />
+            </span>{" "}
+            Needs
           </h1>
           
           {/* Description */}
           <p className="mt-4 sm:mt-6 max-w-lg sm:max-w-xl lg:max-w-lg text-base sm:text-lg text-white/70 leading-relaxed mx-auto lg:mx-0">
-            Meet your new AI companions who'll help you with everything from managing money to cooking meals, 
-            running your business to taking care of your car. Build meaningful relationships with AI that actually understands you.
+            AI companions that think ahead, automate your daily tasks, and make life easier.
           </p>
           
           {/* CTA Buttons */}

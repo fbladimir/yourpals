@@ -23,8 +23,8 @@ export default function Page() {
         <Header />
         <Hero />
         <PalsOverview />
-        <ComingSoon />
         <HowItWorks />
+        <ComingSoon />
         <Testimonials />
         <Pricing />
         <FooterCTA />

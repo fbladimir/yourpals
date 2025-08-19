@@ -196,11 +196,11 @@ export default function PalsOverview() {
   }, []);
 
   return (
-    <section id="ai-pals-overview" className="py-20 sm:py-24 md:py-28 lg:py-32 relative overflow-hidden">
+    <section id="ai-pals-overview" className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-8 sm:pb-12 relative overflow-hidden">
       {/* Background Elements - Subtle and flowing */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/2 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500/2 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-8 right-10 w-40 h-40 bg-purple-500/2 rounded-full blur-3xl"></div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
@@ -209,7 +209,7 @@ export default function PalsOverview() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16 sm:mb-20"
+          className="text-center mb-8 sm:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
