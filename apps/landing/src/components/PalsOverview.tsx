@@ -250,6 +250,60 @@ export default function PalsOverview() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="relative"
           >
+            {/* AI Pal Selector - Positioned on top of demo container */}
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+              <div className="relative">
+                <button
+                  onClick={() => setSelectedPal(selectedPal === 'moneypal' ? 'sellerpal' : selectedPal === 'sellerpal' ? 'cookingpal' : selectedPal === 'cookingpal' ? 'yourpal' : 'moneypal')}
+                  className="flex items-center gap-3 px-4 py-2 bg-gray-800/90 backdrop-blur-sm border border-gray-600/50 rounded-full text-white hover:bg-gray-700/90 transition-all duration-200 shadow-lg touch-manipulation"
+                >
+                  <Image
+                    src={currentPal.avatar}
+                    alt={currentPal.name}
+                    width={24}
+                    height={24}
+                    className="rounded-full"
+                  />
+                  <span className="text-sm font-medium">{currentPal.name}</span>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {/* Quick Pal Switcher */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/50 rounded-xl shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+                  <div className="p-2 space-y-1">
+                    {aiPals.map((pal) => (
+                      <button
+                        key={pal.id}
+                        onClick={() => setSelectedPal(pal.id)}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
+                          selectedPal === pal.id
+                            ? `bg-${pal.color}-500/20 text-white border border-${pal.color}-400/30`
+                            : 'text-gray-300 hover:bg-gray-700/50'
+                        }`}
+                      >
+                        <Image
+                          src={pal.avatar}
+                          alt={pal.name}
+                          width={20}
+                          height={20}
+                          className="rounded-full"
+                        />
+                        <div className="flex-1">
+                          <div className="text-sm font-medium">{pal.name}</div>
+                          <div className="text-xs text-gray-400">{pal.role}</div>
+                        </div>
+                        {selectedPal === pal.id && (
+                          <div className={`w-2 h-2 bg-${pal.color}-400 rounded-full`} />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Demo Container */}
             <div className="relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 rounded-2xl p-8 backdrop-blur-sm shadow-2xl">
               {/* AI Pal Avatar */}
@@ -268,12 +322,15 @@ export default function PalsOverview() {
                     height={120}
                     className="rounded-full shadow-2xl"
                   />
-                  <div className={`absolute -top-2 -right-2 bg-${currentPal.accentColor}-500 text-white text-xs px-3 py-1 rounded-full font-semibold`}>
-                    Active
+                </div>
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-white mb-2">{currentPal.name}</h3>
+                  <p className="text-gray-400 mb-3">{currentPal.role}</p>
+                  <div className={`inline-flex items-center gap-2 bg-${currentPal.accentColor}-500/20 text-${currentPal.accentColor}-400 text-xs px-3 py-1.5 rounded-full font-medium border border-${currentPal.accentColor}-400/30`}>
+                    <div className={`w-2 h-2 bg-${currentPal.accentColor}-400 rounded-full animate-pulse`}></div>
+                    <span>Currently Active</span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mt-4">{currentPal.name}</h3>
-                <p className="text-gray-400">{currentPal.role}</p>
               </motion.div>
 
               {/* Demo Interface */}
@@ -314,36 +371,19 @@ export default function PalsOverview() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="space-y-6"
           >
-            {/* AI Pal Selector */}
-            <div className="flex flex-wrap gap-3 mb-8">
-              {aiPals.map((pal) => (
-                <button
-                  key={pal.id}
-                  onClick={() => setSelectedPal(pal.id)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    selectedPal === pal.id
-                      ? `bg-${pal.color}-500 text-white shadow-lg`
-                      : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-600/50'
-                  }`}
-                >
-                  {pal.name}
-                </button>
-              ))}
-            </div>
-
-            {/* Capability Cards */}
-            <div className="space-y-4">
+            {/* Capability Cards - Desktop Grid Layout */}
+            <div className="hidden md:grid grid-cols-2 gap-4">
               {currentPal.capabilities.map((capability, index) => (
                 <motion.div
                   key={capability.title}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`relative cursor-pointer transition-all duration-300 ${
+                  className={`relative cursor-pointer transition-all duration-300 h-full ${
                     activeCapability === index
                       ? `bg-gradient-to-r from-${currentPal.color}-500/20 to-${currentPal.color}-600/10 border-${currentPal.color}-400/30`
                       : 'bg-gray-800/30 border-gray-700/50 hover:bg-gray-700/30'
-                  } border rounded-xl p-6 group`}
+                  } border rounded-xl p-4 group`}
                   onClick={() => setActiveCapability(index)}
                 >
                   {/* Active Indicator */}
@@ -354,46 +394,134 @@ export default function PalsOverview() {
                     />
                   )}
 
-                  <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-lg bg-${currentPal.color}-500/20 border border-${currentPal.color}-400/30`}>
-                      <capability.icon className={`w-6 h-6 text-${currentPal.accentColor}-400`} />
+                  <div className="flex flex-col h-full">
+                    {/* Header with Icon and Title */}
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className={`p-2 rounded-lg bg-${currentPal.color}-500/20 border border-${currentPal.color}-400/30 flex-shrink-0`}>
+                        <capability.icon className={`w-5 h-5 text-${currentPal.accentColor}-400`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-semibold text-white mb-1 leading-tight">{capability.title}</h3>
+                      </div>
+                      <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${
+                        activeCapability === index ? 'rotate-90' : ''
+                      }`} />
                     </div>
                     
+                    {/* Description - Always Visible */}
                     <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-white">{capability.title}</h3>
-                        <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                      <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
+                        {capability.description}
+                      </p>
+                    </div>
+
+                    {/* Expandable Details */}
+                    <AnimatePresence mode="wait">
+                      {activeCapability === index && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-3 pt-3 border-t border-gray-600/30"
+                        >
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            {capability.description}
+                          </p>
+                          <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                            <div className={`w-2 h-2 bg-${currentPal.color}-400 rounded-full`} />
+                            <span>AI-powered automation</span>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Capability Cards - Mobile Horizontal Scroll Only */}
+            <div className="md:hidden">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {currentPal.capabilities.map((capability, index) => (
+                  <motion.div
+                    key={capability.title}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className={`flex-shrink-0 w-80 cursor-pointer transition-all duration-300 ${
+                      activeCapability === index
+                        ? `bg-gradient-to-r from-${currentPal.color}-500/20 to-${currentPal.color}-600/10 border-${currentPal.color}-400/30`
+                        : 'bg-gray-800/30 border-gray-700/50 hover:bg-gray-700/30'
+                    } border rounded-xl p-4 group`}
+                    onClick={() => setActiveCapability(index)}
+                  >
+                    {/* Active Indicator */}
+                    {activeCapability === index && (
+                      <motion.div
+                        layoutId="mobileActiveIndicator"
+                        className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-${currentPal.color}-400 to-${currentPal.color}-600 rounded-t-xl`}
+                      />
+                    )}
+
+                    <div className="flex flex-col h-full">
+                      {/* Header with Icon and Title */}
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className={`p-2 rounded-lg bg-${currentPal.color}-500/20 border border-${currentPal.color}-400/30 flex-shrink-0`}>
+                          <capability.icon className={`w-5 h-5 text-${currentPal.accentColor}-400`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base font-semibold text-white mb-1 leading-tight">{capability.title}</h3>
+                        </div>
+                        <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform duration-200 flex-shrink-0 ${
                           activeCapability === index ? 'rotate-90' : ''
                         }`} />
                       </div>
                       
+                      {/* Description - Always Visible */}
+                      <div className="flex-1">
+                        <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
+                          {capability.description}
+                        </p>
+                      </div>
+
+                      {/* Expandable Details */}
                       <AnimatePresence mode="wait">
-                        {activeCapability === index ? (
-                          <motion.p
-                            key={capability.title}
+                        {activeCapability === index && (
+                          <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="text-gray-300 leading-relaxed"
+                            className="mt-3 pt-3 border-t border-gray-600/30"
                           >
-                            {capability.description}
-                          </motion.p>
-                        ) : (
-                          <motion.p
-                            key={`${capability.title}-collapsed`}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-gray-400 text-sm line-clamp-2"
-                          >
-                            {capability.description}
-                          </motion.p>
+                            <p className="text-gray-300 text-sm leading-relaxed">
+                              {capability.description}
+                            </p>
+                            <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                              <div className={`w-2 h-2 bg-${currentPal.color}-400 rounded-full`} />
+                              <span>AI-powered automation</span>
+                            </div>
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Mobile Scroll Indicator */}
+              <div className="text-center mt-3">
+                <div className="inline-flex items-center gap-2 text-xs text-gray-400">
+                  <span>Swipe to see more features</span>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             {/* CTA Section */}
