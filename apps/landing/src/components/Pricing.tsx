@@ -158,6 +158,91 @@ export default function Pricing() {
           ))}
         </div>
 
+        {/* Mobile-Only Enhanced Pricing Cards */}
+        <div className="lg:hidden mb-16">
+          <div className="space-y-6">
+            {plans.map((plan) => (
+              <div 
+                key={plan.name}
+                className={`relative group ${
+                  plan.popular ? 'ring-2 ring-blue-500/30' : 'ring-1 ring-white/20'
+                }`}
+              >
+                {/* Mobile Popular Badge */}
+                {plan.popular && (
+                  <div className="absolute -top-3 left-4 z-10">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-semibold shadow-lg">
+                      <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse"></span>
+                      Most Popular
+                    </div>
+                  </div>
+                )}
+
+                {/* Mobile Card */}
+                <div className={`relative rounded-2xl p-6 transition-all duration-300 ${
+                  plan.popular 
+                    ? 'bg-gradient-to-br from-white/10 to-white/5' 
+                    : 'bg-gradient-to-br from-white/5 to-white/10'
+                }`}>
+                  
+                  {/* Mobile Plan Header */}
+                  <div className="text-center mb-6">
+                    <h4 className="text-2xl font-bold text-white mb-3">
+                      {plan.name}
+                    </h4>
+                    
+                    {/* Mobile Price Display */}
+                    <div className="flex items-baseline justify-center gap-2 mb-3">
+                      <span className="text-4xl font-bold text-white">
+                        {plan.price}
+                      </span>
+                      <span className="text-lg text-white/60 font-medium">
+                        {plan.period}
+                      </span>
+                    </div>
+                    
+                    <p className="text-base text-white/70 leading-relaxed">
+                      {plan.description}
+                    </p>
+                  </div>
+
+                  {/* Mobile Features List */}
+                  <div className="mb-6">
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start gap-3">
+                          <div className="flex-shrink-0 mt-1">
+                            <div className={`h-2.5 w-2.5 rounded-full ${
+                              plan.popular ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-white/60'
+                            }`}></div>
+                          </div>
+                          <span className="text-sm text-white/80 leading-relaxed">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Mobile CTA Button */}
+                  <div className="text-center">
+                    <a
+                      href={plan.href}
+                      className={`inline-flex items-center justify-center w-full rounded-xl px-6 py-3 font-semibold text-base transition-all duration-300 touch-manipulation ${
+                        plan.popular
+                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg shadow-blue-500/25'
+                          : 'bg-white/10 hover:bg-white/20 text-white ring-1 ring-white/30'
+                      } active:scale-95`}
+                    >
+                      {plan.cta}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Enhanced Trust Indicators */}
         <div className="text-center">
           <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12 text-base lg:text-lg text-white/60">

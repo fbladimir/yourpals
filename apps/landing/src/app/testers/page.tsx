@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { 
   Star, 
   MapPin, 
@@ -17,6 +18,8 @@ import {
 import { config } from "../../lib/config";
 
 export default function TestersPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
   const testers = [
     {
       id: 1,
@@ -125,12 +128,62 @@ export default function TestersPage() {
               </nav>
 
               {/* Mobile Menu Button */}
-              <button className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors duration-200">
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors duration-200"
+              >
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
                 </svg>
               </button>
             </div>
+            
+            {/* Mobile Navigation Dropdown - Inside Header Container */}
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden mt-4 pt-4 border-t border-white/10"
+              >
+                <nav className="flex flex-col space-y-1">
+                  <Link 
+                    href="/" 
+                    className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-3 rounded-lg hover:bg-white/5 block"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  <Link 
+                    href="/pricing" 
+                    className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-3 rounded-lg hover:bg-white/5 block"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Pricing
+                  </Link>
+                  <Link 
+                    href="/coming-soon" 
+                    className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-3 rounded-lg hover:bg-white/5 block"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Coming Soon
+                  </Link>
+                  <a 
+                    href={config.aiPlatformUrl} 
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span>Try YourPals</span>
+                    <Zap className="w-4 h-4" />
+                  </a>
+                </nav>
+              </motion.div>
+            )}
           </div>
         </header>
 
@@ -201,7 +254,8 @@ export default function TestersPage() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            {/* Desktop Grid Layout */}
+            <div className="hidden lg:grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
               {testers.map((tester, index) => (
                 <motion.div
                   key={tester.id}
@@ -287,6 +341,96 @@ export default function TestersPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Mobile Horizontal Scroll Layout */}
+            <div className="lg:hidden overflow-x-auto pb-4 scrollbar-hide">
+              <div className="flex gap-4 w-max">
+                {testers.map((tester, index) => (
+                  <motion.div
+                    key={tester.id}
+                    initial={{ opacity: 0, x: 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className="w-80 flex-shrink-0 relative group"
+                  >
+                    <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-xl">
+                      {/* Header */}
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className="relative">
+                          <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg ring-2 ring-white/20">
+                            <Image
+                              src={tester.avatar}
+                              alt={`${tester.name} Avatar`}
+                              width={48}
+                              height={48}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center">
+                            <Star className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h4 className="text-lg font-bold text-white mb-1">{tester.name}</h4>
+                          <div className="flex items-center gap-2 text-white/60 text-xs mb-1">
+                            <Users className="w-3 h-3" />
+                            <span>{tester.business}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/60 text-xs">
+                            <MapPin className="w-3 h-3" />
+                            <span>{tester.location}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Status Badge */}
+                      <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-medium mb-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
+                        {tester.status}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-white/70 leading-relaxed mb-4 text-sm">
+                        {tester.description}
+                      </p>
+
+                      {/* Interests */}
+                      <div className="mb-4">
+                        <h5 className="text-xs font-semibold text-white/80 mb-2">Interested in:</h5>
+                        <div className="flex flex-wrap gap-1.5">
+                          {tester.interests.map((interest, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium"
+                            >
+                              {interest}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Testimonial */}
+                      <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+                        <p className="text-white/80 italic text-xs leading-relaxed">
+                          "{tester.testimonial}"
+                        </p>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+                        <div className="text-white/60 text-xs">
+                          Joined {tester.joinedDate}
+                        </div>
+                        <div className="text-white/60 text-xs">
+                          {tester.specialty}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -337,6 +481,33 @@ export default function TestersPage() {
                     </p>
                   </motion.div>
                 ))}
+              </div>
+
+              {/* Mobile-Only Application Steps */}
+              <div className="md:hidden mb-8">
+                <div className="space-y-6">
+                  {applySteps.map((step, index) => (
+                    <motion.div
+                      key={step.step}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                      className="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center ring-1 ring-blue-500/30 flex-shrink-0">
+                        <step.icon className="w-6 h-6 text-blue-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-white mb-2">
+                          {step.step}. {step.title}
+                        </h3>
+                        <p className="text-white/60 text-sm leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
 
               <motion.a
