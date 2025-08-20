@@ -442,12 +442,12 @@ export default function HowItWorks() {
         >
           {/* Step Progress Indicator */}
           <div className="flex justify-center mb-12">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {steps.map((step, index) => (
                 <div key={step.step} className="flex items-center">
                   <motion.button
                     onClick={() => navigateToStep(index)}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-500 cursor-pointer hover:scale-110 active:scale-95 ${
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg transition-all duration-500 cursor-pointer hover:scale-110 active:scale-95 ${
                       index <= currentStep 
                         ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg' 
                         : 'bg-white/10 text-white/40 hover:bg-white/20 hover:text-white/60'
@@ -459,14 +459,14 @@ export default function HowItWorks() {
                     {step.step}
                   </motion.button>
                   {index < steps.length - 1 && (
-                    <div className={`w-16 h-1 mx-4 transition-all duration-500 ${
+                    <div className={`w-8 sm:w-16 h-1 mx-2 sm:mx-4 transition-all duration-500 ${
                       index < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-white/10'
                     }`} />
                   )}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
           {/* Auto-advance indicator */}
           {!userInteracted && (
@@ -556,6 +556,47 @@ export default function HowItWorks() {
                   </motion.button>
                 </motion.div>
               )}
+
+              {/* Mobile-Only Step Navigation */}
+              <div className="md:hidden mt-8">
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => navigateToStep(Math.max(0, currentStep - 1))}
+                    disabled={currentStep === 0}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 touch-manipulation ${
+                      currentStep === 0
+                        ? 'bg-white/5 text-white/30 cursor-not-allowed'
+                        : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white/90'
+                    }`}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Previous</span>
+                  </button>
+                  
+                  <div className="text-center">
+                    <span className="text-sm text-white/60">
+                      Step {currentStep + 1} of {steps.length}
+                    </span>
+                  </div>
+                  
+                  <button
+                    onClick={() => navigateToStep(Math.min(steps.length - 1, currentStep + 1))}
+                    disabled={currentStep === steps.length - 1}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 touch-manipulation ${
+                      currentStep === steps.length - 1
+                        ? 'bg-white/5 text-white/30 cursor-not-allowed'
+                        : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white/90'
+                    }`}
+                  >
+                    <span>Next</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
 
               {/* Step 2: Connect what it needs */}
               {currentStep === 1 && (

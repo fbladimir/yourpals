@@ -473,7 +473,7 @@ NEXTAUTH_URL=https://yourpals.app
 ### **Today (Previous Session Issues):**
 - ✅ **Header Component** - Hamburger menu, mobile navigation, AI Pals dropdown  
 - ✅ **Hero Section** - COMPLETED: Mobile avatar section with visual cards, smooth floating animations, proper spacing
-- ✅ **Pals Overview** - COMPLETED: Mobile-optimized layout with touch-friendly interactions, simplified demo
+- ✅ **Pals Overview** - COMPLETED: Mobile horizontal scroll layout, redesigned active status indicator, desktop grid preserved
 - ⏳ **How It Works** - Mobile step view, touch-friendly navigation
 
 ### **Critical Issue Learned:**
@@ -489,14 +489,13 @@ NEXTAUTH_URL=https://yourpals.app
 - **Desktop Protection**: Right-side floating avatars hidden on mobile (`hidden md:flex`)
 
 ### **Pals Overview Mobile Optimization - COMPLETED ✅:**
-- **Mobile-Only Section**: Added using `lg:hidden` to preserve desktop layout
-- **Touch-Friendly AI Pal Selector**: Horizontal scrollable buttons with avatars and names
-- **Simplified Mobile Showcase**: Compact AI Pal display with active indicator
-- **Mobile Capability Preview**: Shows first 2 capabilities in condensed format
-- **Full Capability Cards**: All capabilities displayed in mobile-optimized cards
-- **Touch Optimization**: `touch-manipulation` class and appropriate sizing
-- **Responsive Design**: Smaller text, compact spacing for mobile screens
-- **Desktop Protection**: Complex interactive demo remains untouched for larger screens
+- **Mobile-Only Horizontal Scroll**: Added using `md:hidden` for capability cards
+- **Touch-Friendly Navigation**: 320px wide cards with smooth horizontal scrolling
+- **Proper Scroll Indicators**: Left/right arrows for horizontal scroll direction
+- **Redesigned Active Status**: Moved "Currently Active" indicator below text to eliminate overlap
+- **Desktop Grid Preserved**: 2-column grid layout remains untouched for desktop users
+- **No Duplication**: Single, clean layout for each device type
+- **Responsive Design**: Mobile gets horizontal scroll, desktop gets efficient grid
 
 ### **Next Session:**
 - **How It Works** - Mobile step view, touch-friendly navigation
