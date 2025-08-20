@@ -94,228 +94,86 @@ export default function Hero() {
             </Link>
           </motion.div>
           
-          {/* Mobile-Only Avatar Section - Moved here under Beta Access */}
+          {/* Mobile-Only Avatar Section - Visual Cards */}
           <div className="md:hidden mt-4 sm:mt-6">
-            {/* Featured AI Pals Title */}
-            <div className="text-center mb-4">
-              <h3 className="text-lg sm:text-xl font-semibold text-white/90 mb-1">
-                Featured AI Pals
-              </h3>
-              <p className="text-xs sm:text-sm text-white/60">
-                Meet your intelligent companions
-              </p>
-            </div>
-            
-            <div className="flex justify-center items-center space-x-4 sm:space-x-6">
-              {/* MoneyPal Avatar */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: [0, -8, 0],
-                  rotate: [0, 2, -2, 0]
-                }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.2,
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  },
-                  rotate: {
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -12,
-                  transition: {
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20
-                  }
-                }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent('selectPal', { detail: 'moneypal' }));
-                  }, 500);
-                }}
-                className="cursor-pointer touch-manipulation"
-              >
-                <div className="relative">
-                  <Image
-                    src="/moneypalAvatar.PNG"
-                    alt="MoneyPal - Financial Co-Pilot"
-                    width={64}
-                    height={64}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-lg ring-2 ring-green-400/30"
-                  />
-                  {/* Enhanced glow effect with animation */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              {[
+                { name: "MoneyPal", avatar: "/moneypalAvatar.PNG", color: "green" },
+                { name: "YourPal", avatar: "/yourpalAvatar.PNG", color: "purple" },
+                { name: "SellerPal", avatar: "/sellerpalAvatar.png", color: "orange" }
+              ].map((pal, index) => (
+                <motion.div
+                  key={pal.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  className="relative group cursor-pointer"
+                  onClick={() => {
+                    if (pal.name === 'MoneyPal' || pal.name === 'SellerPal') {
+                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                        window.dispatchEvent(new CustomEvent('selectPal', { detail: pal.name.toLowerCase() }));
+                      }, 500);
+                    } else if (pal.name === 'YourPal') {
+                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                        window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
+                      }, 500);
+                    }
+                  }}
+                >
+                  {/* Floating Avatar with Enhanced Glow */}
                   <motion.div 
-                    className="absolute inset-0 rounded-full bg-green-400/20 blur-md scale-125"
+                    className="relative"
                     animate={{
-                      scale: [1.25, 1.4, 1.25],
-                      opacity: [0.2, 0.4, 0.2]
+                      y: [0, -6, 0],
+                      rotate: [0, 1, -1, 0]
                     }}
                     transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
-                </div>
-                <p className="text-xs sm:text-sm text-center mt-2 text-white/80 font-medium">MoneyPal</p>
-              </motion.div>
-              
-              {/* YourPal Avatar */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: [0, -6, 0],
-                  rotate: [0, -1, 1, 0]
-                }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.4,
-                  y: {
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5
-                  },
-                  rotate: {
-                    duration: 7,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -10,
-                  transition: {
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20
-                  }
-                }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
-                  }, 500);
-                }}
-                className="cursor-pointer touch-manipulation"
-              >
-                <div className="relative">
-                  <Image
-                    src="/yourpalAvatar.PNG"
-                    alt="YourPal - AI Platform Manager"
-                    width={64}
-                    height={64}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-lg ring-2 ring-purple-400/30"
-                  />
-                  {/* Enhanced glow effect with animation */}
-                  <motion.div 
-                    className="absolute inset-0 rounded-full bg-purple-400/20 blur-md scale-125"
-                    animate={{
-                      scale: [1.25, 1.5, 1.25],
-                      opacity: [0.2, 0.5, 0.2]
-                    }}
-                    transition={{
-                      duration: 4,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: 0.5
+                      delay: index * 1.5
                     }}
-                  />
-                </div>
-                <p className="text-xs sm:text-sm text-center mt-2 text-white/80 font-medium">YourPal</p>
-              </motion.div>
-              
-              {/* SellerPal Avatar */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: [0, -10, 0],
-                  rotate: [0, 3, -3, 0]
-                }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.6,
-                  y: {
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
-                  },
-                  rotate: {
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -14,
-                  transition: {
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20
-                  }
-                }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent('selectPal', { detail: 'sellerpal' }));
-                  }, 500);
-                }}
-                className="cursor-pointer touch-manipulation"
-              >
-                <div className="relative">
-                  <Image
-                    src="/sellerpalAvatar.png"
-                    alt="SellerPal - E-commerce Assistant"
-                    width={64}
-                    height={64}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-lg ring-2 ring-orange-400/30"
-                  />
-                  {/* Enhanced glow effect with animation */}
-                  <motion.div 
-                    className="absolute inset-0 rounded-full bg-orange-400/20 blur-md scale-125"
-                    animate={{
-                      scale: [1.25, 1.45, 1.25],
-                      opacity: [0.2, 0.45, 0.2]
-                    }}
-                    transition={{
-                      duration: 3.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 1
-                    }}
-                  />
-                </div>
-                <p className="text-xs sm:text-sm text-center mt-2 text-white/80 font-medium">SellerPal</p>
-              </motion.div>
+                  >
+                    <Image
+                      src={pal.avatar}
+                      alt={pal.name}
+                      width={64}
+                      height={64}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-lg ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-300"
+                    />
+                    {/* Animated Glow Ring - Smoother and Less Invasive */}
+                    <motion.div 
+                      className={`absolute inset-0 rounded-full bg-${pal.color}-400/20 blur-md scale-125`}
+                      animate={{
+                        scale: [1.25, 1.3, 1.25],
+                        opacity: [0.2, 0.3, 0.2]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.8
+                      }}
+                    />
+                  </motion.div>
+                  
+                  {/* Floating Name Badge - Closer to Avatar */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 + index * 0.1 }}
+                    className="mt-2 text-center"
+                  >
+                    <span className="text-xs font-medium text-white/90 bg-white/5 backdrop-blur-sm px-2 py-1 rounded-full border border-white/10">
+                      {pal.name}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              ))}
             </div>
-            
-            {/* Mobile subtitle */}
-            <p className="text-center mt-3 text-xs sm:text-sm text-white/60">
-              Tap to learn more about each AI Pal
-            </p>
           </div>
           
           {/* Main headline */}
