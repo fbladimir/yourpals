@@ -3,6 +3,17 @@
 ## Overview
 This document outlines the architecture for managing beta testers, from registration through approval and access control.
 
+## Current Beta Testers
+1. **Dylan** - Eos Gym Member & Accounting Professional
+   - **Interests**: MoneyPal, FitnessPal
+   - **Specialty**: Personal Finance & Fitness
+   - **Use Case**: Personal finance management and workout optimization
+
+2. **Jorge Betancourt** - AI Research & Data Science
+   - **Interests**: All AI Pals (MoneyPal, SellerPal, CookingPal, YourPal)
+   - **Specialty**: AI Research & Data Science
+   - **Use Case**: Comprehensive AI capabilities testing and research workflow enhancement
+
 ## Current Beta Flow
 1. **User registers** → Goes to `ai.yourpals.app` and creates account
 2. **User completes onboarding** → Fills out forms, preferences, etc.

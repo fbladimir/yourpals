@@ -83,7 +83,7 @@ The landing page serves as the main entry point for YourPals, showcasing our AI 
 - **Smart CTA handling**: FREE plan directs to app, paid plans show "coming soon" message
 - **Beta tester showcase**: Updated hero badge to show "Beta Access" + "Meet Our Testers" 
 - **Dedicated testers page** at `/testers` featuring current beta testers and application process
-- **Updated tester profiles** to reflect personal use cases (e.g., Dylan as gym member + accounting professional)
+- **Updated tester profiles** to reflect personal use cases (e.g., Dylan as gym member + accounting professional, Jorge as AI researcher)
 - **"Apply to Test" navigation** added to header directing to testers page application section
 - **Updated beta application flow**: Register → Complete onboarding → Wait for approval → Email notification → Access granted
 

@@ -117,7 +117,7 @@ export default function HowItWorks() {
       accentColor: "text-blue-400"
     },
     {
-      step: "2",
+      step: "2", 
       title: "Connect what it needs",
       description: "Securely link your accounts, services, and data sources.",
       icon: "🔗",
@@ -463,10 +463,10 @@ export default function HowItWorks() {
                       index < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-white/10'
                     }`} />
                   )}
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
+        </div>
 
           {/* Auto-advance indicator */}
           {!userInteracted && (
@@ -606,8 +606,8 @@ export default function HowItWorks() {
                           </div>
                         </motion.div>
                       ))}
-                    </div>
-
+                  </div>
+                  
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -658,8 +658,8 @@ export default function HowItWorks() {
                         <h4 className="text-xl font-semibold text-white">{currentPal.name}</h4>
                         <p className="text-white/70">Analyzing your data...</p>
                       </div>
-                    </div>
-                    
+                </div>
+
                     <motion.div
                       key={currentInsightIndex}
                       initial={{ opacity: 0, x: 20 }}
@@ -716,9 +716,9 @@ export default function HowItWorks() {
                       <div className="text-left">
                         <h4 className="text-xl font-semibold text-white">{currentPal.name}</h4>
                         <p className="text-white/70">Working automatically...</p>
-                      </div>
-                    </div>
-                    
+              </div>
+          </div>
+
                     {!showAutomationDashboard ? (
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -780,8 +780,8 @@ export default function HowItWorks() {
                                   </span>
                                 </div>
                               </motion.div>
-                            ))}
-                          </div>
+            ))}
+          </div>
                         </div>
                       </motion.div>
                     )}
@@ -826,13 +826,13 @@ export default function HowItWorks() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a 
-                href={config.aiPlatformUrl}
+          <a 
+            href={config.aiPlatformUrl}
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-lg shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 cursor-pointer group hover:scale-105 active:scale-95"
-              >
+          >
                 <span>Try {currentPal.name} Now</span>
                 <motion.span
-                  className="group-hover:translate-x-1 transition-transform duration-300"
+              className="group-hover:translate-x-1 transition-transform duration-300"
                   whileHover={{ x: 5 }}
                 >
                   →
@@ -850,8 +850,8 @@ export default function HowItWorks() {
             
             <p className="mt-6 text-white/50 text-sm">
               Start your free trial today. No credit card required.
-            </p>
-          </div>
+          </p>
+        </div>
         </motion.div>
       </div>
     </section>

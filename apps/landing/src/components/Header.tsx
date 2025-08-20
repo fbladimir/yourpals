@@ -162,51 +162,67 @@ export default function Header() {
                             onMouseEnter={() => setShowAIPalsDropdown(true)}
                             onMouseLeave={() => setShowAIPalsDropdown(false)}
                           >
-                            <div className="grid grid-cols-2 gap-3 px-4">
-                              {aiPals.map((pal, index) => (
-                                <motion.div
-                                  key={pal.name}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ duration: 0.2, delay: index * 0.05 }}
-                                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 transition-all duration-200 cursor-pointer group"
-                                  onClick={() => {
-                                    setShowAIPalsDropdown(false);
-                                    if (pal.name === 'MoneyPal' || pal.name === 'SellerPal' || pal.name === 'CookingPal') {
-                                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
-                                      setTimeout(() => {
-                                        window.dispatchEvent(new CustomEvent('selectPal', { detail: pal.name.toLowerCase() }));
-                                      }, 500);
-                                    } else if (pal.name === 'CarPal' || pal.name === 'CryptoPal') {
-                                      document.getElementById('coming-soon')?.scrollIntoView({ behavior: 'smooth' });
-                                    } else if (pal.name === 'YourPal') {
-                                      document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
-                                      setTimeout(() => {
-                                        window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
-                                      }, 500);
-                                    }
-                                  }}
-                                >
-                                  <div className="relative">
-                                    <Image
-                                      src={pal.avatar}
-                                      alt={pal.name}
-                                      width={40}
-                                      height={40}
-                                      className="rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-200"
-                                    />
-                                    <div className={`absolute -top-1 -right-1 w-3 h-3 bg-${pal.color}-500 rounded-full border-2 border-gray-900/95`}></div>
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="font-semibold text-white text-sm group-hover:text-white transition-colors duration-200">
-                                      {pal.name}
+                            {/* Scrollable AI Pals Grid */}
+                            <div className="px-4">
+                              <div className="grid grid-cols-1 gap-3 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
+                                {aiPals.map((pal, index) => (
+                                  <motion.div
+                                    key={pal.name}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 transition-all duration-200 cursor-pointer group"
+                                    onClick={() => {
+                                      setShowAIPalsDropdown(false);
+                                      if (pal.name === 'MoneyPal' || pal.name === 'SellerPal' || pal.name === 'CookingPal') {
+                                        document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                        setTimeout(() => {
+                                          window.dispatchEvent(new CustomEvent('selectPal', { detail: pal.name.toLowerCase() }));
+                                        }, 500);
+                                      } else if (pal.name === 'CarPal' || pal.name === 'CryptoPal') {
+                                        document.getElementById('coming-soon')?.scrollIntoView({ behavior: 'smooth' });
+                                      } else if (pal.name === 'YourPal') {
+                                        document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                        setTimeout(() => {
+                                          window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
+                                        }, 500);
+                                      }
+                                    }}
+                                  >
+                                    <div className="relative">
+                                      <Image
+                                        src={pal.avatar}
+                                        alt={pal.name}
+                                        width={40}
+                                        height={40}
+                                        className="rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-200"
+                                      />
+                                      <div className={`absolute -top-1 -right-1 w-3 h-3 bg-${pal.color}-500 rounded-full border-2 border-gray-900/95`}></div>
                                     </div>
-                                    <div className="text-white/80 text-xs group-hover:text-white/90 transition-colors duration-200 truncate">
-                                      {pal.role}
+                                    <div className="flex-1 min-w-0">
+                                      <div className="font-semibold text-white text-sm group-hover:text-white transition-colors duration-200">
+                                        {pal.name}
+                                      </div>
+                                      <div className="text-white/80 text-xs group-hover:text-white/90 transition-colors duration-200 truncate">
+                                        {pal.role}
+                                      </div>
                                     </div>
-                                  </div>
-                                </motion.div>
-                              ))}
+                                  </motion.div>
+                                ))}
+                              </div>
+                              
+                              {/* Scroll Indicator */}
+                              <div className="mt-3 pt-3 border-t border-white/10">
+                                <div className="flex items-center justify-between text-xs text-white/60">
+                                  <span>Showing {Math.min(3, aiPals.length)} of {aiPals.length}</span>
+                                  <span className="flex items-center gap-1">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                    </svg>
+                                    Scroll
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </motion.div>
                         )}
@@ -214,10 +230,10 @@ export default function Header() {
                     </div>
                   ) : (
                     <Link 
-                      href={n.href} 
-                      className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
-                      onClick={() => setOpen(false)}
-                    >
+                  href={n.href} 
+                  className="hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
+                  onClick={() => setOpen(false)}
+                >
                       {n.name}
                     </Link>
                   )}
@@ -343,7 +359,8 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden p-2 text-white/80 hover:text-white transition-colors duration-200"
+              className="md:hidden p-3 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg touch-manipulation"
+              aria-label="Toggle mobile menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {open ? (
@@ -365,20 +382,117 @@ export default function Header() {
                 transition={{ duration: 0.3 }}
                 className="md:hidden mt-4 pt-4 border-t border-white/10"
               >
-                <nav className="flex flex-col space-y-2">
+                <nav className="flex flex-col space-y-1">
                   {nav.map(n => (
-                    <Link
-                      key={n.href}
+                    <div key={n.href}>
+                      {n.hasDropdown ? (
+                        <div className="relative">
+                          <button
+                            onClick={() => setShowAIPalsDropdown(!showAIPalsDropdown)}
+                            className="w-full text-left text-white/80 hover:text-white transition-colors duration-200 px-3 py-3 rounded-lg hover:bg-white/5 flex items-center justify-between touch-manipulation"
+                          >
+                            {n.name}
+                            <svg 
+                              className={`w-4 h-4 transition-transform duration-200 ${showAIPalsDropdown ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          
+                          {/* Mobile AI Pals Dropdown */}
+                          <AnimatePresence>
+                            {showAIPalsDropdown && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="ml-4 mt-2 space-y-2 overflow-hidden"
+                              >
+                                {/* Scrollable Mobile AI Pals */}
+                                <div className="max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+                                  <div className="space-y-2 px-3">
+                                    {aiPals.map((pal, index) => (
+                                      <motion.div
+                                        key={pal.name}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.2, delay: index * 0.05 }}
+                                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all duration-200 cursor-pointer touch-manipulation"
+                                        onClick={() => {
+                                          setShowAIPalsDropdown(false);
+                                          setOpen(false);
+                                          if (pal.name === 'MoneyPal' || pal.name === 'SellerPal' || pal.name === 'CookingPal') {
+                                            document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                            setTimeout(() => {
+                                              window.dispatchEvent(new CustomEvent('selectPal', { detail: pal.name.toLowerCase() }));
+                                            }, 500);
+                                          } else if (pal.name === 'CarPal' || pal.name === 'CryptoPal') {
+                                            document.getElementById('coming-soon')?.scrollIntoView({ behavior: 'smooth' });
+                                          } else if (pal.name === 'YourPal') {
+                                            document.getElementById('ai-pals-overview')?.scrollIntoView({ behavior: 'smooth' });
+                                            setTimeout(() => {
+                                              window.dispatchEvent(new CustomEvent('selectPal', { detail: 'yourpal' }));
+                                            }, 500);
+                                          }
+                                        }}
+                                      >
+                                        <div className="relative">
+                                          <Image
+                                            src={pal.avatar}
+                                            alt={pal.name}
+                                            width={32}
+                                            height={32}
+                                            className="rounded-full ring-2 ring-white/20"
+                                          />
+                                          <div className={`absolute -top-1 -right-1 w-2.5 h-2.5 bg-${pal.color}-500 rounded-full border border-gray-900/95`}></div>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="font-medium text-white text-sm">
+                                            {pal.name}
+                                          </div>
+                                          <div className="text-white/70 text-xs truncate">
+                                            {pal.role}
+                                          </div>
+                                        </div>
+                                      </motion.div>
+                                    ))}
+                                  </div>
+                                </div>
+                                
+                                {/* Mobile Scroll Indicator */}
+                                <div className="px-3 pt-2 border-t border-white/10">
+                                  <div className="flex items-center justify-between text-xs text-white/60">
+                                    <span>Showing {Math.min(3, aiPals.length)} of {aiPals.length}</span>
+                                    <span className="flex items-center gap-1">
+                                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                      </svg>
+                                      Scroll
+                                    </span>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
                       href={n.href}
-                      className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/5"
+                          className="text-white/80 hover:text-white transition-colors duration-200 px-3 py-3 rounded-lg hover:bg-white/5 block touch-manipulation"
                       onClick={() => setOpen(false)}
                     >
-                      {n.name}
-                    </Link>
+                          {n.name}
+                        </Link>
+                      )}
+                    </div>
                   ))}
                   
                   {/* Mobile Auth Section */}
-                  <div className="pt-2 border-t border-white/10">
+                  <div className="pt-3 border-t border-white/10">
                     {!loading && isSignedIn ? (
                       <div className="space-y-2">
                         <button
@@ -386,7 +500,7 @@ export default function Header() {
                             setShowAccountModal(true);
                             setOpen(false);
                           }}
-                          className="w-full text-left px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                          className="w-full text-left px-3 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200 touch-manipulation"
                         >
                           Account Settings
                         </button>
@@ -395,7 +509,7 @@ export default function Header() {
                             router.push(config.aiPlatformUrl);
                             setOpen(false);
                           }}
-                          className="w-full text-left px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                          className="w-full text-left px-3 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200 touch-manipulation"
                         >
                           Go to Dashboard
                         </button>
@@ -404,7 +518,7 @@ export default function Header() {
                             handleSignOut();
                             setOpen(false);
                           }}
-                          className="w-full text-left px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors duration-200"
+                          className="w-full text-left px-3 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors duration-200 touch-manipulation"
                         >
                           Sign Out
                         </button>
@@ -413,14 +527,14 @@ export default function Header() {
                       <div className="space-y-2">
                         <a
                           href={config.aiPlatformUrl}
-                          className="block px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                          className="block px-3 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200 touch-manipulation"
                           onClick={() => setOpen(false)}
                         >
                           Login
                         </a>
                         <a
                           href={config.aiPlatformUrl}
-                          className="block px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+                          className="block px-3 py-3 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center hover:from-blue-700 hover:to-purple-700 transition-all duration-200 touch-manipulation"
                           onClick={() => setOpen(false)}
                         >
                           Get Started

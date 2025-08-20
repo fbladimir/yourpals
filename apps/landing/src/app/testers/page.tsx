@@ -30,6 +30,19 @@ export default function TestersPage() {
       joinedDate: "December 2024",
       status: "Active Beta Tester",
       specialty: "Personal Finance & Fitness"
+    },
+    {
+      id: 2,
+      name: "Jorge Betancourt",
+      business: "AI Research & Data Science",
+      location: "Computer Science Researcher",
+      avatar: "/yourpalAvatar.PNG", // Using placeholder for now
+      description: "Jorge is a Master's in Computer Science graduate working as a researcher in AI and data science. He's excited to experience the AI capabilities and automation features of every YourPals app to understand how they can enhance his research and daily workflow.",
+      interests: ["MoneyPal", "SellerPal", "CookingPal", "YourPal", "All AI Features"],
+      testimonial: "As someone working in AI research, I'm fascinated to see how YourPals implements intelligent automation and AI assistance. I want to explore every aspect of these AI companions!",
+      joinedDate: "December 2024",
+      status: "Active Beta Tester",
+      specialty: "AI Research & Data Science"
     }
   ];
 
