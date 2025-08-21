@@ -387,6 +387,14 @@ export default function MoneyPalPage() {
   const [isTestMode, setIsTestMode] = useState(false)
   const [allCardsFlipped, setAllCardsFlipped] = useState(false)
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set())
+  
+  // Mobile Onboarding State
+  const [showMobileOnboarding, setShowMobileOnboarding] = useState(false)
+  const [onboardingStep, setOnboardingStep] = useState(0)
+  const [onboardingData, setOnboardingData] = useState({
+    setupMethod: '',
+    hasCompletedSetup: false
+  })
 
   // Update manualData state whenever unified data changes
   useEffect(() => {
@@ -650,15 +658,22 @@ export default function MoneyPalPage() {
   useEffect(() => {
     const tutorialSeen = localStorage.getItem('moneypal-tutorial-completed')
     const onboardingCompleted = localStorage.getItem('moneypal-onboarding-completed')
+    const mobileOnboardingCompleted = localStorage.getItem('moneypal-mobile-onboarding-completed')
     
     if (!tutorialSeen) {
       setShowTutorial(true)
       setTutorialMode(true)
     }
     
-    // Show onboarding if not completed
+    // Show desktop onboarding if not completed
     if (!onboardingCompleted) {
       setShowOnboarding(true)
+    }
+    
+    // Show mobile onboarding for new users on mobile
+    if (!mobileOnboardingCompleted && typeof window !== 'undefined' && window.innerWidth < 768) {
+      console.log('New mobile user detected - showing onboarding')
+      setShowMobileOnboarding(true)
     }
     
     // Load saved tutorial position
@@ -671,6 +686,39 @@ export default function MoneyPalPage() {
       }
     }
   }, [])
+  
+  // Additional effect to handle onboarding after data loads
+  useEffect(() => {
+    if (!loading && typeof window !== 'undefined' && window.innerWidth < 768) {
+      const mobileOnboardingCompleted = localStorage.getItem('moneypal-mobile-onboarding-completed')
+      
+      // Show onboarding if user has no data and hasn't completed onboarding
+      if (!mobileOnboardingCompleted && 
+          (!actualData.accounts || actualData.accounts.length === 0) && 
+          (!actualData.summary || actualData.summary.monthlyIncome === 0)) {
+        console.log('User with no data on mobile - showing onboarding')
+        setShowMobileOnboarding(true)
+      }
+    }
+  }, [loading, actualData.accounts, actualData.summary, showMobileOnboarding])
+  
+  // Timeout fallback to ensure onboarding shows for new users
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      const mobileOnboardingCompleted = localStorage.getItem('moneypal-mobile-onboarding-completed')
+      
+      if (!mobileOnboardingCompleted) {
+        const timer = setTimeout(() => {
+          if (!showMobileOnboarding) {
+            console.log('Timeout fallback - showing onboarding for new mobile user')
+            setShowMobileOnboarding(true)
+          }
+        }, 2000) // 2 second fallback
+        
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [showMobileOnboarding])
 
   // Load manual data if available
   useEffect(() => {
@@ -1940,8 +1988,338 @@ export default function MoneyPalPage() {
   ]
 
   // Mobile render functions (CalAI inspired - simple, guided)
-  const renderMobileHome = () => (
-    <div className="md:hidden space-y-6 px-4 pt-2">
+  const renderMobileOnboarding = () => (
+    <div className="md:hidden min-h-screen bg-gray-900 px-4 pt-4">
+      {/* Step 1: Welcome */}
+      {onboardingStep === 0 && (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-24 h-24 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-8"
+          >
+            <Image
+              src="/moneypal/robotavatar.PNG"
+              alt="MoneyPal AI"
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
+          </motion.div>
+          
+          <motion.h1
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-3xl font-bold text-white mb-4"
+          >
+            Welcome to MoneyPal! 🤖
+          </motion.h1>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-lg text-gray-300 mb-8 max-w-sm"
+          >
+            Your AI Financial Co-Pilot is ready to help you take control of your money
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="space-y-4 w-full max-w-sm"
+          >
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+              <span>Get personalized financial insights</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+              <span>Track spending and set goals</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
+              <span>AI-powered financial advice</span>
+            </div>
+          </motion.div>
+          
+          <motion.button
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            onClick={() => setOnboardingStep(1)}
+            className="mt-8 w-full max-w-sm bg-gradient-to-r from-robot-green to-robot-blue text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
+          >
+            Get Started
+          </motion.button>
+        </div>
+      )}
+
+      {/* Step 2: Choose Setup Method */}
+      {onboardingStep === 1 && (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-6"
+          >
+            <CreditCard className="w-8 h-8 text-white" />
+          </motion.div>
+          
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-2xl font-bold text-white mb-4"
+          >
+            How would you like to get started?
+          </motion.h2>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-gray-300 mb-8 max-w-sm"
+          >
+            Choose the option that works best for you
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="space-y-4 w-full max-w-sm"
+          >
+            {/* Option 1: Link Bank Accounts */}
+            <button
+              onClick={() => {
+                setOnboardingData({ ...onboardingData, setupMethod: 'bank-linking' })
+                setOnboardingStep(2)
+              }}
+              className="w-full p-6 bg-gradient-to-r from-robot-green/20 to-robot-blue/20 border border-robot-green/30 rounded-2xl text-left hover:border-robot-green/50 transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <CreditCard className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">Link Bank Accounts</h3>
+                  <p className="text-sm text-gray-400">Connect securely with Plaid for real-time updates</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-xs bg-robot-green/20 text-robot-green px-2 py-1 rounded-full">Recommended</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {/* Option 2: Manual Entry */}
+            <button
+              onClick={() => {
+                setOnboardingData({ ...onboardingData, setupMethod: 'manual' })
+                setOnboardingStep(2)
+              }}
+              className="w-full p-6 bg-gradient-to-r from-robot-orange/20 to-robot-pink/20 border border-robot-orange/30 rounded-2xl text-left hover:border-robot-orange/50 transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-robot-orange to-robot-pink rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <Plus className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">Enter Data Manually</h3>
+                  <p className="text-sm text-gray-400">Add your accounts and transactions manually</p>
+                </div>
+              </div>
+            </button>
+
+            {/* Option 3: Demo Mode */}
+            <button
+              onClick={() => {
+                setOnboardingData({ ...onboardingData, setupMethod: 'demo' })
+                setOnboardingStep(2)
+              }}
+              className="w-full p-6 bg-gradient-to-r from-gray-800/50 to-gray-700/50 border border-gray-600/30 rounded-2xl text-left hover:border-gray-600/50 transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-gray-600 to-gray-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <Play className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">Try Demo Mode</h3>
+                  <p className="text-sm text-gray-400">Experience MoneyPal with sample data first</p>
+                </div>
+              </div>
+            </button>
+          </motion.div>
+          
+          <motion.button
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            onClick={() => setOnboardingStep(0)}
+            className="mt-6 text-gray-400 hover:text-white transition-colors duration-200"
+          >
+            ← Go Back
+          </motion.button>
+        </div>
+      )}
+
+      {/* Step 3: Setup Process */}
+      {onboardingStep === 2 && (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-6"
+          >
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </motion.div>
+          
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-2xl font-bold text-white mb-4"
+          >
+            {onboardingData.setupMethod === 'bank-linking' && 'Connecting Your Banks...'}
+            {onboardingData.setupMethod === 'manual' && 'Setting Up Your Data...'}
+            {onboardingData.setupMethod === 'demo' && 'Loading Demo Mode...'}
+          </motion.h2>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-gray-300 mb-8 max-w-sm"
+          >
+            {onboardingData.setupMethod === 'bank-linking' && 'Securely connecting to your financial institutions'}
+            {onboardingData.setupMethod === 'manual' && 'Preparing your personalized financial dashboard'}
+            {onboardingData.setupMethod === 'demo' && 'Loading sample data to explore MoneyPal features'}
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="w-full max-w-sm"
+          >
+            {onboardingData.setupMethod === 'bank-linking' && (
+              <button
+                onClick={handleLinkAccounts}
+                className="w-full bg-gradient-to-r from-robot-green to-robot-blue text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
+              >
+                Continue to Bank Linking
+              </button>
+            )}
+            
+            {onboardingData.setupMethod === 'manual' && (
+              <button
+                onClick={() => setShowManualDataEntry(true)}
+                className="w-full bg-gradient-to-r from-robot-orange to-robot-pink text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-robot-orange/90 hover:to-robot-pink/90 transition-all duration-200"
+              >
+                Continue to Manual Setup
+              </button>
+            )}
+            
+            {onboardingData.setupMethod === 'demo' && (
+              <button
+                onClick={() => {
+                  handleEnterTestMode()
+                  setOnboardingStep(3)
+                }}
+                className="w-full bg-gradient-to-r from-gray-600 to-gray-500 text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-gray-700 hover:to-gray-600 transition-all duration-200"
+              >
+                Enter Demo Mode
+              </button>
+            )}
+          </motion.div>
+          
+          <motion.button
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            onClick={() => setOnboardingStep(1)}
+            className="mt-6 text-gray-400 hover:text-white transition-colors duration-200"
+          >
+            ← Go Back
+          </motion.button>
+        </div>
+      )}
+
+      {/* Step 4: Success */}
+      {onboardingStep === 3 && (
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-24 h-24 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-8"
+          >
+            <CheckCircle className="w-12 h-12 text-white" />
+          </motion.div>
+          
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-3xl font-bold text-white mb-4"
+          >
+            🎉 You're All Set!
+          </motion.h2>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-lg text-gray-300 mb-8 max-w-sm"
+          >
+            Welcome to your AI-powered financial dashboard! Your MoneyPal is ready to help you take control of your money.
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="space-y-4 w-full max-w-sm mb-8"
+          >
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+              <span>Your financial data is ready</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+              <span>AI insights are being generated</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-gray-400">
+              <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
+              <span>Ready to explore your dashboard</span>
+            </div>
+          </motion.div>
+          
+          <motion.button
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            onClick={() => {
+              setShowMobileOnboarding(false)
+              localStorage.setItem('moneypal-mobile-onboarding-completed', 'true')
+              setOnboardingData({ ...onboardingData, hasCompletedSetup: true })
+            }}
+            className="w-full max-w-sm bg-gradient-to-r from-robot-green to-robot-blue text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
+          >
+            Explore Your Dashboard
+          </motion.button>
+        </div>
+      )}
+    </div>
+  )
+
+    const renderMobileHome = () => (
+    <div className="md:hidden space-y-8 px-4 pt-4">
       {/* Mobile Header with MoneyPal Logo */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -1956,207 +2334,201 @@ export default function MoneyPalPage() {
               height={32}
               className="rounded-full"
             />
+            {/* Orange Chat Symbol */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
+              </svg>
+            </div>
             {/* Floating Animation */}
             <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
           </button>
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
+            <p className="text-xs text-orange-400 mt-1">💬 Tap to chat</p>
           </div>
         </div>
         
-        {/* Global Toggle for All Cards */}
-        <button
-          onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
-        >
-          <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
-            <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-          <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-        </button>
-              </div>
+        <div className="flex items-center gap-2">
+          {/* Global Toggle for All Cards */}
+          <button
+            onClick={() => setAllCardsFlipped(!allCardsFlipped)}
+            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+          >
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+          </button>
+          
+          {/* Debug: Manual Onboarding Trigger */}
+          <button
+            onClick={() => {
+              setShowMobileOnboarding(true)
+              setOnboardingStep(0)
+              setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+            }}
+            className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 transition-all duration-200"
+          >
+            <HelpCircle className="w-4 h-4" />
+            <span className="text-xs">Show Onboarding</span>
+          </button>
+          
+          {/* Debug: Reset Onboarding Status */}
+          <button
+            onClick={() => {
+              localStorage.removeItem('moneypal-mobile-onboarding-completed')
+              console.log('Onboarding status reset - will show on next refresh')
+            }}
+            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200"
+          >
+            <X className="w-4 h-4" />
+            <span className="text-xs">Reset</span>
+          </button>
+        </div>
+      </div>
   
       {/* Section Title */}
       <div className="text-center mb-6">
         <h2 className="text-xl font-semibold text-white mb-2">💰 Your Money</h2>
-        <p className="text-gray-300 text-sm">Swipe to explore your finances</p>
+        <p className="text-sm text-gray-300">Swipe to explore your finances</p>
+        
+        {/* Prominent Help Button for New Users */}
+        {(!actualData.accounts || actualData.accounts.length === 0) && 
+         (!actualData.summary || actualData.summary.monthlyIncome === 0) && (
+          <div className="mt-4">
+            <button
+              onClick={() => {
+                setShowMobileOnboarding(true)
+                setOnboardingStep(0)
+                setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+              }}
+              className="bg-gradient-to-r from-robot-green to-robot-blue text-white font-medium py-3 px-6 rounded-xl hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200 flex items-center justify-center gap-2 mx-auto"
+            >
+              <HelpCircle className="w-4 h-4" />
+              New to MoneyPal? Get Started Here!
+            </button>
+          </div>
+        )}
       </div>
   
       {/* Horizontal Scrollable Cards Container */}
       <div className="relative">
         <div className="mobile-card-container">
           {/* Financial Summary Card */}
-          <div 
-            className="mobile-card bg-gradient-to-br from-robot-green/20 via-robot-blue/20 to-robot-purple/20 rounded-2xl p-6 border border-robot-green/30 cursor-pointer card-flip relative"
-            style={{
-              transform: isCardFlipped('financial-summary') ? 'rotateY(180deg)' : 'rotateY(0deg)'
-            }}
-            onClick={() => toggleCard('financial-summary')}
-          >
-            {/* Front of card */}
-            <div className={`card-flip-front text-center ${isCardFlipped('financial-summary') ? 'opacity-0' : 'opacity-100'}`}>
-              <div className="text-4xl mb-4">💰</div>
-              <h3 className="text-2xl font-bold text-white mb-2">Financial Summary</h3>
-              <p className="text-gray-300 text-sm mb-4">Your money overview</p>
-              <div className="text-xs text-robot-green">Tap to see details</div>
-            </div>
-
-            {/* Back of card */}
-            <div className={`card-flip-back text-center ${isCardFlipped('financial-summary') ? 'opacity-100' : 'opacity-0'}`}>
-              <div className="text-sm text-gray-400 mb-3">Your Financial Summary</div>
-              <h3 className="text-xl font-bold text-white mb-4">Monthly Overview</h3>
+          <div className="mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Financial Overview</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Summary</h3>
               
-              <div className="space-y-3 text-sm text-left">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Income:</span>
-                  <span className="text-green-400">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-robot-green mb-1">
+                    ${actualData.summary?.netWorth?.toLocaleString() || '0'}
+                  </div>
+                  <div className="text-sm text-gray-400">Net Worth</div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Expenses:</span>
-                  <span className="text-red-400">${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Savings:</span>
-                  <span className="text-robot-green">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Net Worth:</span>
-                  <span className="text-blue-400">${actualData.summary?.netWorth?.toLocaleString() || '0'}</span>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Income:</span>
+                    <span className="text-white">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Expenses:</span>
+                    <span className="text-white">${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Savings:</span>
+                    <span className="text-white">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
+                  </div>
                 </div>
               </div>
               
-              <div className="text-xs text-robot-green mt-4">Tap to flip back</div>
+              <div className="text-xs text-robot-green">Tap to see full breakdown</div>
             </div>
           </div>
 
           {/* Accounts Card */}
-          <div 
-            className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30 cursor-pointer card-flip relative"
-            style={{
-              transform: isCardFlipped('accounts') ? 'rotateY(180deg)' : 'rotateY(0deg)'
-            }}
-            onClick={() => toggleCard('accounts')}
-          >
-            {/* Front of card */}
-            <div className={`card-flip-front text-center ${isCardFlipped('accounts') ? 'opacity-0' : 'opacity-100'}`}>
-              <div className="text-4xl mb-4">🏦</div>
-              <h3 className="text-2xl font-bold text-white mb-2">Accounts</h3>
-              <p className="text-gray-300 text-sm mb-4">Manage your accounts</p>
-              <div className="text-xs text-robot-green">Tap to see details</div>
-            </div>
-
-            {/* Back of card */}
-            <div className={`card-flip-back text-center ${isCardFlipped('accounts') ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30">
+            <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Account Management</div>
-              <h3 className="text-xl font-bold text-white mb-4">Your Accounts</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
               
-              {actualData.accounts && actualData.accounts.length > 0 ? (
-                <div className="space-y-3 text-sm text-left mb-4">
-                  {actualData.accounts.slice(0, 3).map((account, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <div>
-                        <div className="text-white font-medium">{account.name}</div>
-                        <div className="text-gray-400 text-xs capitalize">{account.type}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-white">${account.balance?.toLocaleString() || '0'}</div>
-                      </div>
-                    </div>
-                  ))}
-                  {actualData.accounts.length > 3 && (
-                    <div className="text-center text-gray-400 text-xs">
-                      +{actualData.accounts.length - 3} more accounts
-                    </div>
-                  )}
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <CreditCard className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {actualData.accounts && actualData.accounts.length > 0 ? `${actualData.accounts.length} accounts` : 'No accounts'}
+                  </div>
                 </div>
-              ) : (
-                <div className="text-center text-gray-400 mb-4">
-                  <div className="text-sm">No accounts linked</div>
-                  <div className="text-xs">Link your accounts to get started</div>
-                </div>
-              )}
-              
-              <div className="space-y-2">
-                <button
-                  onClick={handleLinkAccounts}
-                  className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-lg text-white text-sm font-medium"
-                >
-                  Link Bank Account
-                </button>
-                <button
-                  onClick={() => setShowManualDataEntry(true)}
-                  className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-2 rounded-lg text-white text-sm font-medium"
-                >
-                  Add Manual Account
-                </button>
+                
+                {actualData.accounts && actualData.accounts.length > 0 ? (
+                  <div className="space-y-2 text-sm">
+                    {actualData.accounts.slice(0, 2).map((account, index) => (
+                      <div key={index} className="flex justify-between">
+                        <span className="text-gray-400">{account.name}:</span>
+                        <span className="text-white">${account.balance?.toLocaleString() || '0'}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center text-gray-400 text-sm">
+                    Link your accounts to get started
+                  </div>
+                )}
               </div>
               
-              <div className="text-xs text-robot-green mt-4">Tap to flip back</div>
+              <div className="text-xs text-blue-300">Tap to manage accounts</div>
             </div>
           </div>
 
           {/* Goals Card */}
-          <div 
-            className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30 cursor-pointer card-flip relative"
-            style={{
-              transform: isCardFlipped('goals') ? 'rotateY(180deg)' : 'rotateY(0deg)'
-            }}
-            onClick={() => toggleCard('goals')}
-          >
-            {/* Front of card */}
-            <div className={`card-flip-front text-center ${isCardFlipped('goals') ? 'opacity-0' : 'opacity-100'}`}>
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-2xl font-bold text-white mb-2">Goals</h3>
-              <p className="text-gray-300 text-sm mb-4">Track your progress</p>
-              <div className="text-xs text-robot-green">Tap to see details</div>
-            </div>
-
-            {/* Back of card */}
-            <div className={`card-flip-back text-center ${isCardFlipped('goals') ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+            <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Financial Goals</div>
-              <h3 className="text-xl font-bold text-white mb-4">Your Goals</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
               
-              {actualData.goals && actualData.goals.length > 0 ? (
-                <div className="space-y-3 text-sm text-left mb-4">
-                  {actualData.goals.slice(0, 2).map((goal, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-white font-medium">{goal.name}</div>
-                      <div className="text-gray-400 text-xs mb-2">{goal.type}</div>
-                      <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                        <div 
-                          className="bg-robot-green h-2 rounded-full transition-all duration-300" 
-                          style={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
-                        ></div>
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        ${goal.current?.toLocaleString() || '0'} / ${goal.target?.toLocaleString() || '0'}
-                      </div>
-                    </div>
-                  ))}
-                  {actualData.goals.length > 2 && (
-                    <div className="text-center text-gray-400 text-xs">
-                      +{actualData.goals.length - 2} more goals
-                    </div>
-                  )}
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {actualData.goals && actualData.goals.length > 0 ? `${actualData.goals.length} active goals` : 'No goals set'}
+                  </div>
                 </div>
-              ) : (
-                <div className="text-center text-gray-400 mb-4">
-                  <div className="text-sm">No goals set</div>
-                  <div className="text-xs">Set your first financial goal</div>
-                </div>
-              )}
+                
+                {actualData.goals && actualData.goals.length > 0 ? (
+                  <div className="space-y-2 text-sm">
+                    {actualData.goals.slice(0, 1).map((goal, index) => (
+                      <div key={index} className="text-center">
+                        <div className="text-white font-medium mb-2">{goal.name}</div>
+                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                          <div 
+                            className="bg-robot-green h-2 rounded-full transition-all duration-300" 
+                            style={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
+                          ></div>
+                        </div>
+                        <div className="text-xs text-gray-300">
+                          ${goal.current?.toLocaleString() || '0'} / ${goal.target?.toLocaleString() || '0'}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center text-gray-400 text-sm">
+                    Set your first financial goal
+                  </div>
+                )}
+              </div>
               
-              <button
-                onClick={() => setShowManualDataEntry(true)}
-                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-2 rounded-lg text-white text-sm font-medium"
-              >
-                Add New Goal
-              </button>
-              
-              <div className="text-xs text-robot-green mt-4">Tap to flip back</div>
+              <div className="text-xs text-purple-300">Tap to manage goals</div>
             </div>
           </div>
 
@@ -2240,10 +2612,49 @@ export default function MoneyPalPage() {
         </div>
 
         {/* Scroll Indicators */}
-        <div className="flex justify-center gap-2 mt-6">
+        <div className="flex justify-center gap-2 mt-4">
           <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
           <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
           <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        </div>
+
+        {/* Quick Tips Section - Fills the empty space */}
+        <div className="mt-6 px-4 mb-6">
+          <div className="bg-gray-800/30 rounded-2xl p-6 border border-gray-700/30">
+            <h3 className="text-lg font-semibold text-white mb-4 text-center">💡 Quick Tips</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+                <span className="text-gray-300">Link your bank accounts for real-time updates</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+                <span className="text-gray-300">Set financial goals to track your progress</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
+                <span className="text-gray-300">Use AI chat for personalized financial advice</span>
+              </div>
+            </div>
+            
+            {/* Help Button for New Users */}
+            {(!actualData.accounts || actualData.accounts.length === 0) && 
+             (!actualData.summary || actualData.summary.monthlyIncome === 0) && (
+              <div className="mt-6 pt-4 border-t border-gray-700/30">
+                <button
+                  onClick={() => {
+                    setShowMobileOnboarding(true)
+                    setOnboardingStep(0)
+                    setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+                  }}
+                  className="w-full bg-gradient-to-r from-robot-green/20 to-robot-blue/20 border border-robot-green/30 text-robot-green font-medium py-3 px-4 rounded-xl hover:from-robot-green/30 hover:to-robot-blue/30 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  <HelpCircle className="w-4 h-4" />
+                  Need help setting up?
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Swipe Instructions */}
@@ -2255,7 +2666,7 @@ export default function MoneyPalPage() {
   )
 
   const renderMobileAnalysis = () => (
-    <div className="md:hidden space-y-6 px-4 pt-2">
+    <div className="md:hidden space-y-8 px-4 pt-4">
       {/* Mobile Header with MoneyPal Logo */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -2270,6 +2681,12 @@ export default function MoneyPalPage() {
               height={32}
               className="rounded-full"
             />
+            {/* Orange Chat Symbol */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
+              </svg>
+            </div>
             {/* Floating Animation */}
             <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
           </button>
@@ -2451,7 +2868,7 @@ export default function MoneyPalPage() {
   )
 
   const renderMobileAutomation = () => (
-    <div className="md:hidden space-y-6 px-4 pt-2">
+    <div className="md:hidden space-y-8 px-4 pt-4">
       {/* Mobile Header with MoneyPal Logo */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -2466,6 +2883,12 @@ export default function MoneyPalPage() {
               height={32}
               className="rounded-full"
             />
+            {/* Orange Chat Symbol */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
+              </svg>
+            </div>
             {/* Floating Animation */}
             <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
           </button>
@@ -2647,7 +3070,7 @@ export default function MoneyPalPage() {
   )
 
   const renderMobileProfile = () => (
-    <div className="md:hidden space-y-6 px-4 pt-2">
+    <div className="md:hidden space-y-8 px-4 pt-4">
       {/* Mobile Header with MoneyPal Logo */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -2658,8 +3081,16 @@ export default function MoneyPalPage() {
             <Image
               src="/moneypal/robotavatar.PNG"
               alt="MoneyPal AI Chat"
+              width={32}
+              height={32}
               className="rounded-full"
             />
+            {/* Orange Chat Symbol */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
+              </svg>
+            </div>
             {/* Floating Animation */}
             <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
           </button>
@@ -2849,9 +3280,20 @@ export default function MoneyPalPage() {
               
               <button
                 onClick={() => setShowTutorial(true)}
-                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium"
+                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium mb-3"
               >
                 Get Help
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowMobileOnboarding(true)
+                  setOnboardingStep(0)
+                  setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+                }}
+                className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium"
+              >
+                Restart Onboarding
               </button>
             </div>
           </div>
@@ -2992,10 +3434,59 @@ export default function MoneyPalPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 pb-24 md:pb-8">
         {/* Mobile Content - Always visible on mobile */}
         <div className="md:hidden">
-          {activeTab === 'home' && renderMobileHome()}
-          {activeTab === 'analysis' && renderMobileAnalysis()}
-          {activeTab === 'automation' && renderMobileAutomation()}
-          {activeTab === 'profile' && renderMobileProfile()}
+          {loading ? (
+            // Mobile Loading State
+            <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="w-24 h-24 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-8"
+              >
+                <Image
+                  src="/moneypal/robotavatar.PNG"
+                  alt="MoneyPal AI"
+                  width={64}
+                  height={64}
+                  className="rounded-full"
+                />
+              </motion.div>
+              
+              <motion.h2
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-2xl font-bold text-white mb-4"
+              >
+                Loading MoneyPal... 🤖
+              </motion.h2>
+              
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-gray-300 mb-8"
+              >
+                Preparing your AI financial dashboard
+              </motion.p>
+              
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="w-16 h-16 border-4 border-robot-green border-t-transparent rounded-full animate-spin"
+              ></motion.div>
+            </div>
+          ) : showMobileOnboarding ? (
+            renderMobileOnboarding()
+          ) : (
+            <>
+              {activeTab === 'home' && renderMobileHome()}
+              {activeTab === 'analysis' && renderMobileAnalysis()}
+              {activeTab === 'automation' && renderMobileAutomation()}
+              {activeTab === 'profile' && renderMobileProfile()}
+            </>
+          )}
         </div>
         
         {/* Desktop Content - Hidden on Mobile */}
@@ -3039,11 +3530,13 @@ export default function MoneyPalPage() {
         )}
       </AnimatePresence>
 
-      {/* Floating AI Avatar */}
-      <FloatingAvatar 
-        onOpenChat={() => setIsChatOpen(true)}
-        isChatOpen={isChatOpen}
-      />
+      {/* Floating AI Avatar - Hidden on Mobile */}
+      <div className="hidden md:block">
+        <FloatingAvatar 
+          onOpenChat={() => setIsChatOpen(true)}
+          isChatOpen={isChatOpen}
+        />
+      </div>
 
       {/* AI Chat Modal */}
       <ChatModal 
