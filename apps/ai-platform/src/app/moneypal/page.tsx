@@ -419,7 +419,7 @@ export default function MoneyPalPage() {
   // Handle global card flip toggle
   useEffect(() => {
     if (allCardsFlipped) {
-      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'health-metrics', 'budget-management', 'advanced-analytics', 'predictive-analytics', 'automation-rules', 'new-automation', 'account-settings', 'test-mode', 'data-management']))
+      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score', 'health-metrics', 'budget-management', 'advanced-analytics', 'predictive-analytics', 'automation-rules', 'new-automation', 'account-settings', 'test-mode', 'data-management']))
     } else {
       setFlippedCards(new Set())
     }
@@ -719,6 +719,18 @@ export default function MoneyPalPage() {
       }
     }
   }, [showMobileOnboarding])
+  
+  // Auto-complete demo mode setup after timeout
+  useEffect(() => {
+    if (onboardingStep === 2 && onboardingData.setupMethod === 'demo') {
+      const timer = setTimeout(() => {
+        // Auto-show demo mode as ready after 3 seconds
+        console.log('Demo mode setup completed automatically')
+      }, 3000) // 3 second timeout
+      
+      return () => clearTimeout(timer)
+    }
+  }, [onboardingStep, onboardingData.setupMethod])
 
   // Load manual data if available
   useEffect(() => {
@@ -2176,7 +2188,11 @@ export default function MoneyPalPage() {
             transition={{ duration: 0.6 }}
             className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mb-6"
           >
-            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            {onboardingData.setupMethod === 'demo' ? (
+              <CheckCircle className="w-8 h-8 text-white" />
+            ) : (
+              <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            )}
           </motion.div>
           
           <motion.h2
@@ -2187,7 +2203,7 @@ export default function MoneyPalPage() {
           >
             {onboardingData.setupMethod === 'bank-linking' && 'Connecting Your Banks...'}
             {onboardingData.setupMethod === 'manual' && 'Setting Up Your Data...'}
-            {onboardingData.setupMethod === 'demo' && 'Loading Demo Mode...'}
+            {onboardingData.setupMethod === 'demo' && 'Demo Mode Ready!'}
           </motion.h2>
           
           <motion.p
@@ -2198,7 +2214,7 @@ export default function MoneyPalPage() {
           >
             {onboardingData.setupMethod === 'bank-linking' && 'Securely connecting to your financial institutions'}
             {onboardingData.setupMethod === 'manual' && 'Preparing your personalized financial dashboard'}
-            {onboardingData.setupMethod === 'demo' && 'Loading sample data to explore MoneyPal features'}
+            {onboardingData.setupMethod === 'demo' && 'Sample data loaded successfully. Ready to explore MoneyPal!'}
           </motion.p>
           
           <motion.div
@@ -2364,30 +2380,16 @@ export default function MoneyPalPage() {
             <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
           </button>
           
-          {/* Debug: Manual Onboarding Trigger */}
-          <button
-            onClick={() => {
-              setShowMobileOnboarding(true)
-              setOnboardingStep(0)
-              setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
-            }}
-            className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 transition-all duration-200"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span className="text-xs">Show Onboarding</span>
-          </button>
-          
-          {/* Debug: Reset Onboarding Status */}
-          <button
-            onClick={() => {
-              localStorage.removeItem('moneypal-mobile-onboarding-completed')
-              console.log('Onboarding status reset - will show on next refresh')
-            }}
-            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200"
-          >
-            <X className="w-4 h-4" />
-            <span className="text-xs">Reset</span>
-          </button>
+          {/* Demo Mode Exit Button */}
+          {isTestMode && (
+            <button
+              onClick={handleExitTestMode}
+              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200"
+            >
+              <X className="w-4 h-4" />
+              <span className="text-xs">Exit Demo</span>
+            </button>
+          )}
         </div>
       </div>
   
@@ -2418,8 +2420,13 @@ export default function MoneyPalPage() {
       {/* Horizontal Scrollable Cards Container */}
       <div className="relative">
         <div className="mobile-card-container">
-          {/* Financial Summary Card */}
-          <div className="mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30">
+                    {/* Financial Summary Card */}
+          <div 
+            onClick={() => toggleCard('financial-summary')}
+            className={`mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30 cursor-pointer transition-all duration-300 hover:scale-105 ${
+              isCardFlipped('financial-summary') ? 'ring-2 ring-robot-green/50' : ''
+            }`}
+          >
             <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Financial Overview</div>
               <h3 className="text-2xl font-bold text-white mb-4">Your Summary</h3>
@@ -2448,12 +2455,17 @@ export default function MoneyPalPage() {
                 </div>
               </div>
               
-              <div className="text-xs text-robot-green">Tap to see full breakdown</div>
+              <div className="text-xs text-robot-green">
+                {isCardFlipped('financial-summary') ? 'Tap to hide details' : 'Tap to see full breakdown'}
+              </div>
             </div>
           </div>
 
           {/* Accounts Card */}
-          <div className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30">
+          <div 
+            onClick={() => setShowManualDataEntry(true)}
+            className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30 cursor-pointer transition-all duration-300 hover:scale-105"
+          >
             <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Account Management</div>
               <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
@@ -2488,8 +2500,11 @@ export default function MoneyPalPage() {
             </div>
           </div>
 
-          {/* Goals Card */}
-          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+                    {/* Goals Card */}
+          <div 
+            onClick={() => setShowManualDataEntry(true)}
+            className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30 cursor-pointer transition-all duration-300 hover:scale-105"
+          >
             <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Financial Goals</div>
               <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
@@ -2532,8 +2547,13 @@ export default function MoneyPalPage() {
             </div>
           </div>
 
-          {/* Credit Score Card */}
-          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+                    {/* Credit Score Card */}
+          <div 
+            onClick={() => toggleCard('credit-score')}
+            className={`mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30 cursor-pointer transition-all duration-300 hover:scale-105 ${
+              isCardFlipped('credit-score') ? 'ring-2 ring-purple-500/50' : ''
+            }`}
+          >
             <div className="text-center">
               <div className="text-sm text-gray-400 mb-3">Credit Health</div>
               <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
@@ -2541,7 +2561,7 @@ export default function MoneyPalPage() {
               <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                 <div className="text-center mb-3">
                   <div className="text-3xl font-bold text-purple-400 mb-1">
-                    {actualData.summary?.creditScore || 750}
+                    {isCardFlipped('credit-score') ? '***' : (actualData.summary?.creditScore || 750)}
                   </div>
                   <div className="text-sm text-gray-400">Credit Score</div>
                 </div>
@@ -2552,15 +2572,19 @@ export default function MoneyPalPage() {
                     style={{ width: `${Math.min((actualData.summary?.creditScore || 750) / 850 * 100, 100)}%` }}
                   ></div>
                 </div>
-                
+
                 <div className="text-xs text-purple-300">
-                  {actualData.summary?.creditScore >= 750 ? 'Excellent' : 
-                   actualData.summary?.creditScore >= 700 ? 'Good' : 
-                   actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'}
+                  {isCardFlipped('credit-score') ? 'Hidden' : (
+                    actualData.summary?.creditScore >= 750 ? 'Excellent' : 
+                    actualData.summary?.creditScore >= 700 ? 'Good' : 
+                    actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'
+                  )}
                 </div>
               </div>
-              
-              <div className="text-xs text-gray-500">Updated monthly</div>
+
+              <div className="text-xs text-gray-500">
+                {isCardFlipped('credit-score') ? 'Tap to reveal score' : 'Updated monthly'}
+              </div>
             </div>
           </div>
 
@@ -2654,6 +2678,34 @@ export default function MoneyPalPage() {
                 </button>
               </div>
             )}
+            
+            {/* Debug Buttons - Hidden in production, useful for development */}
+            <div className="mt-4 pt-4 border-t border-gray-700/30">
+              <div className="text-xs text-gray-500 mb-3 text-center">🔧 Developer Tools</div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setShowMobileOnboarding(true)
+                    setOnboardingStep(0)
+                    setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 transition-all duration-200 text-xs"
+                >
+                  <HelpCircle className="w-3 h-3" />
+                  Show Onboarding
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('moneypal-mobile-onboarding-completed')
+                    console.log('Onboarding status reset - will show on next refresh')
+                  }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 text-xs"
+                >
+                  <X className="w-3 h-3" />
+                  Reset
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2708,7 +2760,7 @@ export default function MoneyPalPage() {
           </div>
           <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
         </button>
-              </div>
+      </div>
   
       {/* Section Title */}
       <div className="text-center mb-6">
