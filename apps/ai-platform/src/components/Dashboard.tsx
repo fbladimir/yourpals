@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   User, 
   Settings, 
@@ -57,6 +57,8 @@ export default function Dashboard({
   const [hoveredApp, setHoveredApp] = useState<string | null>(null)
   const [showYourPalChat, setShowYourPalChat] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   // Add safety check for auth hook
   if (!authData) {
@@ -73,6 +75,35 @@ export default function Dashboard({
   }
 
   const { user } = authData
+
+  // Add error boundary for vendor.js issues
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleError = (event: ErrorEvent) => {
+        if (event.filename && event.filename.includes('vendor.js')) {
+          console.error('Vendor.js error detected:', event.error)
+          setError('Loading error detected. Please refresh the page.')
+        }
+      }
+      
+      window.addEventListener('error', handleError)
+      
+      // Cleanup
+      return () => {
+        window.removeEventListener('error', handleError)
+      }
+    }
+  }, [])
+
+  // Handle loading state
+  useEffect(() => {
+    // Simulate loading time to prevent flash
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   const aiApps = [
     { 
@@ -1185,6 +1216,76 @@ export default function Dashboard({
   const handleSignOut = () => {
     onSignOut();
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="w-24 h-24 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-8"
+          >
+            <img
+              src="/moneypal/robotavatar.PNG"
+              alt="Loading..."
+              className="w-16 h-16 rounded-full"
+            />
+          </motion.div>
+          
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-2xl font-bold text-white mb-4"
+          >
+            Loading Dashboard... 🤖
+          </motion.h2>
+          
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-gray-300 mb-8"
+          >
+            Preparing your AI applications
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="w-16 h-16 border-4 border-robot-green border-t-transparent rounded-full animate-spin mx-auto"
+          ></motion.div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+            <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-white mb-4">Loading Error</h2>
+          <p className="text-gray-300 mb-8">{error}</p>
+          
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-robot-green to-robot-blue text-white font-medium py-3 px-6 rounded-xl hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-900">

@@ -426,7 +426,7 @@ export default function MoneyPalPage() {
   // Handle global card flip toggle
   useEffect(() => {
     if (allCardsFlipped) {
-      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score', 'health-metrics', 'budget-management', 'advanced-analytics', 'predictive-analytics', 'automation-rules', 'new-automation', 'account-settings', 'test-mode', 'data-management']))
+      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score', 'quick-actions']))
     } else {
       setFlippedCards(new Set())
     }
@@ -609,6 +609,10 @@ export default function MoneyPalPage() {
   // Refs for scrolling to elements
   const navTabsRef = useRef<HTMLDivElement>(null)
   const accountsSectionRef = useRef<HTMLDivElement>(null)
+  const mobileCardsRef = useRef<HTMLDivElement>(null)
+  
+  // State for tracking scroll position
+  const [currentCardIndex, setCurrentCardIndex] = useState(0)
 
   // Get actual financial data (combines Plaid data with manual data)
   const getActualFinancialData = () => {
@@ -746,6 +750,22 @@ export default function MoneyPalPage() {
       return () => clearTimeout(timer)
     }
   }, [onboardingStep, onboardingData.setupMethod])
+  
+  // Track horizontal scroll position for mobile cards
+  useEffect(() => {
+    const cardsContainer = mobileCardsRef.current
+    if (!cardsContainer) return
+    
+    const handleScroll = () => {
+      const scrollLeft = cardsContainer.scrollLeft
+      const cardWidth = 320 + 16 // card width + gap
+      const newIndex = Math.round(scrollLeft / cardWidth)
+      setCurrentCardIndex(Math.max(0, Math.min(newIndex, 4))) // 5 cards total
+    }
+    
+    cardsContainer.addEventListener('scroll', handleScroll)
+    return () => cardsContainer.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Load manual data if available
   useEffect(() => {
@@ -2439,227 +2459,429 @@ export default function MoneyPalPage() {
   
       {/* Horizontal Scrollable Cards Container */}
       <div className="relative">
-        <div className="mobile-card-container">
-                    {/* Financial Summary Card */}
+        <div ref={mobileCardsRef} className="mobile-card-container">
+                    {/* Financial Summary Card - 3D Flip */}
           <div 
             onClick={() => toggleCard('financial-summary')}
-            className={`mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30 cursor-pointer transition-all duration-300 hover:scale-105 ${
-              isCardFlipped('financial-summary') ? 'ring-2 ring-robot-green/50' : ''
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('financial-summary') ? 'flipped' : ''
             }`}
           >
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Financial Overview</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Your Summary</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="text-3xl font-bold text-robot-green mb-1">
-                    ${actualData.summary?.netWorth?.toLocaleString() || '0'}
-                  </div>
-                  <div className="text-sm text-gray-400">Net Worth</div>
-                </div>
-                
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Income:</span>
-                    <span className="text-white">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Expenses:</span>
-                    <span className="text-white">${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Savings:</span>
-                    <span className="text-white">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-xs text-robot-green">
-                {isCardFlipped('financial-summary') ? 'Tap to hide details' : 'Tap to see full breakdown'}
-              </div>
-            </div>
-          </div>
-
-          {/* Accounts Card */}
-          <div 
-            onClick={() => setShowManualDataEntry(true)}
-            className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30 cursor-pointer transition-all duration-300 hover:scale-105"
-          >
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Account Management</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <CreditCard className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">
-                    {actualData.accounts && actualData.accounts.length > 0 ? `${actualData.accounts.length} accounts` : 'No accounts'}
-                  </div>
-                </div>
-                
-                {actualData.accounts && actualData.accounts.length > 0 ? (
-                  <div className="space-y-2 text-sm">
-                    {actualData.accounts.slice(0, 2).map((account, index) => (
-                      <div key={index} className="flex justify-between">
-                        <span className="text-gray-400">{account.name}:</span>
-                        <span className="text-white">${account.balance?.toLocaleString() || '0'}</span>
+            <div className="card-flip-container">
+              {/* Front of card - minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl border border-robot-green/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Financial Overview</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Summary</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-robot-green mb-1">
+                        ${actualData.summary?.netWorth?.toLocaleString() || '0'}
                       </div>
-                    ))}
+                      <div className="text-sm text-gray-400">Net Worth</div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to see detailed breakdown
+                    </div>
                   </div>
-                ) : (
-                  <div className="text-center text-gray-400 text-sm">
-                    Link your accounts to get started
-                  </div>
-                )}
-              </div>
-              
-              <div className="text-xs text-blue-300">Tap to manage accounts</div>
-            </div>
-          </div>
-
-                    {/* Goals Card */}
-          <div 
-            onClick={() => setShowManualDataEntry(true)}
-            className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30 cursor-pointer transition-all duration-300 hover:scale-105"
-          >
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Financial Goals</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Target className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">
-                    {actualData.goals && actualData.goals.length > 0 ? `${actualData.goals.length} active goals` : 'No goals set'}
+                  
+                  <div className="text-xs text-robot-green flex items-center justify-center gap-1">
+                    <span>💡 Tap to flip card</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
                   </div>
                 </div>
-                
-                {actualData.goals && actualData.goals.length > 0 ? (
-                  <div className="space-y-2 text-sm">
-                    {actualData.goals.slice(0, 1).map((goal, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-white font-medium mb-2">{goal.name}</div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                          <div 
-                            className="bg-robot-green h-2 rounded-full transition-all duration-300" 
-                            style={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
-                          ></div>
-                        </div>
-                        <div className="text-xs text-gray-300">
-                          ${goal.current?.toLocaleString() || '0'} / ${goal.target?.toLocaleString() || '0'}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center text-gray-400 text-sm">
-                    Set your first financial goal
-                  </div>
-                )}
               </div>
               
-              <div className="text-xs text-purple-300">Tap to manage goals</div>
+              {/* Back of card - detailed info */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 rounded-2xl border border-robot-blue/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Financial Overview</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Detailed Summary</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-robot-green mb-1">
+                        ${actualData.summary?.netWorth?.toLocaleString() || '0'}
+                      </div>
+                      <div className="text-sm text-gray-400">Net Worth</div>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Income:</span>
+                        <span className="text-white">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Expenses:</span>
+                        <span className="text-white">${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-white">Savings:</span>
+                        <span className="text-white">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-robot-blue">🔒 Tap to flip back</div>
+                </div>
+              </div>
             </div>
           </div>
 
-                    {/* Credit Score Card */}
+          {/* Accounts Card - 3D Flip */}
+          <div 
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('accounts') ? 'flipped' : ''
+            }`}
+            onClick={() => setShowManualDataEntry(true)}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl border border-blue-500/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Account Management</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <CreditCard className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {actualData.accounts && actualData.accounts.length > 0 ? `${actualData.accounts.length} accounts` : 'No accounts'}
+                      </div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to manage accounts
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-blue-300 flex items-center justify-center gap-1">
+                    <span>💳 Tap to manage</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Back of card - detailed accounts */}
+              <div className="card-flip-back bg-gradient-to-br from-blue-600/20 to-indigo-500/20 rounded-2xl border border-blue-600/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Account Details</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    {actualData.accounts && actualData.accounts.length > 0 ? (
+                      <div className="space-y-3 text-sm">
+                        {actualData.accounts.slice(0, 3).map((account, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-gray-400">{account.name}:</span>
+                            <span className="text-white font-medium">${account.balance?.toLocaleString() || '0'}</span>
+                          </div>
+                        ))}
+                        {actualData.accounts.length > 3 && (
+                          <div className="text-center text-gray-400 text-xs pt-2 border-t border-gray-600/30">
+                            +{actualData.accounts.length - 3} more accounts
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-400 text-sm">
+                        No accounts linked yet
+                      </div>
+                    )}
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowManualDataEntry(true)}
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-xl text-white font-medium text-sm"
+                  >
+                    Manage Accounts
+                  </button>
+                  
+                  <div className="text-xs text-blue-300 mt-2">🔒 Tap to flip back</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+                    {/* Goals Card - 3D Flip */}
+          <div 
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('goals') ? 'flipped' : ''
+            }`}
+            onClick={() => setShowManualDataEntry(true)}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Financial Goals</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Target className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {actualData.goals && actualData.goals.length > 0 ? `${actualData.goals.length} active goals` : 'No goals set'}
+                      </div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to manage goals
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-purple-300 flex items-center justify-center gap-1">
+                    <span>🎯 Tap to manage</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Back of card - detailed goals */}
+              <div className="card-flip-back bg-gradient-to-br from-purple-600/20 to-pink-500/20 rounded-2xl border border-purple-600/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Goal Details</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    {actualData.goals && actualData.goals.length > 0 ? (
+                      <div className="space-y-3 text-sm">
+                        {actualData.goals.slice(0, 2).map((goal, index) => (
+                          <div key={index} className="text-center">
+                            <div className="text-white font-medium mb-2">{goal.name}</div>
+                            <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                              <div 
+                                className="bg-robot-green h-2 rounded-full transition-all duration-300" 
+                                style={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
+                              ></div>
+                            </div>
+                            <div className="text-xs text-gray-300">
+                              ${goal.current?.toLocaleString() || '0'} / ${goal.target?.toLocaleString() || '0'}
+                            </div>
+                          </div>
+                        ))}
+                        {actualData.goals.length > 2 && (
+                          <div className="text-center text-gray-400 text-xs pt-2 border-t border-gray-600/30">
+                            +{actualData.goals.length - 2} more goals
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-400 text-sm">
+                        No goals set yet
+                      </div>
+                    )}
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowManualDataEntry(true)}
+                    className="w-full bg-gradient-to-r from-purple-500 to-purple-600 p-2 rounded-xl text-white font-medium text-sm"
+                  >
+                    Manage Goals
+                  </button>
+                  
+                  <div className="text-xs text-pink-300 mt-2">🔒 Tap to flip back</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+                    {/* Credit Score Card - 3D Flip */}
           <div 
             onClick={() => toggleCard('credit-score')}
-            className={`mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30 cursor-pointer transition-all duration-300 hover:scale-105 ${
-              isCardFlipped('credit-score') ? 'ring-2 ring-purple-500/50' : ''
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('credit-score') ? 'flipped' : ''
             }`}
           >
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Credit Health</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">
-                    {isCardFlipped('credit-score') ? '***' : (actualData.summary?.creditScore || 750)}
+            <div className="card-flip-container">
+              {/* Front of card - hidden score */}
+              <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Credit Health</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-purple-400 mb-1">***</div>
+                      <div className="text-sm text-gray-400">Credit Score</div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to reveal your score
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-400">Credit Score</div>
-                </div>
-                
-                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                  <div 
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-300" 
-                    style={{ width: `${Math.min((actualData.summary?.creditScore || 750) / 850 * 100, 100)}%` }}
-                  ></div>
-                </div>
-
-                <div className="text-xs text-purple-300">
-                  {isCardFlipped('credit-score') ? 'Hidden' : (
-                    actualData.summary?.creditScore >= 750 ? 'Excellent' : 
-                    actualData.summary?.creditScore >= 700 ? 'Good' : 
-                    actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'
-                  )}
+                  
+                  <div className="text-xs text-purple-300 flex items-center justify-center gap-1">
+                    <span>🔒 Tap to flip card</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Back of card - revealed score */}
+              <div className="card-flip-back bg-gradient-to-br from-purple-600/20 to-pink-500/20 rounded-2xl border border-purple-600/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Credit Health</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-purple-400 mb-1">
+                        {actualData.summary?.creditScore || 750}
+                      </div>
+                      <div className="text-sm text-gray-400">Credit Score</div>
+                    </div>
+                    
+                    <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                      <div 
+                        className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-300" 
+                        style={{ width: `${Math.min((actualData.summary?.creditScore || 750) / 850 * 100, 100)}%` }}
+                      ></div>
+                    </div>
 
-              <div className="text-xs text-gray-500">
-                {isCardFlipped('credit-score') ? 'Tap to reveal score' : 'Updated monthly'}
+                    <div className="text-xs text-purple-300">
+                      {actualData.summary?.creditScore >= 750 ? 'Excellent' : 
+                       actualData.summary?.creditScore >= 700 ? 'Good' : 
+                       actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'}
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-pink-300">🔒 Tap to flip back</div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Quick Actions Card */}
-          <div className="mobile-card bg-gradient-to-br from-gray-800/50 to-gray-700/50 rounded-2xl p-6 border border-gray-600/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Get Started</h3>
+                    {/* Quick Actions Card - 3D Flip */}
+          <div 
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('quick-actions') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-gray-800/50 to-gray-700/50 rounded-2xl border border-gray-600/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Get Started</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-gray-600 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Zap className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Quick access to key features</div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to see available actions
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-gray-300 flex items-center justify-center gap-1">
+                    <span>⚡ Tap to see actions</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
               
-              <div className="space-y-3">
-                {(!actualData.accounts || actualData.accounts.length === 0) ? (
-                  <>
-                    <button
-                      onClick={handleLinkAccounts}
-                      className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
-                    >
-                      <CreditCard className="w-4 h-4" />
-                      Link Bank Account
-                    </button>
-                    <button
-                      onClick={() => setShowManualDataEntry(true)}
-                      className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Enter Data Manually
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => setShowManualDataEntry(true)}
-                      className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Transaction
-                    </button>
-                    <button
-                      onClick={() => setIsChatOpen(true)}
-                      className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      Ask AI Assistant
-                    </button>
-                  </>
-                )}
+              {/* Back of card - detailed actions */}
+              <div className="card-flip-back bg-gradient-to-br from-gray-700/50 to-gray-600/50 rounded-2xl border border-gray-500/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Available Actions</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Quick Actions</h3>
+                  
+                  <div className="space-y-3 mb-4">
+                    {(!actualData.accounts || actualData.accounts.length === 0) ? (
+                      <>
+                        <button
+                          onClick={handleLinkAccounts}
+                          className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
+                        >
+                          <CreditCard className="w-4 h-4" />
+                          Link Bank Account
+                        </button>
+                        <button
+                          onClick={() => setShowManualDataEntry(true)}
+                          className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Enter Data Manually
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setShowManualDataEntry(true)}
+                          className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Transaction
+                        </button>
+                        <button
+                          onClick={() => setIsChatOpen(true)}
+                          className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          Ask AI Assistant
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  
+                  <div className="text-xs text-gray-300">🔒 Tap to flip back</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicators */}
+        {/* Interactive Scroll Indicators */}
         <div className="flex justify-center gap-2 mt-4">
-          <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          {[0, 1, 2, 3, 4].map((index) => (
+            <div
+              key={index}
+              className={`transition-all duration-300 ${
+                index === currentCardIndex ? 'w-3 h-3 bg-robot-green' : 'w-2 h-2 bg-gray-600'
+              } rounded-full ${index === currentCardIndex ? 'animate-pulse' : ''}`}
+            />
+          ))}
         </div>
 
         {/* Quick Tips Section - Fills the empty space */}
@@ -3506,10 +3728,6 @@ export default function MoneyPalPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 pb-24 md:pb-8">
         {/* Mobile Content - Always visible on mobile */}
         <div className="md:hidden">
-          {/* Debug Info - Remove in production */}
-          <div className="text-xs text-gray-500 p-2 bg-gray-800/30 rounded mb-2">
-            Debug: loading={loading.toString()}, onboarding={showMobileOnboarding.toString()}, tab={activeTab}
-          </div>
           
           {loading ? (
             // Mobile Loading State

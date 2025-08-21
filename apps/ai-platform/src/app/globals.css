@@ -110,7 +110,7 @@
   
   /* Mobile card spacing and sizing */
   .mobile-card {
-    @apply flex-shrink-0 w-80;
+    @apply flex-shrink-0 w-80 h-80;
   }
   
   .mobile-card-container {
@@ -144,10 +144,16 @@
     @apply hover:scale-105 active:scale-95 transition-all duration-200;
   }
   
-  /* Card flip animations */
+  /* Enhanced 3D Card flip animations */
   .card-flip {
     transform-style: preserve-3d;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    perspective: 1000px;
+    transform: rotateY(0deg);
+  }
+  
+  .card-flip.flipped {
+    transform: rotateY(180deg);
   }
   
   .card-flip-front,
@@ -158,10 +164,45 @@
     left: 0;
     width: 100%;
     height: 100%;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-flip-front {
+    transform: rotateY(0deg);
   }
   
   .card-flip-back {
     transform: rotateY(180deg);
+  }
+  
+  /* Card flip container */
+  .card-flip-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+  
+  /* Enhanced 3D effects */
+  .card-flip {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-flip:hover {
+    transform: translateY(-4px) rotateX(5deg);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+  }
+  
+  .card-flip.flipped:hover {
+    transform: rotateY(180deg) translateY(-4px) rotateX(5deg);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Smooth transitions for all properties */
+  .card-flip * {
+    transition: all 0.3s ease;
   }
   
   /* Mobile header improvements */
