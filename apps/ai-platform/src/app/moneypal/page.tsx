@@ -365,7 +365,7 @@ export default function MoneyPalPage() {
     lastAIResponse
   } = aiChatData
 
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('overview') // Default to desktop tab
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showTutorial, setShowTutorial] = useState(false)
@@ -1905,17 +1905,702 @@ export default function MoneyPalPage() {
     { id: 'settings', label: 'Settings', icon: Settings }
   ]
 
+  // Mobile tabs (CalAI inspired - simple, guided)
+  const mobileTabs = [
+    { id: 'home', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
+    { id: 'analysis', label: 'Analysis', icon: TrendingUp, shortLabel: 'Analysis' },
+    { id: 'automation', label: 'Automation', icon: Zap, shortLabel: 'Auto' },
+    { id: 'profile', label: 'Profile', icon: User, shortLabel: 'Profile' }
+  ]
+
+  // Mobile render functions (CalAI inspired - simple, guided)
+  const renderMobileHome = () => (
+    <div className="md:hidden space-y-6 px-4 pt-2">
+      {/* Home Header */}
+      <div className="text-center mb-4">
+        <h1 className="text-2xl font-bold text-white mb-2">💰 Your Money</h1>
+        <p className="text-gray-300 text-sm">Swipe to explore your finances</p>
+      </div>
+
+      {/* Horizontal Scrollable Cards Container */}
+      <div className="relative">
+        <div className="mobile-card-container">
+          {/* Cash Flow Card */}
+          <div className="mobile-card bg-gradient-to-br from-robot-green/20 via-robot-blue/20 to-robot-purple/20 rounded-2xl p-6 border border-robot-green/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Today's cash flow</div>
+              <h3 className="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2">
+                Your cash flow is positive 👍
+              </h3>
+              <p className="text-gray-300 text-base mb-6">
+                You've brought in ${(actualData.summary?.monthlyIncome || 0) / 30} and spent ${(actualData.summary?.monthlyExpenses || 0) / 30} so far.
+              </p>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-robot-green mb-1">
+                    ${actualData.summary?.monthlySavings?.toLocaleString() || '0'}
+                  </div>
+                  <div className="text-sm text-gray-400">Net Cash Flow</div>
+                </div>
+                
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div 
+                    className="bg-gradient-to-r from-robot-green to-robot-blue h-2 rounded-full transition-all duration-300" 
+                    style={{ width: '75%' }}
+                  ></div>
+                </div>
+                
+                <div className="text-xs text-gray-400">
+                  +${actualData.summary?.monthlyChange?.toLocaleString() || '0'} this month
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-500">Updated just now</div>
+            </div>
+          </div>
+
+          {/* Total Balance Card */}
+          <div className="mobile-card bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Total Balance</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Assets</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-blue-400 mb-1">
+                    ${actualData.summary?.totalAssets?.toLocaleString() || '0'}
+                  </div>
+                  <div className="text-sm text-gray-400">Total Assets</div>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Checking:</span>
+                    <span className="text-white">${(actualData.accounts?.find(acc => acc.type === 'checking')?.balance || 0).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Savings:</span>
+                    <span className="text-white">${(actualData.accounts?.find(acc => acc.type === 'savings')?.balance || 0).toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-blue-300">Across {actualData.accounts?.length || 0} accounts</div>
+            </div>
+          </div>
+
+          {/* Credit Score Card */}
+          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Credit Health</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-purple-400 mb-1">
+                    {actualData.summary?.creditScore || 750}
+                  </div>
+                  <div className="text-sm text-gray-400">Credit Score</div>
+                </div>
+                
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div 
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-300" 
+                    style={{ width: `${Math.min((actualData.summary?.creditScore || 750) / 850 * 100, 100)}%` }}
+                  ></div>
+                </div>
+                
+                <div className="text-xs text-purple-300">
+                  {actualData.summary?.creditScore >= 750 ? 'Excellent' : 
+                   actualData.summary?.creditScore >= 700 ? 'Good' : 
+                   actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'}
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-500">Updated monthly</div>
+            </div>
+          </div>
+
+          {/* Quick Actions Card */}
+          <div className="mobile-card bg-gradient-to-br from-gray-800/50 to-gray-700/50 rounded-2xl p-6 border border-gray-600/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Get Started</h3>
+              
+              <div className="space-y-3">
+                {(!actualData.accounts || actualData.accounts.length === 0) ? (
+                  <>
+                    <button
+                      onClick={handleLinkAccounts}
+                      className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      Link Bank Account
+                    </button>
+                    <button
+                      onClick={() => setShowManualDataEntry(true)}
+                      className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Enter Data Manually
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setShowManualDataEntry(true)}
+                      className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Transaction
+                    </button>
+                    <button
+                      onClick={() => setIsChatOpen(true)}
+                      className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Ask AI Assistant
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        </div>
+
+        {/* Swipe Instructions */}
+        <div className="text-center mt-4">
+          <p className="text-xs text-gray-500">Swipe left/right to explore more</p>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderMobileAnalysis = () => (
+    <div className="md:hidden space-y-6 px-4 pt-2">
+      {/* Analysis Header */}
+      <div className="text-center mb-4">
+        <h1 className="text-2xl font-bold text-white mb-2">📊 Financial Analysis</h1>
+        <p className="text-gray-300 text-sm">Swipe to explore your insights</p>
+      </div>
+
+      {/* Horizontal Scrollable Analysis Cards */}
+      <div className="relative">
+        <div className="mobile-card-container">
+          {/* Spending Overview Card */}
+          <div className="mobile-card bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Monthly Spending</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Track Expenses</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-orange-400 mb-1">
+                    ${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}
+                  </div>
+                  <div className="text-sm text-gray-400">This Month</div>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Food & Dining:</span>
+                    <span className="text-white">$450</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Transportation:</span>
+                    <span className="text-white">$320</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Entertainment:</span>
+                    <span className="text-white">$180</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-orange-300">Tap to see full breakdown</div>
+            </div>
+          </div>
+
+          {/* Savings Rate Card */}
+          <div className="mobile-card bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-2xl p-6 border border-green-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Savings Rate</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Your Progress</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-green-400 mb-1">
+                    {actualData.summary?.monthlyIncome > 0 ? 
+                      `${Math.round((actualData.summary?.monthlySavings || 0) / actualData.summary.monthlyIncome * 100)}%` : 
+                      '0%'
+                    }
+                  </div>
+                  <div className="text-sm text-gray-400">Of Income Saved</div>
+                </div>
+                
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                  <div 
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full transition-all duration-300" 
+                    style={{ width: `${Math.min((actualData.summary?.monthlySavings || 0) / (actualData.summary?.monthlyIncome || 1) * 100, 100)}%` }}
+                  ></div>
+                </div>
+                
+                <div className="text-xs text-green-300">
+                  ${actualData.summary?.monthlySavings?.toLocaleString() || '0'} saved this month
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-500">Goal: 20% of income</div>
+            </div>
+          </div>
+
+          {/* Debt Overview Card */}
+          <div className="mobile-card bg-gradient-to-br from-red-500/20 to-rose-600/20 rounded-2xl p-6 border border-red-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Debt Overview</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Manage Liabilities</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="text-3xl font-bold text-red-400 mb-1">
+                    ${actualData.summary?.totalDebt?.toLocaleString() || '0'}
+                  </div>
+                  <div className="text-sm text-gray-400">Total Debt</div>
+                </div>
+                
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Credit Cards:</span>
+                    <span className="text-white">${(actualData.debtAccounts?.find(acc => acc.type === 'credit-card')?.balance || 0).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Loans:</span>
+                    <span className="text-white">$0</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-red-300">Monitor your debt-to-income ratio</div>
+            </div>
+          </div>
+
+          {/* AI Insights Card */}
+          <div className="mobile-card bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-purple/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">AI Insights</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Smart Analysis</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                    <BarChart3 className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">AI-Powered Insights</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+                    <span className="text-white">Spending patterns detected</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+                    <span className="text-white">Budget recommendations ready</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
+                    <span className="text-white">Goal tracking active</span>
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setIsChatOpen(true)}
+                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium"
+              >
+                Get AI Insights
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderMobileAutomation = () => (
+    <div className="md:hidden space-y-6 px-4 pt-2">
+      {/* Automation Header */}
+      <div className="text-center mb-4">
+        <h1 className="text-2xl font-bold text-white mb-2">🤖 AI Automation</h1>
+        <p className="text-gray-300 text-sm">Swipe to explore automation features</p>
+      </div>
+
+      {/* Horizontal Scrollable Automation Cards */}
+      <div className="relative">
+        <div className="mobile-card-container">
+          {/* Weekly Summary Card */}
+          <div className="mobile-card bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-2xl p-6 border border-blue-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Weekly Reports</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Auto Summary</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Mail className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Every Sunday at 9:00 AM</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-white">Spending breakdown</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-white">AI insights</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-white">Goal progress</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-blue-300">Active automation</div>
+            </div>
+          </div>
+
+          {/* Low Balance Alert Card */}
+          <div className="mobile-card bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Smart Alerts</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Balance Monitor</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <AlertTriangle className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Real-time monitoring</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                    <span className="text-white">Low balance alerts</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                    <span className="text-white">Push notifications</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                    <span className="text-white">Email alerts</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-orange-300">Always protected</div>
+            </div>
+          </div>
+
+          {/* Budget Review Card */}
+          <div className="mobile-card bg-gradient-to-br from-green-500/20 to-blue-600/20 rounded-2xl p-6 border border-green-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Monthly Review</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Budget Analysis</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <BarChart3 className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">1st of every month</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-white">Performance review</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-white">AI recommendations</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-white">Goal adjustments</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-green-300">Next: 3 days</div>
+            </div>
+          </div>
+
+          {/* Goal Tracking Card */}
+          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-2xl p-6 border border-purple-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Goal Progress</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Track Milestones</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Every Friday at 5:00 PM</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-white">Progress updates</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                    <span className="text-white">Motivation tips</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-white">Next steps</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-purple-300">Stay motivated</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderMobileProfile = () => (
+    <div className="md:hidden space-y-6 px-4 pt-2">
+      {/* Profile Header */}
+      <div className="text-center mb-4">
+        <h1 className="text-2xl font-bold text-white mb-2">👤 Your Profile</h1>
+        <p className="text-gray-300 text-sm">Swipe to manage your account</p>
+      </div>
+
+      {/* Horizontal Scrollable Profile Cards */}
+      <div className="relative">
+        <div className="mobile-card-container">
+          {/* Profile Settings Card */}
+          <div className="mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Account Info</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Profile Settings</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                    <User className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Account Details</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Email:</span>
+                    <span className="text-white">{user?.email}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Notifications:</span>
+                    <span className="text-robot-green">Enabled</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Privacy:</span>
+                    <span className="text-robot-green">Private</span>
+                  </div>
+                </div>
+              </div>
+              
+              <button className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium">
+                Edit Profile
+              </button>
+            </div>
+          </div>
+
+          {/* Test Mode Card */}
+          <div className="mobile-card bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl p-6 border border-emerald-500/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Test Mode</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Experience MoneyPal</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Play className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {isTestMode ? 'Currently active' : 'Try with sample data'}
+                  </div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    <span className="text-white">Sample accounts</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
+                    <span className="text-white">Mock transactions</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    <span className="text-white">Demo goals</span>
+                  </div>
+                </div>
+              </div>
+              
+              {isTestMode ? (
+                <button
+                  onClick={handleExitTestMode}
+                  className="w-full bg-red-500 hover:bg-red-600 p-3 rounded-xl text-white font-medium"
+                >
+                  Exit Test Mode
+                </button>
+              ) : (
+                <button
+                  onClick={handleEnterTestMode}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 p-3 rounded-xl text-white font-medium"
+                >
+                  Enter Test Mode
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Data Management Card */}
+          <div className="mobile-card bg-gradient-to-br from-robot-orange/20 to-robot-pink/20 rounded-2xl p-6 border border-robot-orange/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Data Control</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Manage Data</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-robot-orange to-robot-pink rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Plus className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Data Options</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                    <span className="text-white">Manual entry</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                    <span className="text-white">Bank linking</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                    <span className="text-white">Data export</span>
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setShowManualDataEntry(true)}
+                className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-3 rounded-xl text-white font-medium"
+              >
+                Manage Data
+              </button>
+            </div>
+          </div>
+
+          {/* Support & Help Card */}
+          <div className="mobile-card bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-purple/30">
+            <div className="text-center">
+              <div className="text-sm text-gray-400 mb-3">Support</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Get Help</h3>
+              
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                <div className="text-center mb-3">
+                  <div className="w-16 h-16 bg-gradient-to-r from-robot-purple to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                    <HelpCircle className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="text-sm text-gray-400">Support Options</div>
+                </div>
+                
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-white">AI chat support</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-white">Tutorial mode</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-white">Onboarding help</span>
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setShowTutorial(true)}
+                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium"
+              >
+                Get Help
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          <div className="w-3 h-3 bg-robot-green rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Interactive AI Tutorial Overlay */}
       {renderInteractiveTutorial()}
 
-      {/* Header */}
-          <motion.div
+      {/* Desktop Header - Hidden on Mobile */}
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-        className="sticky top-0 z-40 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
+        className="hidden md:block sticky top-0 z-40 mb-8 p-6 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20 rounded-b-2xl"
       >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -2002,8 +2687,8 @@ export default function MoneyPalPage() {
 
 
 
-      {/* New Hero Section & Financial Summary */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Desktop Hero Section & Financial Summary - Hidden on Mobile */}
+      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div id="hero-section">
           <HeroSection
             userName={user?.email?.split('@')[0] || 'there'}
@@ -2026,12 +2711,24 @@ export default function MoneyPalPage() {
               </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'accounts' && renderAccounts()}
-        {activeTab === 'goals' && renderGoals()}
-        {activeTab === 'automation' && renderAutomation()}
-        {activeTab === 'settings' && renderSettings()}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 pb-24 md:pb-8">
+        {/* Mobile Content - Always visible on mobile */}
+        <div className="md:hidden">
+          {activeTab === 'home' && renderMobileHome()}
+          {activeTab === 'analysis' && renderMobileAnalysis()}
+          {activeTab === 'automation' && renderMobileAutomation()}
+          {activeTab === 'profile' && renderMobileProfile()}
+        </div>
+        
+        {/* Desktop Content - Hidden on Mobile */}
+        {/* Desktop Content - Hidden on Mobile */}
+        <div className="hidden md:block">
+          {activeTab === 'overview' && renderOverview()}
+          {activeTab === 'accounts' && renderAccounts()}
+          {activeTab === 'goals' && renderGoals()}
+          {activeTab === 'automation' && renderAutomation()}
+          {activeTab === 'settings' && renderSettings()}
+        </div>
       </main>
 
       {/* Onboarding Modal */}
@@ -2158,6 +2855,104 @@ export default function MoneyPalPage() {
             </div>
         </div>
       )} */}
+
+      {/* Mobile Header - Mobile Only */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="md:hidden sticky top-0 z-40 mb-4 p-4 bg-gray-900/80 backdrop-blur-xl border-b border-robot-green/20"
+      >
+        <div className="flex items-center justify-between">
+          {/* Left Side - Clean Avatar + Text */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-robot-green/20 rounded-full flex items-center justify-center">
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="MoneyPal Robot"
+                width={24}
+                height={24}
+                className="rounded-full"
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">MoneyPal</h1>
+              <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
+            </div>
+          </div>
+          
+          {/* Right Side - Notifications + Floating Chat Avatar */}
+          <div className="flex items-center gap-3">
+            {/* Notifications */}
+            <button
+              onClick={() => {
+                // Handle notifications
+                console.log('Notifications clicked')
+              }}
+              className="w-10 h-10 bg-robot-purple/20 rounded-full flex items-center justify-center relative touch-manipulation"
+            >
+              <div className="w-5 h-5 text-robot-purple">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M9 11h.01M9 8h.01" />
+                </svg>
+              </div>
+              {/* Notification Badge */}
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-xs text-white font-bold">3</span>
+              </div>
+            </button>
+            
+            {/* Floating Chat Avatar (Smaller) */}
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="w-10 h-10 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group touch-manipulation"
+            >
+              <Image
+                src="/moneypal/robotavatar.PNG"
+                alt="AI Chat"
+                width={20}
+                height={20}
+                className="rounded-full"
+              />
+              {/* Floating Animation */}
+              <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
+            </button>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Mobile Bottom Navigation - Mobile Only */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/50 mobile-safe-bottom"
+      >
+        <div className="flex items-center justify-around p-4">
+          {mobileTabs.map((tab, index) => (
+            <motion.button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex flex-col items-center gap-2 px-4 py-4 rounded-2xl transition-all duration-300 touch-manipulation ${
+                activeTab === tab.id
+                  ? 'text-robot-green bg-robot-green/20' 
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
+            >
+              <div className={`w-7 h-7 flex items-center justify-center ${
+                activeTab === tab.id ? 'text-robot-green' : 'text-gray-400'
+              }`}>
+                <tab.icon className="w-6 h-6" />
+              </div>
+              <span className="text-xs font-medium">{tab.shortLabel}</span>
+            </motion.button>
+          ))}
+        </div>
+      </motion.div>
     </div>
   )
 }

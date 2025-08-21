@@ -98,6 +98,52 @@
     @apply min-h-[140px] sm:min-h-[160px] touch-manipulation active:scale-95;
   }
   
+  /* Mobile horizontal scroll utilities */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+  
+  /* Mobile card spacing and sizing */
+  .mobile-card {
+    @apply flex-shrink-0 w-80;
+  }
+  
+  .mobile-card-container {
+    @apply flex gap-4 overflow-x-auto pb-4 scrollbar-hide;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .mobile-card {
+    scroll-snap-align: start;
+    @apply touch-manipulation active:scale-95 transition-transform duration-200;
+  }
+  
+  /* Mobile safe area and spacing */
+  .mobile-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+  
+  .mobile-safe-top {
+    padding-top: env(safe-area-inset-top, 1rem);
+  }
+  
+  /* Mobile touch improvements */
+  .mobile-touch {
+    @apply touch-manipulation select-none;
+  }
+  
+  /* Mobile card hover effects */
+  .mobile-card-hover {
+    @apply hover:scale-105 active:scale-95 transition-all duration-200;
+  }
+  
   /* Mobile header improvements */
   .mobile-header {
     @apply flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6;
