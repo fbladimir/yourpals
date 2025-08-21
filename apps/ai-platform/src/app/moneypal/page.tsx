@@ -366,6 +366,13 @@ export default function MoneyPalPage() {
   } = aiChatData
 
   const [activeTab, setActiveTab] = useState('overview') // Default to desktop tab
+  
+  // Set mobile tab on mount if on mobile
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setActiveTab('home')
+    }
+  }, [])
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showTutorial, setShowTutorial] = useState(false)
@@ -691,6 +698,14 @@ export default function MoneyPalPage() {
   useEffect(() => {
     if (!loading && typeof window !== 'undefined' && window.innerWidth < 768) {
       const mobileOnboardingCompleted = localStorage.getItem('moneypal-mobile-onboarding-completed')
+      
+      console.log('Mobile onboarding check:', {
+        loading,
+        mobileOnboardingCompleted,
+        hasAccounts: actualData.accounts && actualData.accounts.length > 0,
+        hasSummary: actualData.summary && actualData.summary.monthlyIncome > 0,
+        showMobileOnboarding
+      })
       
       // Show onboarding if user has no data and hasn't completed onboarding
       if (!mobileOnboardingCompleted && 
@@ -2324,6 +2339,11 @@ export default function MoneyPalPage() {
               setShowMobileOnboarding(false)
               localStorage.setItem('moneypal-mobile-onboarding-completed', 'true')
               setOnboardingData({ ...onboardingData, hasCompletedSetup: true })
+              // Ensure we're on a valid mobile tab
+              if (!['home', 'analysis', 'automation', 'profile'].includes(activeTab)) {
+                setActiveTab('home')
+              }
+              console.log('Onboarding completed, switching to mobile dashboard')
             }}
             className="w-full max-w-sm bg-gradient-to-r from-robot-green to-robot-blue text-white font-semibold py-4 px-6 rounded-2xl text-lg hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
           >
@@ -3486,6 +3506,11 @@ export default function MoneyPalPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 pb-24 md:pb-8">
         {/* Mobile Content - Always visible on mobile */}
         <div className="md:hidden">
+          {/* Debug Info - Remove in production */}
+          <div className="text-xs text-gray-500 p-2 bg-gray-800/30 rounded mb-2">
+            Debug: loading={loading.toString()}, onboarding={showMobileOnboarding.toString()}, tab={activeTab}
+          </div>
+          
           {loading ? (
             // Mobile Loading State
             <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
@@ -3537,6 +3562,23 @@ export default function MoneyPalPage() {
               {activeTab === 'analysis' && renderMobileAnalysis()}
               {activeTab === 'automation' && renderMobileAutomation()}
               {activeTab === 'profile' && renderMobileProfile()}
+              
+              {/* Fallback - if no tab matches, show home */}
+              {!['home', 'analysis', 'automation', 'profile'].includes(activeTab) && (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-robot-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="w-8 h-8 text-robot-green" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Tab Not Found</h3>
+                  <p className="text-gray-400 mb-4">Current tab: {activeTab}</p>
+                  <button
+                    onClick={() => setActiveTab('home')}
+                    className="bg-gradient-to-r from-robot-green to-robot-blue text-white font-medium py-3 px-6 rounded-xl hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200"
+                  >
+                    Go to Home
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
