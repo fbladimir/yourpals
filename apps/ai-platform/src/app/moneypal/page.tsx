@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { 
   ArrowLeft, 
   Plus, 
@@ -32,7 +33,9 @@ import {
   Shield,
   Mail,
   AlertTriangle,
-  Calculator
+  Calculator,
+  Power,
+  Lock
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -67,6 +70,7 @@ import AIAutomationSystem from '@/components/moneypal/AIAutomationSystem'
 
 export default function MoneyPalPage() {
   const authData = useAuth()
+  const router = useRouter()
   
   // Add safety check for auth hook
   if (!authData) {
@@ -604,6 +608,31 @@ export default function MoneyPalPage() {
       
       console.log('Test mode exited - all data cleared')
     }
+  }
+
+  const handleExitToDashboard = () => {
+    // Create a smooth fade-out effect that transitions to dashboard
+    const fadeOutEffect = () => {
+      // Create overlay with initial transparency
+      const overlay = document.createElement('div')
+      overlay.className = 'fixed inset-0 bg-black z-[9999] transition-opacity duration-700 ease-in-out'
+      overlay.style.opacity = '0'
+      document.body.appendChild(overlay)
+      
+      // Start fade in
+      requestAnimationFrame(() => {
+        overlay.style.opacity = '1'
+      })
+      
+      // After fade completes, navigate to dashboard
+      setTimeout(() => {
+        // Remove overlay and navigate
+        overlay.remove()
+        router.push('/dashboard')
+      }, 700)
+    }
+    
+    fadeOutEffect()
   }
 
   // Refs for scrolling to elements
@@ -2376,9 +2405,9 @@ export default function MoneyPalPage() {
 
     const renderMobileHome = () => (
     <div className="md:hidden space-y-8 px-4 pt-4">
-      {/* Mobile Header with MoneyPal Logo */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
+      {/* Mobile Header with MoneyPal Logo - Home Section */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => setIsChatOpen(true)}
             className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group hover:scale-105 transition-transform duration-200"
@@ -2402,36 +2431,64 @@ export default function MoneyPalPage() {
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
-            <p className="text-xs text-orange-400 mt-1">💬 Tap to chat</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-xs text-orange-400">💬 Tap to chat</p>
+              {isTestMode && (
+                <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30">
+                  DEMO
+                </span>
+              )}
+            </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Global Toggle for All Cards */}
           <button
             onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30 hover:bg-gray-800/70 hover:border-gray-500/50 transition-all duration-200 group"
           >
-            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+            <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
           </button>
           
-          {/* Demo Mode Exit Button */}
-          {isTestMode && (
+          {/* Unified Action Button - Changes based on mode */}
+          {isTestMode ? (
+            /* Demo Mode: Exit Demo Button */
             <button
               onClick={handleExitTestMode}
-              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200"
+              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 hover:border-orange-500/50 transition-all duration-200 group"
+              title="Exit Demo Mode"
             >
-              <X className="w-4 h-4" />
-              <span className="text-xs">Exit Demo</span>
+              <div className="relative">
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-orange-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit Demo</span>
+            </button>
+          ) : (
+            /* Normal Mode: Exit to Dashboard Button */
+            <button
+              onClick={handleExitToDashboard}
+              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 hover:border-red-500/50 transition-all duration-200 group"
+              title="Exit to Dashboard"
+            >
+              <div className="relative">
+                <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit</span>
             </button>
           )}
         </div>
       </div>
+      
+      {/* Subtle Header Separator - Home Section */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
   
       {/* Section Title */}
       <div className="text-center mb-6">
@@ -2884,68 +2941,94 @@ export default function MoneyPalPage() {
           ))}
         </div>
 
-        {/* Quick Tips Section - Fills the empty space */}
+        {/* Quick Actions Card - 3D Flip */}
         <div className="mt-6 px-4 mb-6">
-          <div className="bg-gray-800/30 rounded-2xl p-6 border border-gray-700/30">
-            <h3 className="text-lg font-semibold text-white mb-4 text-center">💡 Quick Tips</h3>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-2 h-2 bg-robot-green rounded-full"></div>
-                <span className="text-gray-300">Link your bank accounts for real-time updates</span>
+          <div 
+            onClick={() => toggleCard('quick-actions')}
+            className={`mobile-card card-flip cursor-pointer ${
+              isCardFlipped('quick-actions') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-purple/20 to-robot-pink/20 rounded-2xl border border-robot-purple/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">⚡ Actions</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-2xl font-bold text-robot-purple mb-1">
+                        Quick Access
+                      </div>
+                      <div className="text-sm text-gray-400">Essential tools</div>
+                    </div>
+                    
+                    <div className="text-center text-gray-400 text-sm">
+                      Tap to see available actions
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-robot-purple flex items-center justify-center gap-1">
+                    <span>💡 Tap to flip card</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
-                <span className="text-gray-300">Set financial goals to track your progress</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
-                <span className="text-gray-300">Use AI chat for personalized financial advice</span>
-              </div>
-            </div>
-            
-            {/* Help Button for New Users */}
-            {(!actualData.accounts || actualData.accounts.length === 0) && 
-             (!actualData.summary || actualData.summary.monthlyIncome === 0) && (
-              <div className="mt-6 pt-4 border-t border-gray-700/30">
-                <button
-                  onClick={() => {
-                    setShowMobileOnboarding(true)
-                    setOnboardingStep(0)
-                    setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
-                  }}
-                  className="w-full bg-gradient-to-r from-robot-green/20 to-robot-blue/20 border border-robot-green/30 text-robot-green font-medium py-3 px-4 rounded-xl hover:from-robot-green/30 hover:to-robot-blue/30 transition-all duration-200 flex items-center justify-center gap-2"
-                >
-                  <HelpCircle className="w-4 h-4" />
-                  Need help setting up?
-                </button>
-              </div>
-            )}
-            
-            {/* Debug Buttons - Hidden in production, useful for development */}
-            <div className="mt-4 pt-4 border-t border-gray-700/30">
-              <div className="text-xs text-gray-500 mb-3 text-center">🔧 Developer Tools</div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setShowMobileOnboarding(true)
-                    setOnboardingStep(0)
-                    setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
-                  }}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 transition-all duration-200 text-xs"
-                >
-                  <HelpCircle className="w-3 h-3" />
-                  Show Onboarding
-                </button>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem('moneypal-mobile-onboarding-completed')
-                    console.log('Onboarding status reset - will show on next refresh')
-                  }}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 text-xs"
-                >
-                  <X className="w-3 h-3" />
-                  Reset
-                </button>
+              
+              {/* Back of card - detailed actions */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-pink/20 to-robot-purple/20 rounded-2xl border border-robot-pink/30 flex flex-col justify-center">
+                <div className="text-center">
+                  <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Available Actions</h3>
+                  
+                  <div className="space-y-3 mb-4">
+                    <button
+                      onClick={() => setIsChatOpen(true)}
+                      className="w-full bg-gradient-to-r from-robot-green/20 to-robot-blue/20 border border-robot-green/30 text-robot-green font-medium py-2 px-3 rounded-lg hover:from-robot-green/30 hover:to-robot-blue/30 transition-all duration-200 flex items-center justify-center gap-2 text-sm"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      AI Chat
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowManualDataEntry(true)}
+                      className="w-full bg-gradient-to-r from-robot-blue/20 to-robot-purple/20 border border-robot-blue/30 text-robot-blue font-medium py-2 px-3 rounded-lg hover:from-robot-blue/30 hover:to-robot-purple/30 transition-all duration-200 text-xs"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Data
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setShowMobileOnboarding(true)
+                        setOnboardingStep(0)
+                        setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+                      }}
+                      className="w-full bg-gradient-to-r from-robot-purple/20 to-robot-pink/20 border border-robot-purple/30 text-robot-purple font-medium py-2 px-3 rounded-lg hover:from-robot-purple/30 hover:to-robot-pink/30 transition-all duration-200 flex items-center justify-center gap-2 text-xs"
+                    >
+                      <HelpCircle className="w-4 h-4" />
+                      Get Help
+                    </button>
+                  </div>
+                  
+                  <div className="text-xs text-robot-pink flex items-center justify-center gap-1">
+                    <span>💡 Tap to flip back</span>
+                    <motion.div
+                      animate={{ rotateY: [0, 180, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="inline-block"
+                    >
+                      🔄
+                    </motion.div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2990,18 +3073,34 @@ export default function MoneyPalPage() {
           </div>
         </div>
         
-        {/* Global Toggle for All Cards */}
-        <button
-          onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
-        >
-          <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
-            <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-          <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-        </button>
+        {/* Global Toggle for All Cards - Analysis Section */}
+        <div className="flex items-center gap-2">
+          {/* Global Toggle for All Cards */}
+          <button
+            onClick={() => setAllCardsFlipped(!allCardsFlipped)}
+            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+          >
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+          </button>
+          
+          {/* Gaming-Style Power Button for Dashboard Exit */}
+          <button
+            onClick={handleExitToDashboard}
+            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
+            title="Exit to Dashboard"
+          >
+            <div className="relative">
+              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:scale-110 transition-transform duration-200" />
+            </div>
+            <span className="text-xs">Exit</span>
+          </button>
+        </div>
       </div>
   
       {/* Section Title */}
@@ -3192,19 +3291,35 @@ export default function MoneyPalPage() {
           </div>
         </div>
         
-        {/* Global Toggle for All Cards */}
-        <button
-          onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
-        >
-          <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
-            <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-          <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-        </button>
-              </div>
+        {/* Global Toggle for All Cards - Automation Section */}
+        <div className="flex items-center gap-2">
+          {/* Global Toggle for All Cards */}
+          <button
+            onClick={() => setAllCardsFlipped(!allCardsFlipped)}
+            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+          >
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+          </button>
+          
+          {/* Gaming-Style Power Button for Dashboard Exit */}
+          <button
+            onClick={handleExitToDashboard}
+            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
+            title="Exit to Dashboard"
+          >
+            <div className="relative">
+              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+            </div>
+            <span className="text-xs">Exit</span>
+          </button>
+        </div>
+      </div>
   
       {/* Section Title */}
       <div className="text-center mb-6">
@@ -3394,19 +3509,35 @@ export default function MoneyPalPage() {
           </div>
         </div>
         
-        {/* Global Toggle for All Cards */}
-        <button
-          onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-          className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
-        >
-          <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
-            <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-          <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-        </button>
-              </div>
+        {/* Global Toggle for All Cards - Profile Section */}
+        <div className="flex items-center gap-2">
+          {/* Global Toggle for All Cards */}
+          <button
+            onClick={() => setAllCardsFlipped(!allCardsFlipped)}
+            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+          >
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+          </button>
+          
+          {/* Gaming-Style Power Button for Dashboard Exit */}
+          <button
+            onClick={handleExitToDashboard}
+            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
+            title="Exit to Dashboard"
+          >
+            <div className="relative">
+              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+            </div>
+            <span className="text-xs">Exit</span>
+          </button>
+        </div>
+      </div>
   
       {/* Section Title */}
       <div className="text-center mb-6">
