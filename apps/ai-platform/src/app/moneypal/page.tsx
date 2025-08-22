@@ -2461,15 +2461,15 @@ export default function MoneyPalPage() {
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
   
               {/* Section Title */}
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-semibold text-white mb-2">Financial Overview</h2>
-          <p className="text-sm text-gray-300">Swipe to see your finances</p>
+        <div className="text-center mb-8">
+          <h2 className="text-heading font-bold text-white mb-3">Financial Overview</h2>
+          <p className="text-body text-gray-300">Swipe to see your finances</p>
           
           {/* Global Toggle for All Cards - Moved closer to cards */}
           <div className="mt-4 flex justify-center">
             <button
               onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30 hover:bg-gray-800/70 hover:border-gray-500/50 transition-all duration-200 group"
+              className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-xl group"
             >
               <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
                 <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2490,7 +2490,7 @@ export default function MoneyPalPage() {
                 setOnboardingStep(0)
                 setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
               }}
-              className="bg-gradient-to-r from-robot-green to-robot-blue text-white font-medium py-3 px-6 rounded-xl hover:from-robot-green/90 hover:to-robot-blue/90 transition-all duration-200 flex items-center justify-center gap-2 mx-auto"
+              className="btn-primary flex items-center justify-center gap-2 mx-auto py-3 px-6"
             >
               <HelpCircle className="w-4 h-4" />
               New to MoneyPal? Get Started Here!
@@ -2512,15 +2512,12 @@ export default function MoneyPalPage() {
             <div className="card-flip-container">
               {/* Front of card - enhanced minimal info */}
               <div className="card-flip-front bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl border border-robot-green/30 flex flex-col justify-center relative overflow-hidden">
-                {/* Subtle background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-4 right-4 w-16 h-16 bg-robot-green/20 rounded-full blur-xl"></div>
-                  <div className="absolute bottom-4 left-4 w-12 h-12 bg-robot-blue/20 rounded-full blur-xl"></div>
-                </div>
+                {/* Enhanced iOS-style background pattern */}
+                <div className="card-pattern"></div>
                 
                 <div className="text-center relative z-10">
-                  <div className="text-sm text-gray-300 mb-2 font-medium">Financial Overview</div>
-                  <h3 className="text-xl font-bold text-white mb-4">Your Summary</h3>
+                  <div className="text-caption text-gray-300 mb-3 font-medium">Financial Overview</div>
+                  <h3 className="text-heading text-white mb-5">Your Summary</h3>
                   
                   <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-700/30">
                     <div className="text-center mb-3">
@@ -2549,22 +2546,19 @@ export default function MoneyPalPage() {
               
               {/* Back of card - enhanced detailed info */}
               <div className="card-flip-back bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 rounded-2xl border border-robot-blue/30 flex flex-col justify-center relative overflow-hidden">
-                {/* Subtle background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-4 left-4 w-16 h-16 bg-robot-blue/20 rounded-full blur-xl"></div>
-                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-robot-purple/20 rounded-full blur-xl"></div>
-                </div>
+                {/* Enhanced iOS-style background pattern */}
+                <div className="card-pattern"></div>
                 
                 <div className="text-center relative z-10">
-                  <div className="text-sm text-gray-300 mb-2 font-medium">Financial Overview</div>
-                  <h3 className="text-xl font-bold text-white mb-4">Detailed Summary</h3>
+                  <div className="text-caption text-gray-300 mb-3 font-medium">Financial Overview</div>
+                  <h3 className="text-heading text-white mb-5">Detailed Summary</h3>
                   
                   <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-700/30">
                     <div className="text-center mb-3">
-                      <div className="text-2xl font-bold text-robot-green mb-2 drop-shadow-lg">
+                      <div className="text-display font-bold text-robot-green mb-3 drop-shadow-lg">
                         ${actualData.summary?.netWorth?.toLocaleString() || '0'}
                       </div>
-                      <div className="text-sm text-gray-300 font-medium">Net Worth</div>
+                      <div className="text-caption text-gray-300 font-medium">Net Worth</div>
                     </div>
                     
                     <div className="space-y-2 text-xs">
@@ -2609,15 +2603,15 @@ export default function MoneyPalPage() {
               {/* Front of card - minimal info */}
               <div className="card-flip-front bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl border border-blue-500/30 flex flex-col justify-center">
                 <div className="text-center">
-                  <div className="text-sm text-gray-400 mb-3">Account Management</div>
-                  <h3 className="text-xl font-bold text-white mb-3">Your Accounts</h3>
+                  <div className="text-caption text-gray-400 mb-4">Account Management</div>
+                  <h3 className="text-heading text-white mb-4">Your Accounts</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
                       <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                         <CreditCard className="w-8 h-8 text-white" />
                       </div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-caption text-gray-400">
                         {actualData.accounts && actualData.accounts.length > 0 ? `${actualData.accounts.length} accounts` : 'No accounts'}
                       </div>
                     </div>
@@ -2702,7 +2696,7 @@ export default function MoneyPalPage() {
                       <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
                         <Target className="w-8 h-8 text-white" />
                       </div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-caption text-gray-400">
                         {actualData.goals && actualData.goals.length > 0 ? `${actualData.goals.length} active goals` : 'No goals set'}
                       </div>
                     </div>
@@ -2727,8 +2721,8 @@ export default function MoneyPalPage() {
               {/* Back of card - detailed goals */}
               <div className="card-flip-back bg-gradient-to-br from-purple-600/20 to-pink-500/20 rounded-2xl border border-purple-600/30 flex flex-col justify-center">
                 <div className="text-center">
-                  <div className="text-sm text-gray-400 mb-3">Goal Details</div>
-                  <h3 className="text-xl font-bold text-white mb-3">Your Goals</h3>
+                  <div className="text-caption text-gray-400 mb-4">Goal Details</div>
+                  <h3 className="text-heading text-white mb-4">Your Goals</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     {actualData.goals && actualData.goals.length > 0 ? (
@@ -2787,13 +2781,13 @@ export default function MoneyPalPage() {
               {/* Front of card - hidden score */}
               <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center">
                 <div className="text-center">
-                  <div className="text-sm text-gray-400 mb-3">Credit Health</div>
-                  <h3 className="text-xl font-bold text-white mb-3">Your Score</h3>
+                  <div className="text-caption text-gray-400 mb-4">Credit Health</div>
+                  <h3 className="text-heading text-white mb-4">Your Score</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
-                      <div className="text-3xl font-bold text-purple-400 mb-1">***</div>
-                      <div className="text-sm text-gray-400">Credit Score</div>
+                      <div className="text-display font-bold text-purple-400 mb-2">***</div>
+                      <div className="text-caption text-gray-400">Credit Score</div>
                     </div>
                     
                     <div className="text-center text-gray-400 text-sm">
@@ -2903,8 +2897,8 @@ export default function MoneyPalPage() {
               {/* Back of card - detailed actions */}
               <div className="card-flip-back bg-gradient-to-br from-gray-700/50 to-gray-600/50 rounded-2xl border border-gray-500/30 flex flex-col justify-center">
                 <div className="text-center">
-                  <div className="text-sm text-gray-400 mb-3">Available Actions</div>
-                  <h3 className="text-xl font-bold text-white mb-3">Quick Actions</h3>
+                  <div className="text-caption text-gray-400 mb-4">Available Actions</div>
+                  <h3 className="text-heading text-white mb-4">Quick Actions</h3>
                   
                   <div className="space-y-3 mb-4">
                     {(!actualData.accounts || actualData.accounts.length === 0) ? (
@@ -2987,12 +2981,12 @@ export default function MoneyPalPage() {
         {/* Enhanced Interactive Scroll Indicators */}
         <div className="flex flex-col items-center mt-6">
           {/* Scroll Progress Bar */}
-          <div className="w-32 h-1 bg-gray-700/50 rounded-full mb-3 overflow-hidden">
+          <div className="progress-bar w-32 h-1 mb-3">
             <motion.div
-              className="h-full bg-gradient-to-r from-robot-green to-robot-blue rounded-full"
+              className="progress-fill h-full"
               initial={{ width: "25%" }}
               animate={{ width: `${((currentCardIndex + 1) / 4) * 100}%` }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             />
           </div>
           
@@ -3028,19 +3022,22 @@ export default function MoneyPalPage() {
           </div>
         </div>
 
-        {/* Floating AI Companion - Always Accessible */}
+        {/* Enhanced iOS-Style Floating AI Companion */}
         <div className="fixed bottom-32 right-4 z-50 md:hidden floating-ai-companion">
-          {/* Floating Avatar Button */}
+          {/* Enhanced Floating Avatar Button */}
           <motion.button
             onClick={() => setIsChatOpen(true)}
-            className="relative w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full shadow-2xl border-2 border-white/20 flex items-center justify-center group"
-            whileHover={{ scale: 1.1 }}
+            className="relative w-16 h-16 bg-gradient-to-br from-robot-blue to-robot-purple rounded-full shadow-2xl border-2 border-white/20 backdrop-blur-sm flex items-center justify-center group overflow-hidden"
+            whileHover={{ scale: 1.1, y: -2 }}
             whileTap={{ scale: 0.95 }}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
           >
-            {/* Breathing Animation Ring */}
+            {/* Enhanced background pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 opacity-50"></div>
+            
+            {/* Enhanced breathing animation ring */}
             <motion.div
               animate={{
                 scale: [1, 1.1, 1],
@@ -3051,7 +3048,7 @@ export default function MoneyPalPage() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-robot-green/30 to-robot-blue/30 rounded-full blur-sm"
+              className="absolute inset-0 w-16 h-16 bg-gradient-to-br from-robot-blue/30 to-robot-purple/30 rounded-full blur-sm"
             />
             
             {/* Avatar Image */}
@@ -3063,7 +3060,7 @@ export default function MoneyPalPage() {
               className="relative z-10 rounded-full"
             />
             
-            {/* Status Indicator */}
+            {/* Enhanced status indicator */}
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-robot-green rounded-full border-2 border-white shadow-lg">
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
@@ -3076,14 +3073,14 @@ export default function MoneyPalPage() {
               />
             </div>
             
-            {/* Hover Glow Effect */}
+            {/* Enhanced hover glow effect */}
             <motion.div
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
-              className="absolute inset-0 w-16 h-16 bg-gradient-to-r from-robot-green/20 to-robot-blue/20 rounded-full blur-md"
+              className="absolute inset-0 w-16 h-16 bg-gradient-to-br from-robot-blue/30 to-robot-purple/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
             
-            {/* Pulse Animation for New Users */}
+            {/* Enhanced pulse animation for new users */}
             {(!actualData.accounts || actualData.accounts.length === 0) && (
               <motion.div
                 animate={{ scale: [1, 1.3, 1] }}
@@ -4077,8 +4074,7 @@ export default function MoneyPalPage() {
       {/* Floating AI Avatar - Hidden on Mobile */}
       <div className="hidden md:block">
         <FloatingAvatar 
-          onOpenChat={() => setIsChatOpen(true)}
-          isChatOpen={isChatOpen}
+          onChatOpen={() => setIsChatOpen(true)}
         />
       </div>
 
