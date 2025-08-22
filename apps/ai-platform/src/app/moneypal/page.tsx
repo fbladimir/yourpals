@@ -396,11 +396,7 @@ export default function MoneyPalPage() {
   const [manualData, setManualData] = useState<any>(null)
   const [showManualDataEntry, setShowManualDataEntry] = useState(false)
   
-  // Debug function to track modal state changes
-  const debugSetShowManualDataEntry = (value: boolean) => {
-    console.log('setShowManualDataEntry called with:', value);
-    setShowManualDataEntry(value);
-  }
+
   const [isTestMode, setIsTestMode] = useState(false)
   const [allCardsFlipped, setAllCardsFlipped] = useState(false)
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set())
@@ -2418,54 +2414,18 @@ export default function MoneyPalPage() {
       {/* Mobile Header with MoneyPal Logo - Home Section */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/moneypal/robotavatar.PNG"
-              alt="MoneyPal AI Chat"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            {/* Orange Chat Symbol */}
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
-              </svg>
-            </div>
-            {/* Floating Animation */}
-            <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
-          </button>
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
-            <div className="flex items-center gap-2 mt-1">
-              <p className="text-xs text-orange-400">💬 Tap to chat</p>
-              {isTestMode && (
-                <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30">
-                  DEMO
-                </span>
-              )}
-            </div>
+            {isTestMode && (
+              <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30 mt-1 inline-block">
+                DEMO
+              </span>
+            )}
           </div>
         </div>
         
         <div className="flex items-center gap-3">
-          {/* Global Toggle for All Cards */}
-          <button
-            onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30 hover:bg-gray-800/70 hover:border-gray-500/50 transition-all duration-200 group"
-          >
-            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
-              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-            <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-          </button>
-          
           {/* Unified Action Button - Changes based on mode */}
           {isTestMode ? (
             /* Demo Mode: Exit Demo Button */
@@ -2500,10 +2460,25 @@ export default function MoneyPalPage() {
       {/* Subtle Header Separator - Home Section */}
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
   
-      {/* Section Title */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-white mb-2">💰 Your Money</h2>
-        <p className="text-sm text-gray-300">Swipe to explore your finances</p>
+              {/* Section Title */}
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-semibold text-white mb-2">Financial Overview</h2>
+          <p className="text-sm text-gray-300">Swipe to see your finances</p>
+          
+          {/* Global Toggle for All Cards - Moved closer to cards */}
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={() => setAllCardsFlipped(!allCardsFlipped)}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30 hover:bg-gray-800/70 hover:border-gray-500/50 transition-all duration-200 group"
+            >
+              <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
+                <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
+            </button>
+          </div>
         
         {/* Prominent Help Button for New Users */}
         {(!actualData.accounts || actualData.accounts.length === 0) && 
@@ -2555,13 +2530,12 @@ export default function MoneyPalPage() {
                       <div className="text-sm text-gray-300 font-medium">Net Worth</div>
                     </div>
                     
-                    <div className="text-center text-gray-400 text-xs leading-relaxed">
+                    <div className="text-center text-gray-400 text-sm leading-relaxed">
                       Tap to see detailed breakdown
                     </div>
                   </div>
                   
                   <div className="flex items-center justify-center gap-2 text-xs text-robot-green/80">
-                    <span className="font-medium">💡 Tap to expand</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2654,7 +2628,6 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-blue-300 flex items-center justify-center gap-1">
-                    <span>💳 Tap to see details</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2696,9 +2669,8 @@ export default function MoneyPalPage() {
                   
                   <button
                     onClick={(e) => {
-                      console.log('Manage Accounts button clicked!');
                       e.stopPropagation(); // Prevent card from flipping
-                      debugSetShowManualDataEntry(true);
+                      setShowManualDataEntry(true);
                     }}
                     className="w-full bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
                   >
@@ -2741,7 +2713,6 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-purple-300 flex items-center justify-center gap-1">
-                    <span>🎯 Tap to see details</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2831,7 +2802,6 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-purple-300 flex items-center justify-center gap-1">
-                    <span>🔒 Tap to flip card</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2918,7 +2888,7 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-gray-300 flex items-center justify-center gap-1">
-                    <span>⚡ Tap to see actions</span>
+
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2941,7 +2911,7 @@ export default function MoneyPalPage() {
                       <>
                         <button
                           onClick={(e) => {
-                            console.log('Link Bank Account button clicked!');
+
                             e.stopPropagation(); // Prevent card from flipping
                             handleLinkAccounts();
                           }}
