@@ -108,9 +108,11 @@
     display: none;  /* Safari and Chrome */
   }
   
-  /* Mobile card spacing and sizing */
+  /* Enhanced Mobile card spacing and sizing */
   .mobile-card {
     @apply flex-shrink-0 w-80 h-80;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(8px);
   }
   
   .mobile-card-container {
@@ -118,11 +120,18 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    padding: 0 1rem;
   }
   
   .mobile-card {
     scroll-snap-align: start;
-    @apply touch-manipulation active:scale-95 transition-transform duration-200;
+    @apply touch-manipulation active:scale-95 transition-all duration-300;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
   
   /* Mobile safe area and spacing */
@@ -150,6 +159,7 @@
     transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     perspective: 1000px;
     transform: rotateY(0deg);
+    position: relative;
   }
   
   .card-flip.flipped {
@@ -166,7 +176,8 @@
     height: 100%;
     border-radius: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
   }
   
   .card-flip-front {
@@ -174,6 +185,16 @@
   }
   
   .card-flip-back {
+    transform: rotateY(180deg);
+  }
+  
+  /* Fix text orientation on flipped cards - ensure back content is readable */
+  .card-flip.flipped .card-flip-back {
+    transform: rotateY(180deg);
+  }
+  
+  /* Ensure all content inside the back card is properly oriented */
+  .card-flip.flipped .card-flip-back > * {
     transform: rotateY(180deg);
   }
   
@@ -200,9 +221,42 @@
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
   }
   
+  /* Enhanced card content animations */
+  .card-flip-front *,
+  .card-flip-back * {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-flip:hover .card-flip-front *,
+  .card-flip:hover .card-flip-back * {
+    transform: scale(1.02);
+  }
+  
   /* Smooth transitions for all properties */
   .card-flip * {
     transition: all 0.3s ease;
+  }
+  
+  /* Floating AI Companion Styles */
+  .floating-ai-companion {
+    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
+  }
+  
+  .floating-ai-companion:hover {
+    filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.4));
+  }
+  
+  /* Enhanced scroll indicators */
+  .scroll-indicator-dot {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .scroll-indicator-dot:hover {
+    transform: scale(1.25);
+  }
+  
+  .scroll-indicator-dot.active {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
   }
   
   /* Mobile header improvements */

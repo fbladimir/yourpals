@@ -212,7 +212,7 @@ export default function FloatingAvatar({ onOpenChat, isChatOpen }: FloatingAvata
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute bottom-24 right-0 text-center"
+          className="absolute bottom-32 right-0 text-center"
         >
           <p className="text-xs text-gray-400 bg-gray-800/80 px-2 py-1 rounded">
             Click to chat with MoneyPal! 🤖
