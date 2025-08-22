@@ -430,7 +430,7 @@ export default function MoneyPalPage() {
   // Handle global card flip toggle
   useEffect(() => {
     if (allCardsFlipped) {
-      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score']))
+      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score', 'quick-actions']))
     } else {
       setFlippedCards(new Set())
     }
@@ -1048,13 +1048,17 @@ export default function MoneyPalPage() {
 
   // Card flip functions
   const toggleCard = (cardId: string) => {
+    console.log('Toggling card:', cardId)
     setFlippedCards(prev => {
       const newSet = new Set(prev)
       if (newSet.has(cardId)) {
         newSet.delete(cardId)
+        console.log('Card flipped back:', cardId)
       } else {
         newSet.add(cardId)
+        console.log('Card flipped forward:', cardId)
       }
+      console.log('New flipped cards:', Array.from(newSet))
       return newSet
     })
   }
@@ -2540,7 +2544,7 @@ export default function MoneyPalPage() {
                   <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 mb-6 border border-gray-700/30">
                     <div className="text-center mb-4">
                       <div className="text-4xl font-bold text-robot-green mb-2 drop-shadow-lg">
-                        ***
+                        ${actualData.summary?.netWorth?.toLocaleString() || '0'}
                       </div>
                       <div className="text-sm text-gray-300 font-medium">Net Worth</div>
                     </div>
@@ -2619,7 +2623,7 @@ export default function MoneyPalPage() {
             className={`mobile-card card-flip cursor-pointer ${
               isCardFlipped('accounts') ? 'flipped' : ''
             }`}
-            onClick={() => setShowManualDataEntry(true)}
+            onClick={() => toggleCard('accounts')}
           >
             <div className="card-flip-container">
               {/* Front of card - minimal info */}
@@ -2644,7 +2648,7 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-blue-300 flex items-center justify-center gap-1">
-                    <span>💳 Tap to manage</span>
+                    <span>💳 Tap to see details</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2684,13 +2688,6 @@ export default function MoneyPalPage() {
                     )}
                   </div>
                   
-                  <button
-                    onClick={() => setShowManualDataEntry(true)}
-                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-xl text-white font-medium text-sm"
-                  >
-                    Manage Accounts
-                  </button>
-                  
                   <div className="text-xs text-blue-300 mt-2">🔒 Tap to flip back</div>
                 </div>
               </div>
@@ -2702,7 +2699,7 @@ export default function MoneyPalPage() {
             className={`mobile-card card-flip cursor-pointer ${
               isCardFlipped('goals') ? 'flipped' : ''
             }`}
-            onClick={() => setShowManualDataEntry(true)}
+            onClick={() => toggleCard('goals')}
           >
             <div className="card-flip-container">
               {/* Front of card - minimal info */}
@@ -2727,7 +2724,7 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <div className="text-xs text-purple-300 flex items-center justify-center gap-1">
-                    <span>🎯 Tap to manage</span>
+                    <span>🎯 Tap to see details</span>
                     <motion.div
                       animate={{ rotateY: [0, 180, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -2774,13 +2771,6 @@ export default function MoneyPalPage() {
                       </div>
                     )}
                   </div>
-                  
-                  <button
-                    onClick={() => setShowManualDataEntry(true)}
-                    className="w-full bg-gradient-to-r from-purple-500 to-purple-600 p-2 rounded-xl text-white font-medium text-sm"
-                  >
-                    Manage Goals
-                  </button>
                   
                   <div className="text-xs text-pink-300 mt-2">🔒 Tap to flip back</div>
                 </div>
@@ -2847,10 +2837,23 @@ export default function MoneyPalPage() {
                       ></div>
                     </div>
 
-                    <div className="text-xs text-purple-300">
+                    <div className="text-xs text-purple-300 mb-3">
                       {actualData.summary?.creditScore >= 750 ? 'Excellent' : 
                        actualData.summary?.creditScore >= 700 ? 'Good' : 
                        actualData.summary?.creditScore >= 650 ? 'Fair' : 'Poor'}
+                    </div>
+                    
+                    {/* Credit Score Improvement Suggestions */}
+                    <div className="text-xs text-gray-300 space-y-2">
+                      <div className="bg-gray-700/30 rounded-lg p-2">
+                        <span className="text-robot-green">💡</span> Pay bills on time
+                      </div>
+                      <div className="bg-gray-700/30 rounded-lg p-2">
+                        <span className="text-robot-green">💡</span> Keep credit utilization below 30%
+                      </div>
+                      <div className="bg-gray-700/30 rounded-lg p-2">
+                        <span className="text-robot-green">💡</span> Don't close old accounts
+                      </div>
                     </div>
                   </div>
                   
@@ -2865,6 +2868,7 @@ export default function MoneyPalPage() {
             className={`mobile-card card-flip cursor-pointer ${
               isCardFlipped('quick-actions') ? 'flipped' : ''
             }`}
+            onClick={() => toggleCard('quick-actions')}
           >
             <div className="card-flip-container">
               {/* Front of card - minimal info */}
@@ -2942,6 +2946,20 @@ export default function MoneyPalPage() {
                       </>
                     )}
                   </div>
+                  
+                  <button
+                    onClick={() => setShowManualDataEntry(true)}
+                    className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium text-sm mb-3"
+                  >
+                    Manage Accounts
+                  </button>
+                  
+                  <button
+                    onClick={() => setShowManualDataEntry(true)}
+                    className="w-full bg-gradient-to-r from-purple-500 to-purple-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
+                  >
+                    Manage Goals
+                  </button>
                   
                   <div className="text-xs text-gray-300">🔒 Tap to flip back</div>
                 </div>

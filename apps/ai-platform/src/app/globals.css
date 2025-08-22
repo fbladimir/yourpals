@@ -153,22 +153,14 @@
     @apply hover:scale-105 active:scale-95 transition-all duration-200;
   }
   
-  /* Enhanced 3D Card flip animations */
+  /* Simple Card flip animations - no 3D transforms to avoid text orientation issues */
   .card-flip {
-    transform-style: preserve-3d;
-    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    perspective: 1000px;
-    transform: rotateY(0deg);
     position: relative;
-  }
-  
-  .card-flip.flipped {
-    transform: rotateY(180deg);
+    transition: all 0.4s ease;
   }
   
   .card-flip-front,
   .card-flip-back {
-    backface-visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -178,24 +170,29 @@
     padding: 1.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
   }
   
   .card-flip-front {
+    opacity: 1;
     transform: rotateY(0deg);
+    z-index: 2;
   }
   
   .card-flip-back {
+    opacity: 0;
     transform: rotateY(180deg);
+    z-index: 1;
   }
   
-  /* Fix text orientation on flipped cards - ensure back content is readable */
+  .card-flip.flipped .card-flip-front {
+    opacity: 0;
+    transform: rotateY(-180deg);
+  }
+  
   .card-flip.flipped .card-flip-back {
-    transform: rotateY(180deg);
-  }
-  
-  /* Ensure all content inside the back card is properly oriented */
-  .card-flip.flipped .card-flip-back > * {
-    transform: rotateY(180deg);
+    opacity: 1;
+    transform: rotateY(0deg);
   }
   
   /* Card flip container */
@@ -203,28 +200,12 @@
     position: relative;
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
-  }
-  
-  /* Enhanced 3D effects */
-  .card-flip {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  }
-  
-  .card-flip:hover {
-    transform: translateY(-4px) rotateX(5deg);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-  }
-  
-  .card-flip.flipped:hover {
-    transform: rotateY(180deg) translateY(-4px) rotateX(5deg);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
   }
   
   /* Enhanced card content animations */
   .card-flip-front *,
   .card-flip-back * {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
   }
   
   .card-flip:hover .card-flip-front *,
