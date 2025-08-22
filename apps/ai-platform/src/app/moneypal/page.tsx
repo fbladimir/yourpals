@@ -2071,7 +2071,7 @@ export default function MoneyPalPage() {
 
   // Mobile render functions (CalAI inspired - simple, guided)
   const renderMobileOnboarding = () => (
-    <div className="md:hidden min-h-screen bg-gray-900 px-4 pt-4">
+    <div className="md:hidden min-h-screen px-4 pt-4">
       {/* Step 1: Welcome */}
       {onboardingStep === 0 && (
         <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
@@ -3022,115 +3022,7 @@ export default function MoneyPalPage() {
           </div>
         </div>
 
-        {/* Enhanced iOS-Style Floating AI Companion */}
-        <div className="fixed bottom-32 right-4 z-50 md:hidden floating-ai-companion">
-          {/* Enhanced Floating Avatar Button */}
-          <motion.button
-            onClick={() => setIsChatOpen(true)}
-            className="relative w-16 h-16 bg-gradient-to-br from-robot-blue to-robot-purple rounded-full shadow-2xl border-2 border-white/20 backdrop-blur-sm flex items-center justify-center group overflow-hidden"
-            whileHover={{ scale: 1.1, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-          >
-            {/* Enhanced background pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-robot-blue/20 to-robot-purple/20 opacity-50"></div>
-            
-            {/* Enhanced breathing animation ring */}
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.6, 0.3]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute inset-0 w-16 h-16 bg-gradient-to-br from-robot-blue/30 to-robot-purple/30 rounded-full blur-sm"
-            />
-            
-            {/* Avatar Image */}
-            <Image
-              src="/moneypal/robotavatar.PNG"
-              alt="MoneyPal AI"
-              width={48}
-              height={48}
-              className="relative z-10 rounded-full"
-            />
-            
-            {/* Enhanced status indicator */}
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-robot-green rounded-full border-2 border-white shadow-lg">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="w-full h-full bg-robot-green rounded-full"
-              />
-            </div>
-            
-            {/* Enhanced hover glow effect */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              className="absolute inset-0 w-16 h-16 bg-gradient-to-br from-robot-blue/30 to-robot-purple/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            />
-            
-            {/* Enhanced pulse animation for new users */}
-            {(!actualData.accounts || actualData.accounts.length === 0) && (
-              <motion.div
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="absolute inset-0 w-16 h-16 bg-orange-500/30 rounded-full"
-              />
-            )}
-          </motion.button>
-          
-          {/* Quick Actions Tooltip */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-full right-0 mb-3 bg-gray-900/95 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50 shadow-xl"
-          >
-            <div className="text-center text-white text-sm font-medium mb-2">Quick Actions</div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setIsChatOpen(true)}
-                className="bg-gradient-to-r from-robot-green to-robot-blue text-white p-2 rounded-lg hover:scale-105 transition-transform duration-200"
-                title="Chat with AI"
-              >
-                <MessageCircle className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setShowManualDataEntry(true)}
-                className="bg-gradient-to-r from-robot-blue to-robot-purple text-white p-2 rounded-lg hover:scale-105 transition-transform duration-200"
-                title="Add Data"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => {
-                  setShowMobileOnboarding(true)
-                  setOnboardingStep(0)
-                  setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
-                }}
-                className="bg-gradient-to-r from-robot-purple to-robot-pink text-white p-2 rounded-lg hover:scale-105 transition-transform duration-200"
-                title="Get Help"
-              >
-                <HelpCircle className="w-4 h-4" />
-              </button>
-            </div>
-          </motion.div>
-        </div>
+
 
         {/* Swipe Instructions */}
         <div className="text-center mt-4">
@@ -4071,12 +3963,18 @@ export default function MoneyPalPage() {
         )}
       </AnimatePresence>
 
-      {/* Floating AI Avatar - Hidden on Mobile */}
-      <div className="hidden md:block">
-        <FloatingAvatar 
-          onChatOpen={() => setIsChatOpen(true)}
-        />
-      </div>
+      {/* Enhanced Floating AI Avatar with Collapsible Quick Actions */}
+      <FloatingAvatar 
+        isChatOpen={isChatOpen}
+        isOnboarding={showOnboarding || showMobileOnboarding}
+        onChatOpen={() => setIsChatOpen(true)}
+        onAddData={() => setShowManualDataEntry(true)}
+        onHelp={() => {
+          setShowMobileOnboarding(true)
+          setOnboardingStep(0)
+          setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+        }}
+      />
 
       {/* AI Chat Modal */}
       <ChatModal 
