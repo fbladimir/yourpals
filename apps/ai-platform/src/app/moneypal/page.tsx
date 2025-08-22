@@ -371,12 +371,28 @@ export default function MoneyPalPage() {
 
   const [activeTab, setActiveTab] = useState('overview') // Default to desktop tab
   
-  // Set mobile tab on mount if on mobile
+  // Set mobile tab on mount if on mobile and restore from localStorage if available
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setActiveTab('home')
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 768) {
+        // Check localStorage for saved tab
+        const savedTab = localStorage.getItem('moneypal-active-tab')
+        if (savedTab && ['home', 'analysis', 'automation', 'profile'].includes(savedTab)) {
+          setActiveTab(savedTab)
+        } else {
+          setActiveTab('home')
+        }
+      }
     }
   }, [])
+
+  // Save active tab to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ['home', 'analysis', 'automation', 'profile'].includes(activeTab)) {
+      localStorage.setItem('moneypal-active-tab', activeTab)
+    }
+  }, [activeTab])
+
   const [isLinkingAccounts, setIsLinkingAccounts] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showTutorial, setShowTutorial] = useState(false)
@@ -429,10 +445,17 @@ export default function MoneyPalPage() {
     }
   }, [unifiedData, manualData])
 
-  // Handle global card flip toggle
+  // Handle global card flip toggle - works across all screens
   useEffect(() => {
     if (allCardsFlipped) {
-      setFlippedCards(new Set(['financial-summary', 'accounts', 'goals', 'credit-score', 'quick-actions']))
+      // Include all card IDs from all sections
+      setFlippedCards(new Set([
+        // Home section cards
+        'financial-summary', 'accounts', 'goals', 'credit-score', 'quick-actions',
+        // Analysis section cards
+        'spending-overview', 'savings-rate', 'debt-overview', 'ai-insights'
+        // Note: Automation and Profile section cards will be added when those sections are implemented
+      ]))
     } else {
       setFlippedCards(new Set())
     }
