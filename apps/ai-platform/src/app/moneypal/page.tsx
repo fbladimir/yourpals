@@ -3034,207 +3034,374 @@ export default function MoneyPalPage() {
 
   const renderMobileAnalysis = () => (
     <div className="md:hidden space-y-8 px-4 pt-4">
-      {/* Mobile Header with MoneyPal Logo */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/moneypal/robotavatar.PNG"
-              alt="MoneyPal AI Chat"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            {/* Orange Chat Symbol */}
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
-              </svg>
-            </div>
-            {/* Floating Animation */}
-            <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
-          </button>
+      {/* Mobile Header with MoneyPal Logo - Analysis Section */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
+            {isTestMode && (
+              <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30 mt-1 inline-block">
+                DEMO
+              </span>
+            )}
           </div>
         </div>
         
-        {/* Global Toggle for All Cards - Analysis Section */}
-        <div className="flex items-center gap-2">
-          {/* Global Toggle for All Cards */}
+        <div className="flex items-center gap-3">
+          {/* Unified Action Button - Changes based on mode */}
+          {isTestMode ? (
+            /* Demo Mode: Exit Demo Button */
+            <button
+              onClick={handleExitTestMode}
+              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 hover:border-orange-500/50 transition-all duration-200 group"
+              title="Exit Demo Mode"
+            >
+              <div className="relative">
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-orange-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit Demo</span>
+            </button>
+          ) : (
+            /* Normal Mode: Exit to Dashboard Button */
+            <button
+              onClick={handleExitToDashboard}
+              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 hover:border-red-500/50 transition-all duration-200 group"
+              title="Exit to Dashboard"
+            >
+              <div className="relative">
+                <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit</span>
+            </button>
+          )}
+        </div>
+      </div>
+      
+      {/* Subtle Header Separator - Analysis Section */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+  
+      {/* Section Title */}
+      <div className="text-center mb-8">
+        <h2 className="text-heading font-bold text-white mb-3">📊 Financial Analysis</h2>
+        <p className="text-body text-gray-300">Swipe to explore your insights</p>
+        
+        {/* Global Toggle for All Cards - Moved closer to cards */}
+        <div className="mt-4 flex justify-center">
           <button
             onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+            className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-xl group"
           >
-            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-          </button>
-          
-          {/* Gaming-Style Power Button for Dashboard Exit */}
-          <button
-            onClick={handleExitToDashboard}
-            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
-            title="Exit to Dashboard"
-          >
-            <div className="relative">
-              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:scale-110 transition-transform duration-200" />
-            </div>
-            <span className="text-xs">Exit</span>
+            <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
           </button>
         </div>
       </div>
   
-      {/* Section Title */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-white mb-2">📊 Financial Analysis</h2>
-        <p className="text-gray-300 text-sm">Swipe to explore your insights</p>
-      </div>
-  
-      {/* Horizontal Scrollable Analysis Cards */}
+      {/* Horizontal Scrollable Analysis Cards with Card Flip System */}
       <div className="relative">
         <div className="mobile-card-container">
-          {/* Spending Overview Card */}
-          <div className="mobile-card bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Monthly Spending</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Track Expenses</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="text-3xl font-bold text-orange-400 mb-1">
-                    ${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}
-                  </div>
-                  <div className="text-sm text-gray-400">This Month</div>
-                </div>
+          {/* Spending Overview Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('spending-overview')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('spending-overview') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl border border-orange-500/30 flex flex-col justify-center relative overflow-hidden">
+                {/* Enhanced iOS-style background pattern */}
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Food & Dining:</span>
-                    <span className="text-white">$450</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Monthly Spending</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Track Expenses</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-orange-400 mb-1">
+                        ${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}
+                      </div>
+                      <div className="text-sm text-gray-400">This Month</div>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Transportation:</span>
-                    <span className="text-white">$320</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Entertainment:</span>
-                    <span className="text-white">$180</span>
-                  </div>
+                  
+                  <div className="text-xs text-orange-300">Tap to see detailed breakdown</div>
                 </div>
               </div>
               
-              <div className="text-xs text-orange-300">Tap to see full breakdown</div>
+              {/* Back of card - detailed breakdown */}
+              <div className="card-flip-back bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl border border-orange-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Category Analysis</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Food & Dining:</span>
+                        <span className="text-white font-medium">$450</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Transportation:</span>
+                        <span className="text-white font-medium">$320</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Entertainment:</span>
+                        <span className="text-white font-medium">$180</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Shopping:</span>
+                        <span className="text-white font-medium">$280</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Utilities:</span>
+                        <span className="text-white font-medium">$150</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-orange-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Savings Rate Card */}
-          <div className="mobile-card bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-2xl p-6 border border-green-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Savings Rate</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Your Progress</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="text-3xl font-bold text-green-400 mb-1">
-                    {actualData.summary?.monthlyIncome > 0 ? 
-                      `${Math.round((actualData.summary?.monthlySavings || 0) / actualData.summary.monthlyIncome * 100)}%` : 
-                      '0%'
-                    }
+          {/* Savings Rate Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('savings-rate')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('savings-rate') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-2xl border border-green-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Savings Rate</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Your Progress</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-green-400 mb-1">
+                        {actualData.summary?.monthlyIncome > 0 ? 
+                          `${Math.round((actualData.summary?.monthlySavings || 0) / actualData.summary.monthlyIncome * 100)}%` : 
+                          '0%'
+                        }
+                      </div>
+                      <div className="text-sm text-gray-400">Of Income Saved</div>
+                    </div>
+                    
+                    <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                      <div 
+                        className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full transition-all duration-300" 
+                        style={{ width: `${Math.min((actualData.summary?.monthlySavings || 0) / (actualData.summary?.monthlyIncome || 1) * 100, 100)}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-400">Of Income Saved</div>
-                </div>
-                
-                <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                  <div 
-                    className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full transition-all duration-300" 
-                    style={{ width: `${Math.min((actualData.summary?.monthlySavings || 0) / (actualData.summary?.monthlyIncome || 1) * 100, 100)}%` }}
-                  ></div>
-                </div>
-                
-                <div className="text-xs text-green-300">
-                  ${actualData.summary?.monthlySavings?.toLocaleString() || '0'} saved this month
+                  
+                  <div className="text-xs text-green-300">Tap to see detailed analysis</div>
                 </div>
               </div>
               
-              <div className="text-xs text-gray-500">Goal: 20% of income</div>
+              {/* Back of card - detailed analysis */}
+              <div className="card-flip-back bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-2xl border border-green-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Analysis</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Savings Breakdown</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Monthly Income:</span>
+                        <span className="text-white font-medium">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Monthly Savings:</span>
+                        <span className="text-white font-medium">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Savings Rate:</span>
+                        <span className="text-green-400 font-medium">
+                          {actualData.summary?.monthlyIncome > 0 ? 
+                            `${Math.round((actualData.summary?.monthlySavings || 0) / actualData.summary.monthlyIncome * 100)}%` : 
+                            '0%'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Goal (20%):</span>
+                        <span className="text-blue-400 font-medium">${
+                          actualData.summary?.monthlyIncome > 0 ? 
+                            Math.round((actualData.summary?.monthlyIncome || 0) * 0.2).toLocaleString() : 
+                            '0'
+                        }</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-green-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Debt Overview Card */}
-          <div className="mobile-card bg-gradient-to-br from-red-500/20 to-rose-600/20 rounded-2xl p-6 border border-red-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Debt Overview</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Manage Liabilities</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="text-3xl font-bold text-red-400 mb-1">
-                    ${actualData.summary?.totalDebt?.toLocaleString() || '0'}
-                  </div>
-                  <div className="text-sm text-gray-400">Total Debt</div>
-                </div>
+          {/* Debt Overview Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('debt-overview')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('debt-overview') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-red-500/20 to-rose-600/20 rounded-2xl border border-red-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Credit Cards:</span>
-                    <span className="text-white">${(actualData.debtAccounts?.find(acc => acc.type === 'credit-card')?.balance || 0).toLocaleString()}</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Debt Overview</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Manage Liabilities</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-red-400 mb-1">
+                        ${actualData.summary?.totalDebt?.toLocaleString() || '0'}
+                      </div>
+                      <div className="text-sm text-gray-400">Total Debt</div>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Loans:</span>
-                    <span className="text-white">$0</span>
-                  </div>
+                  
+                  <div className="text-xs text-red-300">Tap to see detailed breakdown</div>
                 </div>
               </div>
               
-              <div className="text-xs text-red-300">Monitor your debt-to-income ratio</div>
+              {/* Back of card - detailed debt breakdown */}
+              <div className="card-flip-back bg-gradient-to-br from-red-500/20 to-rose-600/20 rounded-2xl border border-red-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Debt Analysis</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Credit Cards:</span>
+                        <span className="text-white font-medium">${(actualData.debtAccounts?.find(acc => acc.type === 'credit-card')?.balance || 0).toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Personal Loans:</span>
+                        <span className="text-white font-medium">$0</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Student Loans:</span>
+                        <span className="text-white font-medium">$0</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Auto Loans:</span>
+                        <span className="text-white font-medium">$0</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Mortgage:</span>
+                        <span className="text-white font-medium">$0</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-red-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* AI Insights Card */}
-          <div className="mobile-card bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-purple/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">AI Insights</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Smart Analysis</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
-                    <BarChart3 className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">AI-Powered Insights</div>
-                </div>
+          {/* AI Insights Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('ai-insights')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('ai-insights') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl border border-robot-purple/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-robot-green rounded-full"></div>
-                    <span className="text-white">Spending patterns detected</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">AI Insights</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Smart Analysis</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                        <BarChart3 className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">AI-Powered Insights</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
-                    <span className="text-white">Budget recommendations ready</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
-                    <span className="text-white">Goal tracking active</span>
-                  </div>
+                  
+                  <div className="text-xs text-robot-purple">Tap to see detailed insights</div>
                 </div>
               </div>
               
-              <button
-                onClick={() => setIsChatOpen(true)}
-                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium"
-              >
-                Get AI Insights
-              </button>
+              {/* Back of card - detailed insights and actions */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl border border-robot-purple/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Insights</div>
+                  <h3 className="text-xl font-bold text-white mb-4">AI Recommendations</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm text-left">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+                        <span className="text-white">Spending patterns detected</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+                        <span className="text-white">Budget recommendations ready</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-robot-purple rounded-full"></div>
+                        <span className="text-white">Goal tracking active</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-robot-green rounded-full"></div>
+                        <span className="text-white">Savings opportunities found</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-robot-blue rounded-full"></div>
+                        <span className="text-white">Debt reduction plan ready</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsChatOpen(true);
+                    }}
+                    className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium hover:scale-105 transition-transform duration-200"
+                  >
+                    Get AI Insights
+                  </button>
+                  
+                  <div className="text-xs text-robot-purple mt-2">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3252,69 +3419,74 @@ export default function MoneyPalPage() {
 
   const renderMobileAutomation = () => (
     <div className="md:hidden space-y-8 px-4 pt-4">
-      {/* Mobile Header with MoneyPal Logo */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/moneypal/robotavatar.PNG"
-              alt="MoneyPal AI Chat"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            {/* Orange Chat Symbol */}
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
-              </svg>
-            </div>
-            {/* Floating Animation */}
-            <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
-          </button>
+      {/* Mobile Header with MoneyPal Logo - Automation Section */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
+            {isTestMode && (
+              <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30 mt-1 inline-block">
+                DEMO
+              </span>
+            )}
           </div>
         </div>
         
-        {/* Global Toggle for All Cards - Automation Section */}
-        <div className="flex items-center gap-2">
-          {/* Global Toggle for All Cards */}
+        <div className="flex items-center gap-3">
+          {/* Unified Action Button - Changes based on mode */}
+          {isTestMode ? (
+            /* Demo Mode: Exit Demo Button */
+            <button
+              onClick={handleExitTestMode}
+              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 hover:border-orange-500/50 transition-all duration-200 group"
+              title="Exit Demo Mode"
+            >
+              <div className="relative">
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-orange-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit Demo</span>
+            </button>
+          ) : (
+            /* Normal Mode: Exit to Dashboard Button */
+            <button
+              onClick={handleExitToDashboard}
+              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 hover:border-red-500/50 transition-all duration-200 group"
+              title="Exit to Dashboard"
+            >
+              <div className="relative">
+                <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit</span>
+            </button>
+          )}
+        </div>
+      </div>
+      
+      {/* Subtle Header Separator - Automation Section */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+  
+      {/* Section Title */}
+      <div className="text-center mb-8">
+        <h2 className="text-heading font-bold text-white mb-3">🤖 AI Automation</h2>
+        <p className="text-body text-gray-300">Swipe to explore automation features</p>
+        
+        {/* Global Toggle for All Cards - Moved closer to cards */}
+        <div className="mt-4 flex justify-center">
           <button
             onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+            className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-xl group"
           >
-            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-          </button>
-          
-          {/* Gaming-Style Power Button for Dashboard Exit */}
-          <button
-            onClick={handleExitToDashboard}
-            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
-            title="Exit to Dashboard"
-          >
-            <div className="relative">
-              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
-            </div>
-            <span className="text-xs">Exit</span>
+            <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
           </button>
         </div>
-      </div>
-  
-      {/* Section Title */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-white mb-2">🤖 AI Automation</h2>
-        <p className="text-gray-300 text-sm">Swipe to explore automation features</p>
       </div>
   
       {/* Horizontal Scrollable Automation Cards */}
@@ -3470,69 +3642,74 @@ export default function MoneyPalPage() {
 
   const renderMobileProfile = () => (
     <div className="md:hidden space-y-8 px-4 pt-4">
-      {/* Mobile Header with MoneyPal Logo */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center relative group hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/moneypal/robotavatar.PNG"
-              alt="MoneyPal AI Chat"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            {/* Orange Chat Symbol */}
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900">
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2z"/>
-              </svg>
-            </div>
-            {/* Floating Animation */}
-            <div className="absolute inset-0 bg-gradient-to-r from-robot-green to-robot-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
-          </button>
+      {/* Mobile Header with MoneyPal Logo - Profile Section */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white">MoneyPal</h1>
             <p className="text-xs text-robot-green">AI Financial Co-Pilot</p>
+            {isTestMode && (
+              <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full border border-orange-500/30 mt-1 inline-block">
+                DEMO
+              </span>
+            )}
           </div>
         </div>
         
-        {/* Global Toggle for All Cards - Profile Section */}
-        <div className="flex items-center gap-2">
-          {/* Global Toggle for All Cards */}
+        <div className="flex items-center gap-3">
+          {/* Unified Action Button - Changes based on mode */}
+          {isTestMode ? (
+            /* Demo Mode: Exit Demo Button */
+            <button
+              onClick={handleExitTestMode}
+              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 hover:border-orange-500/50 transition-all duration-200 group"
+              title="Exit Demo Mode"
+            >
+              <div className="relative">
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-orange-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit Demo</span>
+            </button>
+          ) : (
+            /* Normal Mode: Exit to Dashboard Button */
+            <button
+              onClick={handleExitToDashboard}
+              className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 hover:border-red-500/50 transition-all duration-200 group"
+              title="Exit to Dashboard"
+            >
+              <div className="relative">
+                <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
+              </div>
+              <span className="text-xs font-medium">Exit</span>
+            </button>
+          )}
+        </div>
+      </div>
+      
+      {/* Subtle Header Separator - Profile Section */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+  
+      {/* Section Title */}
+      <div className="text-center mb-8">
+        <h2 className="text-heading font-bold text-white mb-3">👤 Your Profile</h2>
+        <p className="text-body text-gray-300">Swipe to manage your account</p>
+        
+        {/* Global Toggle for All Cards - Moved closer to cards */}
+        <div className="mt-4 flex justify-center">
           <button
             onClick={() => setAllCardsFlipped(!allCardsFlipped)}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-600/30"
+            className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-xl group"
           >
-            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''}`}>
+            <div className={`w-4 h-4 transition-transform duration-300 ${allCardsFlipped ? 'rotate-180' : ''} group-hover:scale-110`}>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="text-xs text-gray-300">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
-          </button>
-          
-          {/* Gaming-Style Power Button for Dashboard Exit */}
-          <button
-            onClick={handleExitToDashboard}
-            className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-all duration-200 group"
-            title="Exit to Dashboard"
-          >
-            <div className="relative">
-              <Power className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
-              <div className="absolute inset-0 bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 animate-pulse"></div>
-            </div>
-            <span className="text-xs">Exit</span>
+            <span className="text-xs text-gray-300 group-hover:text-gray-200 transition-colors duration-200">{allCardsFlipped ? 'Hide All' : 'Show All'}</span>
           </button>
         </div>
-      </div>
-  
-      {/* Section Title */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-white mb-2">👤 Your Profile</h2>
-        <p className="text-gray-300 text-sm">Swipe to manage your account</p>
       </div>
   
       {/* Horizontal Scrollable Profile Cards */}
