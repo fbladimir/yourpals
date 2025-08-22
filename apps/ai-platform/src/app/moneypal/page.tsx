@@ -2539,17 +2539,17 @@ export default function MoneyPalPage() {
                 
                 <div className="text-center relative z-10">
                   <div className="text-sm text-gray-300 mb-2 font-medium">Financial Overview</div>
-                  <h3 className="text-2xl font-bold text-white mb-6">Your Summary</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">Your Summary</h3>
                   
-                  <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 mb-6 border border-gray-700/30">
-                    <div className="text-center mb-4">
-                      <div className="text-4xl font-bold text-robot-green mb-2 drop-shadow-lg">
+                  <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-700/30">
+                    <div className="text-center mb-3">
+                      <div className="text-3xl font-bold text-robot-green mb-2 drop-shadow-lg">
                         ${actualData.summary?.netWorth?.toLocaleString() || '0'}
                       </div>
                       <div className="text-sm text-gray-300 font-medium">Net Worth</div>
                     </div>
                     
-                    <div className="text-center text-gray-400 text-sm leading-relaxed">
+                    <div className="text-center text-gray-400 text-xs leading-relaxed">
                       Tap to see detailed breakdown
                     </div>
                   </div>
@@ -2577,27 +2577,27 @@ export default function MoneyPalPage() {
                 
                 <div className="text-center relative z-10">
                   <div className="text-sm text-gray-300 mb-2 font-medium">Financial Overview</div>
-                  <h3 className="text-2xl font-bold text-white mb-6">Detailed Summary</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">Detailed Summary</h3>
                   
-                  <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 mb-6 border border-gray-700/30">
-                    <div className="text-center mb-4">
-                      <div className="text-3xl font-bold text-robot-green mb-2 drop-shadow-lg">
+                  <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-gray-700/30">
+                    <div className="text-center mb-3">
+                      <div className="text-2xl font-bold text-robot-green mb-2 drop-shadow-lg">
                         ${actualData.summary?.netWorth?.toLocaleString() || '0'}
                       </div>
                       <div className="text-sm text-gray-300 font-medium">Net Worth</div>
                     </div>
                     
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between items-center py-2 px-3 bg-gray-700/30 rounded-lg">
-                        <span className="text-gray-300 font-medium">Monthly Income:</span>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between items-center py-1.5 px-2 bg-gray-700/30 rounded-lg">
+                        <span className="text-gray-300 font-medium">Income:</span>
                         <span className="text-robot-green font-semibold">${actualData.summary?.monthlyIncome?.toLocaleString() || '0'}</span>
                       </div>
-                      <div className="flex justify-between items-center py-2 px-3 bg-gray-700/30 rounded-lg">
-                        <span className="text-gray-300 font-medium">Monthly Expenses:</span>
+                      <div className="flex justify-between items-center py-1.5 px-2 bg-gray-700/30 rounded-lg">
+                        <span className="text-gray-300 font-medium">Expenses:</span>
                         <span className="text-red-400 font-semibold">${actualData.summary?.monthlyExpenses?.toLocaleString() || '0'}</span>
                       </div>
-                      <div className="flex justify-between items-center py-2 px-3 bg-gray-700/30 rounded-lg">
-                        <span className="text-gray-300 font-medium">Monthly Savings:</span>
+                      <div className="flex justify-between items-center py-1.5 px-2 bg-gray-700/30 rounded-lg">
+                        <span className="text-gray-300 font-medium">Savings:</span>
                         <span className="text-robot-blue font-semibold">${actualData.summary?.monthlySavings?.toLocaleString() || '0'}</span>
                       </div>
                     </div>
@@ -2630,7 +2630,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-front bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl border border-blue-500/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Account Management</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Accounts</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
@@ -2643,7 +2643,7 @@ export default function MoneyPalPage() {
                     </div>
                     
                     <div className="text-center text-gray-400 text-sm">
-                      Tap to manage accounts
+                      Tap to see details
                     </div>
                   </div>
                   
@@ -2664,7 +2664,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-back bg-gradient-to-br from-blue-600/20 to-indigo-500/20 rounded-2xl border border-blue-600/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Account Details</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Accounts</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Accounts</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     {actualData.accounts && actualData.accounts.length > 0 ? (
@@ -2688,7 +2688,17 @@ export default function MoneyPalPage() {
                     )}
                   </div>
                   
-                  <div className="text-xs text-blue-300 mt-2">🔒 Tap to flip back</div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card from flipping
+                      setShowManualDataEntry(true);
+                    }}
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
+                  >
+                    Manage Accounts
+                  </button>
+                  
+                  <div className="text-xs text-blue-300">🔒 Tap to flip back</div>
                 </div>
               </div>
             </div>
@@ -2706,7 +2716,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Financial Goals</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Goals</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
@@ -2719,7 +2729,7 @@ export default function MoneyPalPage() {
                     </div>
                     
                     <div className="text-center text-gray-400 text-sm">
-                      Tap to manage goals
+                      Tap to see details
                     </div>
                   </div>
                   
@@ -2740,7 +2750,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-back bg-gradient-to-br from-purple-600/20 to-pink-500/20 rounded-2xl border border-purple-600/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Goal Details</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Goals</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Goals</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     {actualData.goals && actualData.goals.length > 0 ? (
@@ -2772,7 +2782,17 @@ export default function MoneyPalPage() {
                     )}
                   </div>
                   
-                  <div className="text-xs text-pink-300 mt-2">🔒 Tap to flip back</div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card from flipping
+                      setShowManualDataEntry(true);
+                    }}
+                    className="w-full bg-gradient-to-r from-purple-500 to-purple-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
+                  >
+                    Manage Goals
+                  </button>
+                  
+                  <div className="text-xs text-pink-300">🔒 Tap to flip back</div>
                 </div>
               </div>
             </div>
@@ -2790,7 +2810,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Credit Health</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Score</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
@@ -2820,7 +2840,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-back bg-gradient-to-br from-purple-600/20 to-pink-500/20 rounded-2xl border border-purple-600/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Credit Health</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Your Score</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Your Score</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
@@ -2875,7 +2895,7 @@ export default function MoneyPalPage() {
               <div className="card-flip-front bg-gradient-to-br from-gray-800/50 to-gray-700/50 rounded-2xl border border-gray-600/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Quick Actions</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Get Started</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Get Started</h3>
                   
                   <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
                     <div className="text-center mb-3">
@@ -2907,20 +2927,26 @@ export default function MoneyPalPage() {
               <div className="card-flip-back bg-gradient-to-br from-gray-700/50 to-gray-600/50 rounded-2xl border border-gray-500/30 flex flex-col justify-center">
                 <div className="text-center">
                   <div className="text-sm text-gray-400 mb-3">Available Actions</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Quick Actions</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Quick Actions</h3>
                   
                   <div className="space-y-3 mb-4">
                     {(!actualData.accounts || actualData.accounts.length === 0) ? (
                       <>
                         <button
-                          onClick={handleLinkAccounts}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card from flipping
+                            handleLinkAccounts();
+                          }}
                           className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
                         >
                           <CreditCard className="w-4 h-4" />
                           Link Bank Account
                         </button>
                         <button
-                          onClick={() => setShowManualDataEntry(true)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card from flipping
+                            setShowManualDataEntry(true);
+                          }}
                           className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
                         >
                           <Plus className="w-4 h-4" />
@@ -2930,14 +2956,20 @@ export default function MoneyPalPage() {
                     ) : (
                       <>
                         <button
-                          onClick={() => setShowManualDataEntry(true)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card from flipping
+                            setShowManualDataEntry(true);
+                          }}
                           className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
                         >
                           <Plus className="w-4 h-4" />
                           Add Transaction
                         </button>
                         <button
-                          onClick={() => setIsChatOpen(true)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card from flipping
+                            setIsChatOpen(true);
+                          }}
                           className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-2 rounded-xl text-white font-medium flex items-center justify-center gap-2 text-sm"
                         >
                           <MessageCircle className="w-4 h-4" />
@@ -2948,14 +2980,20 @@ export default function MoneyPalPage() {
                   </div>
                   
                   <button
-                    onClick={() => setShowManualDataEntry(true)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card from flipping
+                      setShowManualDataEntry(true);
+                    }}
                     className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-2 rounded-xl text-white font-medium text-sm mb-3"
                   >
                     Manage Accounts
                   </button>
                   
                   <button
-                    onClick={() => setShowManualDataEntry(true)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card from flipping
+                      setShowManualDataEntry(true);
+                    }}
                     className="w-full bg-gradient-to-r from-purple-500 to-purple-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
                   >
                     Manage Goals
