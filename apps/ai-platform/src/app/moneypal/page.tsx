@@ -395,6 +395,12 @@ export default function MoneyPalPage() {
   const [showAmounts, setShowAmounts] = useState(true)
   const [manualData, setManualData] = useState<any>(null)
   const [showManualDataEntry, setShowManualDataEntry] = useState(false)
+  
+  // Debug function to track modal state changes
+  const debugSetShowManualDataEntry = (value: boolean) => {
+    console.log('setShowManualDataEntry called with:', value);
+    setShowManualDataEntry(value);
+  }
   const [isTestMode, setIsTestMode] = useState(false)
   const [allCardsFlipped, setAllCardsFlipped] = useState(false)
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set())
@@ -2690,8 +2696,9 @@ export default function MoneyPalPage() {
                   
                   <button
                     onClick={(e) => {
+                      console.log('Manage Accounts button clicked!');
                       e.stopPropagation(); // Prevent card from flipping
-                      setShowManualDataEntry(true);
+                      debugSetShowManualDataEntry(true);
                     }}
                     className="w-full bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-xl text-white font-medium text-sm mb-3"
                   >
@@ -2934,6 +2941,7 @@ export default function MoneyPalPage() {
                       <>
                         <button
                           onClick={(e) => {
+                            console.log('Link Bank Account button clicked!');
                             e.stopPropagation(); // Prevent card from flipping
                             handleLinkAccounts();
                           }}
