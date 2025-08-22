@@ -453,8 +453,11 @@ export default function MoneyPalPage() {
         // Home section cards
         'financial-summary', 'accounts', 'goals', 'credit-score', 'quick-actions',
         // Analysis section cards
-        'spending-overview', 'savings-rate', 'debt-overview', 'ai-insights'
-        // Note: Automation and Profile section cards will be added when those sections are implemented
+        'spending-overview', 'savings-rate', 'debt-overview', 'ai-insights',
+        // Automation section cards
+        'weekly-summary', 'low-balance-alert', 'budget-review', 'goal-tracking',
+        // Profile section cards
+        'profile-settings', 'test-mode', 'data-management', 'support-help'
       ]))
     } else {
       setFlippedCards(new Set())
@@ -2088,7 +2091,7 @@ export default function MoneyPalPage() {
   const mobileTabs = [
     { id: 'home', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
     { id: 'analysis', label: 'Analysis', icon: TrendingUp, shortLabel: 'Analysis' },
-    { id: 'automation', label: 'Automation', icon: Zap, shortLabel: 'Auto' },
+    { id: 'automation', label: 'Automation', icon: Zap, shortLabel: 'Automation' },
     { id: 'profile', label: 'Profile', icon: User, shortLabel: 'Profile' }
   ]
 
@@ -3515,139 +3518,260 @@ export default function MoneyPalPage() {
       {/* Horizontal Scrollable Automation Cards */}
       <div className="relative">
         <div className="mobile-card-container">
-          {/* Weekly Summary Card */}
-          <div className="mobile-card bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-2xl p-6 border border-blue-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Weekly Reports</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Auto Summary</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Mail className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Every Sunday at 9:00 AM</div>
-                </div>
+          {/* Weekly Summary Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('weekly-summary')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('weekly-summary') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-2xl border border-blue-500/30 flex flex-col justify-center relative overflow-hidden">
+                {/* Enhanced iOS-style background pattern */}
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                    <span className="text-white">Spending breakdown</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Weekly Reports</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Auto Summary</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Mail className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Every Sunday at 9:00 AM</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                    <span className="text-white">AI insights</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                    <span className="text-white">Goal progress</span>
-                  </div>
+                  
+                  <div className="text-xs text-blue-300">Tap to see details</div>
                 </div>
               </div>
               
-              <div className="text-xs text-blue-300">Active automation</div>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-2xl border border-blue-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Weekly Summary</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Spending breakdown:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">AI insights:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Goal progress:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Next report:</span>
+                        <span className="text-white font-medium">Sunday 9:00 AM</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-blue-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Low Balance Alert Card */}
-          <div className="mobile-card bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl p-6 border border-orange-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Smart Alerts</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Balance Monitor</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <AlertTriangle className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Real-time monitoring</div>
-                </div>
+          {/* Low Balance Alert Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('low-balance-alert')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('low-balance-alert') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl border border-orange-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                    <span className="text-white">Low balance alerts</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Smart Alerts</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Balance Monitor</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <AlertTriangle className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Real-time monitoring</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    <span className="text-white">Push notifications</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                    <span className="text-white">Email alerts</span>
-                  </div>
+                  
+                  <div className="text-xs text-orange-300">Tap to see details</div>
                 </div>
               </div>
               
-              <div className="text-xs text-orange-300">Always protected</div>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-2xl border border-orange-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Balance Monitor</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Low balance alerts:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Push notifications:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Email alerts:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Threshold:</span>
+                        <span className="text-white font-medium">$100</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-orange-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Budget Review Card */}
-          <div className="mobile-card bg-gradient-to-br from-green-500/20 to-blue-600/20 rounded-2xl p-6 border border-green-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Monthly Review</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Budget Analysis</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <BarChart3 className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">1st of every month</div>
-                </div>
+          {/* Budget Review Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('budget-review')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('budget-review') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-green-500/20 to-blue-600/20 rounded-2xl border border-green-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                    <span className="text-white">Performance review</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Monthly Review</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Budget Analysis</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <BarChart3 className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">1st of every month</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                    <span className="text-white">AI recommendations</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                    <span className="text-white">Goal adjustments</span>
-                  </div>
+                  
+                  <div className="text-xs text-green-300">Tap to see details</div>
                 </div>
               </div>
               
-              <div className="text-xs text-green-300">Next: 3 days</div>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-green-500/20 to-blue-600/20 rounded-2xl border border-green-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Budget Analysis</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Performance review:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">AI recommendations:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Goal adjustments:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Next review:</span>
+                        <span className="text-white font-medium">3 days</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-green-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Goal Tracking Card */}
-          <div className="mobile-card bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-2xl p-6 border border-purple-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Goal Progress</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Track Milestones</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Target className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Every Friday at 5:00 PM</div>
-                </div>
+          {/* Goal Tracking Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('goal-tracking')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('goal-tracking') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                    <span className="text-white">Progress updates</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Goal Progress</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Track Milestones</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Target className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Every Friday at 5:00 PM</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
-                    <span className="text-white">Motivation tips</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                    <span className="text-white">Next steps</span>
-                  </div>
+                  
+                  <div className="text-xs text-purple-300">Tap to see details</div>
                 </div>
               </div>
               
-              <div className="text-xs text-purple-300">Stay motivated</div>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-2xl border border-purple-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Goal Tracking</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Progress updates:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Motivation tips:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Next steps:</span>
+                        <span className="text-white font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Next update:</span>
+                        <span className="text-white font-medium">Friday 5:00 PM</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs text-purple-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3738,178 +3862,308 @@ export default function MoneyPalPage() {
       {/* Horizontal Scrollable Profile Cards */}
       <div className="relative">
         <div className="mobile-card-container">
-          {/* Profile Settings Card */}
-          <div className="mobile-card bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-green/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Account Info</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Profile Settings</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
-                    <User className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Account Details</div>
-                </div>
+          {/* Profile Settings Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('profile-settings')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('profile-settings') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl border border-robot-green/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Email:</span>
-                    <span className="text-white">{user?.email}</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Account Info</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Profile Settings</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-robot-green to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                        <User className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Account Details</div>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Notifications:</span>
-                    <span className="text-robot-green">Enabled</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Privacy:</span>
-                    <span className="text-robot-green">Private</span>
-                  </div>
+                  
+                  <div className="text-xs text-robot-green">Tap to see details</div>
                 </div>
               </div>
               
-              <button className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium">
-                Edit Profile
-              </button>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-green/20 to-robot-blue/20 rounded-2xl border border-robot-green/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Profile Settings</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Email:</span>
+                        <span className="text-white font-medium">{user?.email}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Notifications:</span>
+                        <span className="text-robot-green font-medium">✓ Enabled</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Privacy:</span>
+                        <span className="text-robot-green font-medium">✓ Private</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Account Type:</span>
+                        <span className="text-white font-medium">Standard</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium mb-3">
+                    Edit Profile
+                  </button>
+                  
+                  <div className="text-xs text-robot-green">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Test Mode Card */}
-          <div className="mobile-card bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl p-6 border border-emerald-500/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Test Mode</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Experience MoneyPal</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Play className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">
-                    {isTestMode ? 'Currently active' : 'Try with sample data'}
-                  </div>
-                </div>
+          {/* Test Mode Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('test-mode')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('test-mode') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl border border-emerald-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    <span className="text-white">Sample accounts</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Test Mode</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Experience MoneyPal</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Play className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {isTestMode ? 'Currently active' : 'Try with sample data'}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-                    <span className="text-white">Mock transactions</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    <span className="text-white">Demo goals</span>
-                  </div>
+                  
+                  <div className="text-xs text-emerald-300">Tap to see details</div>
                 </div>
               </div>
               
-              {isTestMode ? (
-                <button
-                  onClick={handleExitTestMode}
-                  className="w-full bg-red-500 hover:bg-red-600 p-3 rounded-xl text-white font-medium"
-                >
-                  Exit Test Mode
-                </button>
-              ) : (
-                <button
-                  onClick={handleEnterTestMode}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 p-3 rounded-xl text-white font-medium"
-                >
-                  Enter Test Mode
-                </button>
-              )}
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl border border-emerald-500/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Test Mode</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Sample accounts:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Mock transactions:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Demo goals:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Status:</span>
+                        <span className={isTestMode ? 'text-emerald-400 font-medium' : 'text-gray-400 font-medium'}>
+                          {isTestMode ? '✓ Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {isTestMode ? (
+                    <button
+                      onClick={handleExitTestMode}
+                      className="w-full bg-red-500 hover:bg-red-600 p-3 rounded-xl text-white font-medium mb-3"
+                    >
+                      Exit Test Mode
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleEnterTestMode}
+                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 p-3 rounded-xl text-white font-medium mb-3"
+                    >
+                      Enter Test Mode
+                    </button>
+                  )}
+                  
+                  <div className="text-xs text-emerald-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Data Management Card */}
-          <div className="mobile-card bg-gradient-to-br from-robot-orange/20 to-robot-pink/20 rounded-2xl p-6 border border-robot-orange/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Data Control</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Manage Data</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-robot-orange to-robot-pink rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Plus className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Data Options</div>
-                </div>
+          {/* Data Management Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('data-management')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('data-management') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-orange/20 to-robot-pink/20 rounded-2xl border border-robot-orange/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                    <span className="text-white">Manual entry</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Data Control</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Manage Data</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-robot-orange to-robot-pink rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Plus className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Data Options</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
-                    <span className="text-white">Bank linking</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                    <span className="text-white">Data export</span>
-                  </div>
+                  
+                  <div className="text-xs text-orange-300">Tap to see details</div>
                 </div>
               </div>
               
-              <button
-                onClick={() => setShowManualDataEntry(true)}
-                className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-3 rounded-xl text-white font-medium"
-              >
-                Manage Data
-              </button>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-orange/20 to-robot-pink/20 rounded-2xl border border-robot-orange/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Data Management</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Manual entry:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Bank linking:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Data export:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Data backup:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowManualDataEntry(true)}
+                    className="w-full bg-gradient-to-r from-robot-orange to-robot-pink p-3 rounded-xl text-white font-medium mb-3"
+                  >
+                    Manage Data
+                  </button>
+                  
+                  <div className="text-xs text-orange-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Support & Help Card */}
-          <div className="mobile-card bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl p-6 border border-robot-purple/30">
-            <div className="text-center">
-              <div className="text-sm text-gray-400 mb-3">Support</div>
-              <h3 className="text-2xl font-bold text-white mb-4">Get Help</h3>
-              
-              <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
-                <div className="text-center mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-r from-robot-purple to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
-                    <HelpCircle className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-sm text-gray-400">Support Options</div>
-                </div>
+          {/* Support & Help Card - Enhanced 3D Flip */}
+          <div 
+            onClick={() => toggleCard('support-help')}
+            className={`mobile-card card-flip cursor-pointer group ${
+              isCardFlipped('support-help') ? 'flipped' : ''
+            }`}
+          >
+            <div className="card-flip-container">
+              {/* Front of card - enhanced minimal info */}
+              <div className="card-flip-front bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl border border-robot-purple/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
                 
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                    <span className="text-white">AI chat support</span>
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Support</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">Get Help</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="text-center mb-3">
+                      <div className="w-16 h-16 bg-gradient-to-r from-robot-purple to-robot-blue rounded-full flex items-center justify-center mx-auto mb-3">
+                        <HelpCircle className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="text-sm text-gray-400">Support Options</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                    <span className="text-white">Tutorial mode</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                    <span className="text-white">Onboarding help</span>
-                  </div>
+                  
+                  <div className="text-xs text-purple-300">Tap to see details</div>
                 </div>
               </div>
               
-              <button
-                onClick={() => setShowTutorial(true)}
-                className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium mb-3"
-              >
-                Get Help
-              </button>
-              
-              <button
-                onClick={() => {
-                  setShowMobileOnboarding(true)
-                  setOnboardingStep(0)
-                  setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
-                }}
-                className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium"
-              >
-                Restart Onboarding
-              </button>
+              {/* Back of card - detailed information */}
+              <div className="card-flip-back bg-gradient-to-br from-robot-purple/20 to-robot-blue/20 rounded-2xl border border-robot-purple/30 flex flex-col justify-center relative overflow-hidden">
+                <div className="card-pattern"></div>
+                
+                <div className="text-center relative z-10">
+                  <div className="text-sm text-gray-400 mb-3">Detailed Breakdown</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Support & Help</h3>
+                  
+                  <div className="bg-gray-800/50 rounded-xl p-4 mb-4">
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">AI chat support:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Tutorial mode:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Onboarding help:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-400">Documentation:</span>
+                        <span className="text-white font-medium">✓ Available</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowTutorial(true)}
+                    className="w-full bg-gradient-to-r from-robot-purple to-robot-blue p-3 rounded-xl text-white font-medium mb-3"
+                  >
+                    Get Help
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      setShowMobileOnboarding(true)
+                      setOnboardingStep(0)
+                      setOnboardingData({ setupMethod: '', hasCompletedSetup: false })
+                    }}
+                    className="w-full bg-gradient-to-r from-robot-green to-robot-blue p-3 rounded-xl text-white font-medium mb-3"
+                  >
+                    Restart Onboarding
+                  </button>
+                  
+                  <div className="text-xs text-purple-300">Tap to collapse</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
