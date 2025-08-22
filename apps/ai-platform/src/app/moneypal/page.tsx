@@ -35,7 +35,8 @@ import {
   AlertTriangle,
   Calculator,
   Power,
-  Lock
+  Lock,
+  Bell
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -424,6 +425,9 @@ export default function MoneyPalPage() {
     setupMethod: '',
     hasCompletedSetup: false
   })
+
+  // Mobile Notifications State
+  const [showMobileNotifications, setShowMobileNotifications] = useState(false)
 
   // Update manualData state whenever unified data changes
   useEffect(() => {
@@ -2452,6 +2456,19 @@ export default function MoneyPalPage() {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* Mobile Notifications Bell - iOS Style */}
+          <button
+            onClick={() => setShowMobileNotifications(!showMobileNotifications)}
+            className="relative flex items-center justify-center w-10 h-10 bg-gray-800/50 rounded-full border border-gray-700/50 hover:bg-gray-700/50 transition-colors duration-200 group"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
+            {/* Notification Badge */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">3</span>
+            </div>
+          </button>
+
           {/* Unified Action Button - Changes based on mode */}
           {isTestMode ? (
             /* Demo Mode: Exit Demo Button */
@@ -2485,6 +2502,108 @@ export default function MoneyPalPage() {
       
       {/* Subtle Header Separator - Home Section */}
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+  
+      {/* Mobile Notifications Dropdown - iOS Style */}
+      <AnimatePresence>
+        {showMobileNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-20 right-4 w-80 bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl z-50 overflow-hidden"
+          >
+            {/* Notifications Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
+              <h3 className="text-lg font-semibold text-white">Notifications</h3>
+              <button
+                onClick={() => setShowMobileNotifications(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800/50 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Notifications List */}
+            <div className="max-h-96 overflow-y-auto">
+              {/* Emergency Fund Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Emergency Fund Alert</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your emergency fund covers 2.1 months of expenses. Consider building it to 3-6 months.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 hours ago</span>
+                      <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">High Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Spending Pattern Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Unusual Spending Detected</h4>
+                    <p className="text-xs text-gray-300 mb-2">Weekend spending is 40% higher than usual. Check your budget.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">5 hours ago</span>
+                      <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">Medium Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal Achievement */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Savings Goal Achieved! 🎉</h4>
+                    <p className="text-xs text-gray-300 mb-2">Congratulations! You've reached your $5,000 emergency fund goal.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">1 day ago</span>
+                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Success</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Credit Score Update */}
+              <div className="p-4 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Credit Score Updated</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your credit score has improved by 15 points this month!</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 days ago</span>
+                      <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Info</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Notifications Footer */}
+            <div className="p-4 border-t border-gray-800/50 bg-gray-800/20">
+              <button className="w-full py-2 px-4 bg-robot-green/20 text-robot-green rounded-lg border border-robot-green/30 hover:bg-robot-green/30 transition-colors text-sm font-medium">
+                View All Notifications
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
   
               {/* Section Title */}
         <div className="text-center mb-8">
@@ -3075,12 +3194,25 @@ export default function MoneyPalPage() {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* Mobile Notifications Bell - iOS Style */}
+          <button
+            onClick={() => setShowMobileNotifications(!showMobileNotifications)}
+            className="relative flex items-center justify-center w-10 h-10 bg-gray-800/50 rounded-full border border-gray-700/50 hover:bg-gray-700/50 transition-colors duration-200 group"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
+            {/* Notification Badge */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">3</span>
+            </div>
+          </button>
+
           {/* Unified Action Button - Changes based on mode */}
           {isTestMode ? (
             /* Demo Mode: Exit Demo Button */
             <button
               onClick={handleExitTestMode}
-              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/30 hover:border-orange-500/50 transition-all duration-200 group"
+              className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 hover:bg-red-500/30 hover:border-orange-500/50 transition-all duration-200 group"
               title="Exit Demo Mode"
             >
               <div className="relative">
@@ -3108,6 +3240,108 @@ export default function MoneyPalPage() {
       
       {/* Subtle Header Separator - Analysis Section */}
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+  
+      {/* Mobile Notifications Dropdown - iOS Style */}
+      <AnimatePresence>
+        {showMobileNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-20 right-4 w-80 bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl z-50 overflow-hidden"
+          >
+            {/* Notifications Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
+              <h3 className="text-lg font-semibold text-white">Notifications</h3>
+              <button
+                onClick={() => setShowMobileNotifications(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800/50 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Notifications List */}
+            <div className="max-h-96 overflow-y-auto">
+              {/* Emergency Fund Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Emergency Fund Alert</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your emergency fund covers 2.1 months of expenses. Consider building it to 3-6 months.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 hours ago</span>
+                      <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">High Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Spending Pattern Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Unusual Spending Detected</h4>
+                    <p className="text-xs text-gray-300 mb-2">Weekend spending is 40% higher than usual. Check your budget.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">5 hours ago</span>
+                      <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">Medium Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal Achievement */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Savings Goal Achieved! 🎉</h4>
+                    <p className="text-xs text-gray-300 mb-2">Congratulations! You've reached your $5,000 emergency fund goal.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">1 day ago</span>
+                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Success</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Credit Score Update */}
+              <div className="p-4 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Credit Score Updated</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your credit score has improved by 15 points this month!</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 days ago</span>
+                      <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Info</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Notifications Footer */}
+            <div className="p-4 border-t border-gray-800/50 bg-gray-800/20">
+              <button className="w-full py-2 px-4 bg-robot-green/20 text-robot-green rounded-lg border border-robot-green/30 hover:bg-robot-green/30 transition-colors text-sm font-medium">
+                View All Notifications
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
   
       {/* Section Title */}
       <div className="text-center mb-8">
@@ -3460,6 +3694,19 @@ export default function MoneyPalPage() {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* Mobile Notifications Bell - iOS Style */}
+          <button
+            onClick={() => setShowMobileNotifications(!showMobileNotifications)}
+            className="relative flex items-center justify-center w-10 h-10 bg-gray-800/50 rounded-full border border-gray-700/50 hover:bg-gray-700/50 transition-colors duration-200 group"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
+            {/* Notification Badge */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">3</span>
+            </div>
+          </button>
+
           {/* Unified Action Button - Changes based on mode */}
           {isTestMode ? (
             /* Demo Mode: Exit Demo Button */
@@ -3493,6 +3740,108 @@ export default function MoneyPalPage() {
       
       {/* Subtle Header Separator - Automation Section */}
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+
+      {/* Mobile Notifications Dropdown - iOS Style */}
+      <AnimatePresence>
+        {showMobileNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-20 right-4 w-80 bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl z-50 overflow-hidden"
+          >
+            {/* Notifications Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
+              <h3 className="text-lg font-semibold text-white">Notifications</h3>
+              <button
+                onClick={() => setShowMobileNotifications(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800/50 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Notifications List */}
+            <div className="max-h-96 overflow-y-auto">
+              {/* Emergency Fund Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Emergency Fund Alert</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your emergency fund covers 2.1 months of expenses. Consider building it to 3-6 months.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 hours ago</span>
+                      <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">High Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Spending Pattern Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Unusual Spending Detected</h4>
+                    <p className="text-xs text-gray-300 mb-2">Weekend spending is 40% higher than usual. Check your budget.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">5 hours ago</span>
+                      <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">Medium Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal Achievement */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Savings Goal Achieved! 🎉</h4>
+                    <p className="text-xs text-gray-300 mb-2">Congratulations! You've reached your $5,000 emergency fund goal.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">1 day ago</span>
+                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Success</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Credit Score Update */}
+              <div className="p-4 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Credit Score Updated</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your credit score has improved by 15 points this month!</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 days ago</span>
+                      <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Info</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Notifications Footer */}
+            <div className="p-4 border-t border-gray-800/50 bg-gray-800/20">
+              <button className="w-full py-2 px-4 bg-robot-green/20 text-robot-green rounded-lg border border-robot-green/30 hover:bg-robot-green/30 transition-colors text-sm font-medium">
+                View All Notifications
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
   
       {/* Section Title */}
       <div className="text-center mb-8">
@@ -3804,6 +4153,19 @@ export default function MoneyPalPage() {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* Mobile Notifications Bell - iOS Style */}
+          <button
+            onClick={() => setShowMobileNotifications(!showMobileNotifications)}
+            className="relative flex items-center justify-center w-10 h-10 bg-gray-800/50 rounded-full border border-gray-700/50 hover:bg-gray-700/50 transition-colors duration-200 group"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-200" />
+            {/* Notification Badge */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-xs text-white font-bold">3</span>
+            </div>
+          </button>
+
           {/* Unified Action Button - Changes based on mode */}
           {isTestMode ? (
             /* Demo Mode: Exit Demo Button */
@@ -3837,6 +4199,108 @@ export default function MoneyPalPage() {
       
       {/* Subtle Header Separator - Profile Section */}
       <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent mb-8"></div>
+
+      {/* Mobile Notifications Dropdown - iOS Style */}
+      <AnimatePresence>
+        {showMobileNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-20 right-4 w-80 bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl z-50 overflow-hidden"
+          >
+            {/* Notifications Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
+              <h3 className="text-lg font-semibold text-white">Notifications</h3>
+              <button
+                onClick={() => setShowMobileNotifications(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800/50 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Notifications List */}
+            <div className="max-h-96 overflow-y-auto">
+              {/* Emergency Fund Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Emergency Fund Alert</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your emergency fund covers 2.1 months of expenses. Consider building it to 3-6 months.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 hours ago</span>
+                      <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">High Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Spending Pattern Alert */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Unusual Spending Detected</h4>
+                    <p className="text-xs text-gray-300 mb-2">Weekend spending is 40% higher than usual. Check your budget.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">5 hours ago</span>
+                      <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">Medium Priority</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Goal Achievement */}
+              <div className="p-4 border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Savings Goal Achieved! 🎉</h4>
+                    <p className="text-xs text-gray-300 mb-2">Congratulations! You've reached your $5,000 emergency fund goal.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">1 day ago</span>
+                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Success</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Credit Score Update */}
+              <div className="p-4 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-white mb-1">Credit Score Updated</h4>
+                    <p className="text-xs text-gray-300 mb-2">Your credit score has improved by 15 points this month!</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-400">2 days ago</span>
+                      <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Info</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Notifications Footer */}
+            <div className="p-4 border-t border-gray-800/50 bg-gray-800/20">
+              <button className="w-full py-2 px-4 bg-robot-green/20 text-robot-green rounded-lg border border-robot-green/30 hover:bg-robot-green/30 transition-colors text-sm font-medium">
+                View All Notifications
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
   
       {/* Section Title */}
       <div className="text-center mb-8">

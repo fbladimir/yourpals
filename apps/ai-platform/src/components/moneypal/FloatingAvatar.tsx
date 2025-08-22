@@ -11,7 +11,14 @@ interface FloatingAvatarProps {
 }
 
 const FloatingAvatar: React.FC<FloatingAvatarProps> = ({ isChatOpen, isOnboarding, onChatOpen, onAddData, onHelp }) => {
-  const [isQuickActionsExpanded, setIsQuickActionsExpanded] = useState(true);
+  const [isQuickActionsExpanded, setIsQuickActionsExpanded] = useState(() => {
+    // Restore overview container state from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('moneypal-overview-expanded')
+      return saved !== null ? JSON.parse(saved) : true
+    }
+    return true
+  });
   const [showHint, setShowHint] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isOverviewVisible, setIsOverviewVisible] = useState(false);
@@ -62,7 +69,12 @@ const FloatingAvatar: React.FC<FloatingAvatarProps> = ({ isChatOpen, isOnboardin
   }, [isChatOpen, chatJustClosed]);
 
   const toggleQuickActions = () => {
-    setIsQuickActionsExpanded(!isQuickActionsExpanded);
+    const newState = !isQuickActionsExpanded;
+    setIsQuickActionsExpanded(newState);
+    // Persist overview container state to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('moneypal-overview-expanded', JSON.stringify(newState));
+    }
   };
 
   const handleQuickAction = (action: string) => {
